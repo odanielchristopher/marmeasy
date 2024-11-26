@@ -15,6 +15,7 @@ export default [
         'semi': ['error', 'always'],
         'quotes': ['error', 'single'],
         'react/react-in-jsx-scope': 'off',
+        '@typescript-eslint/ban-ts-comment': 'off',
     }
 }
 ];

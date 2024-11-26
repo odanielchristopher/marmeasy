@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -6,4 +6,4 @@ module.exports = {
     '@electron-toolkit/eslint-config-ts/recommended',
     '@electron-toolkit/eslint-config-prettier'
   ]
-}
+};
