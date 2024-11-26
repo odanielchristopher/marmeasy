@@ -5,7 +5,7 @@ import defaultTheme from '../../assets/styles/themes/default';
 
 import { Container } from './styles';
 
-function App(): JSX.Element {
+export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
@@ -20,5 +20,3 @@ function App(): JSX.Element {
     </ThemeProvider>
   );
 }
-
-export default App;
