@@ -1,7 +1,7 @@
 import { ICategory } from './categoryInterface';
 import { IIngredient } from './ingredientInterface';
 
-export interface IOrder {
+export interface IProduct {
   id: number
   image: string
   name: string
