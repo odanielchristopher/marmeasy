@@ -2,57 +2,20 @@ import Button from '@renderer/components/Button';
 import FormGroup from '@renderer/components/FormGroup';
 import Input from '@renderer/components/Input';
 
-import useErrors from '@renderer/hooks/useErrors';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import useLogin from './useLogin';
 
-import isEmailValid from '@renderer/utils/isEmailValid';
-
-import delay from '@renderer/utils/delay';
 import { ButtonContainer, Container } from './styles';
 
 export default function Login(): JSX.Element {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const navigate = useNavigate();
-
-  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
-
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-    if (event.target.value && !isEmailValid(event.target.value)) {
-      setError({ field: 'email', message: 'E-mail inválido' });
-    } else {
-      removeError('email');
-    }
-  }
-
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
-    if (event.target.value.length < 6) {
-      setError({ field: 'password', message: 'A senha deve ter pelo menos 6 caracteres' });
-    } else {
-      removeError('password');
-    }
-  }
-
-  async function handleSubmit() {
-    const emailValid = 'root@mail.com';
-    const passwordValid = '123root';
-
-    setIsLoading(true);
-    await delay(2000); // Simula a requisição de login
-    setIsLoading(false);
-
-    if (!(email === emailValid) && !(password === passwordValid)) {
-      return;
-    }
-
-    // Se tudo estiver certo, redireciona para a página home
-    navigate('/orders');
-  }
+  const {
+    email,
+    password,
+    isLoading,
+    getErrorMessageByFieldName,
+    handleEmailChange,
+    handlePasswordChange,
+    handleSubmit
+  } = useLogin();
 
   return (
     <Container>
