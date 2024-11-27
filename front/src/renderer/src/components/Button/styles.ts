@@ -25,7 +25,7 @@ align-items: center;
   }
 
   &[disabled] {
-    background: ${({ theme }) => theme.colors.gray.main} !important;
+    background: ${({ theme }) => theme.colors.gray.light} !important;
     cursor: default !important;
   }
 

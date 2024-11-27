@@ -19,7 +19,7 @@ export default styled.input<IInput>`
   }
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.orange.main};
+    border-color: ${({ theme }) => theme.colors.green.main};
   }
 
   &[disabled] {
@@ -28,8 +28,8 @@ export default styled.input<IInput>`
   }
 
   ${({ theme, error }) => error && css`
-    color: ${theme.colors.red.main};
-    border-color: ${theme.colors.red.main} !important;
+    color: ${theme.colors.red.dark};
+    border-color: ${theme.colors.red.dark} !important;
   `}
 
 `;
