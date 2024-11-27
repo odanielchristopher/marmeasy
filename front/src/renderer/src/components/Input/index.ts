@@ -31,5 +31,4 @@ export default styled.input<IInput>`
     color: ${theme.colors.red.dark};
     border-color: ${theme.colors.red.dark} !important;
   `}
-
 `;

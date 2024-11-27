@@ -4,6 +4,7 @@ import Input from '@renderer/components/Input';
 
 import useErrors from '@renderer/hooks/useErrors';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import isEmailValid from '@renderer/utils/isEmailValid';
 
@@ -12,17 +13,15 @@ import { ButtonContainer, Container } from './styles';
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    setError,
-    removeError,
-    getErrorMessageByFieldName,
-  } = useErrors();
+  const navigate = useNavigate();
+
+  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
-
     if (event.target.value && !isEmailValid(event.target.value)) {
       setError({ field: 'email', message: 'E-mail inválido' });
     } else {
@@ -30,44 +29,62 @@ export default function Login(): JSX.Element {
     }
   }
 
-  async function handleSubtmit() {
-    setIsLoading(true);
-    await delay(2000);
-    setIsLoading(false);
+  function handlePasswordChange(event) {
+    setPassword(event.target.value);
+    if (event.target.value.length < 6) {
+      setError({ field: 'password', message: 'A senha deve ter pelo menos 6 caracteres' });
+    } else {
+      removeError('password');
+    }
   }
 
-    return (
-      <Container>
-        <h1>Entrar no sistema</h1>
+  async function handleSubmit() {
+    const emailValid = 'root@mail.com';
+    const passwordValid = '123root';
 
-        <p>Entre com seu e-mail e senha</p>
+    setIsLoading(true);
+    await delay(2000); // Simula a requisição de login
+    setIsLoading(false);
 
-        <FormGroup error={getErrorMessageByFieldName('name')}>
-          <Input
-            type="email"
-            placeholder="E-mail"
-            value={email}
-            onChange={handleEmailChange}
-            error={getErrorMessageByFieldName('email')}
-          />
-        </FormGroup>
+    if (!(email === emailValid) && !(password === passwordValid)) {
+      return;
+    }
 
-        <FormGroup>
-          <Input
-            type="password"
-            placeholder="Senha"
-          />
-        </FormGroup>
+    // Se tudo estiver certo, redireciona para a página home
+    navigate('/orders');
+  }
 
-        <ButtonContainer>
-          <Button
-            type="submit"
-            onClick={handleSubtmit}
-            isLoading={isLoading}
-          >
-            Entrar
-          </Button>
-        </ButtonContainer>
-      </Container>
-    );
+  return (
+    <Container>
+      <h1>Entrar no sistema</h1>
+
+      <p>Entre com seu e-mail e senha</p>
+
+      <FormGroup error={getErrorMessageByFieldName('email')}>
+        <Input
+          type="email"
+          placeholder="E-mail"
+          value={email}
+          onChange={handleEmailChange}
+          error={getErrorMessageByFieldName('email')}
+        />
+      </FormGroup>
+
+      <FormGroup error={getErrorMessageByFieldName('password')}>
+        <Input
+          type="password"
+          placeholder="Senha"
+          value={password}
+          onChange={handlePasswordChange}
+          error={getErrorMessageByFieldName('password')}
+        />
+      </FormGroup>
+
+      <ButtonContainer>
+        <Button type="submit" onClick={handleSubmit} isLoading={isLoading}>
+          Entrar
+        </Button>
+      </ButtonContainer>
+    </Container>
+  );
 }

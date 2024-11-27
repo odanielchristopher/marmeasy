@@ -3,6 +3,7 @@ import { IFormGrup } from './interface';
 import { Container } from './styles';
 
 export default function FormGroup({ children, error, isLoading }: IFormGrup) {
+  console.log('carregada');
   return (
     <Container>
       <div className="form-item">
