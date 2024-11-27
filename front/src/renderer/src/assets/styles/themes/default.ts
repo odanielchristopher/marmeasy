@@ -6,7 +6,7 @@ export default {
       main: '#222222',
     },
     gray: {
-      light: '#',
+      light: '#E4E4E7',
       main: '#808080',
     },
     green: {
