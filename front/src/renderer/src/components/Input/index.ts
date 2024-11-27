@@ -27,7 +27,7 @@ export default styled.input<IInput>`
     border-color: ${({ theme }) => theme.colors.gray[200]};
   }
 
-  ${({ theme, error }) => error && css`
+  ${({ theme, $error }) => $error && css`
     color: ${theme.colors.red.dark};
     border-color: ${theme.colors.red.dark} !important;
   `}

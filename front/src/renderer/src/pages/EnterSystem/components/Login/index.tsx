@@ -66,7 +66,7 @@ export default function Login(): JSX.Element {
           placeholder="E-mail"
           value={email}
           onChange={handleEmailChange}
-          error={getErrorMessageByFieldName('email')}
+          $error={getErrorMessageByFieldName('email')}
         />
       </FormGroup>
 
@@ -76,7 +76,7 @@ export default function Login(): JSX.Element {
           placeholder="Senha"
           value={password}
           onChange={handlePasswordChange}
-          error={getErrorMessageByFieldName('password')}
+          $error={getErrorMessageByFieldName('password')}
         />
       </FormGroup>
 

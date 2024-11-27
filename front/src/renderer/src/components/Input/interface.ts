@@ -1,3 +1,3 @@
 export interface IInput {
-  error?: string
+  $error?: string
 }
