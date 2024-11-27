@@ -5,6 +5,7 @@ export default function EnterSystem(): JSX.Element {
   return (
     <Container>
       <Login />
+      {/* <Register /> */}
     </Container>
   );
 }
