@@ -57,7 +57,7 @@ export default function Login({ handleViewing }: ILogin): JSX.Element {
 
       <ButtonViewing
         type="button"
-        onClick={() => handleViewing(false)}
+        onClick={handleViewing}
       >
         Ainda não possuo conta.
       </ButtonViewing>

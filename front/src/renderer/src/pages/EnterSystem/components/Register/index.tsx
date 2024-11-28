@@ -57,7 +57,7 @@ export default function Register({ handleViewing }: IRegister): JSX.Element {
 
       <ButtonViewing
         type="button"
-        onClick={() => handleViewing(false)}
+        onClick={handleViewing}
       >
         Já possuo uma conta.
       </ButtonViewing>
