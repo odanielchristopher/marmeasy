@@ -34,16 +34,6 @@ export default function useLogin() {
   }
 
   async function handleSubmit() {
-    // const emailValid = 'root@mail.com';
-    // const passwordValid = '123root';
-
-    // setIsLoading(true);
-    // await delay(2000); // Simula a requisição de login
-    // setIsLoading(false);
-
-    // if (!(email === emailValid) && !(password === passwordValid)) {
-    //   return;
-    // }
     setIsSubmiting(true);
     const isAuthorizated = await UserService.getAuthorization({ email, password });
     setIsSubmiting(false);
