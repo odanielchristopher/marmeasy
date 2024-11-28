@@ -4,9 +4,15 @@ import Input from '@renderer/components/Input';
 
 import useLogin from './useLogin';
 
-import { ButtonContainer, Container } from './styles';
+import { ButtonContainer } from '../ButtonContainter';
+import { ButtonViewing } from '../ButtonViewing';
+import { Description } from '../Description';
+import { SectionContainer } from '../SectionContainer';
+import { Title } from '../Title';
 
-export default function Login(): JSX.Element {
+import { ILogin } from './interface';
+
+export default function Login({ handleViewing }: ILogin): JSX.Element {
   const {
     email,
     password,
@@ -18,10 +24,10 @@ export default function Login(): JSX.Element {
   } = useLogin();
 
   return (
-    <Container>
-      <h1>Entrar no sistema</h1>
+    <SectionContainer>
+      <Title>Entrar no sistema</Title>
 
-      <p>Entre com seu e-mail e senha</p>
+      <Description>Entre com seu e-mail e senha</Description>
 
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
@@ -48,6 +54,13 @@ export default function Login(): JSX.Element {
           Entrar
         </Button>
       </ButtonContainer>
-    </Container>
+
+      <ButtonViewing
+        type="button"
+        onClick={() => handleViewing(false)}
+      >
+        Ainda não possuo conta.
+      </ButtonViewing>
+    </SectionContainer>
   );
 }

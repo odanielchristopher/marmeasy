@@ -4,9 +4,15 @@ import Input from '@renderer/components/Input';
 
 import useRegister from './useRegister';
 
-import { ButtonContainer, Container } from './styles';
+import { ButtonContainer } from '../ButtonContainter';
+import { ButtonViewing } from '../ButtonViewing';
+import { Description } from '../Description';
+import { SectionContainer } from '../SectionContainer';
+import { Title } from '../Title';
 
-export default function Register(): JSX.Element {
+import { IRegister } from './interface';
+
+export default function Register({ handleViewing }: IRegister): JSX.Element {
   const {
     email,
     password,
@@ -18,10 +24,10 @@ export default function Register(): JSX.Element {
   } = useRegister();
 
   return (
-    <Container>
-      <h1>Seja bem-vindo à Marmeasy</h1>
+    <SectionContainer>
+      <Title>Seja bem-vindo à Marmeasy</Title>
 
-      <p>Digite um email e senha de sua preferência</p>
+      <Description>Digite um email e senha de sua preferência</Description>
 
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
@@ -49,7 +55,12 @@ export default function Register(): JSX.Element {
         </Button>
       </ButtonContainer>
 
-      <span>Já possuo conta</span>
-    </Container>
+      <ButtonViewing
+        type="button"
+        onClick={() => handleViewing(false)}
+      >
+        Já possuo uma conta.
+      </ButtonViewing>
+    </SectionContainer>
   );
 }
