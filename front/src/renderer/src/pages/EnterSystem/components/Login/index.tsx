@@ -16,7 +16,8 @@ export default function Login({ handleViewing }: ILogin): JSX.Element {
   const {
     email,
     password,
-    isLoading,
+    isSubmiting,
+    isFormValid,
     getErrorMessageByFieldName,
     handleEmailChange,
     handlePasswordChange,
@@ -35,6 +36,7 @@ export default function Login({ handleViewing }: ILogin): JSX.Element {
           placeholder="E-mail"
           value={email}
           onChange={handleEmailChange}
+          disabled={isSubmiting}
           $error={getErrorMessageByFieldName('email')}
         />
       </FormGroup>
@@ -45,12 +47,18 @@ export default function Login({ handleViewing }: ILogin): JSX.Element {
           placeholder="Senha"
           value={password}
           onChange={handlePasswordChange}
+          disabled={isSubmiting}
           $error={getErrorMessageByFieldName('password')}
         />
       </FormGroup>
 
       <ButtonContainer>
-        <Button type="submit" onClick={handleSubmit} isLoading={isLoading}>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          isLoading={isSubmiting}
+          disabled={!isFormValid}
+        >
           Entrar
         </Button>
       </ButtonContainer>

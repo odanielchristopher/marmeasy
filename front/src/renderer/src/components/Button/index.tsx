@@ -8,7 +8,7 @@ export default function Button({
   isLoading,
   children,
   danger,
-  onClick,
+  onClick
 }: IButton) {
   return (
     <StyledButton
