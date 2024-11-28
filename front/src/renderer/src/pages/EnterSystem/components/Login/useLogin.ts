@@ -1,5 +1,5 @@
 import useErrors from '@renderer/hooks/useErrors';
-import delay from '@renderer/utils/delay';
+import UserService from '@renderer/services/UserService';
 import isEmailValid from '@renderer/utils/isEmailValid';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,11 +7,13 @@ import { useNavigate } from 'react-router-dom';
 export default function useLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmiting, setIsSubmiting] = useState(false);
 
   const navigate = useNavigate();
 
   const { setError, removeError, getErrorMessageByFieldName } = useErrors();
+
+  const isFormValid = Boolean((email && password.length >= 6));
 
   function handleEmailChange(event) {
     setEmail(event.target.value);
@@ -32,25 +34,21 @@ export default function useLogin() {
   }
 
   async function handleSubmit() {
-    const emailValid = 'root@mail.com';
-    const passwordValid = '123root';
-
-    setIsLoading(true);
-    await delay(2000); // Simula a requisição de login
-    setIsLoading(false);
-
-    if (!(email === emailValid) && !(password === passwordValid)) {
-      return;
-    }
+    setIsSubmiting(true);
+    const isAuthorizated = await UserService.getAuthorization({ email, password });
+    setIsSubmiting(false);
 
     // Se tudo estiver certo, redireciona para a página home
-    navigate('/orders');
+    if (isAuthorizated) {
+      navigate('/orders');
+    }
   }
 
   return {
     email,
     password,
-    isLoading,
+    isSubmiting,
+    isFormValid,
     getErrorMessageByFieldName,
     handleEmailChange,
     handlePasswordChange,
