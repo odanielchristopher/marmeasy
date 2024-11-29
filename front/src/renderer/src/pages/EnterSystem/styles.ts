@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: ${({ theme }) => theme.colors.orange.light};
+  /* background-color: ${({ theme }) => theme.colors.orange.light}; */
+  background-color: ${({ theme }) => theme.background};
 
   align-items: center;
   display: flex;
