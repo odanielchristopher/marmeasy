@@ -4,15 +4,18 @@ interface ILinkNavigation {
   active?: boolean
 }
 
-export const Container = styled.div`
+interface IContainer {
+  margin?: string
+}
+
+export const Container = styled.div<IContainer>`
   align-items: center;
   background: ${({ theme }) => theme.colors.orange.light};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0px 6px 8px 0px rgba(0, 0, 0, 0.16);
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 4.8rem);
-  margin: 2.4rem auto;
+  height: calc(100vh - (${({ theme, margin }) => margin || theme.margin} * 2));
   padding: 1.6rem 1rem;
   width: min-content;
 `;

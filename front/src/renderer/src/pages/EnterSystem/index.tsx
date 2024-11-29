@@ -1,21 +1,22 @@
+import useEnterSystem from './useEnterSystem';
 
+import Login from './components/Login';
+import Register from './components/Register';
 
-import Navigation from '@renderer/components/Navigation';
 import { Container } from './styles';
 
 export default function EnterSystem(): JSX.Element {
-  // const {  isRegistered, handleToogleView } = useEnterSystem();
+  const {  isRegistered, handleToogleView } = useEnterSystem();
 
   return (
     <Container>
-      {/* {isRegistered ?
+      {isRegistered ?
       <Login
         handleViewing={handleToogleView}
       /> :
       <Register
         handleViewing={handleToogleView}
-      />} */}
-      <Navigation />
+      />}
     </Container>
   );
 }

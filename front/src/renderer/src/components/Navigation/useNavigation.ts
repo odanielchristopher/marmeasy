@@ -16,7 +16,7 @@ export default function useNavigation() {
   }
 
   function handleLogOutLink() {
-    navigateTo('/gate');
+    navigateTo('/');
   }
 
   return {
