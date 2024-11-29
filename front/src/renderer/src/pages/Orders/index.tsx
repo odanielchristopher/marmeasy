@@ -1,11 +1,9 @@
-import { Link } from 'react-router-dom';
+import Navigation from '@renderer/components/Navigation';
 
 export default function Orders(): JSX.Element {
   return (
     <>
-      <p>hello from orders page</p>
-
-      <Link to="/clients">other</Link>
+      <Navigation />
     </>
   );
 }
