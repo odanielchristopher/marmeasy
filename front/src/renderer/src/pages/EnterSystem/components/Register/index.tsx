@@ -16,7 +16,8 @@ export default function Register({ handleViewing }: IRegister): JSX.Element {
   const {
     email,
     password,
-    isLoading,
+    isSubmiting,
+    isFormValid,
     getErrorMessageByFieldName,
     handleEmailChange,
     handlePasswordChange,
@@ -50,7 +51,12 @@ export default function Register({ handleViewing }: IRegister): JSX.Element {
       </FormGroup>
 
       <ButtonContainer>
-        <Button type="submit" onClick={handleSubmit} isLoading={isLoading}>
+        <Button
+          type="submit"
+          onClick={handleSubmit}
+          isLoading={isSubmiting}
+          disabled={!isFormValid}
+        >
           Registrar conta
         </Button>
       </ButtonContainer>
