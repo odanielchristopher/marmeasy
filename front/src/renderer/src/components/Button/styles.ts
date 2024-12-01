@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { StyledButtonProps } from './interface';
 
 export const StyledButton = styled.button<StyledButtonProps>`
-align-items: center;
+  align-items: center;
   background: ${({ theme }) => theme.colors.orange.main};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};

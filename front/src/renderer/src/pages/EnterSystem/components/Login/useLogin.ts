@@ -13,7 +13,7 @@ export default function useLogin() {
 
   const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
-  const isFormValid = Boolean((email && password.length >= 6));
+  const isFormValid = Boolean(((email && isEmailValid(email)) && password.length >= 6));
 
   function handleEmailChange(event) {
     setEmail(event.target.value);

@@ -1,4 +1,4 @@
-import user from '@renderer/mocks/user';
+import users from '@renderer/mocks/users';
 import delay from '@renderer/utils/delay';
 import HttpClient from './utils/HttpClient';
 
@@ -11,9 +11,21 @@ class UserService {
 
   async getAuthorization({ email, password }) {
     await delay(2000);
-    const isAuthorizated = (user.email === email) && (user.password === password);
+    const userExists = users.find((userObj) => (
+      userObj.email === email && userObj.password === password
+    ));
 
-    return isAuthorizated;
+    if (!userExists) {
+      return false;
+    }
+
+    return true;
+  }
+
+  async registerNewUser({ email, password }) {
+    await delay(2000);
+
+    users.push({ email, password });
   }
 }
 
