@@ -1,6 +1,7 @@
 import useErrors from '@renderer/hooks/useErrors';
 import UserService from '@renderer/services/UserService';
 import isEmailValid from '@renderer/utils/isEmailValid';
+import toast from '@renderer/utils/toast';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,13 +35,21 @@ export default function useLogin() {
   }
 
   async function handleSubmit() {
-    setIsSubmiting(true);
-    const isAuthorizated = await UserService.getAuthorization({ email, password });
-    setIsSubmiting(false);
+    try {
+      setIsSubmiting(true);
+      const token = await UserService.getAuthorization({ email, password });
+      setIsSubmiting(false);
 
-    // Se tudo estiver certo, redireciona para a página home
-    if (isAuthorizated) {
+      console.log(token);
+
+      // Se tudo estiver certo, redireciona para a página home
       navigate('/orders');
+    } catch {
+      setIsSubmiting(false);
+      toast({
+        type: 'danger',
+        text: 'Email e senha inválidos!'
+      });
     }
   }
 
