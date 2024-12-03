@@ -1,11 +1,8 @@
 import { IToastMessage } from '@renderer/components/Toast/ToastMessage';
+import EventManager from '@renderer/lib/EventManager';
+
+export const toastEventManager = new EventManager();
 
 export default function toast({ type, text }: IToastMessage) {
-  const event = new CustomEvent('addtoast', {
-    detail: {
-      type,
-      text
-    }
-  });
-  document.dispatchEvent(event);
+  toastEventManager.emit('addtoast', { type, text });
 }

@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
+
+import { toastEventManager } from '@renderer/utils/toast';
 import ToastMessage, { IToastMessage } from '../ToastMessage';
+
 import { Container } from './styles';
 
 export default function ToastContainer(): JSX.Element {
   const [messages, setMessages] = useState<IToastMessage[]>([]);
 
   useEffect(() => {
-    function handleAddToast(event) {
-      const { type, text } = (event as CustomEvent).detail;
-
+    function handleAddToast({ type, text }) {
       setMessages((prevState) => [
         ...prevState,
         {id: Math.random(), type, text}
@@ -16,10 +17,10 @@ export default function ToastContainer(): JSX.Element {
     }
 
 
-    document.addEventListener('addtoast', handleAddToast);
+    toastEventManager.on('addtoast', handleAddToast);
 
     return () => {
-      document.removeEventListener('addtoast', handleAddToast);
+      toastEventManager.removeListener('addtoast', handleAddToast);
     };
   }, []);
 
