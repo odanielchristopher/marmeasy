@@ -8,12 +8,10 @@ import { Container } from './styles';
 
 export default function ToastContainer(): JSX.Element {
   const {
-    items: messages,
     setItems: setMessages,
-    pendingRemovalItemsIds,
-    handleRemoveItem,
-    handleAnimationEnd
-  } = useAnimatedList<IMessage>([{ id: 123, type: 'sucess', text: 'Hello world' }]);
+    renderList,
+    handleRemoveItem
+  } = useAnimatedList<IMessage>();
 
   useEffect(() => {
     function handleAddToast({ type, text, duration }) {
@@ -33,15 +31,15 @@ export default function ToastContainer(): JSX.Element {
 
   return (
     <Container>
-      {messages.map((message) => (
-        <ToastMessage
-          key={message.id}
-          message={message}
-          onRemoveMessage={handleRemoveItem}
-          isLeaving={pendingRemovalItemsIds.includes(message.id)}
-          onAnimationEnd={handleAnimationEnd}
-        />
-      ))}
+      {renderList((message, { isLeaving, animatedRef }) => (
+      <ToastMessage
+        key={message.id}
+        message={message}
+        onRemoveMessage={handleRemoveItem}
+        isLeaving={isLeaving}
+        animatedRef={animatedRef}
+      />
+    ))}
     </Container>
   );
 }

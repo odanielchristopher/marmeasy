@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Container } from './styles';
 
 import { CgCloseO } from 'react-icons/cg';
@@ -17,27 +17,10 @@ interface IToastMessage {
   message: IMessage
   isLeaving: boolean
   onRemoveMessage: (id) => void // eslint-disable-line no-unused-vars
-  onAnimationEnd: (id) => void  // eslint-disable-line no-unused-vars
+  animatedRef?: React.RefObject<HTMLDivElement>
 }
 
-export default function ToastMessage({ message, isLeaving, onRemoveMessage, onAnimationEnd }: IToastMessage): JSX.Element | null {
-  const animatedElementRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleAnimationEnd() {
-      onAnimationEnd(message.id);
-    }
-
-    const elementRef = animatedElementRef.current;
-    if (isLeaving) {
-      elementRef?.addEventListener('animationend', handleAnimationEnd);
-    }
-
-    return () => {
-      elementRef?.removeEventListener('animationend', handleAnimationEnd);
-    };
-  }, [isLeaving, message.id, onAnimationEnd]);
-
+export default function ToastMessage({ message, isLeaving, onRemoveMessage, animatedRef }: IToastMessage): JSX.Element | null {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       onRemoveMessage(message.id);
@@ -60,7 +43,7 @@ export default function ToastMessage({ message, isLeaving, onRemoveMessage, onAn
       tabIndex={0}
       role="button"
       $isLeaving={isLeaving}
-      ref={animatedElementRef}
+      ref={animatedRef}
     >
       {message.type === 'sucess' && <FaRegCircleCheck size={20}/>}
       {message.type === 'danger' && <CgCloseO size={22}/>}
