@@ -21,6 +21,7 @@ export const Container = styled.div<IContainer>`
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: .0rem 2.0rem 2.0rem -1.6rem rgba(0, 0, 0, 0.25);;
   color: #FFF;
+  cursor: pointer;
   display: flex;
   justify-content: center;
   padding: 1.6rem 3.2rem;
