@@ -43,6 +43,11 @@ export default function useLogin() {
       console.log(token);
 
       // Se tudo estiver certo, redireciona para a página home
+      toast({
+        type: 'sucess',
+        text: 'Usuário autenticado.',
+        duration: 1500
+      });
       navigate('/orders');
     } catch {
       setIsSubmiting(false);

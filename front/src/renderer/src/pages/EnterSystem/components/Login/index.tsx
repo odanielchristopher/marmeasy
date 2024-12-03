@@ -10,7 +10,9 @@ import { Description } from '../Description';
 import { SectionContainer } from '../SectionContainer';
 import { Title } from '../Title';
 
-import { ILogin } from './interface';
+export interface ILogin {
+  handleViewing: () => void
+}
 
 export default function Login({ handleViewing }: ILogin): JSX.Element {
   const {

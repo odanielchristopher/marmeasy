@@ -10,9 +10,12 @@ import { Description } from '../Description';
 import { SectionContainer } from '../SectionContainer';
 import { Title } from '../Title';
 
-import { IRegister } from './interface';
+export interface IRegister {
+  onRegister: (value: boolean) => void // eslint-disable-line no-unused-vars
+  handleViewing: () => void
+}
 
-export default function Register({ handleViewing }: IRegister): JSX.Element {
+export default function Register({ handleViewing, onRegister }: IRegister): JSX.Element {
   const {
     email,
     password,
@@ -22,7 +25,7 @@ export default function Register({ handleViewing }: IRegister): JSX.Element {
     handleEmailChange,
     handlePasswordChange,
     handleSubmit
-  } = useRegister();
+  } = useRegister(onRegister);
 
   return (
     <SectionContainer>
