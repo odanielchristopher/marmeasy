@@ -7,7 +7,7 @@ import useUserForm from './useUserForm';
 
 interface UserFormProps {
   buttonLabel: string
-  onSubmit: (user) => void // eslint-disable-line no-unused-vars
+  onSubmit(user): void
 }
 
 export default function UserForm({ onSubmit, buttonLabel }: UserFormProps) {

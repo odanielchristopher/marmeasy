@@ -17,8 +17,7 @@ export default function useLogin() {
       // Se tudo estiver certo, redireciona para a página home
       toast({
         type: 'sucess',
-        text: 'Usuário autenticado.',
-        duration: 1500
+        text: 'Usuário autenticado.'
       });
       signin('hash');
     } catch {

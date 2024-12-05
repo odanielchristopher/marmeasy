@@ -9,8 +9,14 @@ export const Container = styled.div`
   width: 40rem;
 
   a {
-    margin-top: 1.2rem;
     align-self: center;
+    color: ${({ theme }) => theme.colors.black.main};
+    font-size: 1.4rem;
+    margin-top: 1.2rem;
+
+    &:hover {
+      color: blue;
+    }
   }
 `;
 

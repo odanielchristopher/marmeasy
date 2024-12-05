@@ -4,7 +4,7 @@ import { AuthLayout } from '@renderer/views/layouts/AuthLayout';
 import NavLayout from '@renderer/views/layouts/NavLayout';
 import Clients from '@renderer/views/pages/Clients';
 import Login from '@renderer/views/pages/Login';
-import Orders from '@renderer/views/pages/Orders';
+import Menu from '@renderer/views/pages/Menu';
 import Register from '@renderer/views/pages/Register';
 import AuthGuard from './AuthGuard';
 
@@ -22,7 +22,7 @@ export default function AppRoutes() {
 
                 <Route element={<AuthGuard isPrivate />}>
                   <Route element={<NavLayout />}>
-                    <Route path="/menu" element={<Orders />} />
+                    <Route path="/menu" element={<Menu />} />
                     <Route path="/" element={<Clients />} />
                   </Route>
                 </Route>
