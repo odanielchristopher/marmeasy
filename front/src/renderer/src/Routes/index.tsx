@@ -1,13 +1,14 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
 import { AuthLayout } from '@renderer/views/layouts/AuthLayout';
+import NavLayout from '@renderer/views/layouts/NavLayout';
 import Clients from '@renderer/views/pages/Clients';
 import Login from '@renderer/views/pages/Login';
 import Orders from '@renderer/views/pages/Orders';
 import Register from '@renderer/views/pages/Register';
 import AuthGuard from './AuthGuard';
 
-export default function AppRoutes(): JSX.Element {
+export default function AppRoutes() {
     return (
         <HashRouter>
             <Routes>
@@ -20,8 +21,10 @@ export default function AppRoutes(): JSX.Element {
                 </Route>
 
                 <Route element={<AuthGuard isPrivate />}>
-                  <Route path="/orders" element={<Orders />} />
-                  <Route path="/" element={<Clients />} />
+                  <Route element={<NavLayout />}>
+                    <Route path="/menu" element={<Orders />} />
+                    <Route path="/" element={<Clients />} />
+                  </Route>
                 </Route>
 
             </Routes>

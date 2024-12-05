@@ -1,10 +1,13 @@
+import { useAuth } from '@renderer/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 export default function useNavigation() {
+  const { signout } = useAuth();
+
   const navigateTo = useNavigate();
 
   function handleClientsLink() {
-    navigateTo('/clients');
+    navigateTo('/');
   }
 
   function handleMenuLink() {
@@ -16,7 +19,7 @@ export default function useNavigation() {
   }
 
   function handleLogOutLink() {
-    navigateTo('/');
+    signout();
   }
 
   return {
