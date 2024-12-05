@@ -1,8 +1,7 @@
+import Clients from '@renderer/pages/Clients';
+import EnterSystem from '@renderer/pages/EnterSystem';
+import Orders from '@renderer/pages/Orders';
 import { Route, HashRouter as Router, Routes } from 'react-router-dom';
-
-import Clients from './pages/Clients';
-import EnterSystem from './pages/EnterSystem';
-import Orders from './pages/Orders';
 
 export default function AppRoutes(): JSX.Element {
     return (
