@@ -1,6 +1,10 @@
-import { ISpinner } from './interface';
 import { StyledSpinner } from './styles';
 
-export default function Spinner({ size }: ISpinner): JSX.Element {
+export interface SpinnerProps {
+  size: number
+}
+
+
+export default function Spinner({ size }: SpinnerProps): JSX.Element {
   return <StyledSpinner size={size} />;
 }

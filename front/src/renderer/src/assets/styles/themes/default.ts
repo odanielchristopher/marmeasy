@@ -4,9 +4,11 @@ export default {
   margin: '2.4rem',
   colors: {
     black: {
+      light: '#333333',
       main: '#222222'
     },
     gray: {
+      lighter: '#666666',
       light: '#E4E4E7',
       main: '#808080'
     },
