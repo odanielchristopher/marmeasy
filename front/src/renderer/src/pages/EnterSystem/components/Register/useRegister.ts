@@ -1,15 +1,14 @@
 import useErrors from '@renderer/hooks/useErrors';
 import UserService from '@renderer/services/UserService';
 import isEmailValid from '@renderer/utils/isEmailValid';
+import toast from '@renderer/utils/toast';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-export default function useRegister() {
+// eslint-disable-next-line no-unused-vars
+export default function useRegister(onRegister: (value: boolean) => void) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmiting, setIsSubmiting] = useState(false);
-
-  const navigate = useNavigate();
 
   const { setError, removeError, getErrorMessageByFieldName } = useErrors();
 
@@ -38,7 +37,11 @@ export default function useRegister() {
     await UserService.registerNewUser({ email, password });
     setIsSubmiting(false);
 
-    navigate('/orders');
+    onRegister(true);
+    toast({
+      type: 'sucess',
+      text: 'Usuário registrado com sucesso'
+    });
   }
 
   return {

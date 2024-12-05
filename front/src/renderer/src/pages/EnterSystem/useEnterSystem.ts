@@ -9,6 +9,7 @@ export default function useEnterSystem() {
 
   return {
     isRegistered,
+    setIsRegistered,
     handleToogleView
   };
 }

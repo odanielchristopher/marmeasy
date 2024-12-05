@@ -16,7 +16,7 @@ class UserService {
     ));
 
     if (!userExists) {
-      return false;
+      throw new Error();
     }
 
     return true;

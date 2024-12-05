@@ -6,7 +6,7 @@ import Register from './components/Register';
 import { Container } from './styles';
 
 export default function EnterSystem(): JSX.Element {
-  const {  isRegistered, handleToogleView } = useEnterSystem();
+  const {  isRegistered, setIsRegistered, handleToogleView } = useEnterSystem();
 
   return (
     <Container>
@@ -16,6 +16,7 @@ export default function EnterSystem(): JSX.Element {
       /> :
       <Register
         handleViewing={handleToogleView}
+        onRegister={setIsRegistered}
       />}
     </Container>
   );
