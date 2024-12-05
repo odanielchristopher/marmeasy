@@ -1,12 +1,13 @@
-import UserService from '@renderer/services/UserService';
-import toast from '@renderer/utils/toast';
 import { Navigate } from 'react-router-dom';
 
-// eslint-disable-next-line no-unused-vars
+import toast from '@renderer/utils/toast';
+
+import { authService } from '@renderer/services/authService';
+
 export default function useRegister() {
   async function handleSubmit({ email, password }) {
     try {
-      await UserService.registerNewUser({ email, password });
+      await authService.singUp({ email, password });
 
       toast({
         type: 'sucess',

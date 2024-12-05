@@ -1,7 +1,5 @@
-import users from '@renderer/mocks/users';
-import delay from '@renderer/utils/delay';
-
-import { httpClient } from './utils/httpClient';
+import { singUp } from './signUp';
+import { signIn } from './singIn';
 
 // class UserService {
 
@@ -28,29 +26,6 @@ import { httpClient } from './utils/httpClient';
 // }
 
 // export default new UserService();
-
-interface SingInParams {
-  email: string
-  password: string
-}
-
-async function signIn({ email, password }: SingInParams) {
-  await delay(2000);
-  const { data } = await httpClient.post('/auth/signin', {email, password});
-
-  return data;
-}
-
-interface SingUpParams {
-  email: string
-  password: string
-}
-
-async function singUp({ email, password }: SingUpParams) {
-  await delay(2000);
-
-  users.push({ email, password });
-}
 
 export const authService = {
   signIn,

@@ -10,8 +10,8 @@ export default function useLogin() {
     try {
       const token = await authService.signIn({ email, password });
 
-      console.log(token);
 
+      console.log(token);
       // Se tudo estiver certo, redireciona para a página home
       toast({
         type: 'sucess',
