@@ -1,10 +1,12 @@
-import { Navigate } from 'react-router-dom';
 
 import toast from '@renderer/utils/toast';
 
+import { useAuth } from '@renderer/hooks/useAuth';
 import { authService } from '@renderer/services/authService';
 
 export default function useLogin() {
+  const { signin } = useAuth();
+
 
   async function handleSubmit({ email, password }) {
     try {
@@ -18,7 +20,7 @@ export default function useLogin() {
         text: 'Usuário autenticado.',
         duration: 1500
       });
-      Navigate({ to: '/orders' });
+      signin('hash');
     } catch {
       toast({
         type: 'danger',
