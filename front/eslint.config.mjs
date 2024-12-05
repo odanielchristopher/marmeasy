@@ -16,7 +16,6 @@ export default [
         'quotes': ['error', 'single'],
         'react/react-in-jsx-scope': 'off',
         '@typescript-eslint/ban-ts-comment': 'off',
-        'no-unused-vars': 'error',
         'comma-dangle': ['error', 'never'],
         'no-console': 'warn'
     }

@@ -1,7 +1,11 @@
 import styled, { css } from 'styled-components';
-import { IInput } from './interface';
 
-export default styled.input<IInput>`
+interface InputProps {
+  $error?: string
+}
+
+
+export default styled.input<InputProps>`
   appearance: none;
   background: #FFF;
   border: .2rem solid ${({ theme }) => theme.colors.gray.light};

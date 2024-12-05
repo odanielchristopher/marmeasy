@@ -1,10 +1,15 @@
+import { useAuth } from '@renderer/hooks/useAuth';
+import openProfileModal from '@renderer/utils/openProfileModal';
 import { useNavigate } from 'react-router-dom';
 
+
 export default function useNavigation() {
+  const { signout } = useAuth();
+
   const navigateTo = useNavigate();
 
   function handleClientsLink() {
-    navigateTo('/clients');
+    navigateTo('/');
   }
 
   function handleMenuLink() {
@@ -12,11 +17,11 @@ export default function useNavigation() {
   }
 
   function handleProfileLink() {
-    navigateTo('/profile');
+    openProfileModal();
   }
 
   function handleLogOutLink() {
-    navigateTo('/');
+    signout();
   }
 
   return {

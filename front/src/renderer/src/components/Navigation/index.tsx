@@ -9,7 +9,7 @@ import { TbUsers } from 'react-icons/tb';
 import { Container, FootContainer, LinkNavigation, LogoContainer, MainContainer } from './styles';
 import useNavigation from './useNavigation';
 
-export default function Navigation(): JSX.Element {
+export default function Navigation() {
   const {
     handleClientsLink,
     handleLogOutLink,

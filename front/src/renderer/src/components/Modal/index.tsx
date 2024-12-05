@@ -2,12 +2,12 @@ import useAnimatedUnmount from '@renderer/hooks/useAnimatedUnmount';
 import ReactPortal from '../ReactPortal';
 import { Container, Overlay } from './styles';
 
-interface IModal {
+interface ModalProps {
   visible: boolean
   children: JSX.Element
 }
 
-export default function Modal({visible, children}: IModal) {
+export default function Modal({visible, children}: ModalProps) {
   const { shouldRender, animatedElementRef} = useAnimatedUnmount(visible);
 
   if (!shouldRender) {
