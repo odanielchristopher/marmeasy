@@ -1,41 +1,29 @@
-import useErrors from '@renderer/hooks/useErrors';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import Input from '../Input';
 
-import isEmailValid from '@renderer/utils/isEmailValid';
-import { useState } from 'react';
 import { ButtonContainer, Form } from './styles';
+import useUserForm from './useUserForm';
 
-export default function UserForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isSubmiting, setIsSubmiting] = useState(false);
+interface UserFormProps {
+  buttonLabel: string
+  onSubmit: (user) => void // eslint-disable-line no-unused-vars
+}
 
-  const { setError, removeError, getErrorMessageByFieldName } = useErrors();
-
-  const isFormValid = Boolean(((email && isEmailValid(email)) && password.length >= 6));
-
-  function handleEmailChange(event) {
-    setEmail(event.target.value);
-    if (event.target.value && !isEmailValid(event.target.value)) {
-      setError({ field: 'email', message: 'E-mail inválido' });
-    } else {
-      removeError('email');
-    }
-  }
-
-  function handlePasswordChange(event) {
-    setPassword(event.target.value);
-    if (event.target.value.length < 6) {
-      setError({ field: 'password', message: 'A senha deve ter pelo menos 6 caracteres' });
-    } else {
-      removeError('password');
-    }
-  }
+export default function UserForm({ onSubmit, buttonLabel }: UserFormProps) {
+  const {
+    email,
+    password,
+    isSubmiting,
+    isFormValid,
+    getErrorMessageByFieldName,
+    handleEmailChange,
+    handlePasswordChange,
+    handleSubmit
+  } = useUserForm(onSubmit);
 
   return (
-    <Form>
+    <Form onSubmit={handleSubmit} noValidate>
       <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
           type="email"
@@ -59,14 +47,10 @@ export default function UserForm() {
       <ButtonContainer>
         <Button
           type="submit"
-          onClick={() => {
-            setIsSubmiting(true);
-            setIsSubmiting(false);
-          }}
           isLoading={isSubmiting}
           disabled={!isFormValid}
         >
-          Registrar conta
+          {buttonLabel}
         </Button>
       </ButtonContainer>
 

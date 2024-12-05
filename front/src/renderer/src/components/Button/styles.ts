@@ -5,7 +5,6 @@ interface StyledButtonProps {
   disabled?: boolean
   isLoading?: boolean
   danger?: boolean
-  onClick: () => void
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`

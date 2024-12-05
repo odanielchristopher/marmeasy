@@ -7,7 +7,8 @@ interface ButtonProps {
   isLoading?: boolean
   children: JSX.Element | string
   danger?: boolean
-  onClick: () => void
+  isForm?: boolean
+  onClick?: () => void
 }
 
 export default function Button({

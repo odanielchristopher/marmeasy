@@ -1,11 +1,9 @@
-import useErrors from '@renderer/hooks/useErrors';
-import UserService from '@renderer/services/UserService';
-import isEmailValid from '@renderer/utils/isEmailValid';
-import toast from '@renderer/utils/toast';
 import { useState } from 'react';
 
-// eslint-disable-next-line no-unused-vars
-export default function useRegister(onRegister: (value: boolean) => void) {
+import useErrors from '@renderer/hooks/useErrors';
+import isEmailValid from '@renderer/utils/isEmailValid';
+
+export default function useUserForm(onSubmit) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSubmiting, setIsSubmiting] = useState(false);
@@ -17,7 +15,11 @@ export default function useRegister(onRegister: (value: boolean) => void) {
   function handleEmailChange(event) {
     setEmail(event.target.value);
     if (event.target.value && !isEmailValid(event.target.value)) {
+      removeError('email');
       setError({ field: 'email', message: 'E-mail inválido' });
+    } else if (!event.target.value) {
+      removeError('email');
+      setError({ field: 'email', message: 'O campo de e-mail é obrigatório' });
     } else {
       removeError('email');
     }
@@ -25,33 +27,33 @@ export default function useRegister(onRegister: (value: boolean) => void) {
 
   function handlePasswordChange(event) {
     setPassword(event.target.value);
-    if (event.target.value.length < 6) {
+    if ( event.target.value && event.target.value.length < 6) {
+      removeError('password');
       setError({ field: 'password', message: 'A senha deve ter pelo menos 6 caracteres' });
+    } else if (!event.target.value) {
+      removeError('password');
+      setError({ field: 'password', message: 'O campo de senha é obrigatória' });
     } else {
       removeError('password');
     }
   }
 
-  async function handleSubmit() {
-    setIsSubmiting(true);
-    await UserService.registerNewUser({ email, password });
-    setIsSubmiting(false);
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-    onRegister(true);
-    toast({
-      type: 'sucess',
-      text: 'Usuário registrado com sucesso'
-    });
+    setIsSubmiting(true);
+    await onSubmit({ email, password });
+    setIsSubmiting(false);
   }
 
   return {
     email,
     password,
-    isFormValid,
     isSubmiting,
-    getErrorMessageByFieldName,
+    isFormValid,
     handleEmailChange,
     handlePasswordChange,
+    getErrorMessageByFieldName,
     handleSubmit
   };
 }

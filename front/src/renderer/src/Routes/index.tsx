@@ -1,16 +1,30 @@
-import Clients from '@renderer/pages/Clients';
-import EnterSystem from '@renderer/pages/EnterSystem';
-import Orders from '@renderer/pages/Orders';
-import { Route, HashRouter as Router, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
+
+import { AuthLayout } from '@renderer/views/layouts/AuthLayout';
+import Clients from '@renderer/views/pages/Clients';
+import Login from '@renderer/views/pages/Login';
+import Orders from '@renderer/views/pages/Orders';
+import Register from '@renderer/views/pages/Register';
+import AuthGuard from './AuthGuard';
 
 export default function AppRoutes(): JSX.Element {
     return (
-        <Router>
+        <HashRouter>
             <Routes>
-                <Route path="/" element={<EnterSystem />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/clients" element={<Clients />} />
+
+                <Route element={<AuthGuard isPrivate={false} />}>
+                  <Route element={<AuthLayout />}>
+                    <Route path='/login' element={<Login />}/>
+                    <Route path='/register' element={<Register />}/>
+                  </Route>
+                </Route>
+
+                <Route element={<AuthGuard isPrivate />}>
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/" element={<Clients />} />
+                </Route>
+
             </Routes>
-        </Router>
+        </HashRouter>
     );
 };
