@@ -1,12 +1,14 @@
-import UserService from '@renderer/services/UserService';
-import toast from '@renderer/utils/toast';
 import { Navigate } from 'react-router-dom';
+
+import toast from '@renderer/utils/toast';
+
+import { authService } from '@renderer/services/authService';
 
 export default function useLogin() {
 
   async function handleSubmit({ email, password }) {
     try {
-      const token = await UserService.getAuthorization({ email, password });
+      const token = await authService.signIn({ email, password });
 
       console.log(token);
 
