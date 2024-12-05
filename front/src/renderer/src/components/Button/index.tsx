@@ -1,6 +1,14 @@
 import Spinner from '../Spinner';
-import { IButton } from './interface';
 import { StyledButton } from './styles';
+
+interface ButtonProps {
+  type: string
+  disabled?: boolean
+  isLoading?: boolean
+  children: JSX.Element | string
+  danger?: boolean
+  onClick: () => void
+}
 
 export default function Button({
   type,
@@ -9,7 +17,7 @@ export default function Button({
   children,
   danger,
   onClick
-}: IButton) {
+}: ButtonProps) {
   return (
     <StyledButton
       type={type}

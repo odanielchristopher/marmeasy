@@ -1,8 +1,13 @@
 import Spinner from '../Spinner';
-import { IFormGrup } from './interface';
 import { Container } from './styles';
 
-export default function FormGroup({ children, error, isLoading }: IFormGrup) {
+interface FormGroupProps {
+  children: JSX.Element
+  error?: string
+  isLoading?: boolean
+}
+
+export default function FormGroup({ children, error, isLoading }: FormGroupProps) {
   return (
     <Container>
       <div className="form-item">

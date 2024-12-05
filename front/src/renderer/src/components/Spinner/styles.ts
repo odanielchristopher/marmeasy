@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import { ISpinner } from './interface';
+import { SpinnerProps } from '.';
 
 const load = keyframes`
   0% {
@@ -35,7 +35,7 @@ const round = keyframes`
   }
 `;
 
-export const StyledSpinner = styled.div<ISpinner>`
+export const StyledSpinner = styled.div<SpinnerProps>`
   color: ${({ theme }) => theme.colors.orange.main};
   font-size: ${({ size }) => `${size}px`};
   width: 1em;

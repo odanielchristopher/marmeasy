@@ -1,5 +1,12 @@
 import styled, { css } from 'styled-components';
-import { StyledButtonProps } from './interface';
+
+interface StyledButtonProps {
+  type: string
+  disabled?: boolean
+  isLoading?: boolean
+  danger?: boolean
+  onClick: () => void
+}
 
 export const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
