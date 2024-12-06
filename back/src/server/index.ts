@@ -14,9 +14,10 @@ app.use(express.json());
 
 app.post('/signUp', routeAdapter(makeSignUpController()));
 app.post('/signIn', routeAdapter(makeSignInController()));
+
 app.get('/editAccount',
   middlewareAdapter(makeAuthenticationMiddleware()),
-  routeAdapter(makeEditAccountController())
+  routeAdapter(makeEditAccountController()),
 );
 
 app.listen(3001, () => console.log('Server started at http://localhost:3001'));
