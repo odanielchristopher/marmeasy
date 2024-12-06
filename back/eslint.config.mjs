@@ -13,8 +13,7 @@ export default [
       'no-undef': 'error',
       'quotes': ['error', 'single'],
       'semi': ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
-      'no-console': 'warn'
+      'comma-dangle': ['error', 'never']
     }
   }
 ];

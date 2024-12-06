@@ -3,17 +3,20 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyles from '../../assets/styles/global';
 import defaultTheme from '../../assets/styles/themes/default';
 
-import AppRoutes from '../../routes';
-import { Container } from './styles';
+import { AuthProvider } from '@renderer/contexts/AuthContext';
+import Profile from '@renderer/views/pages/Profile';
+import AppRoutes from '../../Routes';
+import ToastContainer from '../Toast/ToastContainer';
 
 export default function App(): JSX.Element {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <GlobalStyles />
-      <Container>
-        <h1>Cabecalho</h1>
+    <AuthProvider>
+      <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles />
+        <ToastContainer />
+        <Profile />
         <AppRoutes />
-      </Container>
-    </ThemeProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
