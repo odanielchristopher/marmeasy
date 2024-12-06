@@ -9,7 +9,7 @@ export class EditAccountController implements IController{
         id: 123,
         email: 'teste@mail.com',
         password: 'sadwodnasd',
-      }
+      },
     };
   }
 }

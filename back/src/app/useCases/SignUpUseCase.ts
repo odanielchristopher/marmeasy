@@ -25,7 +25,7 @@ export class SignUpUseCase {
 
     await this.accountRepository.createAccount({
       email,
-      password: hashedPassword
+      password: hashedPassword,
     });
   }
 }

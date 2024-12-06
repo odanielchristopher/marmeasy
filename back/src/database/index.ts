@@ -5,7 +5,7 @@ const pool = new Pool({
   port: 5432,
   user: 'root',
   password: 'root',
-  database: 'marmeasy'
+  database: 'marmeasy',
 });
 
 // Conexão ao banco de dados
@@ -21,5 +21,5 @@ async function query<T>(queryText: string, values?: any[]): Promise<T[]> {
 
 // Exporta função de consulta
 export default {
-  query
+  query,
 };

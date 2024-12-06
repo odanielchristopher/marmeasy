@@ -1,6 +1,5 @@
-import db from '../../database';
+import { IAccount } from '../interfaces/IAccount';
 import { accounts } from '../mocks/accounts';
-
 
 export class AccountRepository {
   findAccountByEmail(email: string) {
@@ -10,10 +9,8 @@ export class AccountRepository {
     return account;
   }
 
-  createAccount({ email, password }){
+  createAccount({ email, password }: IAccount){
     accounts.push({ id: 'asdanwdasdawodnas-dkwadlisaudnwkd-jnalwidjasundkw', email, password });
     console.log({ email, password });
-
-    db.query('asd');
   }
 }

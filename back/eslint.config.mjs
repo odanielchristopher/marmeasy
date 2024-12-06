@@ -13,8 +13,8 @@ export default [
       'no-undef': 'error',
       'quotes': ['error', 'single'],
       'semi': ['error', 'always'],
-      'comma-dangle': ['error', 'never'],
-      '@typescript-eslint/no-explicit-any': 'off'
-    }
-  }
+      'comma-dangle': ['error', 'always-multiline'],
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
