@@ -1,11 +1,25 @@
 import { Pool } from 'pg';
 
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: 5432
+  host: 'localhost',
+  port: 5432,
+  user: 'root',
+  password: 'root',
+  database: 'marmeasy'
 });
 
-export { pool };
+// Conexão ao banco de dados
+pool.connect().catch((err) => {
+  console.error('Error connecting to the database:', err);
+  process.exit(1); // Encerra o processo em caso de erro
+});
+
+async function query<T>(queryText: string, values?: any[]): Promise<T[]> {
+  const { rows } = await pool.query(queryText, values);
+  return rows;
+}
+
+// Exporta função de consulta
+export default {
+  query
+};
