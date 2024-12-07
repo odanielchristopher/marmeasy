@@ -1,6 +1,6 @@
 import { IController, IRequest, IResponse } from '../interfaces/IController';
 
-export class EditAccountController implements IController{
+export class EditAccountController implements IController {
   async handle(request: IRequest): Promise<IResponse> {
     console.log({ request });
     return {
