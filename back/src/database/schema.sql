@@ -1,0 +1,9 @@
+CREATE DATABASE marmeasy;
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+CREATE TABLE IF NOT EXISTS accounts (
+  id UUID NOT NULL UNIQUE DEFAULT uuid_generate_v4(),
+  email VARCHAR NOT NULL UNIQUE,
+  password VARCHAR NOT NULL
+);

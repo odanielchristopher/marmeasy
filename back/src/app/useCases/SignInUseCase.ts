@@ -32,7 +32,7 @@ export class SignInUseCase {
 
     const accessToken = sign(
       { sub: account.id },
-      env.JWT_SECRET!,
+      env.JWT_SECRET,
     );
 
     return { accessToken };

@@ -12,10 +12,10 @@ const app = express();
 
 app.use(express.json());
 
-app.post('/signUp', routeAdapter(makeSignUpController()));
-app.post('/signIn', routeAdapter(makeSignInController()));
+app.post('/sign-up', routeAdapter(makeSignUpController()));
+app.post('/sign-in', routeAdapter(makeSignInController()));
 
-app.get('/editAccount',
+app.get('/user/edit/:accountId',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeEditAccountController()),
 );
