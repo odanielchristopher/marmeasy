@@ -1,11 +1,7 @@
-import { accounts } from '../mocks/accounts';
+import { accounts } from '../../shared/mocks/accounts';
+import { User } from './userEntity';
 
-interface IAccount {
-  email: string;
-  password: string;
-}
-
-export class AccountRepository {
+export class UsersRepository {
   findAccountByEmail(email: string) {
     const account = accounts.find((account) => (
       account.email === email
@@ -13,7 +9,7 @@ export class AccountRepository {
     return account;
   }
 
-  createAccount({ email, password }: IAccount) {
+  createUser({ email, password }: User) {
     accounts.push({ id: 'asdanwdasdawodnas-dkwadlisaudnwkd-jnalwidjasundkw', email, password });
     console.log({ email, password });
   }

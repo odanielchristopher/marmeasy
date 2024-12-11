@@ -1,20 +1,17 @@
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 
-import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
-import { IController, IRequest, IResponse } from '../interfaces/IController';
-import { SignUpUseCase } from '../useCases/SignUpUseCase';
+import { AccountAlreadyExists } from '../../../shared/errors/AccountAlreadyExists';
+import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 
-const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+import { userEntity } from '../userEntity';
+import { SignUpUseCase } from './SignUpUseCase';
 
 export class SignUpController implements IController {
   constructor(private readonly signUpUseCase: SignUpUseCase) {}
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { email, password } = schema.parse(body);
+      const { email, password } = userEntity.parse(body);
 
       await this.signUpUseCase.execute({ email, password });
 

@@ -1,9 +1,10 @@
 
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
-import { env } from '../config/env';
-import { InvalidCredentials } from '../errors/InvalidCredentials';
-import { AccountRepository } from '../Repositories/AccountRepository';
+
+import { env } from '../../../shared/config/env';
+import { InvalidCredentials } from '../../../shared/errors/InvalidCredentials';
+import { UsersRepository } from '../UsersRepository';
 
 interface IInput {
   email: string
@@ -15,10 +16,10 @@ interface IOutput {
 };
 
 export class SignInUseCase {
-  constructor(private readonly accountReposytory: AccountRepository) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute({ email, password }: IInput): Promise<IOutput> {
-    const account = await this.accountReposytory.findAccountByEmail(email);
+    const account = await this.usersRepository.findAccountByEmail(email);
 
     if (!account) {
       throw new InvalidCredentials();

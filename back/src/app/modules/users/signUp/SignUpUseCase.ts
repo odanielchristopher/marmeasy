@@ -1,7 +1,7 @@
 import { hash } from 'bcryptjs';
 
-import { AccountAlreadyExists } from '../errors/AccountAlreadyExists';
-import { AccountRepository } from '../Repositories/AccountRepository';
+import { AccountAlreadyExists } from '../../../shared/errors/AccountAlreadyExists';
+import { UsersRepository } from '../UsersRepository';
 
 interface IInput {
   email: string
@@ -12,10 +12,10 @@ type IOutput = void | Error;
 
 export class SignUpUseCase {
 
-  constructor(private readonly accountRepository: AccountRepository, private readonly salt: number) {}
+  constructor(private readonly usersRepository: UsersRepository, private readonly salt: number) {}
 
   async execute({ email, password }: IInput): Promise<IOutput> {
-    const accountAlreadyExists = await this.accountRepository.findAccountByEmail(email);
+    const accountAlreadyExists = await this.usersRepository.findAccountByEmail(email);
 
     if (accountAlreadyExists) {
       throw new AccountAlreadyExists();
@@ -23,7 +23,7 @@ export class SignUpUseCase {
 
     const hashedPassword = await hash(password, this.salt);
 
-    await this.accountRepository.createAccount({
+    await this.usersRepository.createUser({
       email,
       password: hashedPassword,
     });
