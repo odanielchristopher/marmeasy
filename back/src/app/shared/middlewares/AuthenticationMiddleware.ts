@@ -29,7 +29,7 @@ export class AuthenticationMiddleware implements IMiddleware {
 
       return {
         data: {
-          accountId: payload.sub,
+          userId: payload.sub,
         },
       };
     } catch {

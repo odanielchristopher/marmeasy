@@ -1,23 +1,28 @@
-import { ZodError } from 'zod';
+import { z, ZodError } from 'zod';
 
 import { AccountAlreadyExists } from '../../../shared/errors/AccountAlreadyExists';
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 
-import { userEntity } from '../userEntity';
 import { SignUpUseCase } from './SignUpUseCase';
+
+const schema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  password: z.string().min(6),
+});
 
 export class SignUpController implements IController {
   constructor(private readonly signUpUseCase: SignUpUseCase) {}
 
   async handle({ body }: IRequest): Promise<IResponse> {
     try {
-      const { email, password } = userEntity.parse(body);
+      const { name, email, password } = schema.parse(body);
 
-      await this.signUpUseCase.execute({ email, password });
+      const user = await this.signUpUseCase.execute({ name, email, password });
 
       return {
-        statusCode: 204,
-        body: null,
+        statusCode: 200,
+        body: user,
       };
     } catch (error) {
       if (error instanceof ZodError) {

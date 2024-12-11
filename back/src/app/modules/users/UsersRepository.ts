@@ -1,16 +1,24 @@
 import { accounts } from '../../shared/mocks/accounts';
-import { User } from './userEntity';
+import { IUser } from './userEntity';
 
 export class UsersRepository {
-  findAccountByEmail(email: string) {
+  findUserByEmail(email: string) {
     const account = accounts.find((account) => (
       account.email === email
     ));
     return account;
   }
 
-  createUser({ email, password }: User) {
-    accounts.push({ id: 'asdanwdasdawodnas-dkwadlisaudnwkd-jnalwidjasundkw', email, password });
-    console.log({ email, password });
+  findUserById(userId: string) {
+    const account = accounts.find((account) => (
+      account.id === userId
+    ));
+    return account;
+  }
+
+  createUser({email, name, password }: IUser): IUser {
+    const newUser = { id:'123456789', email, name, password };
+    accounts.push(newUser);
+    return newUser;
   }
 }

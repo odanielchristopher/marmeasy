@@ -3,7 +3,7 @@ import { SignInController } from '../../app/modules/users/signIn/SignInControlle
 import { makeSignInUseCase } from './makeSignInUseCase';
 
 export function makeSignInController() {
-  const signInController = makeSignInUseCase();
+  const signInUseCase = makeSignInUseCase();
 
-  return new SignInController(signInController);
+  return new SignInController(signInUseCase);
 }

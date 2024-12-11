@@ -19,7 +19,7 @@ export class SignInUseCase {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute({ email, password }: IInput): Promise<IOutput> {
-    const account = await this.usersRepository.findAccountByEmail(email);
+    const account = await this.usersRepository.findUserByEmail(email);
 
     if (!account) {
       throw new InvalidCredentials();
