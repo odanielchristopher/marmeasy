@@ -1,14 +1,10 @@
+import { ComponentProps } from 'react';
 import Spinner from '../Spinner';
 import { StyledButton } from './styles';
 
-interface ButtonProps {
-  type: string
-  disabled?: boolean
+interface ButtonProps extends ComponentProps<'button'> {
   isLoading?: boolean
-  children: JSX.Element | string
   danger?: boolean
-  isForm?: boolean
-  onClick?: () => void
 }
 
 export default function Button({

@@ -1,9 +1,7 @@
+import { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
-interface StyledButtonProps {
-  type: string
-  disabled?: boolean
-  isLoading?: boolean
+interface StyledButtonProps extends ComponentProps<'button'> {
   danger?: boolean
 }
 

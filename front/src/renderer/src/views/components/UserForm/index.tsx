@@ -1,51 +1,39 @@
 
 import Button from '../Button';
-import Input from '../Input';
+import { Input } from '../Input';
+
+import useUserFormController from './useUserForm';
+
 import { ButtonContainer, Form } from './styles';
-import useUserForm from './useUserForm';
 
 interface UserFormProps {
   buttonLabel: string
   onSubmit(user): void
 }
 
-export default function UserForm({ onSubmit, buttonLabel }: UserFormProps) {
+export default function UserForm({ buttonLabel }: UserFormProps) {
   const {
-    email,
-    password,
-    isSubmiting,
-    isFormValid,
-    getErrorMessageByFieldName,
-    handleEmailChange,
-    handlePasswordChange,
-    handleSubmit
-  } = useUserForm(onSubmit);
+    register,
+    handleSubmit,
+  } = useUserFormController();
 
   return (
     <Form onSubmit={handleSubmit} noValidate>
         <Input
           type="email"
-          name='email'
           placeholder="E-mail"
-          // value={email}
-          // onChange={handleEmailChange}
-          $error={getErrorMessageByFieldName('email')}
+          {...register('email')}
         />
 
         <Input
           type="password"
-          name='senha'
           placeholder="Senha"
-          // value={password}
-          // onChange={handlePasswordChange}
-          $error={getErrorMessageByFieldName('password')}
+          {...register('password')}
         />
 
       <ButtonContainer>
         <Button
           type="submit"
-          isLoading={isSubmiting}
-          disabled={!isFormValid}
         >
           {buttonLabel}
         </Button>
