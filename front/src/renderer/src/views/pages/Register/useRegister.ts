@@ -1,7 +1,7 @@
 
-import toast from '@renderer/utils/toast';
+import toast from '@renderer/app/utils/toast';
 
-import { useAuth } from '@renderer/hooks/useAuth';
+import { useAuth } from '@renderer/app/hooks/useAuth';
 import { authService } from '@renderer/services/authService';
 
 export default function useRegister() {

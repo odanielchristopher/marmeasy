@@ -1,27 +1,14 @@
-import Modal from '@renderer/components/Modal';
-import { profileEventManager } from '@renderer/utils/openProfileModal';
-import { useEffect, useState } from 'react';
+import Modal from '@renderer/views/components/Modal';
 
-export default function Profile() {
-  const [isOpen, setIsOpen] = useState(false);
+interface ProfileProps {
+  isOpen: boolean
+  onClose(): void
+}
 
-  useEffect(() => {
-    function openModal() {
-      setIsOpen(true);
-    }
-
-    profileEventManager.on('openprofilemodal', openModal);
-
-    return () => {
-      profileEventManager.on('openprofilemodal', openModal);
-    };
-  }, [isOpen]);
-
-
-
+export default function Profile({ isOpen, onClose }: ProfileProps) {
   return (
     <Modal visible={isOpen}>
-      <button onClick={() => setIsOpen(false)}>teste de modal</button>
+      <button onClick={onClose}>teste de modal</button>
     </Modal>
   );
 }

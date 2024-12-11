@@ -1,4 +1,4 @@
-import useAnimatedUnmount from '@renderer/hooks/useAnimatedUnmount';
+import useAnimatedUnmount from '@renderer/app/hooks/useAnimatedUnmount';
 import ReactPortal from '../ReactPortal';
 import { Container, Overlay } from './styles';
 

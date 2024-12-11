@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 
-import { toastEventManager } from '@renderer/utils/toast';
+import { toastEventManager } from '@renderer/app/utils/toast';
 import ToastMessage, { IMessage } from '../ToastMessage';
 
-import useAnimatedList from '@renderer/hooks/useAnimatedList';
+import useAnimatedList from '@renderer/app/hooks/useAnimatedList';
 import { Container } from './styles';
 
 export default function ToastContainer(): JSX.Element {

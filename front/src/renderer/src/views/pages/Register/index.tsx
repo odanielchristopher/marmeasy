@@ -1,6 +1,6 @@
 
-import UserForm from '@renderer/components/UserForm';
 import { Link } from 'react-router-dom';
+import UserForm from '../../components/UserForm';
 import { Container, Description, Title } from './styles';
 import useRegister from './useRegister';
 

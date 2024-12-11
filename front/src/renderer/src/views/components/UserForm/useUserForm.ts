@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import useErrors from '@renderer/hooks/useErrors';
-import isEmailValid from '@renderer/utils/isEmailValid';
+import useErrors from '@renderer/app/hooks/useErrors';
+import isEmailValid from '@renderer/app/utils/isEmailValid';
 
 export default function useUserForm(onSubmit) {
   const [email, setEmail] = useState('');

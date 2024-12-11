@@ -2,8 +2,8 @@
 import { Link } from 'react-router-dom';
 import useLogin from './useLogin';
 
-import UserForm from '@renderer/components/UserForm';
 
+import UserForm from '@renderer/views/components/UserForm';
 import { Container, Description, Title } from './styles';
 
 export default function Login(): JSX.Element {

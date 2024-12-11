@@ -1,5 +1,5 @@
-import { ToastType } from '@renderer/components/Toast/ToastMessage';
-import EventManager from '@renderer/lib/EventManager';
+import { ToastType } from '@renderer/views/components/Toast/ToastMessage';
+import EventManager from '../lib/EventManager';
 
 export const toastEventManager = new EventManager();
 

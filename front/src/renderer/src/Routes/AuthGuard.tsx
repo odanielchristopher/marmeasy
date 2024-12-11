@@ -1,4 +1,4 @@
-import { useAuth } from '@renderer/hooks/useAuth';
+import { useAuth } from '@renderer/app/hooks/useAuth';
 import { Navigate, Outlet } from 'react-router-dom';
 
 interface AuthGuardProps {

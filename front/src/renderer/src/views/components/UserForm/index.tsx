@@ -1,7 +1,6 @@
-import Button from '../Button';
-import FormGroup from '../FormGroup';
-import Input from '../Input';
 
+import Button from '../Button';
+import Input from '../Input';
 import { ButtonContainer, Form } from './styles';
 import useUserForm from './useUserForm';
 
@@ -24,25 +23,23 @@ export default function UserForm({ onSubmit, buttonLabel }: UserFormProps) {
 
   return (
     <Form onSubmit={handleSubmit} noValidate>
-      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
           type="email"
+          name='email'
           placeholder="E-mail"
-          value={email}
-          onChange={handleEmailChange}
+          // value={email}
+          // onChange={handleEmailChange}
           $error={getErrorMessageByFieldName('email')}
         />
-      </FormGroup>
 
-      <FormGroup error={getErrorMessageByFieldName('password')}>
         <Input
           type="password"
+          name='senha'
           placeholder="Senha"
-          value={password}
-          onChange={handlePasswordChange}
+          // value={password}
+          // onChange={handlePasswordChange}
           $error={getErrorMessageByFieldName('password')}
         />
-      </FormGroup>
 
       <ButtonContainer>
         <Button

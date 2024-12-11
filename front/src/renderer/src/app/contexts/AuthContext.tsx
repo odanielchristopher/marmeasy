@@ -1,4 +1,4 @@
-import { localStorageKeys } from '@renderer/config/localStorageKeys';
+import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import { createContext, useCallback, useState } from 'react';
 
 export interface AuthContextValue {

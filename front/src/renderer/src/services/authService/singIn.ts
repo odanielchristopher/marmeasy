@@ -1,5 +1,5 @@
-import users from '@renderer/mocks/users';
-import delay from '@renderer/utils/delay';
+import users from '@renderer/app/mocks/users';
+import delay from '@renderer/app/utils/delay';
 
 interface SingInParams {
   email: string
