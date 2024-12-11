@@ -1,6 +1,8 @@
 import { ComponentProps, forwardRef } from 'react';
-import { Container, StyledInput, StyledLabel } from './styles';
 
+import { CgCloseO } from 'react-icons/cg';
+
+import { Container, StyledInput, StyledLabel } from './styles';
 export interface InputProps extends ComponentProps<'input'> {
   name: string;
   $error?: string
@@ -22,8 +24,17 @@ export const Input = forwardRef< HTMLInputElement, InputProps>(
         {...props}
       />
 
-        <StyledLabel htmlFor={inputId} $error={$error}>{placeholder}</StyledLabel>
+      <StyledLabel htmlFor={inputId} $error={$error}>{placeholder}</StyledLabel>
+
+      { $error && (
+        <div className='error'>
+          <CgCloseO color='#F63131'/>
+          <span>{$error}</span>
+        </div>
+      ) }
       </Container>
     );
   },
 );
+
+Input.displayName = 'Input';

@@ -4,7 +4,7 @@ import { Input } from '../Input';
 
 import useUserFormController from './useUserForm';
 
-import { ButtonContainer, Form } from './styles';
+import { ButtonContainer } from './styles';
 
 interface UserFormProps {
   buttonLabel: string
@@ -14,20 +14,24 @@ interface UserFormProps {
 export default function UserForm({ buttonLabel }: UserFormProps) {
   const {
     register,
+    errors,
     handleSubmit,
   } = useUserFormController();
 
   return (
-    <Form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit}>
         <Input
           type="email"
           placeholder="E-mail"
+          $error={errors.email?.message}
           {...register('email')}
         />
+
 
         <Input
           type="password"
           placeholder="Senha"
+          $error={errors.password?.message}
           {...register('password')}
         />
 
@@ -39,6 +43,6 @@ export default function UserForm({ buttonLabel }: UserFormProps) {
         </Button>
       </ButtonContainer>
 
-    </Form>
+    </form>
   );
 }

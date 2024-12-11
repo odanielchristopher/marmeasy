@@ -11,6 +11,18 @@ export const Container = styled.div`
   & + & {
     margin-top: 1.2rem;
   }
+
+  .error {
+    align-items: center;
+    color: ${({ theme }) => theme.colors.red.dark};
+    display: flex;
+    gap: .6rem;
+    margin-top: .2rem;
+
+    span {
+      font-size: 1.2rem;
+    }
+  }
 `;
 
 export const StyledInput = styled.input<InputProps>`

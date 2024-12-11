@@ -29,5 +29,5 @@ import { signIn } from './singIn';
 
 export const authService = {
   signIn,
-  singUp
+  singUp,
 };

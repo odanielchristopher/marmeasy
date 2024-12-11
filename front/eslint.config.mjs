@@ -18,7 +18,6 @@ export default [
         '@typescript-eslint/ban-ts-comment': 'off',
         'comma-dangle': ['error', 'always-multiline'],
         'no-console': 'warn',
-        'react/display-name': 'off',
     },
 },
 ];
