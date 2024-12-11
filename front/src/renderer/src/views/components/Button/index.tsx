@@ -13,7 +13,7 @@ export default function Button({
   isLoading,
   children,
   danger,
-  onClick
+  onClick,
 }: ButtonProps) {
   return (
     <StyledButton

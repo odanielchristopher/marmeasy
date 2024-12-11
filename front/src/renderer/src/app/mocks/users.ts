@@ -1,6 +1,6 @@
 export default [
   {
     email: 'root@mail.com',
-    password: '123root'
-  }
+    password: '123root',
+  },
 ];

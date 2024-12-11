@@ -1,14 +1,19 @@
-
 import { Link } from 'react-router-dom';
-import UserForm from '../../components/UserForm';
-import { Container, Description, Title } from './styles';
-import useRegister from './useRegister';
 
+import Button from '@renderer/views/components/Button';
+import { Input } from '@renderer/views/components/Input';
+
+import useRegisterController from './useRegisterController';
+
+import { Container, Description, Title } from './styles';
 
 export default function Register(): JSX.Element {
-  const {
-    handleSubmit
-  } = useRegister();
+const {
+    errors,
+    isLoading,
+    register,
+    handleSubmit,
+  } = useRegisterController();
 
   return (
     <Container>
@@ -16,7 +21,32 @@ export default function Register(): JSX.Element {
 
       <Description>Digite um email e senha de sua preferência</Description>
 
-      <UserForm onSubmit={handleSubmit} buttonLabel='Registrar conta' />
+      <form onSubmit={handleSubmit}>
+        <Input
+          type="email"
+          placeholder="E-mail"
+          isLoading={isLoading}
+          $error={errors.email?.message}
+          {...register('email')}
+        />
+
+
+        <Input
+          type="password"
+          placeholder="Senha"
+          isLoading={isLoading}
+          $error={errors.password?.message}
+          {...register('password')}
+        />
+
+        <Button
+          type="submit"
+          isLoading={isLoading}
+        >
+          Registrar conta
+        </Button>
+
+    </form>
 
       <Link
         to='/login'

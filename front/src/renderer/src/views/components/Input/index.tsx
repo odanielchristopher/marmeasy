@@ -5,11 +5,12 @@ import { CgCloseO } from 'react-icons/cg';
 import { Container, StyledInput, StyledLabel } from './styles';
 export interface InputProps extends ComponentProps<'input'> {
   name: string;
+  isLoading?: boolean
   $error?: string
 }
 
 export const Input = forwardRef< HTMLInputElement, InputProps>(
-  ({ type, placeholder, name, id, $error,...props }, ref) => {
+  ({ type, placeholder, name, id, $error, isLoading ,...props }, ref) => {
     const inputId = id ?? name;
 
     return (
@@ -21,6 +22,7 @@ export const Input = forwardRef< HTMLInputElement, InputProps>(
         type={type}
         placeholder=" "
         $error={$error}
+        disabled={isLoading}
         {...props}
       />
 

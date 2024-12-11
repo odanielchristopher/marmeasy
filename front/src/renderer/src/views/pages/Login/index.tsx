@@ -1,15 +1,19 @@
 
 import { Link } from 'react-router-dom';
-import useLogin from './useLogin';
 
+import useLoginController from './useLoginController';
 
-import UserForm from '@renderer/views/components/UserForm';
+import Button from '@renderer/views/components/Button';
+import { Input } from '@renderer/views/components/Input';
 import { Container, Description, Title } from './styles';
 
 export default function Login(): JSX.Element {
   const {
-    handleSubmit
-  } = useLogin();
+    errors,
+    isLoading,
+    register,
+    handleSubmit,
+  } = useLoginController();
 
   return (
     <Container>
@@ -17,7 +21,32 @@ export default function Login(): JSX.Element {
 
       <Description>Entre com seu e-mail e senha</Description>
 
-      <UserForm onSubmit={handleSubmit} buttonLabel='Entrar' />
+      <form onSubmit={handleSubmit}>
+        <Input
+          type="email"
+          placeholder="E-mail"
+          isLoading={isLoading}
+          $error={errors.email?.message}
+          {...register('email')}
+        />
+
+
+        <Input
+          type="password"
+          placeholder="Senha"
+          isLoading={isLoading}
+          $error={errors.password?.message}
+          {...register('password')}
+        />
+
+        <Button
+          type="submit"
+          isLoading={isLoading}
+        >
+          Entrar
+        </Button>
+
+    </form>
 
       <Link
         to='/register'

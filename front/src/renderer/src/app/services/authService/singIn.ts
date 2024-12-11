@@ -1,22 +1,19 @@
-import users from '@renderer/app/mocks/users';
 import delay from '@renderer/app/utils/delay';
+import { httpClient } from '../utils/httpClient';
 
 interface SingInParams {
   email: string
   password: string
 }
 
-export async function signIn({ email, password }: SingInParams) {
+interface SignUpResponse {
+  accessToken: string;
+}
+
+export async function signIn(params: SingInParams) {
   await delay(2000);
-  // const { data } = await httpClient.post<{ accessToken: string }>('/auth/signin', {email, password});
 
-  const userExists = users.find((userObj) => (
-    userObj.email === email && userObj.password === password
-  ));
+  const { data } = await httpClient.post<SignUpResponse>('/user/sign-in', params);
 
-  if (!userExists) {
-    throw new Error();
-  }
-
-  return true;
+  return data;
 }

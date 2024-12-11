@@ -1,3 +1,3 @@
 export const localStorageKeys = {
-  ACCESS_TOKEN: 'accessToken'
+  ACCESS_TOKEN: 'accessToken',
 };

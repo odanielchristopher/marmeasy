@@ -5,26 +5,26 @@ export default {
   colors: {
     black: {
       light: '#333333',
-      main: '#222222'
+      main: '#222222',
     },
     gray: {
       lighter: '#E4E4E7',
       light: '#666666',
-      main: '#808080'
+      main: '#808080',
     },
     green: {
-      main: '#089F67'
+      main: '#089F67',
     },
     orange: {
       lighter: '#E6B04E',
       light: '#DE8E28',
       main: '#DF6F28',
-      dark: '#BA6129'
+      dark: '#BA6129',
     },
     red: {
       light: '#F97171',
       main: '#D73035',
-      dark: '#F63131'
-    }
-  }
+      dark: '#F63131',
+    },
+  },
 };

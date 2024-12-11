@@ -43,7 +43,7 @@ export const StyledInput = styled.input<InputProps>`
   }
 
   &[disabled] {
-    background-color: ${({ theme }) => theme.colors.gray.lighter};
+    background-color: #f2f2f2;
     border-color: ${({ theme }) => theme.colors.gray.lighter};
   }
 

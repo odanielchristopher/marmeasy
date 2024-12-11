@@ -18,6 +18,11 @@ export const Container = styled.div`
       color: blue;
     }
   }
+
+  button {
+    margin-top: 2.0rem;
+    width: 100%;
+  }
 `;
 
 export const Title = styled.h1`

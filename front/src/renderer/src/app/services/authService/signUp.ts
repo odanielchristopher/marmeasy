@@ -1,13 +1,19 @@
-import users from '@renderer/app/mocks/users';
 import delay from '@renderer/app/utils/delay';
+import { httpClient } from '../utils/httpClient';
 
-interface SingUpParams {
+export interface SingUpParams {
   email: string
   password: string
 }
 
-export async function singUp({ email, password }: SingUpParams) {
+interface SignUpResponse {
+  accessToken: string;
+}
+
+export async function singUp(params: SingUpParams) {
   await delay(2000);
 
-  users.push({ email, password });
+  const { data } = await httpClient.post<SignUpResponse>('/user/sign-up', params);
+
+  return data;
 }
