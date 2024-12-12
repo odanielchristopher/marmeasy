@@ -10,14 +10,14 @@ export default function ToastContainer(): JSX.Element {
   const {
     setItems: setMessages,
     renderList,
-    handleRemoveItem
+    handleRemoveItem,
   } = useAnimatedList<IMessage>();
 
   useEffect(() => {
     function handleAddToast({ type, text, duration }) {
       setMessages((prevState) => [
         ...prevState,
-        {id: Math.random(), type, text, duration}
+        {id: Math.random(), type, text, duration},
       ]);
     }
 

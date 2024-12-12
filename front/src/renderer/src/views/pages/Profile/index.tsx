@@ -7,7 +7,7 @@ interface ProfileProps {
 
 export default function Profile({ isOpen, onClose }: ProfileProps) {
   return (
-    <Modal visible={isOpen}>
+    <Modal open={isOpen} onClose={onClose}>
       <button onClick={onClose}>teste de modal</button>
     </Modal>
   );

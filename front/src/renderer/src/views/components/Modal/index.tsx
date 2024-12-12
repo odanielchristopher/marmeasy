@@ -1,26 +1,23 @@
-import useAnimatedUnmount from '@renderer/app/hooks/useAnimatedUnmount';
-import ReactPortal from '../ReactPortal';
-import { Container, Overlay } from './styles';
+import * as Dialog from '@radix-ui/react-dialog';
 
+
+import { StyledRdxDialogContent, StyledRdxDialogOverlay } from './styles';
 interface ModalProps {
-  visible: boolean
-  children: JSX.Element
+  open: boolean;
+  children: React.ReactNode;
+  onClose?(): void;
 }
 
-export default function Modal({visible, children}: ModalProps) {
-  const { shouldRender, animatedElementRef} = useAnimatedUnmount(visible);
-
-  if (!shouldRender) {
-    return null;
-  }
-
+export default function Modal({ open, children, onClose }: ModalProps) {
   return (
-    <ReactPortal containerId="modal">
-      <Overlay $isLeaving={!visible} ref={animatedElementRef}>
-        <Container $isLeaving={!visible}>
-          {children}
-        </Container>
-      </Overlay>
-    </ReactPortal>
+    <Dialog.Root open={open} onOpenChange={onClose}>
+		<Dialog.Portal>
+			<StyledRdxDialogOverlay/>
+			<StyledRdxDialogContent aria-describedby=''>
+        <Dialog.Title about='Modal'/>
+				{children}
+			</StyledRdxDialogContent>
+		</Dialog.Portal>
+	</Dialog.Root>
   );
 }

@@ -28,7 +28,7 @@ export const Container = styled.div`
 export const StyledInput = styled.input<InputProps>`
   appearance: none;
   background: #FFF;
-  border: .2rem solid ${({ theme }) => theme.colors.gray.lighter};
+  border: .1rem solid ${({ theme }) => theme.colors.gray.lighter};
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0rem .4rem 1.0rem 0rem #0000000A;
   font-size: 1.4rem;
@@ -44,7 +44,7 @@ export const StyledInput = styled.input<InputProps>`
 
   &[disabled] {
     background-color: #f2f2f2;
-    border-color: ${({ theme }) => theme.colors.gray.lighter};
+    border-color: transparent;
   }
 
   &:not(:placeholder-shown) {

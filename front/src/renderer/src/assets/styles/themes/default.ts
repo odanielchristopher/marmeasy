@@ -8,7 +8,7 @@ export default {
       main: '#222222',
     },
     gray: {
-      lighter: '#E4E4E7',
+      lighter: '#CCCCCC',
       light: '#666666',
       main: '#808080',
     },

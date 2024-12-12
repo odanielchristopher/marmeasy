@@ -1,48 +1,28 @@
-import styled, { css, keyframes } from 'styled-components';
+import * as Dialog from '@radix-ui/react-dialog';
+import styled, { keyframes } from 'styled-components';
 
-interface IIsLeaving {
-  $isLeaving: boolean
-}
-
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
+const overlayShow = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 `;
 
-const fadeOut = keyframes`
-  from { opacity: 1; }
-  to { opacity: 0; }
+const contentShow = keyframes`
+	from {
+		opacity: 0;
+		transform: translate(-50%, -48%) scale(0.96);
+	}
+	to {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
 `;
 
-const scaleIn = keyframes`
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-`;
-
-const scaleOut = keyframes`
-  from { transform: scale(1); }
-  to { transform: scale(0); }
-`;
-
-export const Overlay = styled.div<IIsLeaving>`
-  align-items: center;
-  animation: ${fadeIn} 0.3s forwards;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(.4rem);
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  z-index: 2;
-
-  ${({ $isLeaving }) => $isLeaving && css`animation: ${fadeOut} 0.2s forwards;`}
-`;
-
-export const Container = styled.div<IIsLeaving>`
-  animation: ${scaleIn} 0.3s;
+export const StyledRdxDialogContent = styled(Dialog.Content)`
+  animation: ${contentShow} 0.3s forwards;
   background: #FFF;
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0rem .4rem 0rem rgba(0, 0, 0, 0.04);
@@ -50,5 +30,26 @@ export const Container = styled.div<IIsLeaving>`
   width: 100%;
   max-width: 45.0rem;
 
-  ${({ $isLeaving }) => $isLeaving && css`animation: ${scaleOut} 0.2s forwards;`}
+  position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  z-index: 50;
+  outline: none;
+`;
+
+export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`
+  animation: ${overlayShow} 0.3s forwards;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(.25rem);
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
 `;
