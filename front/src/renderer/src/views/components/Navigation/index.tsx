@@ -18,7 +18,7 @@ export default function Navigation({ onClickProfile }: NavigationProps) {
     handleClientsLink,
     handleLogOutLink,
     handleMenuLink,
-    handleProfileLink
+    handleProfileLink,
   } = useNavigation(onClickProfile);
 
   return (

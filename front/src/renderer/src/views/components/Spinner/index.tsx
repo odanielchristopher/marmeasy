@@ -1,10 +1,11 @@
 import { StyledSpinner } from './styles';
 
 export interface SpinnerProps {
-  size: number
+  size: number;
+  color?: string;
 }
 
 
-export default function Spinner({ size }: SpinnerProps): JSX.Element {
-  return <StyledSpinner size={size} />;
+export default function Spinner({ size, color }: SpinnerProps): JSX.Element {
+  return <StyledSpinner size={size} color={color}/>;
 }

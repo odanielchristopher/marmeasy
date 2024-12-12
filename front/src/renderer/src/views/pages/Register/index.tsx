@@ -23,6 +23,14 @@ const {
 
       <form onSubmit={handleSubmit}>
         <Input
+          type="text"
+          placeholder="Nome"
+          isLoading={isLoading}
+          $error={errors.name?.message}
+          {...register('name')}
+        />
+
+        <Input
           type="email"
           placeholder="E-mail"
           isLoading={isLoading}

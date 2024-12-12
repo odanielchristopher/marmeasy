@@ -8,18 +8,25 @@ import ToastContainer from './views/components/Toast/ToastContainer';
 import GlobalStyles from './assets/styles/global';
 import defaultTheme from './assets/styles/themes/default';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App(): JSX.Element {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider theme={defaultTheme}>
-          <GlobalStyles />
+      <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles />
+        <AuthProvider>
           <ToastContainer />
           <AppRoutes />
-        </ThemeProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { Container } from './styles';
 
 export default function NavLayout() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   function handleToogleProfileModal() {
     setIsOpen((prevState) => !prevState);

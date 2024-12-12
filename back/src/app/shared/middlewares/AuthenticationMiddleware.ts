@@ -4,17 +4,17 @@ import { IData, IMiddleware, IRequest, IResponse } from '../interfaces/IMiddlewa
 
 export class AuthenticationMiddleware implements IMiddleware {
   async handle({ headers }: IRequest): Promise<IResponse | IData> {
-    const { authorization } = headers;
+    const { authorization: Authorization } = headers;
 
-    if (!authorization) {
+    if (!Authorization) {
       return {
         statusCode: 401,
-        body: null,
+        body: { message: 'Token de acesso não enviado.' },
       };
     }
 
     try {
-      const [ type, token ] = authorization.split(' ');
+      const [ type, token ] = Authorization.split(' ');
 
       if (type !== 'Bearer') {
         throw new Error();
@@ -25,8 +25,6 @@ export class AuthenticationMiddleware implements IMiddleware {
         env.JWT_SECRET,
       );
 
-      console.log(payload);
-
       return {
         data: {
           userId: payload.sub,
@@ -35,7 +33,7 @@ export class AuthenticationMiddleware implements IMiddleware {
     } catch {
       return {
         statusCode: 401,
-        body: null,
+        body: { message: 'Usuário não autorizado.' },
       };
     }
 

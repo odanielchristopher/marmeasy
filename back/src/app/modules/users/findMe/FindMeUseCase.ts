@@ -1,7 +1,6 @@
 
 
 import { UserNotFound } from '../../../shared/errors/UserNotFound';
-import { IUser } from '../userEntity';
 import { UsersRepository } from '../UsersRepository';
 
 
@@ -9,11 +8,16 @@ interface IInput {
   userId: string
 };
 
+interface IOutput {
+  name: string;
+  email: string;
+}
+
 
 export class FindMeUseCase {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  async execute({ userId }: IInput): Promise<IUser> {
+  async execute({ userId }: IInput): Promise<IOutput> {
 
     const user = await this.usersRepository.findUserById(userId);
 
@@ -21,6 +25,8 @@ export class FindMeUseCase {
       throw new UserNotFound();
     }
 
-    return { ...user, name: 'daniel' };
+    const { email, name } = user;
+
+    return { name, email };
   }
 }

@@ -1,4 +1,4 @@
-import { FindMeController } from '../../app/modules/users/findMeByToken/FindMeController';
+import { FindMeController } from '../../app/modules/users/findMe/FindMeController';
 import { makeFindMeUseCase } from './makeFindMeUseCase';
 
 export function makeFindMeController() {

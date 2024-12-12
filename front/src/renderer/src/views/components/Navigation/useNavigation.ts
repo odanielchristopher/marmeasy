@@ -27,6 +27,6 @@ export default function useNavigation(onClickProfile) {
     handleLogOutLink,
     handleClientsLink,
     handleProfileLink,
-    handleMenuLink
+    handleMenuLink,
   };
 }

@@ -1,4 +1,4 @@
-import { FindMeUseCase } from '../../app/modules/users/findMeByToken/FindMeUseCase';
+import { FindMeUseCase } from '../../app/modules/users/findMe/FindMeUseCase';
 import { UsersRepository } from '../../app/modules/users/UsersRepository';
 
 export function makeFindMeUseCase() {

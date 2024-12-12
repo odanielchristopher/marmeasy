@@ -1,4 +1,3 @@
-import delay from '@renderer/app/utils/delay';
 import { httpClient } from '../utils/httpClient';
 
 export interface SingUpParams {
@@ -11,9 +10,7 @@ interface SignUpResponse {
 }
 
 export async function singUp(params: SingUpParams) {
-  await delay(2000);
-
-  const { data } = await httpClient.post<SignUpResponse>('/user/sign-up', params);
+  const { data } = await httpClient.post<SignUpResponse>('/users/sign-up', params);
 
   return data;
 }
