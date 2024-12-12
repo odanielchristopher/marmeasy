@@ -1,9 +1,11 @@
 import { useAuth } from '@renderer/app/hooks/useAuth';
+import { useOpenModal } from '@renderer/app/hooks/useOpeModal';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function useNavigation(onClickProfile) {
+export default function useNavigation() {
   const { signout } = useAuth();
+  const { handleIsProfileModalOpen } = useOpenModal();
 
   const navigateTo = useNavigate();
 
@@ -16,7 +18,7 @@ export default function useNavigation(onClickProfile) {
   }
 
   function handleProfileLink() {
-    onClickProfile();
+    handleIsProfileModalOpen();
   }
 
   function handleLogOutLink() {
