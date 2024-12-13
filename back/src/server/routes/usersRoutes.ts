@@ -4,6 +4,7 @@ import { makeSignInController } from '../../factories/signIn/makeSignInControlle
 import { makeSignUpController } from '../../factories/signUp/makeSignUpController';
 
 import { makeAuthenticationMiddleware } from '../../factories/authentication/makeAuthenticationMiddleware';
+import { makeEditUserController } from '../../factories/editUser/makeEditUserController';
 import { makeFindMeController } from '../../factories/findMe/makeFindMeController';
 import { middlewareAdapter } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapter';
@@ -15,4 +16,8 @@ usersRoutes.post('/users/sign-in', routeAdapter(makeSignInController()));
 usersRoutes.get('/users/find-me',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeFindMeController()),
+);
+usersRoutes.put('/users/edit',
+  middlewareAdapter(makeAuthenticationMiddleware()),
+  routeAdapter(makeEditUserController()),
 );
