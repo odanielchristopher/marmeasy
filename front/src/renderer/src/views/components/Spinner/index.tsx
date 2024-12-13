@@ -7,5 +7,5 @@ export interface SpinnerProps {
 
 
 export default function Spinner({ size, color }: SpinnerProps): JSX.Element {
-  return <StyledSpinner size={size} color={color}/>;
+  return <StyledSpinner size={size} color={color} />;
 }

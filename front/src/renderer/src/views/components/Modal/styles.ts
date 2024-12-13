@@ -53,3 +53,28 @@ export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`
   justify-content: center;
   z-index: 20;
 `;
+
+export const Header = styled.header`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Title = styled.h1`
+  font-size: 2.0rem;
+  font-style: normal;
+  font-weight: 600;
+`;

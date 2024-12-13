@@ -24,7 +24,12 @@ export const StyledButton = styled.button<StyledButtonProps>`
     background: ${({ theme }) => theme.colors.orange.light};
   }
 
+  &:focus {
+    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+  }
+
   &:active {
+    outline: none;
     background: ${({ theme }) => theme.colors.orange.dark};
   }
 

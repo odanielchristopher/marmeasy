@@ -3,6 +3,7 @@ import { httpClient } from '../utils/httpClient';
 interface FindMeResponse {
   name: string;
   email: string;
+  password: string;
 }
 
 

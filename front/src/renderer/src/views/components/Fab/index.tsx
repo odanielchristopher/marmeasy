@@ -2,8 +2,8 @@ import { LuPlus } from 'react-icons/lu';
 
 import { DropdownMenu } from '../DropdownMenu';
 
-import { ClientIcon } from '@renderer/views/components/Icons/ClientIcon';
-import { EnterpriseIcon } from '../Icons/EnterpriseIcon';
+import { ClientIcon } from '@renderer/views/Icons/ClientIcon';
+import { EnterpriseIcon } from '@renderer/views/Icons/EnterpriseIcon';
 import { Container, StyledButton, StyledItem } from './styles';
 
 export default function Fab() {

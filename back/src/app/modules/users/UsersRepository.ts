@@ -17,7 +17,7 @@ export class UsersRepository {
   }
 
   createUser({email, name, password }: IUser): IUser {
-    const newUser = { id:'123456789', email, name, password };
+    const newUser = { id: Math.random().toString() , email, name, password };
     accounts.push(newUser);
     return newUser;
   }

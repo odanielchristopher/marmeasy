@@ -1,34 +1,48 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useModal } from '@renderer/app/hooks/useModal';
 import { authService } from '@renderer/app/services/authService';
 import { SingUpParams } from '@renderer/app/services/authService/signUp';
+import { usersService } from '@renderer/app/services/usersService';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
   email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
-  password: z
+  currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
+  newPassword: z
     .string()
-    .min(1, 'Senha é obrigatória.')
-    .min(6, 'Senha deve conter pelo menos 6 dígitos.'),
+    .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
+    .max(32, 'A nova senha não pode exceder 32 caracteres.'),
+  confirmPassword: z.string(),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: 'As senhas não coincidem.',
+  path: ['confirmPassword'],
 });
 
 type FormData = z.infer<typeof schema>
 
-export default function useRegisterController() {
-  const navigateTo = useNavigate();
+export default function useProfileController() {
+  const { isProfileModalOpen, handleIsProfileModalOpen } = useModal();
 
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+  });
+
+  const { data, isSuccess }= useQuery({
+    queryKey: ['users', 'find-me'],
+    queryFn: () => usersService.findMe(),
+    staleTime: Infinity,
+    enabled: isProfileModalOpen,
   });
 
   const { mutateAsync, isLoading } = useMutation({
@@ -40,14 +54,19 @@ export default function useRegisterController() {
     },
   });
 
+  useEffect(() => {
+    if (isProfileModalOpen && isSuccess) {
+      reset(data);
+    }
+  }, [data, isProfileModalOpen]);
+
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      await mutateAsync({ email: data.email, password: data.newPassword });
       toast({
         type: 'success',
         text: 'Conta criada com sucesso.',
       });
-      navigateTo('/login');
     } catch {
       toast({
         type: 'danger',
@@ -59,7 +78,9 @@ export default function useRegisterController() {
   return {
     errors,
     isLoading,
+    isProfileModalOpen,
     register,
     handleSubmit,
+    handleIsProfileModalOpen,
   };
 }

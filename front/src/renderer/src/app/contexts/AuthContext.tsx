@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (isSuccess) {
       toast({
-        type: 'sucess',
+        type: 'success',
         text: 'Usuário autenticado.',
       });
     }
