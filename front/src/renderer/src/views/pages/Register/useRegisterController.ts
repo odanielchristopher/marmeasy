@@ -35,9 +35,6 @@ export default function useRegisterController() {
     mutationFn: async (data: SingUpParams) => {
       return authService.singUp(data);
     },
-    onSuccess: () => {
-
-    },
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {

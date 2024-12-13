@@ -4,14 +4,17 @@ import Modal from '@renderer/views/components/Modal';
 
 import useProfileController from './useProfileController';
 
-import { Container } from './styles';
+import { Transition } from '@headlessui/react';
+import { Container, Form, InfoContainer, NewPasswordButton, NewPasswordContainer } from './styles';
 
 export default function Profile() {
   const {
     errors,
     isLoading,
     isProfileModalOpen,
+    wantChangePassword,
     handleIsProfileModalOpen,
+    handleWannaChangePassword,
     handleSubmit,
     register,
   } = useProfileController();
@@ -24,7 +27,7 @@ export default function Profile() {
           Edite aqui as suas informações.
         </p>
 
-        <form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <Input
             type="text"
             placeholder="Nome"
@@ -41,34 +44,42 @@ export default function Profile() {
             {...register('email')}
           />
 
+          <Transition show={wantChangePassword} unmount={wantChangePassword}>
+            <NewPasswordContainer >
+              <Input
+                type="password"
+                placeholder="Nova senha"
+                isLoading={isLoading}
+                $error={errors.newPassword?.message}
+                {...register('newPassword')}
+              />
+
+              <Input
+                type="password"
+                placeholder="Confirmar nova senha"
+                isLoading={isLoading}
+                $error={errors.confirmPassword?.message}
+                {...register('confirmPassword')}
+              />
+            </NewPasswordContainer>
+          </Transition>
+
+          <InfoContainer>
+            <span>Digite sua senha.</span>
+            <NewPasswordButton type='button' onClick={handleWannaChangePassword} >Alterar senha? <b>Aqui.</b></NewPasswordButton>
+          </InfoContainer>
           <Input
             type="password"
-            placeholder="Senha atual"
+            placeholder="Senha"
             isLoading={isLoading}
             $error={errors.currentPassword?.message}
             {...register('currentPassword')}
           />
 
-          <Input
-            type="password"
-            placeholder="Nova senha"
-            isLoading={isLoading}
-            $error={errors.newPassword?.message}
-            {...register('newPassword')}
-          />
-
-          <Input
-            type="password"
-            placeholder="Confirmar nova senha"
-            isLoading={isLoading}
-            $error={errors.confirmPassword?.message}
-            {...register('confirmPassword')}
-          />
-
           <Button type="submit" isLoading={isLoading}>
             Salvar alterações
           </Button>
-        </form>
+        </Form>
       </Container>
     </Modal>
   );

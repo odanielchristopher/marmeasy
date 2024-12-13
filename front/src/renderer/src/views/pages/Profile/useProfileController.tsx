@@ -6,7 +6,7 @@ import { SingUpParams } from '@renderer/app/services/authService/signUp';
 import { usersService } from '@renderer/app/services/usersService';
 import toast from '@renderer/app/utils/toast';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -17,17 +17,24 @@ const schema = z.object({
   newPassword: z
     .string()
     .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
-    .max(32, 'A nova senha não pode exceder 32 caracteres.'),
+    .or(z.optional(z.string())),
   confirmPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmPassword, {
+}).refine((data) => {
+  // Valida somente se "newPassword" estiver preenchida
+  if (data.newPassword && data.newPassword.length > 0) {
+    return data.newPassword === data.confirmPassword;
+  }
+  return true; // Validação passa se "newPassword" estiver vazia ou ausente
+}, {
   message: 'As senhas não coincidem.',
-  path: ['confirmPassword'],
+  path: ['confirmPassword'], // Indica onde o erro ocorre
 });
 
 type FormData = z.infer<typeof schema>
 
 export default function useProfileController() {
   const { isProfileModalOpen, handleIsProfileModalOpen } = useModal();
+  const [ wantChangePassword,  setWantChangePassword] = useState(false);
 
   const {
     register,
@@ -49,9 +56,6 @@ export default function useProfileController() {
     mutationFn: async (data: SingUpParams) => {
       return authService.singUp(data);
     },
-    onSuccess: () => {
-
-    },
   });
 
   useEffect(() => {
@@ -60,9 +64,14 @@ export default function useProfileController() {
     }
   }, [data, isProfileModalOpen]);
 
+  function handleWannaChangePassword() {
+    setWantChangePassword((prevState) => !prevState);
+  }
+
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync({ email: data.email, password: data.newPassword });
+      setWantChangePassword(false);
+      await mutateAsync({ email: data.email, password: data.currentPassword });
       toast({
         type: 'success',
         text: 'Conta criada com sucesso.',
@@ -79,8 +88,10 @@ export default function useProfileController() {
     errors,
     isLoading,
     isProfileModalOpen,
+    wantChangePassword,
     register,
     handleSubmit,
     handleIsProfileModalOpen,
+    handleWannaChangePassword,
   };
 }

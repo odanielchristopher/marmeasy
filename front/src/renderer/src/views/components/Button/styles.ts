@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
-interface StyledButtonProps extends ComponentProps<'button'> {
+export interface StyledButtonProps extends ComponentProps<'button'> {
   danger?: boolean
 }
 
