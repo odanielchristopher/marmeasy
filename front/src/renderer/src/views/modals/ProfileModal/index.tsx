@@ -7,20 +7,23 @@ import useProfileModal from './useProfileModal';
 import { Transition } from '@headlessui/react';
 import { Container, Form, InfoContainer, NewPasswordButton, NewPasswordContainer } from './styles';
 
-export default function Profile() {
+interface ProfileModalProps {
+  open: boolean;
+  onClose(): void;
+}
+
+export default function Profile({ open, onClose }: ProfileModalProps) {
   const {
     errors,
     isLoading,
-    isProfileModalOpen,
     wantChangePassword,
-    handleIsProfileModalOpen,
     handleWannaChangePassword,
     handleSubmit,
     register,
-  } = useProfileModal();
+  } = useProfileModal(open);
 
   return (
-    <Modal open={isProfileModalOpen} onClose={handleIsProfileModalOpen} title="Dados do usuário">
+    <Modal open={open} onClose={onClose} title="Dados do usuário">
       <Container >
 
         <p>

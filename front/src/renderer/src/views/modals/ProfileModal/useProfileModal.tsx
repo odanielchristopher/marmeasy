@@ -1,6 +1,5 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useModal } from '@renderer/app/hooks/useModal';
 import { authService } from '@renderer/app/services/authService';
 import { SingUpParams } from '@renderer/app/services/authService/signUp';
 import { usersService } from '@renderer/app/services/usersService';
@@ -32,8 +31,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function useProfileController() {
-  const { isProfileModalOpen, handleIsProfileModalOpen } = useModal();
+export default function useProfileController(open) {
   const [ wantChangePassword,  setWantChangePassword] = useState(false);
 
   const {
@@ -49,7 +47,7 @@ export default function useProfileController() {
     queryKey: ['users', 'find-me'],
     queryFn: () => usersService.findMe(),
     staleTime: Infinity,
-    enabled: isProfileModalOpen,
+    enabled: open,
   });
 
   const { mutateAsync, isLoading } = useMutation({
@@ -59,10 +57,10 @@ export default function useProfileController() {
   });
 
   useEffect(() => {
-    if (isProfileModalOpen && isSuccess) {
+    if (open && isSuccess) {
       reset(data);
     }
-  }, [data, isProfileModalOpen]);
+  }, [data, open]);
 
   function handleWannaChangePassword() {
     setWantChangePassword((prevState) => !prevState);
@@ -87,11 +85,9 @@ export default function useProfileController() {
   return {
     errors,
     isLoading,
-    isProfileModalOpen,
     wantChangePassword,
     register,
     handleSubmit,
-    handleIsProfileModalOpen,
     handleWannaChangePassword,
   };
 }
