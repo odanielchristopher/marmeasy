@@ -1,15 +1,16 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
 import { CloseIcon } from '@renderer/assets/Icons/CloseIcon';
-import { CloseButton, Header, StyledRdxDialogContent, StyledRdxDialogOverlay, Title } from './styles';
+import { ActionContainer, CloseButton, Header, StyledRdxDialogContent, StyledRdxDialogOverlay, Title } from './styles';
 interface ModalProps {
   open: boolean;
   children: React.ReactNode;
   onClose(): void;
   title: string;
+  action?: React.ReactNode;
 }
 
-export default function Modal({ title, open, children, onClose }: ModalProps) {
+export default function Modal({ title, action, open, children, onClose }: ModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
 		<Dialog.Portal>
@@ -17,10 +18,15 @@ export default function Modal({ title, open, children, onClose }: ModalProps) {
 			<StyledRdxDialogContent aria-describedby=''>
         <Dialog.Title about={title}>
           <Header>
-            <Title>{title}</Title>
             <CloseButton onClick={onClose}>
               <CloseIcon />
             </CloseButton>
+
+            <Title>{title}</Title>
+
+            <ActionContainer>
+              {action}
+            </ActionContainer>
           </Header>
         </Dialog.Title>
 				{children}

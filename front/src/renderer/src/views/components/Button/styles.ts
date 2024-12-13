@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
 export interface StyledButtonProps extends ComponentProps<'button'> {
-  danger?: boolean
+  $danger?: boolean
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -38,7 +38,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
     cursor: default !important;
   }
 
-  ${({ theme, danger }) => danger && css`
+  ${({ theme, $danger }) => $danger && css`
     background: ${theme.colors.red.main};
 
     &:hover {

@@ -59,6 +59,7 @@ export const Header = styled.header`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 3.2rem;
 `;
 
 export const CloseButton = styled.button`
@@ -74,7 +75,12 @@ export const CloseButton = styled.button`
 `;
 
 export const Title = styled.h1`
-  font-size: 2.0rem;
+  font-size: 1.8rem;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
+`;
+
+export const ActionContainer = styled.div`
+  width: 4.8rem;
+  height: 4.8rem;
 `;
