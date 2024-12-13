@@ -2,7 +2,7 @@ import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 
-import useProfileController from './useProfileController';
+import useProfileModal from './useProfileModal';
 
 import { Transition } from '@headlessui/react';
 import { Container, Form, InfoContainer, NewPasswordButton, NewPasswordContainer } from './styles';
@@ -17,7 +17,7 @@ export default function Profile() {
     handleWannaChangePassword,
     handleSubmit,
     register,
-  } = useProfileController();
+  } = useProfileModal();
 
   return (
     <Modal open={isProfileModalOpen} onClose={handleIsProfileModalOpen} title="Dados do usuário">

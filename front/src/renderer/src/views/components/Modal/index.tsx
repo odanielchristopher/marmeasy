@@ -1,7 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
-
-import { CloseIcon } from '@renderer/views/Icons/CloseIcon';
+import { CloseIcon } from '@renderer/assets/Icons/CloseIcon';
 import { CloseButton, Header, StyledRdxDialogContent, StyledRdxDialogOverlay, Title } from './styles';
 interface ModalProps {
   open: boolean;
