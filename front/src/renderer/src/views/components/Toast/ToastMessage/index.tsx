@@ -4,7 +4,7 @@ import { Container } from './styles';
 import { CgCloseO } from 'react-icons/cg';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 
-export type ToastType = 'default' | 'danger' | 'sucess';
+export type ToastType = 'default' | 'danger' | 'success';
 
 export interface IMessage {
   id: number
@@ -45,7 +45,7 @@ export default function ToastMessage({ message, isLeaving, onRemoveMessage, anim
       $isLeaving={isLeaving}
       ref={animatedRef}
     >
-      {message.type === 'sucess' && <FaRegCircleCheck size={20}/>}
+      {message.type === 'success' && <FaRegCircleCheck size={20}/>}
       {message.type === 'danger' && <CgCloseO size={22}/>}
       <strong>{message.text}</strong>
     </Container>

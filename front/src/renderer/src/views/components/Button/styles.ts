@@ -1,8 +1,8 @@
 import { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
-interface StyledButtonProps extends ComponentProps<'button'> {
-  danger?: boolean
+export interface StyledButtonProps extends ComponentProps<'button'> {
+  $danger?: boolean
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -24,7 +24,12 @@ export const StyledButton = styled.button<StyledButtonProps>`
     background: ${({ theme }) => theme.colors.orange.light};
   }
 
+  &:focus {
+    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+  }
+
   &:active {
+    outline: none;
     background: ${({ theme }) => theme.colors.orange.dark};
   }
 
@@ -33,7 +38,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
     cursor: default !important;
   }
 
-  ${({ theme, danger }) => danger && css`
+  ${({ theme, $danger }) => $danger && css`
     background: ${theme.colors.red.main};
 
     &:hover {

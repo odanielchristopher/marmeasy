@@ -5,6 +5,7 @@ import { SingUpParams } from '@renderer/app/services/authService/signUp';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 
@@ -20,6 +21,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function useRegisterController() {
+  const navigateTo = useNavigate();
 
   const {
     register,
@@ -33,18 +35,16 @@ export default function useRegisterController() {
     mutationFn: async (data: SingUpParams) => {
       return authService.singUp(data);
     },
-    onSuccess: () => {
-
-    },
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
       await mutateAsync(data);
       toast({
-        type: 'sucess',
+        type: 'success',
         text: 'Conta criada com sucesso.',
       });
+      navigateTo('/login');
     } catch {
       toast({
         type: 'danger',
@@ -52,24 +52,6 @@ export default function useRegisterController() {
       });
     }
   });
-
-
-  // async function handleSubmit({ email, password }) {
-  //   try {
-  //     await authService.singUp({ email, password });
-
-  //     toast({
-  //       type: 'sucess',
-  //       text: 'Usuário registrado com sucesso',
-  //     });
-  //     signin('hash');
-  //   } catch {
-  //     toast({
-  //       type: 'danger',
-  //       text: 'Ocorreu um erro ao cadastrar usuário',
-  //     });
-  //   }
-  // }
 
   return {
     errors,

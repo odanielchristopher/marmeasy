@@ -47,7 +47,7 @@ export default function useLoginController() {
       signin(accessToken);
 
       toast({
-        type: 'sucess',
+        type: 'success',
         text: 'Usuário cadastrado com sucesso.',
       });
     } catch {

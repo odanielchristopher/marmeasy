@@ -1,11 +1,11 @@
 import { useAuth } from '@renderer/app/hooks/useAuth';
-import { useOpenModal } from '@renderer/app/hooks/useOpeModal';
+import { useModal } from '@renderer/app/hooks/useModal';
 import { useNavigate } from 'react-router-dom';
 
 
 export default function useNavigation() {
   const { signout } = useAuth();
-  const { handleIsProfileModalOpen } = useOpenModal();
+  const { handleIsProfileModalOpen } = useModal();
 
   const navigateTo = useNavigate();
 

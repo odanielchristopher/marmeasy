@@ -13,7 +13,7 @@ export class FindMeController implements IController {
       return {
         statusCode: 200,
         body: {
-          user,
+          ...user,
         },
       };
     } catch {

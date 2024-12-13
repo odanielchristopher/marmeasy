@@ -7,6 +7,7 @@ import { Container, Header } from './styles';
 export default function Clients(): JSX.Element {
   return (
     <Container>
+
         <Fab />
         <Header>
           <div>

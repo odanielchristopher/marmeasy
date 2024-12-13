@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ModalsContext } from '../contexts/ModalsContext';
 
-export function useOpenModal() {
+export function useModal() {
   return useContext(ModalsContext);
 }
