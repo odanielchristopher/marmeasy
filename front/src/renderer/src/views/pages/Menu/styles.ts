@@ -18,7 +18,7 @@ export const Header = styled.header`
   }
 
   p {
-    color: ${({ theme }) => theme.colors.gray.lighter};
+    color: ${({ theme }) => theme.colors.gray.light};
     margin-top: .4rem;
   }
 `;

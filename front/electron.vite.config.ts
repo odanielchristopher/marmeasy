@@ -4,18 +4,18 @@ import { resolve } from 'path';
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin()]
+    plugins: [externalizeDepsPlugin()],
   },
   preload: {
     plugins: [externalizeDepsPlugin()],
-    base: './'
+    base: './',
   },
   renderer: {
     resolve: {
       alias: {
-        '@renderer': resolve('src/renderer/src')
-      }
+        '@renderer': resolve('src/renderer/src'),
+      },
     },
-    plugins: [react()]
-  }
+    plugins: [react()],
+  },
 });

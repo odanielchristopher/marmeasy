@@ -9,11 +9,12 @@ export default [
   ...tseslint.configs.recommended,
   {
     rules: {
-      'no-unused-vars': 'error',
+      'no-unused-vars': 'off',
       'no-undef': 'error',
       'quotes': ['error', 'single'],
       'semi': ['error', 'always'],
-      'comma-dangle': ['error', 'never']
-    }
-  }
+      'comma-dangle': ['error', 'always-multiline'],
+      '@typescript-eslint/no-explicit-any': 'off',
+    },
+  },
 ];
