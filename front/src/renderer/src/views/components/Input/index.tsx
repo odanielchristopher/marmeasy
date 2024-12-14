@@ -5,7 +5,7 @@ import { CgCloseO } from 'react-icons/cg';
 import { Container, StyledInput, StyledLabel } from './styles';
 export interface InputProps extends ComponentProps<'input'> {
   name: string;
-  isLoading?: boolean
+  isLoading?: boolean;
   $error?: string;
 }
 

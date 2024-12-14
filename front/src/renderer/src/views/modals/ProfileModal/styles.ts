@@ -64,3 +64,14 @@ export const NewPasswordContainer = styled.div`
   margin-top: 1.2rem;
   animation: ${scoleIn} ease-in .15s forwards;
 `;
+
+export const DeleteButton = styled.button`
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+`;

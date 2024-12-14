@@ -5,7 +5,7 @@ import { ActionContainer, CloseButton, Header, StyledRdxDialogContent, StyledRdx
 interface ModalProps {
   open: boolean;
   children: React.ReactNode;
-  onClose(): void;
+  onClose?(): void;
   title: string;
   action?: React.ReactNode;
 }
