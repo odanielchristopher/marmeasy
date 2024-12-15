@@ -1,38 +1,56 @@
-
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authService } from '@renderer/app/services/authService';
-import { SingUpParams } from '@renderer/app/services/authService/signUp';
-import { usersService } from '@renderer/app/services/usersService';
-import toast from '@renderer/app/utils/toast';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const schema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
-  email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
-  newPassword: z
-    .string()
-    .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
-    .or(z.optional(z.string())),
-  confirmPassword: z.string(),
-}).refine((data) => {
-  // Valida somente se "newPassword" estiver preenchida
-  if (data.newPassword && data.newPassword.length > 0) {
-    return data.newPassword === data.confirmPassword;
-  }
-  return true; // Validação passa se "newPassword" estiver vazia ou ausente
-}, {
-  message: 'As senhas não coincidem.',
-  path: ['confirmPassword'], // Indica onde o erro ocorre
-});
+import { authService } from '@renderer/app/services/authService';
+import { SingUpParams } from '@renderer/app/services/authService/signUp';
+import { usersService } from '@renderer/app/services/usersService';
+
+import { useModals } from '@renderer/app/hooks/useModals';
+import toast from '@renderer/app/utils/toast';
+
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'Nome é obrigatório')
+      .min(2, 'Nome deve conter pelo menos 2 caracteres.'),
+    email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
+    currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
+    newPassword: z
+      .string()
+      .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
+      .or(z.optional(z.string())),
+    confirmPassword: z.string(),
+  })
+  .refine(
+    (data) => {
+      // Valida somente se "newPassword" estiver preenchida
+      if (data.newPassword && data.newPassword.length > 0) {
+        return data.newPassword === data.confirmPassword;
+      }
+      return true; // Validação passa se "newPassword" estiver vazia ou ausente
+    },
+    {
+      message: 'As senhas não coincidem.',
+      path: ['confirmPassword'], // Indica onde o erro ocorre
+    },
+  );
 
 type FormData = z.infer<typeof schema>
 
-export default function useProfileController(open) {
-  const [ wantChangePassword,  setWantChangePassword] = useState(false);
+export default function useProfileController() {
+  const [wantChangePassword, setWantChangePassword] = useState(false);
+
+  const {
+    isProfileModalOpen: isOpen,
+    handleCloseProfileModal: onClose,
+    isDeleteUserModalOpen,
+    handleOpenDeleteUserModal,
+    handleCloseDeleteUserModal,
+  } = useModals();
 
   const {
     register,
@@ -43,11 +61,11 @@ export default function useProfileController(open) {
     resolver: zodResolver(schema),
   });
 
-  const { data, isSuccess }= useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ['users', 'find-me'],
     queryFn: () => usersService.findMe(),
     staleTime: Infinity,
-    enabled: open,
+    enabled: isOpen,
   });
 
   const { mutateAsync, isLoading } = useMutation({
@@ -57,10 +75,14 @@ export default function useProfileController(open) {
   });
 
   useEffect(() => {
-    if (open && isSuccess) {
+    if (isOpen && isSuccess) {
       reset(data);
     }
-  }, [data, open]);
+
+    return () => {
+      setWantChangePassword(false);
+    };
+  }, [data, isOpen]);
 
   function handleWannaChangePassword() {
     setWantChangePassword((prevState) => !prevState);
@@ -68,7 +90,6 @@ export default function useProfileController(open) {
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      setWantChangePassword(false);
       await mutateAsync({ email: data.email, password: data.currentPassword });
       toast({
         type: 'success',
@@ -86,8 +107,13 @@ export default function useProfileController(open) {
     errors,
     isLoading,
     wantChangePassword,
+    isOpen,
+    isDeleteModalOpen: isDeleteUserModalOpen,
+    onClose,
     register,
     handleSubmit,
     handleWannaChangePassword,
+    handleOpenDeleteModal: handleOpenDeleteUserModal,
+    handleCloseDeleteModal: handleCloseDeleteUserModal,
   };
 }

@@ -7,7 +7,7 @@ import useRegisterController from './useRegisterController';
 
 import { Container, Description, Title } from './styles';
 
-export default function Register(): JSX.Element {
+export default function Register() {
 const {
     errors,
     isLoading,

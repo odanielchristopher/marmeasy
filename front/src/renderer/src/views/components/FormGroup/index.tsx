@@ -2,9 +2,9 @@ import Spinner from '../Spinner';
 import { Container } from './styles';
 
 interface FormGroupProps {
-  children: JSX.Element
-  error?: string
-  isLoading?: boolean
+  children: JSX.Element;
+  error?: string;
+  isLoading?: boolean;
 }
 
 export default function FormGroup({ children, error, isLoading }: FormGroupProps) {

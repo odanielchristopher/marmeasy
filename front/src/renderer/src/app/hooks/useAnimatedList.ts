@@ -18,7 +18,7 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
 
     setItems((prevState) => prevState.filter((item) => item.id !== itemId));
     setPendingRemovalItemsIds(
-      (prevState) => prevState.filter((id) => itemId !== id)
+      (prevState) => prevState.filter((id) => itemId !== id),
     );
   }, []);
 
@@ -51,7 +51,7 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
 
   const handleRemoveItem = useCallback((id) => {
     setPendingRemovalItemsIds(
-      (prevState) => [...prevState, id]
+      (prevState) => [...prevState, id],
     );
   }, []);
 
@@ -80,6 +80,6 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
     items,
     setItems,
     renderList,
-    handleRemoveItem
+    handleRemoveItem,
   };
 }
