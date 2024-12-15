@@ -1,8 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import useDeleteUserMutation from '@renderer/app/hooks/mutations/useDelteUserMutation';
 import useEditUserMutation from '@renderer/app/hooks/mutations/useEditUserMutation';
 import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
 import { useModals } from '@renderer/app/hooks/useModals';
@@ -22,8 +23,8 @@ const schema = z
     newPassword: z
       .string()
       .optional()
-      .refine((value) => !value || value.length === 6, {
-        message: 'O campo precisa ter 6 caracteres ou estar vazio',
+      .refine((value) => !value || value.length >= 6, {
+        message: 'A sennha precisa ter pelo menos 6 caracteres ou estar vazio',
       }),
     confirmPassword: z.string().min(0),
   })
@@ -66,6 +67,7 @@ export default function useProfileController() {
 
   const { data } = useFindMeQuery(isOpen);
   const { editUser, isLoading } = useEditUserMutation();
+  const { deleteUser } = useDeleteUserMutation();
 
   useEffect(() => {
     if (isOpen) {
@@ -89,7 +91,7 @@ export default function useProfileController() {
         name,
         email,
         currentPassword,
-        newPassord: newPassword ? newPassword : undefined,
+        newPassword: newPassword ? newPassword : undefined,
       });
 
       handleCloseProfileModal();
@@ -105,12 +107,17 @@ export default function useProfileController() {
     }
   });
 
+  const handleDeleteUser = useCallback(async () => {
+    await deleteUser();
+  }, []);
+
   return {
     errors,
     isLoading,
     wantChangePassword,
     isOpen,
     isDeleteModalOpen: isDeleteUserModalOpen,
+    handleDeleteUser,
     handleCloseProfileModal,
     register,
     handleSubmit,

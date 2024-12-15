@@ -4,7 +4,7 @@ export interface EditMeParams {
   name: string;
   email: string;
   currentPassword: string;
-  newPassord?: string;
+  newPassword?: string;
 }
 
 export interface EditMeResponse {

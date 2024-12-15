@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken';
 
 import { env } from '../../../shared/config/env';
 import { InvalidCredentials } from '../../../shared/errors/InvalidCredentials';
+import { UserNotFound } from '../../../shared/errors/UserNotFound';
 import { UsersRepository } from '../UsersRepository';
 
 interface IInput {
@@ -22,7 +23,7 @@ export class SignInUseCase {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new InvalidCredentials();
+      throw new UserNotFound();
     }
 
     const isPasswordValid = await compare(password, user.password);

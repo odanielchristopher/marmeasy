@@ -18,11 +18,11 @@ usersRoutes.get('/users/find-me',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeFindMeController()),
 );
-usersRoutes.put('/users/edit',
+usersRoutes.put('/users/edit-me',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeEditUserController()),
 );
-usersRoutes.delete('/users/delete',
+usersRoutes.delete('/users/delete-me',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),
 );

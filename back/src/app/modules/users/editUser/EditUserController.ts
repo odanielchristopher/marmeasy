@@ -16,7 +16,6 @@ export class EditUserController implements IController {
   constructor(private readonly editUserUseCase: EditUserUseCase) {}
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
-
     try {
       const user = schema.parse({
         userId,
