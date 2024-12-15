@@ -7,7 +7,6 @@ export class FindMeController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      console.log({ userId });
       const user = await this.findMeUseCase.execute({ userId: userId! });
 
       return {

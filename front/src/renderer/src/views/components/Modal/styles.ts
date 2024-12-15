@@ -21,8 +21,7 @@ const contentShow = keyframes`
 	}
 `;
 
-export const 
-StyledRdxDialogContent = styled(Dialog.Content)`
+export const StyledRdxDialogContent = styled(Dialog.Content)`
   animation: ${contentShow} 0.3s forwards;
   background: #FFF;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -58,34 +57,20 @@ export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`
 export const Header = styled.header`
   align-items: center;
   display: flex;
-  justify-content: center; //mudança
+  justify-content: space-between;
   width: 100%;
   margin-bottom: 3.2rem;
 `;
 
-export const CloseButton = styled.span` //button -> span
-  /* background: red;
+export const CloseButton = styled.button`
+  align-items: center;
+  background: transparent;
   border: none;
   border-radius: 50%;
   display: flex;
-  width: 48px;
-  height: 48px;
-  padding: 12px;
   justify-content: center;
-  align-items: center; */
-  cursor: pointer;
-
-  /* span { */
-    font-size: 16px;
-    font-weight: 600;
-    color: ${({ theme }) => theme.colors.gray.main};
-    transition: color .3s;
-
-    &:hover {
-      color: ${({ theme }) => theme.colors.gray.light};
-      transition: color .3s;
-    }
-  /* } */
+  height: 4.8rem;
+  width: 4.8rem;
 `;
 
 export const Title = styled.h1`
@@ -94,30 +79,7 @@ export const Title = styled.h1`
   font-weight: 500;
 `;
 
-export const Footer = styled.footer`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 24px;
-`;
-
 export const ActionContainer = styled.div`
-  /* width: 4.8rem;
-  height: 4.8rem; */
-
-  button.saveClient {
-    background-color: ${({ theme }) => theme.colors.orange.light};
-    color: #FFF;
-    border-radius: 10px;
-    padding: 14px;
-    border: none;
-    font-weight: 600;
-    font-size: 16px;
-    transition: background .3s;
-
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.orange.dark};
-      transition: background .3s;
-    }
-  }
+  width: 4.8rem;
+  height: 4.8rem;
 `;

@@ -19,6 +19,8 @@ export const Container = styled.div<IContainer>`
   padding: 1.6rem 1rem;
   width: min-content;
   position: fixed;
+  top: 2.4rem;
+  left: 2.4rem;
 `;
 
 export const LogoContainer = styled.div`

@@ -7,7 +7,11 @@
     "src/preload/*.d.ts"
   ],
   "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true,
     "composite": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {

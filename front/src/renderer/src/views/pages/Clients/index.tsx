@@ -24,7 +24,7 @@ const cards = [
 ];
 
 
-export default function Clients(): JSX.Element {
+export default function Clients() {
   return (
     <Container>
         <Main>
