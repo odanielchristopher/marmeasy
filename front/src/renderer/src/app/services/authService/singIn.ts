@@ -1,16 +1,16 @@
 import { httpClient } from '../utils/httpClient';
 
-interface SingInParams {
+export interface SingInParams {
   email: string
   password: string
 }
 
-interface SignUpResponse {
+export interface SignInResponse {
   accessToken: string;
 }
 
 export async function signIn(params: SingInParams) {
-  const { data } = await httpClient.post<SignUpResponse>('/users/sign-in', params);
+  const { data } = await httpClient.post<SignInResponse>('/users/sign-in', params);
 
   return data;
 }

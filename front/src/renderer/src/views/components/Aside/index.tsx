@@ -1,16 +1,16 @@
-import { AsideContainer, Container } from './styles';
-import { TbReportSearch } from 'react-icons/tb';
+import { Container } from './styles';
 
 import frase from '/frase.png?url';
 
-export default function Aside() {
+interface AsideProps {
+  area: string;
+}
+
+export default function Aside({ area }: AsideProps) {
   return (
-    <AsideContainer>
+    <Container $area={area}>
       <img src={frase} alt='' />
-      <Container>
-        <TbReportSearch className='search' />
-        <h2>Não tem nada selecionado</h2>
-      </Container>
-    </AsideContainer >
+
+    </Container >
   );
 }

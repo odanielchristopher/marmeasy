@@ -1,11 +1,11 @@
 import { httpClient } from '../utils/httpClient';
 
 export interface SingUpParams {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
 
-interface SignUpResponse {
+export interface SignUpResponse {
   accessToken: string;
 }
 

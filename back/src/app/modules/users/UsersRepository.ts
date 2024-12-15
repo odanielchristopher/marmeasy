@@ -31,6 +31,7 @@ export class UsersRepository {
         password,
       },
       select: {
+        id: true,
         name: true,
         email: true,
       },

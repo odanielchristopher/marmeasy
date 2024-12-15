@@ -20,6 +20,7 @@ export default createGlobalStyle`
     &::-webkit-scrollbar {
       display: none;
     }
+    overflow: hidden;
   }
 
   button {

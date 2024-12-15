@@ -18,11 +18,11 @@ export class SignUpController implements IController {
     try {
       const { name, email, password } = schema.parse(body);
 
-      const user = await this.signUpUseCase.execute({ name, email, password });
+      const accessToken = await this.signUpUseCase.execute({ name, email, password });
 
       return {
         statusCode: 200,
-        body: user,
+        body: accessToken,
       };
     } catch (error) {
       if (error instanceof ZodError) {

@@ -1,7 +1,9 @@
 //@ts-ignore
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
+import InputMask from '@renderer/views/components/InputMask';
 import Modal from '@renderer/views/components/Modal';
+import { Controller } from 'react-hook-form';
 import { FormModal } from './styles';
 import useCompanyModal from './useCompanyModal';
 
@@ -11,7 +13,7 @@ interface ClientModalProps {
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register } = useCompanyModal(isOpen);
+  const { errors, handleSubmit, isLoading, register, control } = useCompanyModal(isOpen);
 
   return (
     <Modal open={isOpen} title="Nova empresa" onClose={onClose}>
@@ -19,14 +21,42 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         <p>Digite as informações do seu cliente.</p>
         <Input
           type="text"
-          placeholder="Nome do cliente"
+          placeholder="Nome da empresa"
           $error={errors.name?.message}
           {...register('name')}
         />
 
-        <Input type="text" placeholder="Telefone do cliente" {...register('phone')} />
-        <Input type="text" placeholder="Endereço do cliente" {...register('address')} />
-        <Input type="text" placeholder="CPF do cliente" {...register('cpf')} />
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field: { onChange, value, name } }) => (
+            <InputMask
+              name={name}
+              type="text"
+              placeholder="Telefone da empresa"
+              format="(##) ##### ####"
+              $error={errors.phone?.message}
+              onChangeValue={onChange}
+              value={value}
+            />
+          )}
+        />
+        <Input type="text" placeholder="Endereço da empresa" {...register('address')} />
+        <Controller
+          control={control}
+          name="cnpj"
+          render={({ field: { onChange, value, name } }) => (
+            <InputMask
+              name={name}
+              type="text"
+              placeholder="CNPJ da empresa"
+              format="##.###.###/####-##"
+              $error={errors.cnpj?.message}
+              onChangeValue={onChange}
+              value={value}
+            />
+          )}
+        />
 
         <div className="dividerInput">
           <Input type="number" placeholder="Numero" {...register('number')} />

@@ -8,7 +8,7 @@ import { useAuth } from '@renderer/app/hooks/useAuth';
 import toast from '@renderer/app/utils/toast';
 
 import { authService } from '@renderer/app/services/authService';
-import { SingUpParams } from '@renderer/app/services/authService/signUp';
+import { SingInParams } from '@renderer/app/services/authService/singIn';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
@@ -30,11 +30,8 @@ export default function useLoginController() {
   });
 
   const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: SingUpParams) => {
+    mutationFn: async (data: SingInParams) => {
       return authService.signIn(data);
-    },
-    onSuccess: () => {
-
     },
   });
 
@@ -48,12 +45,12 @@ export default function useLoginController() {
 
       toast({
         type: 'success',
-        text: 'Usuário cadastrado com sucesso.',
+        text: 'Usuário autenticado',
       });
     } catch {
       toast({
         type: 'danger',
-        text: 'Credenciais inválidas!',
+        text: 'E-mail ou senha inválidas',
       });
     }
   });

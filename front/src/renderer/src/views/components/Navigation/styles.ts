@@ -6,6 +6,7 @@ interface ILinkNavigation {
 
 interface IContainer {
   margin?: string
+  $area: string;
 }
 
 export const Container = styled.div<IContainer>`
@@ -17,10 +18,8 @@ export const Container = styled.div<IContainer>`
   flex-direction: column;
   height: calc(100vh - (${({ theme, margin }) => margin || theme.margin} * 2));
   padding: 1.6rem 1rem;
+  grid-area: ${({ $area }) => $area};
   width: min-content;
-  position: fixed;
-  top: 2.4rem;
-  left: 2.4rem;
 `;
 
 export const LogoContainer = styled.div`

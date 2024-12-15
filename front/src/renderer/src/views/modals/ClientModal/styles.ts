@@ -34,3 +34,4 @@ export const FormModal = styled.form`
     height: 4.8rem;
   }
 `;
+

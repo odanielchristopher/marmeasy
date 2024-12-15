@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -11,11 +12,12 @@ const clientFormSchema = z.object({
   address: z.string().optional(),
   number: z.string().optional(),
   district: z.string().optional(),
-  cpf: z.string().optional(),
-  cnpj: z.string().optional(),
+  cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
+    message: 'O CPF precisa ser válido ou estar vazio',
+  }),
 });
 
-type FormData = z.infer<typeof clientFormSchema>;
+type FormData = z.infer<typeof clientFormSchema>
 
 export default function useCompanyModal(isOpen: boolean) {
   const {
@@ -23,6 +25,7 @@ export default function useCompanyModal(isOpen: boolean) {
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(clientFormSchema),
   });
@@ -34,7 +37,7 @@ export default function useCompanyModal(isOpen: boolean) {
   }, [isOpen]);
 
   const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: FormData) => console.log({data}),
+    mutationFn: async (data: FormData) => console.log({ data }),
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
@@ -54,6 +57,7 @@ export default function useCompanyModal(isOpen: boolean) {
 
   return {
     errors,
+    control,
     register,
     isLoading,
     handleSubmit,

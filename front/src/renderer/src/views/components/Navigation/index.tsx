@@ -9,8 +9,11 @@ import { TbUsers } from 'react-icons/tb';
 import { Container, FootContainer, LinkNavigation, LogoContainer, MainContainer } from './styles';
 import useNavigation from './useNavigation';
 
+interface NavigationProps {
+  $area: string;
+}
 
-export default function Navigation() {
+export default function Navigation({ $area }: NavigationProps) {
   const {
     handleClientsLink,
     handleLogOutLink,
@@ -19,7 +22,7 @@ export default function Navigation() {
   } = useNavigation();
 
   return (
-    <Container>
+    <Container $area={$area}>
       <LogoContainer>
         <img src={logo} alt="logo" />
       </LogoContainer>
