@@ -19,7 +19,7 @@ export class FindMeUseCase {
 
   async execute({ userId }: IInput): Promise<IOutput> {
 
-    const user = await this.usersRepository.findUserById(userId);
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) {
       throw new UserNotFound();

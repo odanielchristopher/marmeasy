@@ -2,7 +2,8 @@ import { EditUserUseCase } from '../../app/modules/users/editUser/EditUserUseCas
 import { UsersRepository } from '../../app/modules/users/UsersRepository';
 
 export function makeEditUserUseCase() {
+  const SALT = 10;
   const usersRepository = new UsersRepository();
 
-  return new EditUserUseCase(usersRepository);
+  return new EditUserUseCase(usersRepository, SALT);
 }

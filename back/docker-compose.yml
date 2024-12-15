@@ -4,7 +4,7 @@ services:
     image: bitnami/postgresql:17.2.0
     container_name: postgresql
     environment:
-      - POSTGRESQL_USERNAME=user
+      - POSTGRESQL_USERNAME=root
       - POSTGRESQL_PASSWORD=root
       - POSTGRESQL_DATABASE=db
     ports:
