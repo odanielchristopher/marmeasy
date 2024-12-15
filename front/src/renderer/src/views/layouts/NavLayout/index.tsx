@@ -4,7 +4,7 @@ import Navigation from '@renderer/views/components/Navigation';
 
 import { ModalsProvider } from '@renderer/app/contexts/ModalsContext';
 
-import { Container } from './styles';
+import { Container, Main } from './styles';
 
 export default function NavLayout() {
 
@@ -13,7 +13,9 @@ export default function NavLayout() {
     <ModalsProvider>
         <Container>
           <Navigation />
-          <Outlet />
+          <Main>
+            <Outlet />
+          </Main>
         </Container>
     </ModalsProvider>
   );

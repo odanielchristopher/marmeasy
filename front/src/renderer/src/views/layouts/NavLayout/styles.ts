@@ -5,3 +5,8 @@ export const Container = styled.div`
   display: flex;
   gap: 4.0rem;
 `;
+
+export const Main = styled.div`
+  width: 100%;
+  padding-left: 10.0rem;
+`;
