@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding: 2.4rem;
-  display: flex;
-  gap: 4.0rem;
+  padding-left: 12.0rem;
+  margin-top: 3.2rem;
 `;

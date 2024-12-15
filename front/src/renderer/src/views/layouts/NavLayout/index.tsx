@@ -11,8 +11,8 @@ export default function NavLayout() {
   return (
     <ModalsProvider>
       <ProfileModal />
+      <Navigation />
       <Container>
-        <Navigation />
         <Outlet />
       </Container>
     </ModalsProvider>
