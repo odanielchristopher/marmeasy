@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import useEditUserMutation from '@renderer/app/hooks/mutations/useEditUserMutation';
-import useFindUserQuery from '@renderer/app/hooks/queries/useFindUserQuery';
+import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
 import { useModals } from '@renderer/app/hooks/useModals';
 import toast from '@renderer/app/utils/toast';
 
@@ -64,12 +64,11 @@ export default function useProfileController() {
     resolver: zodResolver(schema),
   });
 
-  const { data, isSuccess } = useFindUserQuery(isOpen);
-
+  const { data } = useFindMeQuery(isOpen);
   const { editUser, isLoading } = useEditUserMutation();
 
   useEffect(() => {
-    if (isOpen && isSuccess) {
+    if (isOpen) {
       reset(data);
     }
 

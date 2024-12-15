@@ -1,7 +1,7 @@
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import LaunchScreen from '@renderer/views/components/LaunchScreen';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import useFindUserQuery from '../hooks/queries/useFindUserQuery';
+import useFindMeQuery from '../hooks/queries/useFindMeQuery';
 import toast from '../utils/toast';
 
 export interface AuthContextValue {
@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isLoading, isSuccess, remove } = useFindUserQuery(signedIn);
+  const { isError, isLoading, isSuccess } = useFindMeQuery(signedIn);
 
   const signin = useCallback((accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
@@ -28,10 +28,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signout = useCallback(() => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
-    remove();
 
     setSignedIn(false);
-  }, [remove]);
+  }, []);
 
   useEffect(() => {
     if (isError) {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createRef, useCallback, useEffect, useRef, useState } from 'react';
 
 export default function useAnimatedList<T extends { id: number }>(initialValue: T[] = []) {

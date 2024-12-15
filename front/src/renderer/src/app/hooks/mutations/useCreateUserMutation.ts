@@ -3,7 +3,7 @@ import { SingUpParams } from '@renderer/app/services/authService/signUp';
 import { useMutation } from '@tanstack/react-query';
 
 export default function useCreateUserMutation() {
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: SingUpParams) => {
       return authService.singUp(data);
     },
@@ -11,6 +11,6 @@ export default function useCreateUserMutation() {
 
   return {
     createUser: mutateAsync,
-    isLoading,
+    isLoading: isPending,
   };
 }
