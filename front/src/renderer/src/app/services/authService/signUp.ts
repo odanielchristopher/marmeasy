@@ -10,6 +10,7 @@ export interface SignUpResponse {
 }
 
 export async function singUp(params: SingUpParams) {
+  console.log('data');
   const { data } = await httpClient.post<SignUpResponse>('/users/sign-up', params);
 
   return data;
