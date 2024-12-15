@@ -1,5 +1,7 @@
 import { hash } from 'bcryptjs';
+import { sign } from 'jsonwebtoken';
 
+import { env } from '../../../shared/config/env';
 import { UserAlreadyExists } from '../../../shared/errors/UserAlreadyExists';
 import { UsersRepository } from '../UsersRepository';
 
@@ -10,8 +12,7 @@ interface IInput {
 }
 
 interface IOutput {
-  name: string;
-  email: string;
+  accessToken: string;
 }
 
 export class SignUpUseCase {
@@ -33,6 +34,11 @@ export class SignUpUseCase {
       password: hashedPassword,
     });
 
-    return user;
+    const accessToken = sign(
+      { sub: user.id },
+      env.JWT_SECRET,
+    );
+
+    return { accessToken };
   }
 }
