@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-top: 1.6rem;
+  padding-top: 1.6rem;
 `;
 
 export const Header = styled.header`
@@ -22,3 +22,18 @@ export const Header = styled.header`
     margin-top: .4rem;
   }
 `;
+
+export const Main = styled.main`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.4rem;
+  width: 100%;
+  height: calc(100vh - 15.0rem);
+
+  img {
+    width: 50.0rem;
+  }
+`;
+
