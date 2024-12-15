@@ -1,12 +1,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authService } from '@renderer/app/services/authService';
-import { SingUpParams } from '@renderer/app/services/authService/signUp';
+import useCreateUserMutation from '@renderer/app/hooks/mutations/useCreateUserMutation';
+import { useAuth } from '@renderer/app/hooks/useAuth';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
@@ -28,16 +26,15 @@ export default function useRegisterController() {
     resolver: zodResolver(schema),
   });
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: SingUpParams) => {
-      return authService.singUp(data);
-    },
-  });
+  const { createUser, isLoading } = useCreateUserMutation();
 
+  const { signin } = useAuth();
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      const { accessToken } = await createUser(data);
+
+      signin(accessToken);
       toast({
         type: 'success',
         text: 'Conta criada com sucesso.',

@@ -8,7 +8,7 @@ import ToastContainer from './views/components/Toast/ToastContainer';
 import GlobalStyles from './assets/styles/global';
 import defaultTheme from './assets/styles/themes/default';
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,

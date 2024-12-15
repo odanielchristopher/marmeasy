@@ -25,10 +25,10 @@ export default function ProfileModal() {
     isDeleteModalOpen,
     handleSubmit,
     register,
-    onClose,
     handleWannaChangePassword,
     handleOpenDeleteModal,
     handleCloseDeleteModal,
+    handleCloseProfileModal,
   } = useProfileModal();
 
   if (isDeleteModalOpen) {
@@ -51,7 +51,7 @@ export default function ProfileModal() {
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
+      onClose={handleCloseProfileModal}
       title="Dados do usuário"
       action={
         <DeleteButton onClick={handleOpenDeleteModal}>

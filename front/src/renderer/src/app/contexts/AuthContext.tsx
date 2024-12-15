@@ -1,8 +1,7 @@
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import LaunchScreen from '@renderer/views/components/LaunchScreen';
-import { useQuery } from '@tanstack/react-query';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import { usersService } from '../services/usersService';
+import useFindUserQuery from '../hooks/queries/useFindUserQuery';
 import toast from '../utils/toast';
 
 export interface AuthContextValue {
@@ -20,12 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isFetching, isSuccess, remove } = useQuery({
-    queryKey: ['users', 'find-me'],
-    queryFn: () => usersService.findMe(),
-    enabled: signedIn,
-    staleTime: Infinity,
-  });
+  const { isError, isLoading, isSuccess, remove } = useFindUserQuery(signedIn);
 
   const signin = useCallback((accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
@@ -62,8 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signin,
       signout,
     }}>
-      <LaunchScreen isLoading={isFetching}/>
-      {!isFetching && children}
+      <LaunchScreen isLoading={isLoading}/>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 }
