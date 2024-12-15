@@ -20,18 +20,19 @@ const schema = z
     email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
     currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
     newPassword: z
-      .string()
-      .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
-      .or(z.optional(z.string())),
-    confirmPassword: z.string(),
+      .string().optional().refine(value => !value || value.length === 6, {
+        message: 'O campo precisa ter 6 caracteres ou estar vazio',
+      }),
+    confirmPassword: z.string().min(0),
   })
   .refine(
     (data) => {
       // Valida somente se "newPassword" estiver preenchida
-      if (data.newPassword && data.newPassword.length > 0) {
+      if (data.newPassword) {
         return data.newPassword === data.confirmPassword;
       }
-      return true; // Validação passa se "newPassword" estiver vazia ou ausente
+
+      return true; // Validação passa se "newPassword" estiver vazia
     },
     {
       message: 'As senhas não coincidem.',

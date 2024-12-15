@@ -5,7 +5,6 @@ import { SingUpParams } from '@renderer/app/services/authService/signUp';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 
@@ -21,8 +20,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function useRegisterController() {
-  const navigateTo = useNavigate();
-
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -37,6 +34,7 @@ export default function useRegisterController() {
     },
   });
 
+
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
       await mutateAsync(data);
@@ -44,7 +42,6 @@ export default function useRegisterController() {
         type: 'success',
         text: 'Conta criada com sucesso.',
       });
-      navigateTo('/login');
     } catch {
       toast({
         type: 'danger',
