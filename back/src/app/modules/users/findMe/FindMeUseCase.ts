@@ -1,5 +1,3 @@
-
-
 import { UserNotFound } from '../../../shared/errors/UserNotFound';
 import { UsersRepository } from '../UsersRepository';
 
