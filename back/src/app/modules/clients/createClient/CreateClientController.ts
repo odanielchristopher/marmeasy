@@ -37,7 +37,7 @@ export class CreateClientController implements IController {
       return {
         statusCode: 200,
         body: {
-          client: createdClient,
+         ...createdClient,
         },
       };
     } catch (error) {

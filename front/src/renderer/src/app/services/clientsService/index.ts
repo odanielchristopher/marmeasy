@@ -1,16 +1,6 @@
-import { httpClient } from '../httpClient';
+import { create } from './create';
 
-export interface CreateTransactionParams {
-  bankAccountId: string;
-  categoryId: string;
-  name: string;
-  value: number;
-  date: string;
-  type: 'INCOME' | 'EXPENSE';
-}
+export const clientsService = {
+  create,
+};
 
-export async function create(params: CreateTransactionParams) {
-  const { data } = await httpClient.post('/transactions', params);
-
-  return data;
-}
