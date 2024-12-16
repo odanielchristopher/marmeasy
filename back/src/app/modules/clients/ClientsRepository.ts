@@ -14,9 +14,10 @@ export class ClientsRepository {
   }
 
   async findById(id: string, userId: string) {
-    const client = await prismaClient.client.findUnique({
+    const client = await prismaClient.client.findFirst({
       where: {
-        id,
+      id,
+      user_id: userId,
       },
     });
 
