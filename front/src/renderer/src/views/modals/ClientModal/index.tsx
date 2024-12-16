@@ -13,7 +13,7 @@ interface ClientModalProps {
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useClientModal(isOpen);
+  const { errors, handleSubmit, isLoading, register, control } = useClientModal(isOpen, onClose);
 
   return (
     <Modal open={isOpen} title="Novo cliente" onClose={onClose}>

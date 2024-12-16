@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import useCreateClient from '@renderer/app/hooks/mutations/useCreateClient';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -17,9 +17,9 @@ const clientFormSchema = z.object({
   }),
 });
 
-type FormData = z.infer<typeof clientFormSchema>;
+export type FormData = z.infer<typeof clientFormSchema>;
 
-export default function useClientModal(isOpen: boolean) {
+export default function useClientModal(isOpen: boolean, closeModal: () => void) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -30,9 +30,7 @@ export default function useClientModal(isOpen: boolean) {
     resolver: zodResolver(clientFormSchema),
   });
 
-  const { mutateAsync, isPending: isLoading } = useMutation({
-    mutationFn: async (data: FormData) => console.log({data}),
-  });
+  const { createClient, isLoading } = useCreateClient();
 
   useEffect(() => {
     return () => {
@@ -42,15 +40,21 @@ export default function useClientModal(isOpen: boolean) {
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      await createClient({
+        ...data,
+        type: 'FISICO',
+      });
+
       toast({
         type: 'success',
         text: 'Usuário cadastrado com sucesso.',
       });
+
+      closeModal();
     } catch {
       toast({
         type: 'danger',
-        text: 'Credenciais inválidas!',
+        text: 'Ocorreu um erro!',
       });
     }
   });

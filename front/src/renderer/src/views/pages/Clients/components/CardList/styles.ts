@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: #FFF;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   margin-top: 1.6rem;
@@ -26,7 +26,12 @@ export const Header= styled.div`
   h2 {
     color: ${({ theme }) => theme.colors.black.light};
     font-size: 2.0rem;
-    font-weight: 600;
+    font-weight: 700;
+  }
+
+  h3 {
+    font-weight: 700;
+    font-size: 1.6rem;
   }
 
   p {

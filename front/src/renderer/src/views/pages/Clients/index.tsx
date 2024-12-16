@@ -26,7 +26,7 @@ export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { data, isLoading } = useQuery({
+  const { data, isFetching } = useQuery({
     queryKey: ['clients', 'getAll'],
     queryFn: async () => {
       return await clientsService.getAll();
@@ -48,6 +48,7 @@ export default function Clients() {
       clients.filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase())),
     [clients, searchTerm],
   );
+
   const isSearchEmpty = filteredClients.length < 1;
   const hasClient = filteredClients.length > 0;
 
@@ -75,19 +76,10 @@ export default function Clients() {
         />
       </InputContainer>
 
-      {isLoading && <Loader $isLoading size={50} />}
+      {isFetching && <Loader $isLoading size={50} />}
 
-      {!isLoading && (
+      {!isFetching && (
         <Content>
-
-          {isSearchEmpty && (
-            <NotFoundContainer>
-              <img src={notFoundImage} alt="Clientes não encontrados" />
-              <p>Não encontramos nenhum cliente!</p>
-            </NotFoundContainer>
-          )}
-
-
           {hasClient && (
             <CardList
               cards={filteredClients.map((client) => ({
@@ -99,6 +91,13 @@ export default function Clients() {
                 ordersCount: 12,
               }))}
             />
+          )}
+
+          {isSearchEmpty && (
+            <NotFoundContainer>
+              <img src={notFoundImage} alt="Clientes não encontrados" />
+              <p>Não encontramos nenhum cliente!</p>
+            </NotFoundContainer>
           )}
         </Content>
       )}

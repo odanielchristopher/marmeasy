@@ -11,7 +11,7 @@ export interface CreateClientParams {
 }
 
 export async function create(params: CreateClientParams) {
-  const { data } = await httpClient.post<Client>('/transactions', params);
+  const { data } = await httpClient.post<Client>('/clients', params);
 
   return data;
 }
