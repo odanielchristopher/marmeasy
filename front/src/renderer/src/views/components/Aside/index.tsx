@@ -1,5 +1,9 @@
-import { Container } from './styles';
+import { useState } from 'react';
+import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
 
+import { useLocation } from 'react-router-dom';
+
+import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import frase from '/frase.png?url';
 
 interface AsideProps {
@@ -7,9 +11,44 @@ interface AsideProps {
 }
 
 export default function Aside({ area }: AsideProps) {
+  const [showDetails, setShowDetails] = useState(true);
+  const [showAddOrders, setShowAddOrders] = useState(false);
+
+  function handleShowDetails() {
+    setShowDetails(true);
+    setShowAddOrders(false);
+  }
+
+  function handleShowAddOrders() {
+    setShowAddOrders(true);
+    setShowDetails(false);
+  }
+
+  const location = useLocation();
+
+  const hasOrders = ['/orders'].includes(location.pathname);
+
   return (
     <Container $area={area}>
-      <img src={frase} alt='' />
+      <Header>
+        <img src={frase} alt='' />
+      </Header>
+
+      <Actions>
+        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
+        {hasOrders && <ActionsButton $isActive={showAddOrders} onClick={handleShowAddOrders}>Adicionar pedido</ActionsButton>}
+      </Actions>
+
+      <Main>
+        <Empty>
+          <img src={clipboard} alt="Empty" />
+
+          <p>
+            <b>Nenhum cliente selecionado!</b>
+            Clique em algum cliente para ver seus detalhes.
+          </p>
+        </Empty>
+      </Main>
 
     </Container >
   );
