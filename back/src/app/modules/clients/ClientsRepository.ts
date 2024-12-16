@@ -24,6 +24,26 @@ export class ClientsRepository {
     return client;
   }
 
+  async getAll(userId: string) {
+    const clients = await prismaClient.client.findMany({
+      where: {
+        user_id: userId,
+      },
+      select: {
+        id: true,
+        user_id: true,
+        name: true,
+        phone: true,
+        address: true,
+        type: true,
+        document: true,
+        balance: true,
+      },
+    });
+
+    return clients;
+  }
+
   async create(client: IClient) {
     const newClient = await prismaClient.client.create({
       data: {
