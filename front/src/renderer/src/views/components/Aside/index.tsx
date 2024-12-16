@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
+import { Actions, ActionsButton, Container, Header } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
-import clipboard from '@renderer/assets/Images/Clipboard.svg';
+import ClientForm from '../ClientForm';
 import frase from '/frase.png?url';
 
 interface AsideProps {
@@ -39,7 +39,7 @@ export default function Aside({ area }: AsideProps) {
         {hasOrders && <ActionsButton $isActive={showAddOrders} onClick={handleShowAddOrders}>Adicionar pedido</ActionsButton>}
       </Actions>
 
-      <Main>
+      {/* <Main>
         <Empty>
           <img src={clipboard} alt="Empty" />
 
@@ -48,7 +48,9 @@ export default function Aside({ area }: AsideProps) {
             Clique em algum cliente para ver seus detalhes.
           </p>
         </Empty>
-      </Main>
+      </Main> */}
+
+      <ClientForm $isShow/>
 
     </Container >
   );
