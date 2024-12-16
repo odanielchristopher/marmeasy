@@ -2,8 +2,6 @@ import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
 
-import Loader from '@renderer/views/components/Loader';
-import Select from '@renderer/views/components/Select';
 import { Container, Header } from './styles';
 
 // const cards = [
@@ -46,7 +44,7 @@ export default function Clients() {
         </Header>
         {/* <Content>
           <CardList cards={cards}/>
-        </Content> */}
+        </Content>
 
         <Select
           placeholder='Cliente'
@@ -64,9 +62,9 @@ export default function Clients() {
               value: 'kleytin',
             },
           ]}
-        />
+        /> */}
 
-        <Loader $isLoading size={50} />
+        {/* <Loader $isLoading size={50} /> */}
     </Container>
   );
 }

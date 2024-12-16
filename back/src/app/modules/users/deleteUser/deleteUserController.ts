@@ -6,8 +6,6 @@ export class DeleteUserController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-
-      console.log(userId);
       await this.deleteUserUseCase.execute({ id: userId! });
 
       return {

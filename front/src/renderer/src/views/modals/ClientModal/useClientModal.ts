@@ -30,7 +30,7 @@ export default function useClientModal(isOpen: boolean) {
     resolver: zodResolver(clientFormSchema),
   });
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isPending: isLoading } = useMutation({
     mutationFn: async (data: FormData) => console.log({data}),
   });
 
