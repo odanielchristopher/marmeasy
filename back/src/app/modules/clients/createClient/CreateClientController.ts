@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 export class CreateClientController implements IController {
-  constructor(private readonly CreateClientUseCase: CreateClientUseCase) {}
+  constructor(private readonly createClientUseCase: CreateClientUseCase) {}
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
     try {
@@ -33,7 +33,7 @@ export class CreateClientController implements IController {
 
       const client = schema.parse(data);
 
-      await this.CreateClientUseCase.execute(client);
+      await this.createClientUseCase.execute(client);
       
       return {
         statusCode: 200,

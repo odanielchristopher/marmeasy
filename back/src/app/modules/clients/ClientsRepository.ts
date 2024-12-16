@@ -14,7 +14,7 @@ export class ClientsRepository {
   }
 
   async findById(id: string, userId: string) {
-    const client = await prismaClient.client.findFirst({
+    const client = await prismaClient.client.findUnique({
       where: {
       id,
       user_id: userId,
@@ -78,26 +78,27 @@ export class ClientsRepository {
       },
     });
   }
-}
-//   async update(client: IClient) {
-//     const updatedClient = await prismaClient.client.update({
-//       data: {
-//         ...client,
-//       },
-//       where: {
-//         id: client.id,
-//       },
-//       select: {
-//         id: true,
-//         name: true,
-//         phone: true,
-//         address: true,
-//         type: true,
-//         document: true,
-//         balance: true,
-//       },
-//     });
 
-//     return updatedClient;
-//   }
-// }
+  async update(id: string, userId: string, client: IClient) {
+    const updatedClient = await prismaClient.client.update({
+      data: {
+        ...client,
+      },
+      where: {
+        id: id,
+        user_id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        address: true,
+        type: true,
+        document: true,
+        balance: true,
+      },
+    });
+
+    return updatedClient;
+  }
+}

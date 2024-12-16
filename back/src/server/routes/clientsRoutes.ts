@@ -4,6 +4,7 @@ import { makeCreateClientController } from '../../factories/createClient/makeCre
 import { makeFindClientController } from '../../factories/findClient/makeFindClientController';
 import { makeGetAllClientsController } from '../../factories/getAllClients/makeGetAllClientsController';
 import { makeDeleteClientController } from '../../factories/deleteClient/makeDeleteClientController';
+import { makeEditClientController } from '../../factories/editClient/makeEditClientController';
 import { makeAuthenticationMiddleware } from '../../factories/authentication/makeAuthenticationMiddleware';
 import { middlewareAdapter } from '../adapters/middlewareAdapter';
 import { routeAdapter } from '../adapters/routeAdapter';
@@ -26,3 +27,7 @@ clientsRoutes.get('/clients',
 clientsRoutes.delete('/clients/:id',
     middlewareAdapter(makeAuthenticationMiddleware()),
     routeAdapter(makeDeleteClientController()));
+
+clientsRoutes.put('/clients/:id',
+    middlewareAdapter(makeAuthenticationMiddleware()),
+    routeAdapter(makeEditClientController()));

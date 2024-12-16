@@ -1,4 +1,4 @@
-import { DeleteClientController } from '../../app/modules/clients/deleteClient/DeleteClienteController';
+import { DeleteClientController } from '../../app/modules/clients/deleteClient/DeleteClientController';
 import { makeDeleteClientUseCase } from './makeDeleteClientUseCase';
 
 export function makeDeleteClientController() {

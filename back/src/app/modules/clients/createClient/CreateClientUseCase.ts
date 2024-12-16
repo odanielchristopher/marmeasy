@@ -1,4 +1,4 @@
-import { ClientAlreadyExists } from '../../../shared/errors/ClientAlreadyExists';
+import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
 import { ClientsRepository } from '../ClientsRepository';
 import { ClientType } from '../clientEntity';
 
@@ -23,7 +23,7 @@ export class CreateClientUseCase {
         const client = await this.clientsRepository.findByDocument(document);
   
         if (client) {
-            throw new ClientAlreadyExists();
+            throw new ClientNotFound();
         }
 
         const newClient = await this.clientsRepository.create({

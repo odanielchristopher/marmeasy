@@ -1,4 +1,4 @@
-export class ClienNotFound extends Error {
-    name = 'ClienNotFound';
-  }
+export class ClientNotFound extends Error {
+    name = 'ClientNotFound';
+}
   

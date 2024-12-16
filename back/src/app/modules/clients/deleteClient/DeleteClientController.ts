@@ -1,5 +1,5 @@
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
-import { DeleteClientUseCase } from './DeleteClienteUseCase';
+import { DeleteClientUseCase } from './DeleteClientUseCase';
 
 export class DeleteClientController implements IController {
   constructor(private readonly deleteClientUseCase: DeleteClientUseCase) {}

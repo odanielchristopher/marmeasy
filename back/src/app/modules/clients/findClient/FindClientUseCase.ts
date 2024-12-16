@@ -1,5 +1,5 @@
 import { ClientType } from '../clientEntity';
-import { ClienNotFound } from '../../../shared/errors/ClientNotFound';
+import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
 import { ClientsRepository } from '../ClientsRepository';
 
 interface IInput {
@@ -25,7 +25,7 @@ export class FindClientUseCase {
         const client = await this.clientsRepository.findById(id, userId);
 
         if (!client) {
-            throw new ClienNotFound();
+            throw new ClientNotFound();
         }
 
         return client as IOutput;

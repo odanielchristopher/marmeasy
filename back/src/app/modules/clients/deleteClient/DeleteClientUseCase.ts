@@ -1,4 +1,4 @@
-import { ClienNotFound } from '../../../shared/errors/ClientNotFound';
+import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
 import { ClientsRepository } from '../ClientsRepository';
 
 interface IInput {
@@ -17,7 +17,7 @@ export class DeleteClientUseCase {
         const client = await this.clientsRepository.findById(id, userId);
 
         if (!client) {
-            throw new ClienNotFound();
+            throw new ClientNotFound();
         }
 
         this.clientsRepository.delete(id, userId);
