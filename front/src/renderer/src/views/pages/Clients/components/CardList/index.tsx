@@ -4,10 +4,10 @@ import { Container, Footer, Header } from './styles';
 interface Card {
   id: string | number;
   name: string;
-  phone: string | number;
-  address: string;
+  phone?: string | number;
+  address?: string;
   ordersCount: number | string;
-  balance: number | number;
+  balance?: number;
 }
 
 interface CardListProps {

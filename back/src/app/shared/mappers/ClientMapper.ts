@@ -11,7 +11,7 @@ class ClientMapper {
       address: persistenceClient.address || undefined,
       type: persistenceClient.type === 'FISICO' ? 'FISICO' : 'JURIDICO',
       document: persistenceClient.document || '',
-      balance: persistenceClient.balance || undefined,
+      balance: persistenceClient.balance || 0,
     };
   }
 }

@@ -9,6 +9,7 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.header`
+  margin-bottom: 3.6rem;
   div {
     align-items: center;
     display: flex;
@@ -34,6 +35,28 @@ export const Content = styled.div`
   display: flex;
   gap: 1.6rem;
   flex-wrap: wrap;
+`;
+
+export const NotFoundContainer = styled.div`
+  width: 100%;
+  height: calc(100vh - 32rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.8rem;
+  color: ${({ theme }) => theme.colors.black.main};
+
+  p {
+    font-size: 1.6rem;
+    font-weight: 400;
+    text-align: center;
+
+    b {
+      display: block;
+    }
+  }
+
 `;
 
 
