@@ -1,8 +1,8 @@
 import { Router } from 'express';
 
-import { usersRoutes } from './usersRoutes';
 import { clientsRoutes } from './clientsRoutes';
-console.log('passou por aqui');
+import { usersRoutes } from './usersRoutes';
+
 export const routes = Router();
 
 routes.use(usersRoutes);

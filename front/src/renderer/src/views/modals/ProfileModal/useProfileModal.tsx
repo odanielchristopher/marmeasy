@@ -1,13 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { authService } from '@renderer/app/services/authService';
-import { SingUpParams } from '@renderer/app/services/authService/signUp';
-import { usersService } from '@renderer/app/services/usersService';
-
+import useDeleteUserMutation from '@renderer/app/hooks/mutations/useDelteUserMutation';
+import useEditUserMutation from '@renderer/app/hooks/mutations/useEditUserMutation';
+import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
 import { useModals } from '@renderer/app/hooks/useModals';
 import toast from '@renderer/app/utils/toast';
 
@@ -18,10 +16,15 @@ const schema = z
       .min(1, 'Nome é obrigatório')
       .min(2, 'Nome deve conter pelo menos 2 caracteres.'),
     email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
-    currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
+    currentPassword: z
+      .string()
+      .min(1, 'Senha atual é obrigatória.')
+      .min(6, 'Senha deve conter pelo menos 6 dígitos.'),
     newPassword: z
-      .string().optional().refine(value => !value || value.length === 6, {
-        message: 'O campo precisa ter 6 caracteres ou estar vazio',
+      .string()
+      .optional()
+      .refine((value) => !value || value.length >= 6, {
+        message: 'A sennha precisa ter pelo menos 6 caracteres ou estar vazio',
       }),
     confirmPassword: z.string().min(0),
   })
@@ -47,7 +50,7 @@ export default function useProfileController() {
 
   const {
     isProfileModalOpen: isOpen,
-    handleCloseProfileModal: onClose,
+    handleCloseProfileModal,
     isDeleteUserModalOpen,
     handleOpenDeleteUserModal,
     handleCloseDeleteUserModal,
@@ -62,21 +65,12 @@ export default function useProfileController() {
     resolver: zodResolver(schema),
   });
 
-  const { data, isSuccess } = useQuery({
-    queryKey: ['users', 'find-me'],
-    queryFn: () => usersService.findMe(),
-    staleTime: Infinity,
-    enabled: isOpen,
-  });
-
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: SingUpParams) => {
-      return authService.singUp(data);
-    },
-  });
+  const { data } = useFindMeQuery(isOpen);
+  const { editUser, isLoading } = useEditUserMutation();
+  const { deleteUser } = useDeleteUserMutation();
 
   useEffect(() => {
-    if (isOpen && isSuccess) {
+    if (isOpen) {
       reset(data);
     }
 
@@ -91,18 +85,31 @@ export default function useProfileController() {
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync({ email: data.email, password: data.currentPassword });
+      const { name, email, currentPassword, newPassword } = data;
+
+      await editUser({
+        name,
+        email,
+        currentPassword,
+        newPassword: newPassword ? newPassword : undefined,
+      });
+
+      handleCloseProfileModal();
       toast({
         type: 'success',
-        text: 'Conta criada com sucesso.',
+        text: 'Seus dados foram editados.',
       });
-    } catch {
+    } catch (error) {
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao criar a sua conta.',
+        text: 'Ocorreu um erro ao editar seus dados.',
       });
     }
   });
+
+  const handleDeleteUser = useCallback(async () => {
+    await deleteUser();
+  }, []);
 
   return {
     errors,
@@ -110,7 +117,8 @@ export default function useProfileController() {
     wantChangePassword,
     isOpen,
     isDeleteModalOpen: isDeleteUserModalOpen,
-    onClose,
+    handleDeleteUser,
+    handleCloseProfileModal,
     register,
     handleSubmit,
     handleWannaChangePassword,

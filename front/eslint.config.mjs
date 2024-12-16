@@ -35,6 +35,7 @@ export default [
       'quotes': ['error', 'single'], // Exigir aspas simples
       'comma-dangle': ['error', 'always-multiline'], // Virgula em listas multilinha
       'no-console': 'warn', // Avisar sobre console.log
+      'no-undef': 'off',
     },
   },
 ];

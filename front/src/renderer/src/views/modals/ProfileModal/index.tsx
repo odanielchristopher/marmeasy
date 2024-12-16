@@ -23,12 +23,13 @@ export default function ProfileModal() {
     isOpen,
     wantChangePassword,
     isDeleteModalOpen,
+    handleDeleteUser,
     handleSubmit,
     register,
-    onClose,
     handleWannaChangePassword,
     handleOpenDeleteModal,
     handleCloseDeleteModal,
+    handleCloseProfileModal,
   } = useProfileModal();
 
   if (isDeleteModalOpen) {
@@ -36,7 +37,7 @@ export default function ProfileModal() {
       <DeleteModal
         open
         onClose={handleCloseDeleteModal}
-        onConfirm={() => console.log('excluiu')}
+        onConfirm={handleDeleteUser}
         answer={`
           Tem ceteza que deseja excluir sua conta?
         `}
@@ -51,7 +52,7 @@ export default function ProfileModal() {
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
+      onClose={handleCloseProfileModal}
       title="Dados do usuário"
       action={
         <DeleteButton onClick={handleOpenDeleteModal}>

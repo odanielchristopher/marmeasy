@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-top: 1.6rem;
-  width: 100%;
-`;
-
-export const Main = styled.div`
   position: relative;
   grid-area: main;
+  margin-top: 1.6rem;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Header = styled.header`

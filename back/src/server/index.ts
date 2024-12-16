@@ -4,7 +4,6 @@ import express from 'express';
 import { routes } from './routes';
 
 const app = express();
-console.log('passou por aqui');
 app.use(cors());
 app.use(express.json());
 app.use(routes);

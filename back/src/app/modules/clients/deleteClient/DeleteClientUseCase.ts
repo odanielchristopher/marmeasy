@@ -2,28 +2,22 @@ import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
 import { ClientsRepository } from '../ClientsRepository';
 
 interface IInput {
-    id: string,
-    userId: string
+  id: string;
+  userId: string;
 }
-  
-interface IOutput {
-    message: string;
-}
+
+type IOutput = void;
 
 export class DeleteClientUseCase {
-    constructor(private readonly clientsRepository: ClientsRepository) {}
-    
-    async execute({ id, userId }: IInput): Promise<IOutput>{
-        const client = await this.clientsRepository.findById(id, userId);
+  constructor(private readonly clientsRepository: ClientsRepository) {}
 
-        if (!client) {
-            throw new ClientNotFound();
-        }
+  async execute({ id, userId }: IInput): Promise<IOutput> {
+    const client = await this.clientsRepository.findById(id, userId);
 
-        this.clientsRepository.delete(id, userId);
-
-        return {
-            message: 'Client deleted successfully.',
-        };
+    if (!client) {
+      throw new ClientNotFound();
     }
+
+    await this.clientsRepository.delete(id, userId);
+  }
 }

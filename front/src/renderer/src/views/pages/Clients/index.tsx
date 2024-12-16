@@ -2,184 +2,40 @@ import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
 
-import CardList from './components/CardList';
-import { Container, Content, Header, Main } from './styles';
+import Loader from '@renderer/views/components/Loader';
+import Select from '@renderer/views/components/Select';
+import { Container, Header } from './styles';
 
-const cards = [
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-  {
-    id: Math.random(),
-    name: 'Kleyton',
-    phone: 8812121212,
-    address: 'Rua 8, Centro - Quixada',
-    ordersCount: 12,
-    balance: 40.52,
-  },
-];
+// const cards = [
+//   {
+//     id: Math.random(),
+//     name: 'Kleyton',
+//     phone: 8812121212,
+//     address: 'Rua 8, Centro - Quixada',
+//     ordersCount: 12,
+//     balance: 40.52,
+//   },
+//   {
+//     id: Math.random(),
+//     name: 'Kleyton',
+//     phone: 8812121212,
+//     address: 'Rua 8, Centro - Quixada',
+//     ordersCount: 12,
+//     balance: 40.52,
+//   },
+//   {
+//     id: Math.random(),
+//     name: 'Kleyton',
+//     phone: 8812121212,
+//     address: 'Rua 8, Centro - Quixada',
+//     ordersCount: 12,
+//     balance: 40.52,
+//   },
+// ];
 
 export default function Clients() {
   return (
     <Container>
-      <Main>
         <Fab />
         <Header>
           <div>
@@ -188,10 +44,29 @@ export default function Clients() {
           </div>
           <p>Gerencie os clientes do seu estabelecimento</p>
         </Header>
-        <Content>
+        {/* <Content>
           <CardList cards={cards}/>
-        </Content>
-      </Main>
+        </Content> */}
+
+        <Select
+          placeholder='Cliente'
+          options={[
+            {
+              label: 'Daniel',
+              value: 'dani',
+            },
+            {
+              label: 'Ellen',
+              value: 'ellen',
+            },
+            {
+              label: 'Kleyton',
+              value: 'kleytin',
+            },
+          ]}
+        />
+
+        <Loader $isLoading size={50} />
     </Container>
   );
 }

@@ -3,6 +3,7 @@ import { z, ZodError } from 'zod';
 import { InvalidCredentials } from '../../../shared/errors/InvalidCredentials';
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 
+import { UserNotFound } from '../../../shared/errors/UserNotFound';
 import { SignInUseCase } from './SignInUseCase';
 
 const schema = z.object({
@@ -38,6 +39,15 @@ export class SignInController implements IController {
           statusCode: 401, // Unauthorized
           body: {
             error: 'E-mail ou senha inválidos.',
+          },
+        };
+      }
+
+      if (error instanceof UserNotFound) {
+        return {
+          statusCode: 400,
+          body: {
+            error: 'Usuário não cadastrado',
           },
         };
       }

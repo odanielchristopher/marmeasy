@@ -44,6 +44,7 @@ export class EditUserUseCase {
       }
     }
 
+
     let hashedNewPassword = '';
     if (newPassword) {
       hashedNewPassword = await hash(newPassword, this.salt);

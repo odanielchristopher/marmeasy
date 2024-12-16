@@ -1,7 +1,11 @@
 import { ZodError } from 'zod';
 import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
-import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
-import { FindClientUseCase} from './FindClientUseCase';
+import {
+  IController,
+  IRequest,
+  IResponse,
+} from '../../../shared/interfaces/IController';
+import { FindClientUseCase } from './FindClientUseCase';
 
 export class FindClientController implements IController {
   constructor(private readonly findClientUseCase: FindClientUseCase) {}
@@ -10,7 +14,10 @@ export class FindClientController implements IController {
     try {
       const { id } = params;
 
-      const user = await this.findClientUseCase.execute({ id, userId: userId! });
+      const user = await this.findClientUseCase.execute({
+        id,
+        userId: userId!,
+      });
 
       return {
         statusCode: 200,
@@ -18,27 +25,27 @@ export class FindClientController implements IController {
           ...user,
         },
       };
-    } catch(error){
+    } catch (error) {
       if (error instanceof ZodError) {
-              return {
-                statusCode: 400, // Bad request
-                body: error.issues,
-              };
-            }
-      
-            if(error instanceof ClientNotFound) {
-              return {
-                statusCode: 404,
-                body: {
-                  message: 'Client not found.',
-                },
-              };
-            }
-      
-            return {
-              statusCode: 500,
-              body: null,
-            };
+        return {
+          statusCode: 400, // Bad request
+          body: error.issues,
+        };
+      }
+
+      if (error instanceof ClientNotFound) {
+        return {
+          statusCode: 404,
+          body: {
+            message: 'Cliente não encontrado.',
+          },
+        };
+      }
+
+      return {
+        statusCode: 500,
+        body: null,
+      };
     }
   }
 }

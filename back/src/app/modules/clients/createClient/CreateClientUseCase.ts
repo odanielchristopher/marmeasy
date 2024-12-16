@@ -1,41 +1,32 @@
-import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
+import { DocumentError } from '../../../shared/errors/DocumentError';
+import { NotNumber } from '../../../shared/errors/NotNumber';
+import ClientMapper from '../../../shared/mappers/ClientMapper';
 import { ClientsRepository } from '../ClientsRepository';
-import { ClientType } from '../clientEntity';
-
-interface IInput {
-    name: string;
-    phone: string;
-    address: string;
-    type: ClientType;
-    document: string;
-    balance: number;
-    userId: string;
-}
-
-interface IOutput {
-    name: string;
-    document: string;
-  };
+import { IClient } from '../clientEntity';
 
 export class CreateClientUseCase {
-    constructor(private readonly clientsRepository: ClientsRepository) {}
-    async execute({ userId, name, phone, address, type, document, balance }: IInput): Promise<IOutput> {
-        const client = await this.clientsRepository.findByDocument(document);
-  
-        if (client) {
-            throw new ClientNotFound();
-        }
+  constructor(private readonly clientsRepository: ClientsRepository) {}
+  async execute(client: IClient): Promise<IClient> {
+    if (client.document) {
+      const documentAlredyInUse = await this.clientsRepository.findByDocument(client.document);
 
-        const newClient = await this.clientsRepository.create({
-            name,
-            phone,
-            address,
-            type,
-            document,
-            balance,
-            user_id: userId,
-        });
-
-        return newClient;
+      if (documentAlredyInUse) {
+        throw new DocumentError();
+      }
     }
+
+    if (client.balance) {
+      const castingBalance = Number(client.balance);
+
+      if (!castingBalance) {
+        throw new NotNumber();
+      }
+    }
+
+    const newClient = await this.clientsRepository.create({
+      ...client,
+    });
+
+    return ClientMapper.toDomain(newClient);
+  }
 }

@@ -1,6 +1,5 @@
 import { prismaClient } from '../../../database';
-import { IClient} from './clientEntity';
-import { $Enums } from '@prisma/client';
+import { IClient } from './clientEntity';
 
 export class ClientsRepository {
   async findByDocument(document: string) {
@@ -50,10 +49,10 @@ export class ClientsRepository {
         name: client.name,
         phone: client.phone,
         address: client.address,
-        type: client.type as unknown as $Enums.ClientType,
+        type: client.type,
         document: client.document,
-        balance: client.balance,
-        user_id: client.user_id,
+        balance: client.balance as number,
+        user_id: client.userId,
       },
       select: {
         id: true,
@@ -79,17 +78,19 @@ export class ClientsRepository {
     });
   }
 
-  async update(id: string, userId: string, client: IClient) {
+  async update({userId, ...client}: IClient) {
     const updatedClient = await prismaClient.client.update({
       data: {
         ...client,
+        balance: client.balance as number,
       },
       where: {
-        id: id,
+        id: client.id,
         user_id: userId,
       },
       select: {
         id: true,
+        user_id: true,
         name: true,
         phone: true,
         address: true,
