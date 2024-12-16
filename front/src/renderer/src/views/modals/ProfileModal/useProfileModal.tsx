@@ -48,6 +48,7 @@ type FormData = z.infer<typeof schema>
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
 
+
   const {
     isProfileModalOpen: isOpen,
     handleCloseProfileModal,
@@ -108,8 +109,15 @@ export default function useProfileController() {
   });
 
   const handleDeleteUser = useCallback(async () => {
-    await deleteUser();
-  }, []);
+    try {
+      await deleteUser();
+    } catch (error) {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao deletar o usuário.',
+      });
+    }
+  }, [deleteUser]);
 
   return {
     errors,

@@ -38,6 +38,7 @@ export default function Clients() {
     setClients(data ?? []);
   }
 
+  // @ts-ignore
   function handleChangeSearchTerm(event) {
     setSearchTerm(event.target.value);
   }

@@ -41,6 +41,7 @@ export class CreateClientController implements IController {
         },
       };
     } catch (error) {
+      // console.log(error);
       if (error instanceof ZodError) {
         return {
           statusCode: 400, // Bad request

@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isLoading, isSuccess } = useFindMeQuery(signedIn);
+  const { isError, isFetching, isSuccess } = useFindMeQuery(signedIn);
 
   const signin = useCallback((accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
@@ -55,8 +55,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signin,
       signout,
     }}>
-      <LaunchScreen isLoading={isLoading}/>
-      {!isLoading && children}
+      <LaunchScreen isLoading={isFetching}/>
+      {!isFetching && children}
     </AuthContext.Provider>
   );
 }

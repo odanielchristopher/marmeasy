@@ -38,6 +38,8 @@ export class EditClientUseCase {
       if (!castingBalance) {
         throw new NotNumber();
       }
+
+      client.balance = castingBalance;
     }
 
     const updatedClient = await this.clientsRepository.update({

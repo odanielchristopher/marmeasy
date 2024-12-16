@@ -44,6 +44,8 @@ export class ClientsRepository {
   }
 
   async create(client: IClient) {
+    console.log(client.balance);
+
     const newClient = await prismaClient.client.create({
       data: {
         name: client.name,
