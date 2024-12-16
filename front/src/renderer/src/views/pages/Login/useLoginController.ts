@@ -1,14 +1,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { useAuth } from '@renderer/app/hooks/useAuth';
 import toast from '@renderer/app/utils/toast';
 
-import { authService } from '@renderer/app/services/authService';
-import { SingInParams } from '@renderer/app/services/authService/singIn';
+import useLoginQuery from '@renderer/app/hooks/queries/useLoginQuery';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
@@ -29,17 +27,13 @@ export default function useLoginController() {
     resolver: zodResolver(schema),
   });
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: SingInParams) => {
-      return authService.signIn(data);
-    },
-  });
-
   const { signin } = useAuth();
+
+  const { login, isLoading } = useLoginQuery();
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      const { accessToken } = await mutateAsync(data);
+      const { accessToken } = await login(data);
 
       signin(accessToken);
 
