@@ -22,6 +22,7 @@ usersRoutes.put('/users/edit',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeEditUserController()),
 );
+
 usersRoutes.delete('/users/delete',
   middlewareAdapter(makeAuthenticationMiddleware()),
   routeAdapter(makeDeleteUserController()),

@@ -69,6 +69,15 @@ export class ClientsRepository {
 
     return newClient;
   }
+
+  async delete(id: string, userId: string) {
+    await prismaClient.client.delete({
+      where: {
+        id,
+        user_id: userId,
+      },
+    });
+  }
 }
 //   async update(client: IClient) {
 //     const updatedClient = await prismaClient.client.update({
@@ -90,13 +99,5 @@ export class ClientsRepository {
 //     });
 
 //     return updatedClient;
-//   }
-
-//   async delete(id: string) {
-//     await prismaClient.client.delete({
-//       where: {
-//         id,
-//       },
-//     });
 //   }
 // }
