@@ -1,4 +1,8 @@
-import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
+import {
+  IController,
+  IRequest,
+  IResponse,
+} from '../../../shared/interfaces/IController';
 import { GetAllClientsUseCase } from './GetAllClientsUseCase';
 
 export class GetAllClientController implements IController {
@@ -6,19 +10,21 @@ export class GetAllClientController implements IController {
 
   async handle({ userId }: IRequest): Promise<IResponse> {
     try {
-      const users = await this.getAllClientsUseCase.execute({ userId: userId! });
+      const clients = await this.getAllClientsUseCase.execute({
+        userId: userId!,
+      });
 
       return {
         statusCode: 200,
-        body: {
-          ...users,
-        },
+        body: [
+          ...clients,
+        ],
       };
     } catch {
       return {
         statusCode: 404,
         body: {
-          error: 'Usuários não encontrado',
+          error: 'Nenhum cliente encontrado',
         },
       };
     }

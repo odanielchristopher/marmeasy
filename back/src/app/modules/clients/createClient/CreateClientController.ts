@@ -1,26 +1,26 @@
 import { z, ZodError } from 'zod';
+import { ClientAlreadyExists } from '../../../shared/errors/ClientAlreadyExists';
+import { DocumentError } from '../../../shared/errors/DocumentError';
+import { NotNumber } from '../../../shared/errors/NotNumber';
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 import { CreateClientUseCase } from './CreateClientUseCase';
-import { ClientType } from '../clientEntity';
-import { ClientAlreadyExists } from '../../../shared/errors/ClientAlreadyExists';
 
 const schema = z.object({
     name: z.string(),
     userId: z.string().uuid(),
-    phone: z.string(),
-    address: z.string(),
-    type: z.nativeEnum(ClientType),
-    document: z.string(),
-    balance: z.number(),
+    phone: z.string().optional(),
+    address: z.string().optional(),
+    type: z.enum(['FISICO', 'JURIDICO']),
+    document: z.string().optional(),
+    balance: z.number().or(z.string()).optional(),
 });
 
 export class CreateClientController implements IController {
   constructor(private readonly createClientUseCase: CreateClientUseCase) {}
 
   async handle({ body, userId }: IRequest): Promise<IResponse> {
+    const { name, phone, address, type, document, balance} = body;
     try {
-      const { name, phone, address, type, document, balance} = body;
-      console.log(userId);
       const data = {
         userId,
         name,
@@ -33,12 +33,11 @@ export class CreateClientController implements IController {
 
       const client = schema.parse(data);
 
-      await this.createClientUseCase.execute(client);
-      
+      const createdClient = await this.createClientUseCase.execute(client);
       return {
         statusCode: 200,
         body: {
-          message: 'Client created successfully.',
+          client: createdClient,
         },
       };
     } catch (error) {
@@ -52,7 +51,32 @@ export class CreateClientController implements IController {
       if (error instanceof ClientAlreadyExists) {
         return {
           statusCode: 409, // Conflict
-          body: { message: 'Client already exists.' },
+          body: { message: 'Cliente já existe.' },
+        };
+      }
+
+      if (error instanceof NotNumber) {
+        return {
+          statusCode: 400,
+          body: { message: 'Número inválido' },
+        };
+      }
+
+      if (error instanceof DocumentError) {
+        if (type === 'FISICO') {
+          return {
+            statusCode: 409,
+            body: {
+              message: 'Esse CPF já está em uso.',
+            },
+          };
+        }
+
+        return {
+          statusCode: 409,
+          body: {
+            message: 'Esse CNPJ já está em uso.',
+          },
         };
       }
 

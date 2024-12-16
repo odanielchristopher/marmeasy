@@ -22,10 +22,10 @@ model Client {
   id       String     @id @default(uuid()) @db.Uuid
   user_id  String     @db.Uuid
   name     String
-  phone    String
-  address  String
+  phone    String?
+  address  String?
   type     ClientType
-  document String     @unique
+  document String?     @unique
   balance  Float      @default(0)
 
   user User @relation("UserClients", fields: [user_id], references: [id])

@@ -1,17 +1,17 @@
-import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 import { z, ZodError } from 'zod';
-import { EditClientUseCase } from './EditClientUseCase';
-import { ClientType } from '../clientEntity';
 import { ClientNotFound } from '../../../shared/errors/ClientNotFound';
 import { DocumentError } from '../../../shared/errors/DocumentError';
+import { NotNumber } from '../../../shared/errors/NotNumber';
+import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
+import { EditClientUseCase } from './EditClientUseCase';
 
 const schema = z.object({
-    name: z.string().min(3).optional(),
+    name: z.string().min(2),
     phone: z.string().min(11).optional(),
     address: z.string().min(20).optional(),
-    type: z.nativeEnum(ClientType).optional(),
+    type: z.enum(['FISICO', 'JURIDICO']),
     document: z.string().min(11).optional(),
-    balance: z.number().optional(),
+    balance: z.number().or(z.string()).optional(),
 });
 
 export class EditClientController implements IController {
@@ -21,7 +21,7 @@ export class EditClientController implements IController {
     try {
       const { id } = params;
       const { name, phone, address, type, document, balance } = body;
-    
+
       const data = {
         name,
         phone,
@@ -33,8 +33,8 @@ export class EditClientController implements IController {
 
       const client = schema.parse(data);
 
-      await this.editClientUseCase.execute({ id, userId: userId!, ...client });
-      
+      await this.editClientUseCase.execute({id, userId: userId!, ...client});
+
       return {
         statusCode: 200,
         body: {
@@ -55,6 +55,13 @@ export class EditClientController implements IController {
           body: {
             message: 'Client not found.',
           },
+        };
+      }
+
+      if (error instanceof NotNumber) {
+        return {
+          statusCode: 400,
+          body: { message: 'Número inválido' },
         };
       }
 

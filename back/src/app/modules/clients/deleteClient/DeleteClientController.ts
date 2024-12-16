@@ -1,4 +1,8 @@
-import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
+import {
+  IController,
+  IRequest,
+  IResponse,
+} from '../../../shared/interfaces/IController';
 import { DeleteClientUseCase } from './DeleteClientUseCase';
 
 export class DeleteClientController implements IController {
@@ -7,20 +11,18 @@ export class DeleteClientController implements IController {
   async handle({ params, userId }: IRequest): Promise<IResponse> {
     try {
       const { id } = params;
-      
+
       await this.deleteClientUseCase.execute({ id, userId: userId! });
 
       return {
-        statusCode: 200,
-        body: {
-          message: 'Usuário deletado com sucesso.',
-        },
+        statusCode: 204,
+        body: null,
       };
     } catch {
       return {
         statusCode: 404,
         body: {
-          error: 'Usuário não encontrado',
+          error: 'Cliente não encontrado',
         },
       };
     }
