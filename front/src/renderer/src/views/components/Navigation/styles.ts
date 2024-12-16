@@ -20,6 +20,7 @@ export const Container = styled.div<IContainer>`
   padding: 1.6rem 1rem;
   grid-area: ${({ $area }) => $area};
   width: min-content;
+  margin: 2.4rem;
 `;
 
 export const LogoContainer = styled.div`
