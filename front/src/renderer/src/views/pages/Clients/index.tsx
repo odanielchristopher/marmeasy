@@ -2,8 +2,9 @@ import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
 
+import Loader from '@renderer/views/components/Loader';
 import Select from '@renderer/views/components/Select';
-import { Container, Header, Main } from './styles';
+import { Container, Header } from './styles';
 
 // const cards = [
 //   {
@@ -35,7 +36,6 @@ import { Container, Header, Main } from './styles';
 export default function Clients() {
   return (
     <Container>
-      <Main>
         <Fab />
         <Header>
           <div>
@@ -65,7 +65,8 @@ export default function Clients() {
             },
           ]}
         />
-      </Main>
+
+        <Loader $isLoading size={50} />
     </Container>
   );
 }
