@@ -1,5 +1,3 @@
-
-
 import { User } from '@prisma/client';
 import { compare, hash } from 'bcryptjs';
 import { EmailAlreadyExists } from '../../../shared/errors/EmailAlreadyExists';
