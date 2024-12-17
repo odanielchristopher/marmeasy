@@ -25,10 +25,10 @@ model Client {
   phone    String?
   address  String?
   type     ClientType
-  document String?     @unique
+  document String?    @unique
   balance  Float      @default(0)
 
-  user User @relation("UserClients", fields: [user_id], references: [id])
+  user User @relation("UserClients", fields: [user_id], references: [id], onDelete: Cascade)
 
   @@map("clients")
 }
@@ -37,3 +37,4 @@ enum ClientType {
   FISICO
   JURIDICO
 }
+

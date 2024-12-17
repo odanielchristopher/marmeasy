@@ -43,7 +43,7 @@ export default function ProfileModal() {
         `}
         description={`
           Todos os dados relacionados a sua conta
-          serão apagados e não poderão ser recurados.
+          serão apagados e não poderão ser recuperados.
         `}
       />
     );

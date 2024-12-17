@@ -35,6 +35,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="Telefone da empresa"
               format="(##) ##### ####"
+              mask='_'
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -51,17 +52,13 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="CNPJ da empresa"
               format="##.###.###/####-##"
+              mask='_'
               $error={errors.cnpj?.message}
               onChangeValue={onChange}
               value={value}
             />
           )}
         />
-
-        <div className="dividerInput">
-          <Input type="number" placeholder="Numero" {...register('number')} />
-          <Input type="text" placeholder="Bairro" {...register('district')} />
-        </div>
 
         <Button type="submit" isLoading={isLoading} onClick={handleSubmit}>
           Adicionar empresa

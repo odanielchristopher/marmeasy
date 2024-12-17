@@ -15,16 +15,20 @@ export class CreateClientUseCase {
       }
     }
 
+
     if (client.balance) {
       const castingBalance = Number(client.balance);
 
       if (!castingBalance) {
         throw new NotNumber();
       }
+
+      client.balance = castingBalance;
     }
 
     const newClient = await this.clientsRepository.create({
       ...client,
+
     });
 
     return ClientMapper.toDomain(newClient);

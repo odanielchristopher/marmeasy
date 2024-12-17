@@ -1,40 +1,47 @@
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import { Container, Footer, Header } from './styles';
-
-interface Card {
-  id: string | number;
-  name: string;
-  phone: string | number;
-  address: string;
-  ordersCount: number | string;
-  balance: number | number;
-}
+import { Client } from '@renderer/app/entities/Client';
+import useAside from '@renderer/app/hooks/useAside';
+import formatPhone from '@renderer/app/utils/formatPhone';
+import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
+import { Container, Footer, Header, Main } from './styles';
 
 interface CardListProps {
-  cards: Card[];
+  clients: Client[];
+  onDeleteClient(client: Client): void;
 }
 
-export default function CardList({ cards }: CardListProps) {
+export default function CardList({ clients, onDeleteClient }: CardListProps) {
+  const { handleShowClientData } = useAside();
+
+
   return (
     <>
-      {cards.map((card) => (
-        <Container key={card.id}>
+      {clients.map((client) => (
+        <Container key={client.id} onClick={() => handleShowClientData(client)}>
           <Header>
-            <h2>{card.name}</h2>
-            <p>{card.phone}</p>
-            <Separator className="header" />
-            <h3>Endereço</h3>
-            <p>{card.address}</p>
-          </Header>
-          <Footer>
-            <p>Totais de pedidos: {card.ordersCount}</p>
-            <Separator className="footer" />
-            <div className="ultimatefooter">
-              <p>Saldo</p>
-              <h3>R$ {card.balance}</h3>
+            <div className="infos">
+              <strong>{client.name}</strong>
+              <span>{formatPhone(client.phone ?? '')}</span>
             </div>
+            <button onClick={() => onDeleteClient(client)} className="deleteButton">
+              <DeleteIcon />
+            </button>
+          </Header>
+          <Main>
+            <div className="top">
+              <strong>Endereço</strong>
+              <span>{client.address ?? 'Sem endereço'}</span>
+            </div>
+
+            <div className="bottom">
+              <span>Totais de pedidos: {21}</span>
+            </div>
+          </Main>
+          <Footer>
+            <span>Saldo</span>
+
+            <strong>R$ {client.balance}</strong>
           </Footer>
-      </Container>
+        </Container>
       ))}
     </>
   );

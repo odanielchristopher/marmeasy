@@ -6,6 +6,7 @@ import { ModalsProvider } from '@renderer/app/contexts/ModalsContext';
 
 import ProfileModal from '@renderer/views/modals/ProfileModal';
 
+import { AsideProvider } from '@renderer/app/contexts/AsideContext';
 import Aside from '@renderer/views/components/Aside';
 import { Container, Main } from './styles';
 
@@ -16,6 +17,7 @@ export default function NavLayout() {
 
   return (
     <ModalsProvider>
+      <AsideProvider>
         <ProfileModal />
         <Container $showAside={showAside} >
           <Navigation $area='nav'/>
@@ -24,6 +26,7 @@ export default function NavLayout() {
           </Main>
           {showAside && <Aside area="aside" />}
         </Container>
+      </AsideProvider>
     </ModalsProvider>
   );
 }

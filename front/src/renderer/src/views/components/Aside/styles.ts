@@ -5,11 +5,12 @@ interface ContainerProps {
 }
 
 export const Container = styled.aside<ContainerProps>`
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: #FFF;
   border-radius: ${({ theme }) => theme.borderRadius};
   height: calc(100vh - (${({ theme }) => theme.margin} * 2));
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   padding: 2.4rem 2rem;
+  margin: 2.4rem;
 
   grid-area: ${({ $area }) => $area};
 `;

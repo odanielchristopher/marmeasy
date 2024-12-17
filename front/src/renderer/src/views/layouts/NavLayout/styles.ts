@@ -5,13 +5,14 @@ interface ContainerProps {
 }
 
 export const Container = styled.div<ContainerProps>`
-  padding: 2.4rem;
+  /* padding: 2.4rem; */
   display: grid;
   grid-template-columns: ${({ $showAside }) =>
-    $showAside ? '7.0rem 1fr minmax(20.0rem, 40.0rem)' : '7.0rem 1fr'};
+    $showAside ? '7.0rem 1fr minmax(45.0rem, 40.0rem)' : '7.0rem 1fr'};
   grid-template-areas: ${({ $showAside }) =>
     $showAside ? '\'nav outlet aside\'' : '\'nav outlet\''};
   gap: 3.2rem;
+  overflow-y: auto;
 `;
 
 export const Main = styled.div`
@@ -19,10 +20,9 @@ export const Main = styled.div`
   overflow-y: auto;
   max-height: 100vh;
   width: 100%;
-
+  margin-left: 2.4rem;
+  padding-block: 2.4rem;
   &::-webkit-scrollbar {
       display: none;
     }
-
-  padding-bottom: 4.8rem;
 `;

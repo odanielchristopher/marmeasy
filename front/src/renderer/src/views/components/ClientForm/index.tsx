@@ -1,23 +1,21 @@
-//@ts-ignore
+import { Client } from '@renderer/app/entities/Client';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
-import InputMask from '@renderer/views/components/InputMask';
-import Modal from '@renderer/views/components/Modal';
 import { Controller } from 'react-hook-form';
-import { FormModal } from './styles';
-import useClientModal from './useClientModal';
+import InputMask from '../InputMask';
+import { Form } from './styles';
+import useClientForm from './useClientForm';
 
-interface ClientModalProps {
-  isOpen: boolean
-  onClose(): void
+interface ClientFormProps {
+  $isShow: boolean
+  client: Client | null;
 }
 
-export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useClientModal(isOpen, onClose);
+export default function ClientForm({ $isShow, client }: ClientFormProps) {
+  const { errors, handleSubmit, isLoading, register, control } = useClientForm($isShow, client);
 
   return (
-    <Modal open={isOpen} title="Novo cliente" onClose={onClose}>
-      <FormModal onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
         <p>Digite as informações do seu cliente.</p>
 
         <Input
@@ -36,7 +34,6 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="Telefone do cliente"
               format="(##) #####-####"
-              mask='_'
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -45,6 +42,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         />
 
         <Input type="text" placeholder="Endereço do cliente" {...register('address')} />
+
         <Controller
           control={control}
           name='cpf'
@@ -54,7 +52,6 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="CPF do cliente"
               format="###.###.###-##"
-              mask='_'
               $error={errors.cpf?.message}
               onChangeValue={onChange}
               value={value}
@@ -63,9 +60,8 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         />
 
         <Button type="submit" isLoading={isLoading} onClick={handleSubmit}>
-          Adicionar cliente
+          Salvar alterações
         </Button>
-      </FormModal>
-    </Modal>
+    </Form>
   );
 }

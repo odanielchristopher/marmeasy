@@ -37,10 +37,11 @@ export class CreateClientController implements IController {
       return {
         statusCode: 200,
         body: {
-          client: createdClient,
+         ...createdClient,
         },
       };
     } catch (error) {
+      // console.log(error);
       if (error instanceof ZodError) {
         return {
           statusCode: 400, // Bad request
