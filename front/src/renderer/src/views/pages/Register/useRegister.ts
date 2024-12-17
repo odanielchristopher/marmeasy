@@ -54,6 +54,7 @@ export default function useRegister() {
           type: 'danger',
           text: error.response?.data.error,
         });
+        return;
       }
 
       toast({
