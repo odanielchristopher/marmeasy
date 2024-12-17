@@ -4,7 +4,7 @@ import Fab from '@renderer/views/components/Fab';
 import { IoIosSearch } from 'react-icons/io';
 
 import { clientsService } from '@renderer/app/services/clientsService';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useEffect, useMemo, useState } from 'react';
 import {
   Container,
@@ -18,12 +18,46 @@ import {
 import { Client } from '@renderer/app/entities/Client';
 import CardList from './components/CardList';
 
+import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
+import DeleteModal from '@renderer/views/modals/DeleteModal';
 
 export default function Clients() {
   const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+
+  const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] = useState(false);
+  const [clientBeingDeleted, setClientBeingDeleted] = useState<Client | null>(null);
+
+  function handleDeleteClient(client: Client) {
+    setClientBeingDeleted(client);
+    setIsDeleteClientModalVisible(true);
+  }
+
+  function handleCloseDeleteClientModal() {
+    setIsDeleteClientModalVisible(false);
+  }
+
+  async function handleOnConfirmDeleteClient() {
+    console.log(clientBeingDeleted);
+
+    // try {
+    //   await deleteClient({id: clientBeingDeleted!.id});
+    // } catch {
+    //   toast({
+    //     type: 'danger',
+    //     text: 'Ocorreu um erro ao tentar deletar o cliente.',
+    //   });
+    // }
+  }
+
+  const { mutateAsync: deleteClient } = useMutation({
+    mutationFn: async (data: RemoveClientParams) => {
+      return clientsService.remove(data);
+    },
+  });
+
 
   const { data, isFetching } = useQuery({
     queryKey: ['clients', 'getAll'],
@@ -57,7 +91,23 @@ export default function Clients() {
 
   return (
     <Container>
+
+      <DeleteModal
+        onConfirm={handleOnConfirmDeleteClient}
+        open={isDeleteClientModalVisible}
+        onClose={handleCloseDeleteClientModal}
+        answer={`
+          Tem ceteza que deseja excluir esse cliente?
+        `}
+        description={`
+          Todos os dados relacionados a esse cliente
+          serão apagados e não poderão ser recuperados.
+        `}
+      />
+
+
       <Fab />
+
       <Header>
         <div>
           <TbUsers size={32} />
@@ -81,6 +131,7 @@ export default function Clients() {
         <Content>
           {hasClient && (
             <CardList
+              onDeleteClient={handleDeleteClient}
               clients={filteredClients}
             />
           )}

@@ -11,6 +11,8 @@ export default function useCreateClient() {
     onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: ['clients', 'getAll'],
+        type: 'active',
+        exact: true,
       });
     },
   });

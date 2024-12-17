@@ -9,6 +9,8 @@ export default function useUpdateClient() {
     onSuccess: () => {
       queryClient.refetchQueries({
         queryKey: ['clients', 'getAll'],
+        type: 'active',
+        exact: true,
       });
     },
   });
