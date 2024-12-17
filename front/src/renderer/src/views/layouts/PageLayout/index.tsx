@@ -1,13 +1,13 @@
 import { Outlet, useLocation } from 'react-router-dom';
 
-import Navigation from '@renderer/views/components/Navigation';
-
+import { AsideProvider } from '@renderer/app/contexts/AsideContext';
 import { ModalsProvider } from '@renderer/app/contexts/ModalsContext';
 
 import ProfileModal from '@renderer/views/modals/ProfileModal';
 
-import { AsideProvider } from '@renderer/app/contexts/AsideContext';
-import Aside from '@renderer/views/components/Aside';
+import Aside from './components/Aside';
+import Navigation from './components/Navigation';
+
 import { Container, Main } from './styles';
 
 export default function NavLayout() {

@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
-import ClientForm from '../ClientForm';
+import ClientForm from '@renderer/views/components/ClientForm';
 import frase from '/frase.png?url';
 
 interface AsideProps {
