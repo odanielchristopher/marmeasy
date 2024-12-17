@@ -19,6 +19,7 @@ import { Client } from '@renderer/app/entities/Client';
 import CardList from './components/CardList';
 
 import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
+import toast from '@renderer/app/utils/toast';
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
 import DeleteModal from '@renderer/views/modals/DeleteModal';
@@ -40,16 +41,19 @@ export default function Clients() {
   }
 
   async function handleOnConfirmDeleteClient() {
-    console.log(clientBeingDeleted);
+    try {
+      await deleteClient({id: clientBeingDeleted!.id});
 
-    // try {
-    //   await deleteClient({id: clientBeingDeleted!.id});
-    // } catch {
-    //   toast({
-    //     type: 'danger',
-    //     text: 'Ocorreu um erro ao tentar deletar o cliente.',
-    //   });
-    // }
+      toast({
+        type: 'success',
+        text: 'Cliente removido com sucesso.',
+      });
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao tentar remover o cliente.',
+      });
+    }
   }
 
   const { mutateAsync: deleteClient } = useMutation({

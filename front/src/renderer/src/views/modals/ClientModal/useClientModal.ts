@@ -45,14 +45,14 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
 
       toast({
         type: 'success',
-        text: 'Usuário cadastrado com sucesso.',
+        text: 'Cliente cadastrado com sucesso.',
       });
 
       closeModal();
     } catch {
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro!',
+        text: 'Ocorreu um erro cadastrar o cliente!',
       });
     }
   });
