@@ -57,7 +57,7 @@ export default function useClient() {
     queryFn: async () => {
       return await clientsService.getAll();
     },
-    staleTime: 10000,
+    staleTime: 60000,
   });
 
   function loadClient() {
