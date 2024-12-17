@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-export const useFabController = () => {
+export const useFab = () => {
   const [isOpenModalClient, setOpenModalClient] = useState(false);
   const [isOpenModalCompany, setOpenModalCompany] = useState(false);
 

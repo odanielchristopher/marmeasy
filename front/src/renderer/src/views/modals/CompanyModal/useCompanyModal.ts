@@ -11,7 +11,7 @@ const clientFormSchema = z.object({
   phone: z.string().optional(),
   address: z.string().optional(),
   cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
-    message: 'O CPF precisa ser válido ou estar vazio',
+    message: 'O CNPJ precisa ser válido ou estar vazio',
   }),
 });
 
