@@ -63,7 +63,7 @@ export default function ClientForm({ $isShow }: ClientFormProps) {
         </div>
 
         <Button type="submit" isLoading={isLoading} onClick={handleSubmit}>
-          Adicionar cliente
+          Salvar alterações
         </Button>
     </Form>
   );

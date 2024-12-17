@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { Actions, ActionsButton, Container, Header } from './styles';
+import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
+import useAside from '@renderer/app/hooks/useAside';
+import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import ClientForm from '../ClientForm';
 import frase from '/frase.png?url';
 
@@ -13,6 +15,8 @@ interface AsideProps {
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
   const [showAddOrders, setShowAddOrders] = useState(false);
+
+  const { showClientData } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
@@ -39,18 +43,20 @@ export default function Aside({ area }: AsideProps) {
         {hasOrders && <ActionsButton $isActive={showAddOrders} onClick={handleShowAddOrders}>Adicionar pedido</ActionsButton>}
       </Actions>
 
-      {/* <Main>
-        <Empty>
-          <img src={clipboard} alt="Empty" />
+      {!showClientData && (
+        <Main>
+          <Empty>
+            <img src={clipboard} alt="Empty" />
 
-          <p>
-            <b>Nenhum cliente selecionado!</b>
-            Clique em algum cliente para ver seus detalhes.
-          </p>
-        </Empty>
-      </Main> */}
+            <p>
+              <b>Nenhum cliente selecionado!</b>
+              Clique em algum cliente para ver seus detalhes.
+            </p>
+          </Empty>
+        </Main>
+      )}
 
-      <ClientForm $isShow/>
+      {showClientData && <ClientForm $isShow={showClientData}/>}
 
     </Container >
   );

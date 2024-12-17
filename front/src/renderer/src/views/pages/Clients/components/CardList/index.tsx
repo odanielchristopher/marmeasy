@@ -1,8 +1,9 @@
 import { Separator } from '@radix-ui/react-dropdown-menu';
+import useAside from '@renderer/app/hooks/useAside';
 import { Container, Footer, Header } from './styles';
 
 interface Card {
-  id: string | number;
+  id: string;
   name: string;
   phone?: string | number;
   address?: string;
@@ -15,10 +16,12 @@ interface CardListProps {
 }
 
 export default function CardList({ cards }: CardListProps) {
+  const { handleShowClientData } = useAside();
+
   return (
     <>
       {cards.map((card) => (
-        <Container key={card.id}>
+        <Container key={card.id} onClick={() => handleShowClientData(card.id)}>
           <Header>
             <h2>{card.name}</h2>
             <p>{card.phone}</p>
