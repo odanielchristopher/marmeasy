@@ -23,12 +23,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { isError, isLoading, isSuccess } = useFindMeQuery(signedIn);
 
   const signin = useCallback(async (accessToken: string) => {
-    queryClient.clear();
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
     setSignedIn(true);
   }, []);
 
   const signout = useCallback(async () => {
+    queryClient.clear();
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
     setSignedIn(false);
   }, []);
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isSuccess) {
       toast({
         type: 'success',
-        text: 'Usuário autenticado.',
+        text: 'Usuário autenticado',
       });
     }
   }, [isError, signout, isSuccess]);

@@ -1,18 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { queryClient } from '@renderer/App';
 import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
-import { useAuth } from '@renderer/app/hooks/useAuth';
+
 import { useModals } from '@renderer/app/hooks/useModals';
+import toast from '@renderer/app/utils/toast';
+
+import { useAuth } from '@renderer/app/hooks/useAuth';
 import { usersService } from '@renderer/app/services/usersService';
 import { EditMeParams } from '@renderer/app/services/usersService/editMe';
 import { FindMeResponse } from '@renderer/app/services/usersService/findme';
-import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z
   .object({
@@ -53,7 +56,7 @@ type FormData = z.infer<typeof schema>
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
   const { signout } = useAuth();
-
+  const navigateTo = useNavigate();
 
   const {
     isProfileModalOpen: isOpen,
@@ -99,10 +102,16 @@ export default function useProfileController() {
       await usersService.deleteMe();
     },
     onSuccess: () => {
+      toast({
+        type: 'default',
+        text: 'Conta exluída',
+      });
+
+      navigateTo('/login', { replace: true });
+
       signout();
-      queryClient.resetQueries();
     },
-  });;
+  });
 
   useEffect(() => {
     if (isOpen) {
