@@ -17,7 +17,7 @@ import CardList from './components/CardList';
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
 import DeleteModal from '@renderer/views/modals/DeleteModal';
-import useClient from './useClients';
+import useClients from './useClients';
 
 export default function Clients() {
   const {
@@ -31,7 +31,7 @@ export default function Clients() {
     isSearchEmpty,
     searchTerm,
     filteredClients,
-  } = useClient();
+  } = useClients();
 
   return (
     <Container>
