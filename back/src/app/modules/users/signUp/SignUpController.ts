@@ -36,7 +36,7 @@ export class SignUpController implements IController {
         return {
           statusCode: 409, // Conflict
           body: {
-            error: 'Esse e-mail já está em uso.',
+            error: 'Esse e-mail já está em uso!',
           },
         };
       }

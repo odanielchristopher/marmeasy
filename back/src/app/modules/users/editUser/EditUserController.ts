@@ -41,7 +41,7 @@ export class EditUserController implements IController {
         return {
           statusCode: 401, // Unauthorized
           body: {
-            error: 'E-mail ou senha inválidos.',
+            error: 'Senha inválida!',
           },
         };
       }
@@ -50,7 +50,7 @@ export class EditUserController implements IController {
         return {
           statusCode: 400,
           body: {
-            error: 'E-mail já em uso.',
+            error: 'Este e-mail já está em uso!',
           },
         };
       }
