@@ -33,7 +33,7 @@ export default function ClientForm({ $isShow, client }: ClientFormProps) {
               name={name}
               type="text"
               placeholder="Telefone do cliente"
-              format="(##) ##### ####"
+              format="(##) #####-####"
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -42,6 +42,7 @@ export default function ClientForm({ $isShow, client }: ClientFormProps) {
         />
 
         <Input type="text" placeholder="Endereço do cliente" {...register('address')} />
+
         <Controller
           control={control}
           name='cpf'

@@ -77,7 +77,7 @@ export const SearchInput = styled.input`
   padding-left: 4.2rem;
   border-radius: 1.0rem;
   height: 4.8rem;
-  border: .08rem solid ${({ theme }) => theme.colors.gray.lighter};
+  border: .08rem solid transparent;
   font-size: 1.6rem;
   line-height: 1.8rem;
   box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.08);

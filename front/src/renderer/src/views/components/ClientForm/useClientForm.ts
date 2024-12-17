@@ -37,8 +37,15 @@ export default function useClientForm(isShow: boolean, client: Client | null) {
   const { updateClient, isLoading } = useUpdateClient();
 
   useEffect(() => {
-    if (isShow) {
-      reset(client ?? {});
+    if (isShow && client) {
+      reset({
+        name: client.name,
+        address: client.address ?? '',
+        cpf: client.document ?? '',
+        phone: client.phone ?? '',
+      });
+    } else if (!isShow) {
+      reset();
     }
 
     return () => {

@@ -35,7 +35,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               name={name}
               type="text"
               placeholder="Telefone do cliente"
-              format="(##) ##### ####"
+              format="(##) #####-####"
               mask='_'
               $error={errors.phone?.message}
               onChangeValue={onChange}
