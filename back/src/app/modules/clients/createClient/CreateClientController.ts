@@ -15,6 +15,7 @@ const schema = z.object({
     balance: z.number().or(z.string()).optional(),
 });
 
+
 export class CreateClientController implements IController {
   constructor(private readonly createClientUseCase: CreateClientUseCase) {}
 

@@ -1,18 +1,16 @@
 import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
-import { IoIosSearch } from 'react-icons/io';
+import SearchInput from '@renderer/views/components/SearchInput';
 
 import {
   Container,
   Content,
   Header,
-  InputContainer,
   NotFoundContainer,
-  SearchInput,
 } from './styles';
 
-import CardList from './components/CardList';
+import ClientList from './components/ClientList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
@@ -49,7 +47,6 @@ export default function Clients() {
         `}
       />
 
-
       <Fab />
 
       <Header>
@@ -60,21 +57,18 @@ export default function Clients() {
         <p>Gerencie os clientes do seu estabelecimento</p>
       </Header>
 
-      <InputContainer>
-        <IoIosSearch size={28} />
-        <SearchInput
-          placeholder="Pesquisar por nome..."
-          value={searchTerm}
-          onChange={handleChangeSearchTerm}
-        />
-      </InputContainer>
+      <SearchInput
+        placeholder='Pesquisa por nome...'
+        value={searchTerm}
+        onValueChange={handleChangeSearchTerm}
+      />
 
       {isFetching && <Loader $isLoading size={50} />}
 
       {!isFetching && (
         <Content>
           {hasClient && (
-            <CardList
+            <ClientList
               onDeleteClient={handleDeleteClient}
               clients={filteredClients}
             />
