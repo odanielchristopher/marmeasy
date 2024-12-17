@@ -1,10 +1,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import useCreateUserMutation from '@renderer/app/hooks/mutations/useCreateUserMutation';
-import { useAuth } from '@renderer/app/hooks/useAuth';
-import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { authService } from '@renderer/app/services/authService';
+import { SingUpParams } from '@renderer/app/services/authService/signUp';
+
+import { useAuth } from '@renderer/app/hooks/useAuth';
+import toast from '@renderer/app/utils/toast';
+import { AxiosError } from 'axios';
 
 const schema = z.object({
   name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
@@ -26,7 +31,11 @@ export default function useRegister() {
     resolver: zodResolver(schema),
   });
 
-  const { createUser, isLoading } = useCreateUserMutation();
+  const { mutateAsync: createUser, isPending: isLoading } = useMutation({
+    mutationFn: async (data: SingUpParams) => {
+      return authService.singUp(data);
+    },
+  });;
 
   const { signin } = useAuth();
 
@@ -39,10 +48,17 @@ export default function useRegister() {
         type: 'success',
         text: 'Conta criada com sucesso.',
       });
-    } catch {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          type: 'danger',
+          text: error.response?.data.error,
+        });
+      }
+
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao criar a sua conta.',
+        text: 'Ocorreu um erro ao criar sua conta',
       });
     }
   });
