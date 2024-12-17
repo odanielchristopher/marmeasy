@@ -18,6 +18,7 @@ import {
 import { Client } from '@renderer/app/entities/Client';
 import CardList from './components/CardList';
 
+import { queryClient } from '@renderer/App';
 import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
 import toast from '@renderer/app/utils/toast';
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
@@ -59,6 +60,13 @@ export default function Clients() {
   const { mutateAsync: deleteClient } = useMutation({
     mutationFn: async (data: RemoveClientParams) => {
       return clientsService.remove(data);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ['clients', 'getAll'],
+        type: 'active',
+        exact: true,
+      });
     },
   });
 

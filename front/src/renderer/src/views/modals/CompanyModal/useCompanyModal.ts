@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import useCreateClient from '@renderer/app/hooks/mutations/useCreateClient';
 import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -34,13 +34,16 @@ export default function useCompanyModal(isOpen: boolean) {
     };
   }, [isOpen]);
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: FormData) => console.log({ data }),
-  });
+  const { createClient, isLoading } = useCreateClient();
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await mutateAsync(data);
+      await createClient({
+        ...data,
+        type: 'JURIDICO',
+        document: data.cnpj,
+      });
+
       toast({
         type: 'success',
         text: 'Usuário cadastrado com sucesso.',

@@ -41,6 +41,7 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
       await createClient({
         ...data,
         type: 'FISICO',
+        document: data.cpf,
       });
 
       toast({
