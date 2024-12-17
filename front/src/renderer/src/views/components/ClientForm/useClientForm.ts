@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Client } from '@renderer/app/entities/Client';
 import useCreateClient from '@renderer/app/hooks/mutations/useCreateClient';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -18,33 +20,28 @@ const clientFormSchema = z.object({
 
 export type FormData = z.infer<typeof clientFormSchema>;
 
-export default function useClientForm(isShow: boolean, clientId: string) {
+export default function useClientForm(isShow: boolean, client: Client | null) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<FormData>({
     resolver: zodResolver(clientFormSchema),
   });
 
-  console.log(isShow, clientId);
-
   const { createClient, isLoading } = useCreateClient();
 
-  // const { data } =useQuery({
-  //   queryKey: ['/clients', 'getOne'],
-  //   queryFn: async () => {
-  //     return clientsService.getOne({id: 'asd'});
-  //   },
-  //   enabled: isShow,
-  // });
+  useEffect(() => {
+    if (isShow) {
+      reset(client ?? {});
+    }
 
-  // useEffect(() => {
-  //   if (isShow) {
-  //     reset(data);
-  //   }
-  // }, [isShow, data]);
+    return () => {
+      reset();
+    };
+  }, [isShow, client]);
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {

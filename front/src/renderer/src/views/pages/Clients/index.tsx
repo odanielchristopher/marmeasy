@@ -16,7 +16,6 @@ import {
 } from './styles';
 
 import { Client } from '@renderer/app/entities/Client';
-import formatPhone from '@renderer/app/utils/formatPhone';
 import CardList from './components/CardList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
@@ -82,14 +81,7 @@ export default function Clients() {
         <Content>
           {hasClient && (
             <CardList
-              cards={filteredClients.map((client) => ({
-                id: client.id,
-                name: client.name,
-                address: client.address,
-                phone: formatPhone(client.phone ?? ''),
-                balance: client.balance as number,
-                ordersCount: 12,
-              }))}
+              clients={filteredClients}
             />
           )}
 

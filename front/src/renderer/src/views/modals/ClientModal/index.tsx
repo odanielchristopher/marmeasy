@@ -36,6 +36,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="Telefone do cliente"
               format="(##) ##### ####"
+              mask='_'
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -53,6 +54,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="CPF do cliente"
               format="###.###.###-##"
+              mask='_'
               $error={errors.cpf?.message}
               onChangeValue={onChange}
               value={value}

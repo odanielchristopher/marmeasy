@@ -1,21 +1,20 @@
 import React, { createContext, useCallback, useState } from 'react';
+import { Client } from '../entities/Client';
 
 export interface AsideContextValue {
-  handleShowClientData(id: string): void;
+  handleShowClientData(client: Client): void;
   showClientData: boolean;
-  seletedClient: string;
+  seletedClient: Client | null;
 }
 
 export const AsideContext = createContext({} as AsideContextValue);
 
 export function AsideProvider({ children }: { children: React.ReactNode }) {
   const [showClientData, setShowClientData] = useState(false);
-  const [seletedClient, setSeletedClient] = useState('');
+  const [seletedClient, setSeletedClient] = useState<Client | null>(null);
 
-  const handleShowClientData = useCallback((id: string) => {
-
-    console.log(id);
-    setSeletedClient(id);
+  const handleShowClientData = useCallback((client: Client) => {
+    setSeletedClient(client);
     setShowClientData(true);
   }, []);
 

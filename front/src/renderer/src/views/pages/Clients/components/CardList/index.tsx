@@ -1,40 +1,34 @@
 import { Separator } from '@radix-ui/react-dropdown-menu';
+import { Client } from '@renderer/app/entities/Client';
 import useAside from '@renderer/app/hooks/useAside';
+import formatPhone from '@renderer/app/utils/formatPhone';
 import { Container, Footer, Header } from './styles';
 
-interface Card {
-  id: string;
-  name: string;
-  phone?: string | number;
-  address?: string;
-  ordersCount: number | string;
-  balance?: number;
-}
 
 interface CardListProps {
-  cards: Card[];
+  clients: Client[];
 }
 
-export default function CardList({ cards }: CardListProps) {
+export default function CardList({ clients }: CardListProps) {
   const { handleShowClientData } = useAside();
 
   return (
     <>
-      {cards.map((card) => (
-        <Container key={card.id} onClick={() => handleShowClientData(card.id)}>
+      {clients.map((client) => (
+        <Container key={client.id} onClick={() => handleShowClientData(client)}>
           <Header>
-            <h2>{card.name}</h2>
-            <p>{card.phone}</p>
+            <h2>{client.name}</h2>
+            <p>{formatPhone(client.phone ?? '')}</p>
             <Separator className="header" />
             <h3>Endereço</h3>
-            <p>{card.address}</p>
+            <p>{client.address}</p>
           </Header>
           <Footer>
-            <p>Totais de pedidos: {card.ordersCount}</p>
+            <p>Totais de pedidos: 0</p>
             <Separator className="footer" />
             <div className="ultimatefooter">
               <p>Saldo</p>
-              <h3>R$ {card.balance}</h3>
+              <h3>R$ {client.balance}</h3>
             </div>
           </Footer>
       </Container>

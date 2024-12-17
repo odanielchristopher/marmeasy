@@ -13,10 +13,11 @@ export interface InputProps {
   placeholder?: string;
   id?: string;
   format: string;
+  mask?: string;
 }
 
 export default function InputMask(
-  { type, placeholder, name, id, $error, isLoading, value, format, onChangeValue } : InputProps,
+  { type, placeholder, name, id, $error, isLoading, value, format, mask, onChangeValue } : InputProps,
 ) {
   const inputId = id ?? name;
 
@@ -24,7 +25,7 @@ export default function InputMask(
     <Container>
       <StyledInput
         format={format}
-        mask="_"
+        mask={mask}
         name={name}
         id={inputId}
         type={type}

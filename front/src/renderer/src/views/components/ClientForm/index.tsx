@@ -1,3 +1,4 @@
+import { Client } from '@renderer/app/entities/Client';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import { Controller } from 'react-hook-form';
@@ -7,11 +8,11 @@ import useClientForm from './useClientForm';
 
 interface ClientFormProps {
   $isShow: boolean
-  clientId: string;
+  client: Client | null;
 }
 
-export default function ClientForm({ $isShow, clientId }: ClientFormProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useClientForm($isShow, clientId);
+export default function ClientForm({ $isShow, client }: ClientFormProps) {
+  const { errors, handleSubmit, isLoading, register, control } = useClientForm($isShow, client);
 
   return (
     <Form onSubmit={handleSubmit}>

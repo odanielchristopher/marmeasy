@@ -56,7 +56,7 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && <ClientForm clientId={seletedClient} $isShow={showClientData}/>}
+      {showClientData && <ClientForm client={seletedClient} $isShow={showClientData}/>}
 
     </Container >
   );
