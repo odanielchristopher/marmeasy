@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
 
 import { useLocation } from 'react-router-dom';
@@ -16,7 +16,7 @@ export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
   const [showAddOrders, setShowAddOrders] = useState(false);
 
-  const { showClientData, seletedClient } = useAside();
+  const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
@@ -27,6 +27,12 @@ export default function Aside({ area }: AsideProps) {
     setShowAddOrders(true);
     setShowDetails(false);
   }
+
+  useEffect(() => {
+    return () => {
+      handleHiddenClientData();
+    };
+  }, []);
 
   const location = useLocation();
 

@@ -5,6 +5,7 @@ export interface AsideContextValue {
   handleShowClientData(client: Client): void;
   showClientData: boolean;
   seletedClient: Client | null;
+  handleHiddenClientData(): void;
 }
 
 export const AsideContext = createContext({} as AsideContextValue);
@@ -18,11 +19,15 @@ export function AsideProvider({ children }: { children: React.ReactNode }) {
     setShowClientData(true);
   }, []);
 
-
+  const handleHiddenClientData = useCallback(() => {
+    setSeletedClient(null);
+    setShowClientData(false);
+  }, []);
 
   return (
     <AsideContext.Provider value={{
       handleShowClientData,
+      handleHiddenClientData,
       showClientData,
       seletedClient,
     }}>
