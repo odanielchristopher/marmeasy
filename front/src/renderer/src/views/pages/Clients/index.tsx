@@ -3,12 +3,7 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import {
-  Container,
-  Content,
-  Header,
-  NotFoundContainer,
-} from './styles';
+import { Container, Content, Header, NotFoundContainer } from './styles';
 
 import ClientList from './components/ClientList';
 
@@ -25,6 +20,7 @@ export default function Clients() {
     handleChangeSearchTerm,
     hasClient,
     isDeleteClientModalVisible,
+    clientBeingDeleted,
     isFetching,
     isSearchEmpty,
     searchTerm,
@@ -33,18 +29,20 @@ export default function Clients() {
 
   return (
     <Container>
-
       <DeleteModal
         onConfirm={handleOnConfirmDeleteClient}
         open={isDeleteClientModalVisible}
         onClose={handleCloseDeleteClientModal}
-        answer={`
-          Tem ceteza que deseja excluir esse cliente?
-        `}
-        description={`
-          Todos os dados relacionados a esse cliente
-          serão apagados e não poderão ser recuperados.
-        `}
+        answer={
+          clientBeingDeleted?.type === 'FISICO'
+            ? 'Tem certeza que deseja excluir esse cliente?'
+            : 'Tem certeza que deseja excluir essa empresa?'
+        }
+        description={
+          clientBeingDeleted?.type === 'FISICO'
+            ? 'Todos os dados relacionados a esse cliente serão apagados e não poderão ser recuperados.'
+            : 'Todos os dados relacionados a essa empresa serão apagados e não poderão ser recuperados.'
+        }
       />
 
       <Fab />
@@ -58,7 +56,7 @@ export default function Clients() {
       </Header>
 
       <SearchInput
-        placeholder='Pesquisa por nome...'
+        placeholder="Pesquisa por nome..."
         value={searchTerm}
         onValueChange={handleChangeSearchTerm}
       />
@@ -68,10 +66,7 @@ export default function Clients() {
       {!isFetching && (
         <Content>
           {hasClient && (
-            <ClientList
-              onDeleteClient={handleDeleteClient}
-              clients={filteredClients}
-            />
+            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
           )}
 
           {isSearchEmpty && (

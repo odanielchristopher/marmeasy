@@ -28,7 +28,11 @@ export default function useClient() {
 
       toast({
         type: 'success',
-        text: 'Cliente removido.',
+        text: (
+          clientBeingDeleted?.type === 'FISICO'
+            ? 'Cliente removido'
+            : 'Empresa removida'
+        ),
       });
     } catch {
       toast({
@@ -89,6 +93,7 @@ export default function useClient() {
     hasClient,
     searchTerm,
     filteredClients,
+    clientBeingDeleted,
     handleChangeSearchTerm,
     handleCloseDeleteClientModal,
     handleDeleteClient,
