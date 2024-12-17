@@ -1,7 +1,7 @@
 
 import { Link } from 'react-router-dom';
 
-import useLoginController from './useLoginController';
+import useLogin from './useLogin';
 
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
@@ -13,7 +13,7 @@ export default function Login() {
     isLoading,
     register,
     handleSubmit,
-  } = useLoginController();
+  } = useLogin();
 
   return (
     <Container>

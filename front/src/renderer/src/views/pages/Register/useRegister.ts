@@ -1,14 +1,13 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import useCreateUserMutation from '@renderer/app/hooks/mutations/useCreateUserMutation';
+import { useAuth } from '@renderer/app/hooks/useAuth';
+import toast from '@renderer/app/utils/toast';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useAuth } from '@renderer/app/hooks/useAuth';
-import toast from '@renderer/app/utils/toast';
-
-import useLoginQuery from '@renderer/app/hooks/queries/useLoginQuery';
-
 const schema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
   email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
   password: z
     .string()
@@ -18,7 +17,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function useLoginController() {
+export default function useRegister() {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -27,24 +26,23 @@ export default function useLoginController() {
     resolver: zodResolver(schema),
   });
 
-  const { signin } = useAuth();
+  const { createUser, isLoading } = useCreateUserMutation();
 
-  const { login, isLoading } = useLoginQuery();
+  const { signin } = useAuth();
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      const { accessToken } = await login(data);
+      const { accessToken } = await createUser(data);
 
       signin(accessToken);
-
       toast({
         type: 'success',
-        text: 'Usuário autenticado',
+        text: 'Conta criada com sucesso.',
       });
     } catch {
       toast({
         type: 'danger',
-        text: 'E-mail ou senha inválidas',
+        text: 'Ocorreu um erro ao criar a sua conta.',
       });
     }
   });

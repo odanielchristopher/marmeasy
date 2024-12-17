@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 
-import useRegisterController from './useRegisterController';
+import useRegister from './useRegister';
 
 import { Container, Description, Title } from './styles';
 
@@ -13,7 +13,7 @@ const {
     isLoading,
     register,
     handleSubmit,
-  } = useRegisterController();
+  } = useRegister();
 
   return (
     <Container>
