@@ -31,7 +31,8 @@ export const Header = styled.header`
 export const Content = styled.div`
   overflow-y: auto;
   width: 100%;
-  padding: 1.2rem;
+  padding-bottom: 2.4rem;
+  padding-left: .8rem;
   display: flex;
   gap: 1.6rem;
   flex-wrap: wrap;

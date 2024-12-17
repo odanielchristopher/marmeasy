@@ -33,7 +33,7 @@ export default function CardList({ clients, onDeleteClient }: CardListProps) {
             </div>
 
             <div className="bottom">
-              <span>Totais de pedidos: {Math.floor(Math.random() * (50 - 10 + 1)) + 10}</span>
+              <span>Totais de pedidos: {21}</span>
             </div>
           </Main>
           <Footer>

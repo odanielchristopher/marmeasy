@@ -47,7 +47,7 @@ export default function Clients() {
 
       toast({
         type: 'success',
-        text: 'Cliente removido com sucesso.',
+        text: 'Cliente removido.',
       });
     } catch {
       toast({

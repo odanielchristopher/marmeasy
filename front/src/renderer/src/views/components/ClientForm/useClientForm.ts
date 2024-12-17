@@ -63,12 +63,12 @@ export default function useClientForm(isShow: boolean, client: Client | null) {
 
       toast({
         type: 'success',
-        text: 'Usuário cadastrado com sucesso.',
+        text: 'Cliente editado com sucesso.',
       });
     } catch {
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro!',
+        text: 'Ocorreu um erro ao editar o cliente!',
       });
     }
   });
