@@ -3,11 +3,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import useDeleteUserMutation from '@renderer/app/hooks/mutations/useDelteUserMutation';
+import { queryClient } from '@renderer/App';
 import useEditUserMutation from '@renderer/app/hooks/mutations/useEditUserMutation';
 import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
+import { useAuth } from '@renderer/app/hooks/useAuth';
 import { useModals } from '@renderer/app/hooks/useModals';
+import { usersService } from '@renderer/app/services/usersService';
 import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 
 const schema = z
   .object({
@@ -47,6 +50,7 @@ type FormData = z.infer<typeof schema>
 
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
+  const { signout } = useAuth();
 
 
   const {
@@ -68,7 +72,16 @@ export default function useProfileController() {
 
   const { data } = useFindMeQuery(isOpen);
   const { editUser, isLoading } = useEditUserMutation();
-  const { deleteUser } = useDeleteUserMutation();
+
+  const { mutateAsync: deleteUser } = useMutation({
+    mutationFn: async () => {
+      await usersService.deleteMe();
+    },
+    onSuccess: () => {
+      signout();
+      queryClient.resetQueries();
+    },
+  });;
 
   useEffect(() => {
     if (isOpen) {

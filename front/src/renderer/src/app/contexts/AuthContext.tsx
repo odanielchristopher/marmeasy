@@ -1,3 +1,4 @@
+import { queryClient } from '@renderer/App';
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import LaunchScreen from '@renderer/views/components/LaunchScreen';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -21,14 +22,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { isError, isFetching, isSuccess } = useFindMeQuery(signedIn);
 
-  const signin = useCallback((accessToken: string) => {
+  const signin = useCallback(async (accessToken: string) => {
+    queryClient.clear();
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
     setSignedIn(true);
   }, []);
 
-  const signout = useCallback(() => {
+  const signout = useCallback(async () => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
-
     setSignedIn(false);
   }, []);
 
