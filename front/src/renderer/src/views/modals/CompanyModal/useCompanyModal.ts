@@ -10,8 +10,6 @@ const clientFormSchema = z.object({
   name: z.string().min(2, 'O nome do cliente é um campo obrigatório'),
   phone: z.string().optional(),
   address: z.string().optional(),
-  number: z.string().optional(),
-  district: z.string().optional(),
   cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
     message: 'O CPF precisa ser válido ou estar vazio',
   }),

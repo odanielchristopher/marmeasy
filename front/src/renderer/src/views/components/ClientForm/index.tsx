@@ -58,12 +58,6 @@ export default function ClientForm({ $isShow, client }: ClientFormProps) {
           )}
         />
 
-
-        <div className="dividerInput">
-          <Input type="number" placeholder="Numero" {...register('number')} />
-          <Input type="text" placeholder="Bairro" {...register('district')} />
-        </div>
-
         <Button type="submit" isLoading={isLoading} onClick={handleSubmit}>
           Salvar alterações
         </Button>
