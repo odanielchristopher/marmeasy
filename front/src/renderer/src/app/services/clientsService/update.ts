@@ -12,7 +12,7 @@ export interface UpdateClientParams {
 }
 
 export async function update({id, ...params}: UpdateClientParams) {
-  const { data } = await httpClient.post<Client>(`/clients/${id}`, params);
+  const { data } = await httpClient.put<Client>(`/clients/${id}`, params);
 
   return data;
 }

@@ -8,7 +8,7 @@ import { EditClientUseCase } from './EditClientUseCase';
 const schema = z.object({
     name: z.string().min(2),
     phone: z.string().min(11).optional(),
-    address: z.string().min(20).optional(),
+    address: z.string().optional(),
     type: z.enum(['FISICO', 'JURIDICO']),
     document: z.string().min(11).optional(),
     balance: z.number().or(z.string()).optional(),
