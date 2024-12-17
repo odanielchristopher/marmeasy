@@ -7,7 +7,7 @@ import { EditClientUseCase } from './EditClientUseCase';
 
 const schema = z.object({
     name: z.string().min(2),
-    phone: z.string().min(11).optional(),
+    phone: z.string().optional(),
     address: z.string().optional(),
     type: z.enum(['FISICO', 'JURIDICO']),
     document: z.string().optional(),
