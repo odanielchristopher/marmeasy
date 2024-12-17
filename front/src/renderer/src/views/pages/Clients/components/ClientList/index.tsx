@@ -2,7 +2,7 @@ import { Client } from '@renderer/app/entities/Client';
 import useAside from '@renderer/app/hooks/useAside';
 import formatPhone from '@renderer/app/utils/formatPhone';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
-import { Container, Footer, Header, Main } from './styles';
+import { Container, Content, Footer, Header, Main } from './styles';
 
 interface CardListProps {
   clients: Client[];
@@ -10,36 +10,41 @@ interface CardListProps {
 }
 
 export default function ClientList({ clients, onDeleteClient }: CardListProps) {
-  const { handleShowClientData } = useAside();
+  const { handleShowClientData, handleHiddenClientData } = useAside();
 
   return (
     <>
       {clients.map((client) => (
-        <Container key={client.id} onClick={() => handleShowClientData(client)}>
-          <Header>
-            <div className="infos">
-              <strong>{client.name}</strong>
-              <span>{formatPhone(client.phone ?? '')}</span>
-            </div>
-            <button onClick={() => onDeleteClient(client)} className="deleteButton">
-              <DeleteIcon />
-            </button>
-          </Header>
-          <Main>
-            <div className="top">
-              <strong>Endereço</strong>
-              <span>{client.address ?? 'Sem endereço'}</span>
-            </div>
+        <Container key={client.id}>
+          <button onClick={() => {
+            onDeleteClient(client);
+            handleHiddenClientData();
+          }} className="deleteButton">
+            <DeleteIcon />
+          </button>
+          <Content onClick={() => handleShowClientData(client)}>
+            <Header>
+              <div className="infos">
+                <strong>{client.name}</strong>
+                <span>{formatPhone(client.phone ?? '')}</span>
+              </div>
+            </Header>
+            <Main>
+              <div className="top">
+                <strong>Endereço</strong>
+                <span>{client.address ?? 'Sem endereço'}</span>
+              </div>
 
-            <div className="bottom">
-              <span>Totais de pedidos: {21}</span>
-            </div>
-          </Main>
-          <Footer>
-            <span>Saldo</span>
+              <div className="bottom">
+                <span>Totais de pedidos: {21}</span>
+              </div>
+            </Main>
+            <Footer>
+              <span>Saldo</span>
 
-            <strong>R$ {client.balance}</strong>
-          </Footer>
+              <strong>R$ {client.balance}</strong>
+            </Footer>
+          </Content>
         </Container>
       ))}
     </>
