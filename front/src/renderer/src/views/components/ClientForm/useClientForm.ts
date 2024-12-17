@@ -18,7 +18,7 @@ const clientFormSchema = z.object({
 
 export type FormData = z.infer<typeof clientFormSchema>;
 
-export default function useClientForm(isShow: boolean) {
+export default function useClientForm(isShow: boolean, clientId: string) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -28,7 +28,7 @@ export default function useClientForm(isShow: boolean) {
     resolver: zodResolver(clientFormSchema),
   });
 
-  console.log(isShow);
+  console.log(isShow, clientId);
 
   const { createClient, isLoading } = useCreateClient();
 

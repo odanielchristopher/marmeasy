@@ -7,10 +7,11 @@ import useClientForm from './useClientForm';
 
 interface ClientFormProps {
   $isShow: boolean
+  clientId: string;
 }
 
-export default function ClientForm({ $isShow }: ClientFormProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useClientForm($isShow);
+export default function ClientForm({ $isShow, clientId }: ClientFormProps) {
+  const { errors, handleSubmit, isLoading, register, control } = useClientForm($isShow, clientId);
 
   return (
     <Form onSubmit={handleSubmit}>

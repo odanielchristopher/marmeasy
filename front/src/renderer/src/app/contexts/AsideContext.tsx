@@ -15,8 +15,8 @@ export function AsideProvider({ children }: { children: React.ReactNode }) {
   const handleShowClientData = useCallback((id: string) => {
 
     console.log(id);
-    setShowClientData(true);
     setSeletedClient(id);
+    setShowClientData(true);
   }, []);
 
 

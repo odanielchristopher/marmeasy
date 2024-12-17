@@ -16,7 +16,7 @@ export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
   const [showAddOrders, setShowAddOrders] = useState(false);
 
-  const { showClientData } = useAside();
+  const { showClientData, seletedClient } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
@@ -56,7 +56,7 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && <ClientForm $isShow={showClientData}/>}
+      {showClientData && <ClientForm clientId={seletedClient} $isShow={showClientData}/>}
 
     </Container >
   );
