@@ -3,6 +3,7 @@ import { EmailAlreadyExists } from '../../../shared/errors/EmailAlreadyExists';
 import { InvalidCredentials } from '../../../shared/errors/InvalidCredentials';
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 import { EditUserUseCase } from './EditUserUseCase';
+import { UserNotFound } from '../../../shared/errors/UserNotFound';
 
 const schema = z.object({
   userId: z.string().min(1),
@@ -55,7 +56,21 @@ export class EditUserController implements IController {
         };
       }
 
-      throw error;
+      if (error instanceof UserNotFound) {
+        return {
+          statusCode: 404,
+          body: {
+            error: 'Usuário não encontrado.',
+          },
+        };
+      }
+
+      return {
+        statusCode: 500,
+        body: {
+          error: 'Erro interno no servidor.',
+        },
+      };
     }
   }
 
