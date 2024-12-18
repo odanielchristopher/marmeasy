@@ -38,7 +38,7 @@ export class SignInController implements IController {
         return {
           statusCode: 401, // Unauthorized
           body: {
-            error: 'E-mail ou senha inválidos.',
+            error: 'E-mail ou senha inválidos!',
           },
         };
       }

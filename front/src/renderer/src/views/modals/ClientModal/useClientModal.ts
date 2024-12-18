@@ -1,7 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import useCreateClient from '@renderer/app/hooks/mutations/useCreateClient';
+import { queryClient } from '@renderer/App';
+import { clientsService } from '@renderer/app/services/clientsService';
+import { CreateClientParams } from '@renderer/app/services/clientsService/create';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,7 +31,18 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
     resolver: zodResolver(clientFormSchema),
   });
 
-  const { createClient, isLoading } = useCreateClient();
+  const { mutateAsync: createClient, isPending: isLoading } = useMutation({
+    mutationFn: async (data: CreateClientParams) => clientsService.create({
+      ...data,
+    }),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ['clients', 'getAll'],
+        type: 'active',
+        exact: true,
+      });
+    },
+  });;
 
   useEffect(() => {
     return () => {

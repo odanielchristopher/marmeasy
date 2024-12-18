@@ -9,7 +9,7 @@ import { Container, StyledButton, StyledItem } from './styles';
 
 import ClientModal from '@renderer/views/modals/ClientModal';
 import CompanyModal from '@renderer/views/modals/CompanyModal';
-import { useFabController } from './useFabController';
+import { useFab } from './useFab';
 
 export default function Fab() {
   const {
@@ -19,7 +19,7 @@ export default function Fab() {
     handleOpenCompanyModal,
     handleCloseClientModal,
     handleCloseCompanyModal,
-  } = useFabController();
+  } = useFab();
 
   return (
     <Container>

@@ -13,7 +13,7 @@ interface ClientModalProps {
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useCompanyModal(isOpen);
+  const { errors, handleSubmit, isLoading, register, control } = useCompanyModal(isOpen, onClose);
 
   return (
     <Modal open={isOpen} title="Nova empresa" onClose={onClose}>

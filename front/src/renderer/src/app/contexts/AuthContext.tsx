@@ -1,3 +1,4 @@
+import { queryClient } from '@renderer/App';
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import LaunchScreen from '@renderer/views/components/LaunchScreen';
 import { createContext, useCallback, useEffect, useState } from 'react';
@@ -19,16 +20,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isFetching, isSuccess } = useFindMeQuery(signedIn);
+  const { isError, isLoading, isSuccess } = useFindMeQuery(signedIn);
 
-  const signin = useCallback((accessToken: string) => {
+  const signin = useCallback(async (accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
     setSignedIn(true);
   }, []);
 
-  const signout = useCallback(() => {
+  const signout = useCallback(async () => {
+    queryClient.clear();
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
-
     setSignedIn(false);
   }, []);
 
@@ -44,7 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (isSuccess) {
       toast({
         type: 'success',
-        text: 'Usuário autenticado.',
+        text: 'Usuário autenticado',
       });
     }
   }, [isError, signout, isSuccess]);
@@ -55,8 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signin,
       signout,
     }}>
-      <LaunchScreen isLoading={isFetching}/>
-      {!isFetching && children}
+      <LaunchScreen isLoading={isLoading}/>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 }

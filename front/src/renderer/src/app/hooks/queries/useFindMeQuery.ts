@@ -5,7 +5,7 @@ export default function useFindMeQuery(active: boolean) {
   return useQuery({
     queryKey: ['users', 'find-me'],
     queryFn: () => usersService.findMe(),
-    staleTime: Infinity,
+    staleTime: 60000 * 60,
     enabled: active,
   });
 }

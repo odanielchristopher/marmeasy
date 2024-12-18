@@ -1,13 +1,21 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import useDeleteUserMutation from '@renderer/app/hooks/mutations/useDelteUserMutation';
-import useEditUserMutation from '@renderer/app/hooks/mutations/useEditUserMutation';
+import { queryClient } from '@renderer/App';
 import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
+
 import { useModals } from '@renderer/app/hooks/useModals';
 import toast from '@renderer/app/utils/toast';
+
+import { useAuth } from '@renderer/app/hooks/useAuth';
+import { usersService } from '@renderer/app/services/usersService';
+import { EditMeParams } from '@renderer/app/services/usersService/editMe';
+import { FindMeResponse } from '@renderer/app/services/usersService/findme';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z
   .object({
@@ -47,7 +55,8 @@ type FormData = z.infer<typeof schema>
 
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
-
+  const { signout } = useAuth();
+  const navigateTo = useNavigate();
 
   const {
     isProfileModalOpen: isOpen,
@@ -67,8 +76,42 @@ export default function useProfileController() {
   });
 
   const { data } = useFindMeQuery(isOpen);
-  const { editUser, isLoading } = useEditUserMutation();
-  const { deleteUser } = useDeleteUserMutation();
+  const { mutateAsync: editUser, isPending: isLoading } = useMutation({
+    mutationFn: async (data: EditMeParams) => {
+      return usersService.editMe(data);
+    },
+    onSuccess: ({ name, email }) => {
+      // Atualiza o cache imediatamente
+      queryClient.setQueryData<FindMeResponse | undefined>(['users', 'find-me'], (oldData) => ({
+        ...oldData,
+        name,
+        email,
+      }));
+
+      // Invalida a query para refazer o fetch em segundo plano
+      queryClient.invalidateQueries({
+        queryKey: ['users', 'find-me'],
+        exact: true,
+        refetchType: 'all',
+      });
+    },
+  });
+
+  const { mutateAsync: deleteUser } = useMutation({
+    mutationFn: async () => {
+      await usersService.deleteMe();
+    },
+    onSuccess: () => {
+      toast({
+        type: 'default',
+        text: 'Conta exluída',
+      });
+
+      navigateTo('/login', { replace: true });
+
+      signout();
+    },
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -98,9 +141,18 @@ export default function useProfileController() {
       handleCloseProfileModal();
       toast({
         type: 'success',
-        text: 'Seus dados foram editados.',
+        text: 'Seus dados foram editados',
       });
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          type: 'danger',
+          text: error.response?.data.error,
+        });
+
+        return;
+      }
+
       toast({
         type: 'danger',
         text: 'Ocorreu um erro ao editar seus dados.',

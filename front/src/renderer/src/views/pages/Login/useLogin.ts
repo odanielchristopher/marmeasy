@@ -1,12 +1,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { useAuth } from '@renderer/app/hooks/useAuth';
 import toast from '@renderer/app/utils/toast';
 
-import useLoginQuery from '@renderer/app/hooks/queries/useLoginQuery';
+import { authService } from '@renderer/app/services/authService';
+import { SingInParams } from '@renderer/app/services/authService/singIn';
 
 const schema = z.object({
   email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
@@ -18,7 +21,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function useLoginController() {
+export default function useLogin() {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -29,7 +32,11 @@ export default function useLoginController() {
 
   const { signin } = useAuth();
 
-  const { login, isLoading } = useLoginQuery();
+   const { mutateAsync: login, isPending: isLoading } = useMutation({
+    mutationFn: async (data: SingInParams) => {
+      return authService.signIn(data);
+    },
+  });;
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
@@ -41,11 +48,18 @@ export default function useLoginController() {
         type: 'success',
         text: 'Usuário autenticado',
       });
-    } catch {
-      toast({
-        type: 'danger',
-        text: 'E-mail ou senha inválidas',
-      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          type: 'danger',
+          text: error.response?.data.error,
+        });
+      } else {
+        toast({
+          type: 'danger',
+          text: 'Erro desconhecido',
+        });
+      }
     }
   });
 

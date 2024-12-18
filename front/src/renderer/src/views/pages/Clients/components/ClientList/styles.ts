@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
   background-color: #FFF;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
@@ -10,29 +8,41 @@ export const Container = styled.div`
   padding: 1.6rem;
   width: 100%;
   max-width: 30.0rem;
+
   cursor: pointer;
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    transform: translateY(-0.4rem);
+    transform: translateY(-.4rem);
+  }
+
+  position: relative;
+
+  .deleteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    height: 3.2rem;
+    width: 3.2rem;
+
+    position: absolute;
+    right: 1.6rem;
+    z-index: 2;
+
+    &:hover {
+      background: #F2F2F2;
+    }
   }
 `;
 
-export const Name = styled.strong`
-  color: ${({ theme }) => theme.colors.black.light};
-  font-size: 2.0rem;
-  font-weight: 700;
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
-
-export const Address = styled.strong`
-  font-weight: 700;
-  font-size: 1.6rem;
-`;
-
-export const NameContainer = styled.div`
-
-`;
-
 
 export const Header= styled.div`
   align-items: flex-start;
@@ -53,22 +63,6 @@ export const Header= styled.div`
 
     span {
       font-size: 1.4rem;
-    }
-  }
-
-  .deleteButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    height: 3.2rem;
-    width: 3.2rem;
-
-    &:hover {
-      background: #F2F2F2;
     }
   }
 `;

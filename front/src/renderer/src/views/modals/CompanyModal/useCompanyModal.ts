@@ -1,7 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import useCreateClient from '@renderer/app/hooks/mutations/useCreateClient';
+import { queryClient } from '@renderer/App';
+import { clientsService } from '@renderer/app/services/clientsService';
+import { CreateClientParams } from '@renderer/app/services/clientsService/create';
 import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -11,13 +14,13 @@ const clientFormSchema = z.object({
   phone: z.string().optional(),
   address: z.string().optional(),
   cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
-    message: 'O CPF precisa ser válido ou estar vazio',
+    message: 'O CNPJ precisa ser válido ou estar vazio',
   }),
 });
 
 type FormData = z.infer<typeof clientFormSchema>
 
-export default function useCompanyModal(isOpen: boolean) {
+export default function useCompanyModal(isOpen: boolean, closeModal: () => void) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -34,11 +37,22 @@ export default function useCompanyModal(isOpen: boolean) {
     };
   }, [isOpen]);
 
-  const { createClient, isLoading } = useCreateClient();
+  const { mutateAsync: createCompany, isPending: isLoading } = useMutation({
+    mutationFn: async (data: CreateClientParams) => clientsService.create({
+      ...data,
+    }),
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ['clients', 'getAll'],
+        type: 'active',
+        exact: true,
+      });
+    },
+  });;
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await createClient({
+      await createCompany({
         ...data,
         type: 'JURIDICO',
         document: data.cnpj,
@@ -46,12 +60,13 @@ export default function useCompanyModal(isOpen: boolean) {
 
       toast({
         type: 'success',
-        text: 'Usuário cadastrado com sucesso.',
+        text: 'Empresa cadastrada com sucesso',
       });
+      closeModal();
     } catch {
       toast({
         type: 'danger',
-        text: 'Credenciais inválidas!',
+        text: 'Ocorreu um erro ao cadastrar empresa',
       });
     }
   });
