@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-export default function useDeleteModal({ onClose, onConfirm }) {
+interface UseDeleteModalProps {
+  onClose(): void;
+  onConfirm(): void;
+}
+
+export default function useDeleteModal({ onClose, onConfirm }: UseDeleteModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleConfirmButton() {

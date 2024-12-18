@@ -1,8 +1,8 @@
 import { z, ZodError } from 'zod';
 
-import { AccountAlreadyExists } from '../../../shared/errors/AccountAlreadyExists';
 import { IController, IRequest, IResponse } from '../../../shared/interfaces/IController';
 
+import { UserAlreadyExists } from '../../../shared/errors/UserAlreadyExists';
 import { SignUpUseCase } from './SignUpUseCase';
 
 const schema = z.object({
@@ -18,11 +18,11 @@ export class SignUpController implements IController {
     try {
       const { name, email, password } = schema.parse(body);
 
-      const user = await this.signUpUseCase.execute({ name, email, password });
+      const accessToken = await this.signUpUseCase.execute({ name, email, password });
 
       return {
         statusCode: 200,
-        body: user,
+        body: accessToken,
       };
     } catch (error) {
       if (error instanceof ZodError) {
@@ -32,11 +32,11 @@ export class SignUpController implements IController {
         };
       }
 
-      if (error instanceof AccountAlreadyExists) {
+      if (error instanceof UserAlreadyExists) {
         return {
           statusCode: 409, // Conflict
           body: {
-            error: 'Esse e-mail já está em uso.',
+            error: 'Esse e-mail já está em uso!',
           },
         };
       }

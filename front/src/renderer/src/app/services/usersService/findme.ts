@@ -1,11 +1,10 @@
-import { httpClient } from '../utils/httpClient';
+import { httpClient } from '../httpClient';
 
-interface FindMeResponse {
+
+export interface FindMeResponse {
   name: string;
   email: string;
-  password: string;
 }
-
 
 export async function findMe() {
   const { data } = await httpClient.get<FindMeResponse>('/users/find-me');

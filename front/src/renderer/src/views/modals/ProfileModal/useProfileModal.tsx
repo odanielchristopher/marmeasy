@@ -1,38 +1,70 @@
-
 import { zodResolver } from '@hookform/resolvers/zod';
-import { authService } from '@renderer/app/services/authService';
-import { SingUpParams } from '@renderer/app/services/authService/signUp';
-import { usersService } from '@renderer/app/services/usersService';
-import toast from '@renderer/app/utils/toast';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-const schema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').min(2, 'Nome deve conter pelo menos 2 caracteres.'),
-  email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória.'),
-  newPassword: z
-    .string()
-    .min(6, 'A nova senha deve conter pelo menos 6 caracteres.')
-    .or(z.optional(z.string())),
-  confirmPassword: z.string(),
-}).refine((data) => {
-  // Valida somente se "newPassword" estiver preenchida
-  if (data.newPassword && data.newPassword.length > 0) {
-    return data.newPassword === data.confirmPassword;
-  }
-  return true; // Validação passa se "newPassword" estiver vazia ou ausente
-}, {
-  message: 'As senhas não coincidem.',
-  path: ['confirmPassword'], // Indica onde o erro ocorre
-});
+import { queryClient } from '@renderer/App';
+import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
+
+import { useModals } from '@renderer/app/hooks/useModals';
+import toast from '@renderer/app/utils/toast';
+
+import { useAuth } from '@renderer/app/hooks/useAuth';
+import { usersService } from '@renderer/app/services/usersService';
+import { EditMeParams } from '@renderer/app/services/usersService/editMe';
+import { FindMeResponse } from '@renderer/app/services/usersService/findme';
+import { useNavigate } from 'react-router-dom';
+
+const schema = z
+  .object({
+    name: z
+      .string()
+      .min(1, 'Nome é obrigatório')
+      .min(2, 'Nome deve conter pelo menos 2 caracteres.'),
+    email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
+    currentPassword: z
+      .string()
+      .min(1, 'Senha atual é obrigatória.')
+      .min(6, 'Senha deve conter pelo menos 6 dígitos.'),
+    newPassword: z
+      .string()
+      .optional()
+      .refine((value) => !value || value.length >= 6, {
+        message: 'A sennha precisa ter pelo menos 6 caracteres ou estar vazio',
+      }),
+    confirmPassword: z.string().min(0),
+  })
+  .refine(
+    (data) => {
+      // Valida somente se "newPassword" estiver preenchida
+      if (data.newPassword) {
+        return data.newPassword === data.confirmPassword;
+      }
+
+      return true; // Validação passa se "newPassword" estiver vazia
+    },
+    {
+      message: 'As senhas não coincidem.',
+      path: ['confirmPassword'], // Indica onde o erro ocorre
+    },
+  );
 
 type FormData = z.infer<typeof schema>
 
-export default function useProfileController(open) {
-  const [ wantChangePassword,  setWantChangePassword] = useState(false);
+export default function useProfileController() {
+  const [wantChangePassword, setWantChangePassword] = useState(false);
+  const { signout } = useAuth();
+  const navigateTo = useNavigate();
+
+  const {
+    isProfileModalOpen: isOpen,
+    handleCloseProfileModal,
+    isDeleteUserModalOpen,
+    handleOpenDeleteUserModal,
+    handleCloseDeleteUserModal,
+  } = useModals();
 
   const {
     register,
@@ -43,24 +75,53 @@ export default function useProfileController(open) {
     resolver: zodResolver(schema),
   });
 
-  const { data, isSuccess }= useQuery({
-    queryKey: ['users', 'find-me'],
-    queryFn: () => usersService.findMe(),
-    staleTime: Infinity,
-    enabled: open,
+  const { data } = useFindMeQuery(isOpen);
+  const { mutateAsync: editUser, isPending: isLoading } = useMutation({
+    mutationFn: async (data: EditMeParams) => {
+      return usersService.editMe(data);
+    },
+    onSuccess: ({ name, email }) => {
+      // Atualiza o cache imediatamente
+      queryClient.setQueryData<FindMeResponse | undefined>(['users', 'find-me'], (oldData) => ({
+        ...oldData,
+        name,
+        email,
+      }));
+
+      // Invalida a query para refazer o fetch em segundo plano
+      queryClient.invalidateQueries({
+        queryKey: ['users', 'find-me'],
+        exact: true,
+        refetchType: 'all',
+      });
+    },
   });
 
-  const { mutateAsync, isLoading } = useMutation({
-    mutationFn: async (data: SingUpParams) => {
-      return authService.singUp(data);
+  const { mutateAsync: deleteUser } = useMutation({
+    mutationFn: async () => {
+      await usersService.deleteMe();
+    },
+    onSuccess: () => {
+      toast({
+        type: 'default',
+        text: 'Conta exluída',
+      });
+
+      navigateTo('/login', { replace: true });
+
+      signout();
     },
   });
 
   useEffect(() => {
-    if (open && isSuccess) {
+    if (isOpen) {
       reset(data);
     }
-  }, [data, open]);
+
+    return () => {
+      setWantChangePassword(false);
+    };
+  }, [data, isOpen]);
 
   function handleWannaChangePassword() {
     setWantChangePassword((prevState) => !prevState);
@@ -68,26 +129,60 @@ export default function useProfileController(open) {
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      setWantChangePassword(false);
-      await mutateAsync({ email: data.email, password: data.currentPassword });
+      const { name, email, currentPassword, newPassword } = data;
+
+      await editUser({
+        name,
+        email,
+        currentPassword,
+        newPassword: newPassword ? newPassword : undefined,
+      });
+
+      handleCloseProfileModal();
       toast({
         type: 'success',
-        text: 'Conta criada com sucesso.',
+        text: 'Seus dados foram editados',
       });
-    } catch {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          type: 'danger',
+          text: error.response?.data.error,
+        });
+
+        return;
+      }
+
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao criar a sua conta.',
+        text: 'Ocorreu um erro ao editar seus dados.',
       });
     }
   });
+
+  const handleDeleteUser = useCallback(async () => {
+    try {
+      await deleteUser();
+    } catch (error) {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao deletar o usuário.',
+      });
+    }
+  }, [deleteUser]);
 
   return {
     errors,
     isLoading,
     wantChangePassword,
+    isOpen,
+    isDeleteModalOpen: isDeleteUserModalOpen,
+    handleDeleteUser,
+    handleCloseProfileModal,
     register,
     handleSubmit,
     handleWannaChangePassword,
+    handleOpenDeleteModal: handleOpenDeleteUserModal,
+    handleCloseDeleteModal: handleCloseDeleteUserModal,
   };
 }

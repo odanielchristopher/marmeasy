@@ -63,15 +63,14 @@ export const Header = styled.header`
 `;
 
 export const CloseButton = styled.button`
+  align-items: center;
   background: transparent;
   border: none;
   border-radius: 50%;
   display: flex;
-  width: 48px;
-  height: 48px;
-  padding: 12px;
   justify-content: center;
-  align-items: center;
+  height: 4.8rem;
+  width: 4.8rem;
 `;
 
 export const Title = styled.h1`

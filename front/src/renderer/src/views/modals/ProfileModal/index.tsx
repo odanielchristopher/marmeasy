@@ -5,30 +5,63 @@ import Modal from '@renderer/views/components/Modal';
 import useProfileModal from './useProfileModal';
 
 import { Transition } from '@headlessui/react';
-import { Container, Form, InfoContainer, NewPasswordButton, NewPasswordContainer } from './styles';
+import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
+import DeleteModal from '../DeleteModal';
+import {
+  Container,
+  DeleteButton,
+  Form,
+  InfoContainer,
+  NewPasswordButton,
+  NewPasswordContainer,
+} from './styles';
 
-interface ProfileModalProps {
-  open: boolean;
-  onClose(): void;
-}
-
-export default function Profile({ open, onClose }: ProfileModalProps) {
+export default function ProfileModal() {
   const {
     errors,
     isLoading,
+    isOpen,
     wantChangePassword,
-    handleWannaChangePassword,
+    isDeleteModalOpen,
+    handleDeleteUser,
     handleSubmit,
     register,
-  } = useProfileModal(open);
+    handleWannaChangePassword,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleCloseProfileModal,
+  } = useProfileModal();
+
+  if (isDeleteModalOpen) {
+    return (
+      <DeleteModal
+        open
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteUser}
+        answer={`
+          Tem ceteza que deseja excluir sua conta?
+        `}
+        description={`
+          Todos os dados relacionados a sua conta
+          serão apagados e não poderão ser recuperados.
+        `}
+      />
+    );
+  }
 
   return (
-    <Modal open={open} onClose={onClose} title="Dados do usuário">
-      <Container >
-
-        <p>
-          Edite aqui as suas informações.
-        </p>
+    <Modal
+      open={isOpen}
+      onClose={handleCloseProfileModal}
+      title="Dados do usuário"
+      action={
+        <DeleteButton onClick={handleOpenDeleteModal}>
+          <DeleteIcon />
+        </DeleteButton>
+      }
+    >
+      <Container>
+        <p>Edite aqui as suas informações.</p>
 
         <Form onSubmit={handleSubmit}>
           <Input
@@ -48,7 +81,7 @@ export default function Profile({ open, onClose }: ProfileModalProps) {
           />
 
           <Transition show={wantChangePassword} unmount={wantChangePassword}>
-            <NewPasswordContainer >
+            <NewPasswordContainer>
               <Input
                 type="password"
                 placeholder="Nova senha"
@@ -69,7 +102,9 @@ export default function Profile({ open, onClose }: ProfileModalProps) {
 
           <InfoContainer>
             <span>Digite sua senha.</span>
-            <NewPasswordButton type='button' onClick={handleWannaChangePassword} >Alterar senha? <b>Aqui.</b></NewPasswordButton>
+            <NewPasswordButton type="button" onClick={handleWannaChangePassword}>
+              Alterar senha? <b>Aqui.</b>
+            </NewPasswordButton>
           </InfoContainer>
           <Input
             type="password"
