@@ -1,10 +1,6 @@
 import { plainToInstance } from 'class-transformer';
 import { IsNotEmpty, IsString, NotEquals, validateSync } from 'class-validator';
 
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
 class Env {
   @IsNotEmpty()
   @IsString()
