@@ -1,19 +1,24 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { UsersRespository } from 'src/shared/repositories/users.repository';
+import { UsersRespository } from 'src/shared/database/repositories/users.repository';
+import { ValidateUserOwnershipService } from './validate-user-ownership.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRespository) {}
+  constructor(
+    private readonly usersRepository: UsersRespository,
+    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+  ) {}
 
   async getUserById(userId: string) {
+    await this.validateUserOwnershipService.validate(userId);
+
     return this.usersRepository.findUnique({
       where: { id: userId },
       select: {
@@ -24,7 +29,7 @@ export class UsersService {
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {
-    const user = await this.validateUserOwnership(userId);
+    const user = await this.validateUserOwnershipService.validate(userId);
 
     const isPasswordValid = await compare(
       updateUserDto.currentPassword,
@@ -36,7 +41,7 @@ export class UsersService {
     }
 
     if (user.email !== updateUserDto.email) {
-      const emailAlredyInUse = this.usersRepository.findUnique({
+      const emailAlredyInUse = await this.usersRepository.findUnique({
         where: {
           email: updateUserDto.email,
         },
@@ -69,24 +74,12 @@ export class UsersService {
   }
 
   async remove(userId: string) {
-    await this.validateUserOwnership(userId);
+    await this.validateUserOwnershipService.validate(userId);
 
     await this.usersRepository.delete({
       where: { id: userId },
     });
 
     return null;
-  }
-
-  private async validateUserOwnership(userId: string) {
-    const isOwner = await this.usersRepository.findFirst({
-      where: { id: userId },
-    });
-
-    if (!isOwner) {
-      throw new NotFoundException('Usuário não encontrado.');
-    }
-
-    return isOwner;
   }
 }
