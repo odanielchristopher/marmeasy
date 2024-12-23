@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
 import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
 import { CreateClientDto } from '../dto/create-client.dto';
@@ -12,6 +12,41 @@ export class ClientsService {
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
     private readonly validateClientOwnershipService: ValidateClientOwnershipService,
   ) {}
+
+  async findAllByUserId(userId: string) {
+    return this.clientsRepository.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        type: true,
+        address: true,
+        document: true,
+        balance: true,
+      },
+    });
+  }
+
+  async findOneByUserId(userId: string, clientId: string) {
+    return this.clientsRepository.findFirst({
+      where: {
+        userId,
+        id: clientId,
+      },
+      select: {
+        id: true,
+        name: true,
+        phone: true,
+        type: true,
+        address: true,
+        document: true,
+        balance: true,
+      },
+    });
+  }
 
   async create(userId: string, createClientDto: CreateClientDto) {
     await this.validateUserOwnershipService.validate(userId);
@@ -32,47 +67,6 @@ export class ClientsService {
     });
   }
 
-  async findAllByUserId(userId: string) {
-    return this.clientsRepository.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        type: true,
-        address: true,
-        document: true,
-        balance: true,
-      },
-    });
-  }
-
-  async findOneByUserId(userId: string, clientId: string) {
-    const client = await this.clientsRepository.findFirst({
-      where: {
-        userId,
-        id: clientId,
-      },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        type: true,
-        address: true,
-        document: true,
-        balance: true,
-      },
-    });
-
-    if (!client) {
-      throw new NotFoundException('Cliente não encontrado.');
-    }
-
-    return client;
-  }
-
   async update(
     userId: string,
     clientId: string,
@@ -83,7 +77,7 @@ export class ClientsService {
     const { name, phone, address, document, type, balance } = updateClientDto;
 
     return this.clientsRepository.update({
-      where: { id: clientId },
+      where: { userId, id: clientId },
       data: {
         name,
         phone,

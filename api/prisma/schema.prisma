@@ -13,7 +13,9 @@ model User {
   email    String @unique
   password String
 
-  clients Client[]
+  clients           Client[]
+  products          Product[]
+  productCategories ProductCategory[]
 }
 
 model Client {
@@ -38,6 +40,7 @@ enum ClientType {
 
 model Product {
   id          String          @id @default(uuid()) @db.Uuid
+  userId      String          @map("user_id") @db.Uuid
   name        String
   description String
   imagePath   String
@@ -45,14 +48,19 @@ model Product {
   categoryId  String          @map("product_category_id") @db.Uuid
   category    ProductCategory @relation(fields: [categoryId], references: [id])
 
+  user User @relation(fields: [userId], references: [id])
+
   @@map("products")
 }
 
 model ProductCategory {
   id      String    @id @default(uuid()) @db.Uuid
+  userId  String    @map("user_id") @db.Uuid
   name    String
   icon    String
   Product Product[]
+
+  user User @relation(fields: [userId], references: [id])
 
   @@map("product_category")
 }
