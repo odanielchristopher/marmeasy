@@ -11,6 +11,42 @@ export class ProductsService {
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
   ) {}
 
+  findAllByUserId(userId: string, categoryName: string) {
+    const filters = {
+      userId,
+      ...(categoryName && { category: { name: categoryName } }),
+    };
+
+    return this.productsRepository.findMany({
+      where: filters,
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        imagePath: true,
+        ingredients: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+      },
+    });
+  }
+
+  findOneByUserId(userId: string, productId: string) {
+    return `This action returns a #${productId} product`;
+  }
+
   async create(userId: string, createProductDto: CreateProductDto) {
     await this.validateUserOwnershipService.validate(userId);
 
@@ -26,7 +62,7 @@ export class ProductsService {
         imagePath,
         categoryId,
         ingredients: {
-          connect: ingredientsIds.map((id) => ({ id })),
+          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
         },
       },
       select: {
@@ -53,16 +89,12 @@ export class ProductsService {
     });
   }
 
-  findAll() {
-    return 'This action returns all product';
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }
-
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  update(
+    userId: string,
+    productId: string,
+    updateProductDto: UpdateProductDto,
+  ) {
+    return `This action updates a #${productId} product`;
   }
 
   remove(id: number) {
