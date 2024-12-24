@@ -48,7 +48,7 @@ model Product {
   price       Float
   categoryId  String          @map("product_category_id") @db.Uuid
   category    ProductCategory @relation(fields: [categoryId], references: [id])
-  Ingredients Ingredient[]    @relation("product_ingredient")
+  ingredients Ingredient[]    @relation("product_ingredient")
 
   user         User    @relation(fields: [userId], references: [id])
   ingredientId String? @db.Uuid

@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
@@ -31,15 +32,16 @@ export class ProductController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   create(
+    @ActiveUserId() userId: string,
     @UploadedFile() image: any,
     @Body() createProductDto: CreateProductDto,
   ) {
-    const createProductDtoWithImagePath = {
+    createProductDto = {
       ...createProductDto,
       imagePath: image.path,
     };
 
-    return this.productService.create(createProductDto);
+    return this.productService.create(userId, createProductDto);
   }
 
   @Patch(':id')

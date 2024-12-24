@@ -17,5 +17,8 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "scripts": {
+  "build": "tsc && cp -R src/shared/uploads dist/shared/uploads"
+}
 }
