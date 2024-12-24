@@ -13,15 +13,15 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
-import { IngredientService } from './services/ingredient.service';
+import { IngredientsService } from './services/ingredients.service';
 
-@Controller('ingredient')
-export class IngredientController {
-  constructor(private readonly ingredientService: IngredientService) {}
+@Controller('ingredients')
+export class IngredientsController {
+  constructor(private readonly ingredientsService: IngredientsService) {}
 
   @Get()
   findAll(@ActiveUserId() userId: string) {
-    return this.ingredientService.findAllByUserId(userId);
+    return this.ingredientsService.findAllByUserId(userId);
   }
 
   @Get(':ingredientId')
@@ -29,7 +29,7 @@ export class IngredientController {
     @ActiveUserId() userId: string,
     @Param('ingredientId', ParseUUIDPipe) ingredientId: string,
   ) {
-    return this.ingredientService.findOneByUserId(userId, ingredientId);
+    return this.ingredientsService.findOneByUserId(userId, ingredientId);
   }
 
   @Post()
@@ -37,7 +37,7 @@ export class IngredientController {
     @ActiveUserId() userId: string,
     @Body() createIngredientDto: CreateIngredientDto,
   ) {
-    return this.ingredientService.create(userId, createIngredientDto);
+    return this.ingredientsService.create(userId, createIngredientDto);
   }
 
   @Put(':ingredientId')
@@ -46,7 +46,7 @@ export class IngredientController {
     @Param('ingredientId', ParseUUIDPipe) ingredientId: string,
     @Body() updateIngredientDto: UpdateIngredientDto,
   ) {
-    return this.ingredientService.update(
+    return this.ingredientsService.update(
       userId,
       ingredientId,
       updateIngredientDto,
@@ -59,6 +59,6 @@ export class IngredientController {
     @ActiveUserId() userId: string,
     @Param('ingredientId', ParseUUIDPipe) ingredientId: string,
   ) {
-    return this.ingredientService.remove(userId, ingredientId);
+    return this.ingredientsService.remove(userId, ingredientId);
   }
 }

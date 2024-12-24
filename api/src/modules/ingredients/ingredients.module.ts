@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from '../users/users.module';
-import { IngredientController } from './ingredient.controller';
-import { IngredientService } from './services/ingredient.service';
+import { IngredientsController } from './ingredients.controller';
+import { IngredientsService } from './services/ingredients.service';
 import { ValidateIngredientOwnershipService } from './services/validate-ingredient-ownership.service';
 
 @Module({
   imports: [UsersModule],
-  controllers: [IngredientController],
-  providers: [IngredientService, ValidateIngredientOwnershipService],
+  controllers: [IngredientsController],
+  providers: [IngredientsService, ValidateIngredientOwnershipService],
   exports: [ValidateIngredientOwnershipService],
 })
-export class IngredientModule {}
+export class IngredientsModule {}

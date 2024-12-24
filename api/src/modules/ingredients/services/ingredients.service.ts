@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { ProductCategoriesRespository } from 'src/shared/database/repositories/product-categories.repository';
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
-import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
-import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
-import { ValidateProductCategoryOwnershipService } from './validate-product-category-ownership.service';
+import { CreateProductCategoryDto } from 'src/modules/product-categories/dto/create-product-category.dto';
+import { UpdateProductCategoryDto } from 'src/modules/product-categories/dto/update-product-category.dto';
+import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
+import { IngredientsRespository } from 'src/shared/database/repositories/ingredients.repository';
+import { ValidateIngredientOwnershipService } from './validate-ingredient-ownership.service';
 
 @Injectable()
-export class ProductCategoryService {
+export class IngredientsService {
   constructor(
-    private readonly productCategoriesRepository: ProductCategoriesRespository,
+    private readonly ingredientsRepository: IngredientsRespository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-    private readonly validateProductCategoryOwnershipService: ValidateProductCategoryOwnershipService,
+    private readonly validateIngredientOwnershipService: ValidateIngredientOwnershipService,
   ) {}
 
   async findAllByUserId(userId: string) {
-    return this.productCategoriesRepository.findMany({
+    return this.ingredientsRepository.findMany({
       where: { userId },
       select: {
         id: true,
@@ -25,7 +25,7 @@ export class ProductCategoryService {
   }
 
   async findOneByUserId(userId: string, productCategoryId: string) {
-    return this.productCategoriesRepository.findFirst({
+    return this.ingredientsRepository.findFirst({
       where: {
         userId,
         id: productCategoryId,
@@ -46,7 +46,7 @@ export class ProductCategoryService {
 
     const { name, icon } = createProductCategoryDto;
 
-    return this.productCategoriesRepository.create({
+    return this.ingredientsRepository.create({
       data: {
         userId,
         name,
@@ -65,14 +65,14 @@ export class ProductCategoryService {
     productCategoryId: string,
     updateProductCategoryDto: UpdateProductCategoryDto,
   ) {
-    await this.validateProductCategoryOwnershipService.validate(
+    await this.validateIngredientOwnershipService.validate(
       userId,
       productCategoryId,
     );
 
     const { name, icon } = updateProductCategoryDto;
 
-    return this.productCategoriesRepository.update({
+    return this.ingredientsRepository.update({
       where: { userId, id: productCategoryId },
       data: {
         name,
@@ -87,12 +87,12 @@ export class ProductCategoryService {
   }
 
   async remove(userId: string, productCategoryId: string) {
-    await this.validateProductCategoryOwnershipService.validate(
+    await this.validateIngredientOwnershipService.validate(
       userId,
       productCategoryId,
     );
 
-    await this.productCategoriesRepository.delete({
+    await this.ingredientsRepository.delete({
       where: { userId, id: productCategoryId },
     });
 

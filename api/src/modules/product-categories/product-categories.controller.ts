@@ -13,17 +13,17 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductCategoryDto } from './dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from './dto/update-product-category.dto';
-import { ProductCategoryService } from './services/product-category.service';
+import { ProductCategoriesService } from './services/product-categories.service';
 
-@Controller('product-category')
-export class ProductCategoryController {
+@Controller('product-categories')
+export class ProductCategoriesController {
   constructor(
-    private readonly productCategoryService: ProductCategoryService,
+    private readonly productCategoriesService: ProductCategoriesService,
   ) {}
 
   @Get()
   findAll(@ActiveUserId() userId: string) {
-    return this.productCategoryService.findAllByUserId(userId);
+    return this.productCategoriesService.findAllByUserId(userId);
   }
 
   @Get(':productCategory')
@@ -31,7 +31,7 @@ export class ProductCategoryController {
     @ActiveUserId() userId: string,
     @Param('productCategory', ParseUUIDPipe) productCategoryId: string,
   ) {
-    return this.productCategoryService.findOneByUserId(
+    return this.productCategoriesService.findOneByUserId(
       userId,
       productCategoryId,
     );
@@ -42,7 +42,10 @@ export class ProductCategoryController {
     @ActiveUserId() userId: string,
     @Body() createProductCategoryDto: CreateProductCategoryDto,
   ) {
-    return this.productCategoryService.create(userId, createProductCategoryDto);
+    return this.productCategoriesService.create(
+      userId,
+      createProductCategoryDto,
+    );
   }
 
   @Put(':productCategory')
@@ -51,7 +54,7 @@ export class ProductCategoryController {
     @Param('productCategory', ParseUUIDPipe) productCategoryId: string,
     @Body() updateProductCategoryDto: UpdateProductCategoryDto,
   ) {
-    return this.productCategoryService.update(
+    return this.productCategoriesService.update(
       userId,
       productCategoryId,
       updateProductCategoryDto,
@@ -64,6 +67,6 @@ export class ProductCategoryController {
     @ActiveUserId() userId: string,
     @Param('productCategory', ParseUUIDPipe) productCategoryId: string,
   ) {
-    return this.productCategoryService.remove(userId, productCategoryId);
+    return this.productCategoriesService.remove(userId, productCategoryId);
   }
 }

@@ -3,14 +3,14 @@ import { diskStorage } from 'multer';
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
 import { UsersModule } from '../users/users.module';
-import { ProductController } from './product.controller';
-import { ProductService } from './product.service';
+import { ProductsController } from './products.controller';
+import { ProductsService } from './products.service';
 
 @Module({
   imports: [
     MulterModule.register({
       storage: diskStorage({
-        destination: './src/shared/uploads',
+        destination: './uploads',
         filename: (request, file, callback) => {
           callback(null, `${Date.now()}-${file.originalname}`);
         },
@@ -18,7 +18,7 @@ import { ProductService } from './product.service';
     }),
     UsersModule,
   ],
-  controllers: [ProductController],
-  providers: [ProductService],
+  controllers: [ProductsController],
+  providers: [ProductsService],
 })
-export class ProductModule {}
+export class ProductsModule {}

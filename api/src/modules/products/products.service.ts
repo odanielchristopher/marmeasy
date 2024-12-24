@@ -5,7 +5,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 
 @Injectable()
-export class ProductService {
+export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,

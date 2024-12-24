@@ -4,9 +4,9 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/auth.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { ClientsModule } from './modules/clients/clients.module';
-import { IngredientModule } from './modules/ingredient/ingredient.module';
-import { ProductCategoryModule } from './modules/product-category/product-category.module';
-import { ProductModule } from './modules/product/product.module';
+import { IngredientsModule } from './modules/ingredients/ingredients.module';
+import { ProductCategoriesModule } from './modules/product-categories/product-categories.module';
+import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
 
@@ -16,9 +16,9 @@ import { DatabaseModule } from './shared/database/database.module';
     DatabaseModule,
     AuthModule,
     ClientsModule,
-    ProductCategoryModule,
-    ProductModule,
-    IngredientModule,
+    ProductCategoriesModule,
+    ProductsModule,
+    IngredientsModule,
   ],
   controllers: [],
   providers: [
