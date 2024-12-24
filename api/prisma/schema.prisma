@@ -44,7 +44,7 @@ model Product {
   name        String
   description String
   imagePath   String
-  price       String
+  price       Float
   categoryId  String          @map("product_category_id") @db.Uuid
   category    ProductCategory @relation(fields: [categoryId], references: [id])
 
