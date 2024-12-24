@@ -10,7 +10,7 @@ export interface SignInResponse {
 }
 
 export async function signIn(params: SingInParams) {
-  const { data } = await httpClient.post<SignInResponse>('/users/sign-in', params);
+  const { data } = await httpClient.post<SignInResponse>('/auth/signin', params);
 
   return data;
 }

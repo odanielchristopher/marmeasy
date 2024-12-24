@@ -50,6 +50,8 @@ export default function useLogin() {
       });
     } catch (error) {
       if (error instanceof AxiosError) {
+        console.log(error);
+
         toast({
           type: 'danger',
           text: error.response?.data.error,
