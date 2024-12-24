@@ -52,7 +52,7 @@ export default function useRegister() {
       if (error instanceof AxiosError) {
         toast({
           type: 'danger',
-          text: error.response?.data.error,
+          text: error.response?.data.message ?? 'Ocorreu um erro ao fazer o login.',
         });
         return;
       }

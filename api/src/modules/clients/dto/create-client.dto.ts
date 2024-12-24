@@ -1,3 +1,5 @@
+import { BadRequestException } from '@nestjs/common';
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -34,7 +36,19 @@ export class CreateClientDto {
   @MaxLength(14)
   document: string;
 
-  @IsNumber()
-  @IsNotEmpty()
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException(
+        'Os ingredientes devem ser passados como um array válido.',
+      );
+    }
+  })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    { message: 'O valor do produto precisa ser um número válido.' },
+  )
+  @IsNotEmpty({ message: 'O saldo inicial do cliente é obrigatório.' })
   initialBalance: number;
 }

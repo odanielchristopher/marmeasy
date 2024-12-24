@@ -61,7 +61,9 @@ export class AuthService {
       },
     });
 
-    return { name: user.name, email: user.email };
+    const accessToken = await this.generateAccessToken(user.id);
+
+    return { accessToken };
   }
 
   private generateAccessToken(userId: string) {

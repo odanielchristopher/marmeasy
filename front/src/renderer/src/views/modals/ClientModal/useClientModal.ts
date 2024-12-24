@@ -5,6 +5,7 @@ import { CreateClientParams } from '@renderer/app/services/clientsService/create
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -64,7 +65,16 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
       });
 
       closeModal();
-    } catch {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.response?.data.message);
+
+        toast({
+          type: 'danger',
+          text: 'Dados inválidos.',
+        });
+        return;
+      }
       toast({
         type: 'danger',
         text: 'Ocorreu um erro cadastrar o cliente!',
