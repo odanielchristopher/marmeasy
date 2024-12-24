@@ -8,6 +8,7 @@ import { ProductCategoryModule } from './modules/product-category/product-catego
 import { ProductModule } from './modules/product/product.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
+import { IngredientModule } from './modules/ingredient/ingredient.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DatabaseModule } from './shared/database/database.module';
     ClientsModule,
     ProductCategoryModule,
     ProductModule,
+    IngredientModule,
   ],
   controllers: [],
   providers: [
