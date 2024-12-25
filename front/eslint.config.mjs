@@ -36,6 +36,7 @@ export default [
       'comma-dangle': ['error', 'always-multiline'], // Virgula em listas multilinha
       'no-console': 'warn', // Avisar sobre console.log
       'no-undef': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 ];

@@ -1,15 +1,16 @@
 //@ts-ignore
 import Button from '@renderer/views/components/Button';
+import CurrencyInput from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import Modal from '@renderer/views/components/Modal';
 import { Controller } from 'react-hook-form';
-import { FormModal } from './styles';
+import { BalanceContainer, FormModal } from './styles';
 import useClientModal from './useClientModal';
 
 interface ClientModalProps {
-  isOpen: boolean
-  onClose(): void
+  isOpen: boolean;
+  onClose(): void;
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
@@ -20,6 +21,25 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
       <FormModal onSubmit={handleSubmit}>
         <p>Digite as informações do seu cliente.</p>
 
+        <BalanceContainer>
+          <span className='label'>Saldo inicial</span>
+          <div className='input'>
+            <span>R$</span>
+            <Controller
+              control={control}
+              name="initialBalance"
+              defaultValue="0"
+              render={({ field: { onChange, value } }) => (
+                <CurrencyInput
+                  value={value}
+                  onChange={onChange}
+                  $error={errors.initialBalance?.message}
+                />
+              )}
+            />
+          </div>
+        </BalanceContainer>
+
         <Input
           type="text"
           placeholder="Nome do cliente"
@@ -29,14 +49,14 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
 
         <Controller
           control={control}
-          name='phone'
+          name="phone"
           render={({ field: { onChange, value, name } }) => (
             <InputMask
               name={name}
               type="text"
               placeholder="Telefone do cliente"
               format="(##) #####-####"
-              mask='_'
+              mask="_"
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -47,14 +67,14 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         <Input type="text" placeholder="Endereço do cliente" {...register('address')} />
         <Controller
           control={control}
-          name='cpf'
+          name="cpf"
           render={({ field: { onChange, value, name } }) => (
             <InputMask
               name={name}
               type="text"
               placeholder="CPF do cliente"
               format="###.###.###-##"
-              mask='_'
+              mask="_"
               $error={errors.cpf?.message}
               onChangeValue={onChange}
               value={value}

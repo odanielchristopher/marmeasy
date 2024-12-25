@@ -1,5 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
 import useAside from '@renderer/app/hooks/useAside';
+import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import formatPhone from '@renderer/app/utils/formatPhone';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
 import { Container, Content, Footer, Header, Main } from './styles';
@@ -25,8 +26,11 @@ export default function ClientList({ clients, onDeleteClient }: CardListProps) {
           <Content onClick={() => handleShowClientData(client)}>
             <Header>
               <div className="infos">
-                <strong>{client.name}</strong>
-                <span>{formatPhone(client.phone ?? '')}</span>
+                <div className='infos-header'>
+                  <strong>{client.name}</strong>
+                  <span>{client.type === 'FISICO' ? 'cliente' : 'empresa'}</span>
+                </div>
+                <span>{client.phone ? formatPhone(client.phone ?? '') : 'Sem telefone'}</span>
               </div>
             </Header>
             <Main>
@@ -42,7 +46,7 @@ export default function ClientList({ clients, onDeleteClient }: CardListProps) {
             <Footer>
               <span>Saldo</span>
 
-              <strong>R$ {client.balance}</strong>
+              <strong>R$ {formatCurrency(client.balance as number)}</strong>
             </Footer>
           </Content>
         </Container>

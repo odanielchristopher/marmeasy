@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { queryClient } from '@renderer/App';
+import { Client } from '@renderer/app/entities/Client';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { CreateClientParams } from '@renderer/app/services/clientsService/create';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
@@ -17,6 +18,7 @@ const clientFormSchema = z.object({
   cpf: z.string().optional().refine(value => !value || isValidCPF(value), {
     message: 'O CPF precisa ser válido ou estar vazio',
   }),
+  initialBalance: z.string({ required_error: 'Saldo é obrigatório' }).min(1, 'Saldo é obrigatório'),
 });
 
 export type FormData = z.infer<typeof clientFormSchema>;
@@ -36,10 +38,14 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
     mutationFn: async (data: CreateClientParams) => clientsService.create({
       ...data,
     }),
-    onSuccess: () => {
-      queryClient.refetchQueries({
+    onSuccess: (newData) => {
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => ([
+        ...oldData,
+        newData,
+      ]));
+
+      queryClient.invalidateQueries({
         queryKey: ['clients', 'getAll'],
-        type: 'active',
         exact: true,
       });
     },

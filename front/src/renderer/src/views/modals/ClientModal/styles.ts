@@ -35,3 +35,29 @@ export const FormModal = styled.form`
   }
 `;
 
+export const BalanceContainer = styled.div`
+  margin-bottom: 1.2rem;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .label {
+    color: ${({ theme }) => theme.colors.gray.main };
+  }
+
+  .input {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+
+    width: 18.0rem;
+
+    span {
+      color: ${({ theme }) => theme.colors.gray.main };
+      letter-spacing: -0.5px;
+    }
+  }
+`;
+

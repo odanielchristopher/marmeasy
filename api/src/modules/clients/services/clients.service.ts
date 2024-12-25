@@ -14,7 +14,7 @@ export class ClientsService {
   ) {}
 
   async findAllByUserId(userId: string) {
-    return this.clientsRepository.findMany({
+    const clients = await this.clientsRepository.findMany({
       where: {
         userId,
       },
@@ -28,6 +28,12 @@ export class ClientsService {
         balance: true,
       },
     });
+
+    const sortedClients = clients.sort((a, b) =>
+      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+    );
+
+    return sortedClients;
   }
 
   async findOneByUserId(userId: string, clientId: string) {
@@ -58,9 +64,9 @@ export class ClientsService {
       data: {
         userId,
         name,
-        phone,
-        address,
-        document,
+        phone: phone || null,
+        address: address || null,
+        document: document || null,
         type,
         balance: initialBalance,
       },
@@ -80,9 +86,9 @@ export class ClientsService {
       where: { userId, id: clientId },
       data: {
         name,
-        phone,
-        address,
-        document,
+        phone: phone || null,
+        address: address || null,
+        document: document || null,
         type,
         balance,
       },

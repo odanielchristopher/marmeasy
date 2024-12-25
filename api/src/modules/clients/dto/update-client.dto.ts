@@ -1,4 +1,6 @@
+import { BadRequestException } from '@nestjs/common';
 import { ClientType } from '@prisma/client';
+import { Transform } from 'class-transformer';
 import {
   IsEnum,
   IsNotEmpty,
@@ -34,6 +36,15 @@ export class UpdateClientDto {
   @MaxLength(14)
   document: string;
 
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException(
+        'Os ingredientes devem ser passados como um array válido.',
+      );
+    }
+  })
   @IsNumber()
   @IsNotEmpty()
   balance: number;

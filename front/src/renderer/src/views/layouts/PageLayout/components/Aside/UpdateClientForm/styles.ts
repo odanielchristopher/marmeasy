@@ -5,7 +5,7 @@ export const Form = styled.form`
 
   p {
     color: ${({ theme }) => theme.colors.black.main};
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin-bottom: 1.6rem;
   }
 
@@ -39,6 +39,32 @@ export const Form = styled.form`
 
     &:hover {
       background: ${({ theme }) => theme.colors.orange.main};
+    }
+  }
+`;
+
+export const BalanceContainer = styled.div`
+  margin-bottom: 1.2rem;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+
+  .label {
+    color: ${({ theme }) => theme.colors.gray.main };
+  }
+
+  .input {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+
+    width: 18.0rem;
+
+    span {
+      color: ${({ theme }) => theme.colors.gray.main };
+      letter-spacing: -0.5px;
     }
   }
 `;

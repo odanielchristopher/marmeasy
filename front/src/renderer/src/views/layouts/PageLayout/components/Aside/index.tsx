@@ -5,7 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
-import ClientForm from '@renderer/views/components/ClientForm';
+import UpdateClientForm from './UpdateClientForm';
 import frase from '/frase.png?url';
 
 interface AsideProps {
@@ -62,7 +62,7 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && <ClientForm client={seletedClient} $isShow={showClientData} onConfirm={handleHiddenClientData}/>}
+      {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} onConfirm={handleHiddenClientData}/>}
 
     </Container >
   );
