@@ -7,6 +7,7 @@ import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,7 +16,12 @@ const clientFormSchema = z.object({
   name: z
     .string({ required_error: 'O nome do cliente é obrigatório.' })
     .min(2, 'O nome do cliente é obrigatório'),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine((value) => !value || value.length === 11, {
+      message: 'O telefone precisa ter 11 digitos ou estar vazio',
+    }),
   address: z.string().optional(),
   cpf: z
     .string()
@@ -37,7 +43,6 @@ export type FormData = z.infer<typeof clientFormSchema>
 export default function useUpdateClientForm(
   isShow: boolean,
   client: Client | null,
-  onConfirm: () => void,
 ) {
   const {
     register,
@@ -70,10 +75,10 @@ export default function useUpdateClientForm(
   useEffect(() => {
     if (isShow && client) {
       reset({
-        name: client.name ?? '',
+        name: client.name,
         address: client.address ?? '',
-        cpf: client.document ?? '',
-        cnpj: client.document ?? '',
+        cpf: (client.type === 'FISICO' ? client.document : '') ?? '',
+        cnpj: (client.type ==='JURIDICO' ? client.document : '') ?? '',
         phone: client.phone ?? '',
         balance: String(client.balance),
       });
@@ -104,12 +109,20 @@ export default function useUpdateClientForm(
         type: 'success',
         text: 'Cliente editado com sucesso.',
       });
+    } catch (error) {
+      if (error instanceof AxiosError) {
 
-      onConfirm();
-    } catch {
+        toast({
+          type: 'danger',
+          text: error.response?.data.message,
+        });
+
+        return;
+      }
+
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao editar o cliente!',
+        text: 'Ocorreu um erro cadastrar o cliente!',
       });
     }
   });

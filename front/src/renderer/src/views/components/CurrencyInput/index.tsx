@@ -14,6 +14,9 @@ export default function CurrencyInput({ $error, onChange, value }: InputCurrency
         thousandSeparator="."
         decimalSeparator=","
         decimalScale={2}
+        placeholder='0,00'
+        allowNegative
+        fixedDecimalScale
         value={value}
         onValueChange={({ value }) => onChange?.(value)}
         $error={$error}

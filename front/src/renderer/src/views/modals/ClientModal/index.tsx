@@ -28,7 +28,6 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
             <Controller
               control={control}
               name="initialBalance"
-              defaultValue="0"
               render={({ field: { onChange, value } }) => (
                 <CurrencyInput
                   value={value}

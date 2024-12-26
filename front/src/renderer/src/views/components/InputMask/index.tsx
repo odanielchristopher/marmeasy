@@ -31,7 +31,7 @@ export default function InputMask(
         type={type}
         value={value}
         placeholder=" "
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChangeValue?.(event.target.value)}
+        onValueChange={({ value }) => onChangeValue?.(value)}
         $error={$error}
         disabled={isLoading}
       />

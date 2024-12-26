@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
 import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
 import { CreateClientDto } from '../dto/create-client.dto';
@@ -60,6 +60,22 @@ export class ClientsService {
     const { name, phone, address, document, type, initialBalance } =
       createClientDto;
 
+    if (document) {
+      const documentAlreadyExists = await this.clientsRepository.findFirst({
+        where: { userId, document },
+        select: {
+          document: true,
+        },
+      });
+
+      const errorMessage =
+        type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
+
+      if (documentAlreadyExists) {
+        throw new BadRequestException(errorMessage);
+      }
+    }
+
     return this.clientsRepository.create({
       data: {
         userId,
@@ -81,6 +97,23 @@ export class ClientsService {
     await this.validateClientOwnershipService.validate(userId, clientId);
 
     const { name, phone, address, document, type, balance } = updateClientDto;
+
+    if (document) {
+      const client = await this.clientsRepository.findFirst({
+        where: { userId, document },
+        select: {
+          document: true,
+          id: true,
+        },
+      });
+
+      const errorMessage =
+        type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
+
+      if (client && client.id !== clientId) {
+        throw new BadRequestException(errorMessage);
+      }
+    }
 
     return this.clientsRepository.update({
       where: { userId, id: clientId },

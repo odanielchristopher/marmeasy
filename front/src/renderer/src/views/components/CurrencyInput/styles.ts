@@ -34,5 +34,9 @@ export const StyledInput = styled(NumericFormat)<InputProps>`
 
   ${({ theme, $error }) => $error && css`
     color: ${theme.colors.red.main};
+
+    &::placeholder {
+      color: ${theme.colors.red.main};
+    }
   `}
 `;

@@ -6,13 +6,16 @@ import { CreateClientParams } from '@renderer/app/services/clientsService/create
 import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const clientFormSchema = z.object({
   name: z.string().min(2, 'O nome do cliente é um campo obrigatório'),
-  phone: z.string().optional(),
+  phone: z.string().optional().refine((value) => !value || value.length === 11, {
+    message: 'O telefone precisa ter 11 digitos ou estar vazio',
+  }),
   address: z.string().optional(),
   cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
     message: 'O CNPJ precisa ser válido ou estar vazio',
@@ -69,10 +72,20 @@ export default function useCompanyModal(isOpen: boolean, closeModal: () => void)
         text: 'Empresa cadastrada com sucesso',
       });
       closeModal();
-    } catch {
+    } catch (error) {
+      if (error instanceof AxiosError) {
+
+        toast({
+          type: 'danger',
+          text: error.response?.data.message,
+        });
+
+        return;
+      }
+
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao cadastrar empresa',
+        text: 'Ocorreu um erro cadastrar o cliente!',
       });
     }
   });

@@ -10,14 +10,12 @@ import useUpdateClientForm from './useUpdateClientForm';
 interface ClientFormProps {
   $isShow: boolean
   client: Client | null
-  onConfirm(): void
 }
 
-export default function UpdateClientForm({ $isShow, client, onConfirm }: ClientFormProps) {
+export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
   const { errors, handleSubmit, isLoading, register, control } = useUpdateClientForm(
     $isShow,
     client,
-    onConfirm,
   );
 
   return (
@@ -31,7 +29,6 @@ export default function UpdateClientForm({ $isShow, client, onConfirm }: ClientF
           <Controller
             control={control}
             name="balance"
-            defaultValue="0"
             render={({ field: { onChange, value } }) => (
               <CurrencyInput value={value} onChange={onChange} $error={errors.balance?.message} />
             )}

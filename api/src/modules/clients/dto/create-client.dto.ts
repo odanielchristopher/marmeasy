@@ -26,29 +26,24 @@ export class CreateClientDto {
   @IsOptional()
   address: string;
 
-  @IsNotEmpty({ message: 'O tipo do cliente é obrigatório.' })
+  @IsNotEmpty({ message: 'O tipo é obrigatório.' })
   @IsEnum(ClientType)
   type: ClientType;
 
   @IsString()
   @IsOptional()
-  @MinLength(11, { message: 'Um CPF precisa ser válido.' })
-  @MaxLength(14)
+  @MinLength(11, { message: 'Um documento precisa ser válido.' })
+  @MaxLength(14, { message: 'Um documento precisa ser válido.' })
   document: string;
 
   @Transform(({ value }) => {
     try {
       return Number(value);
     } catch {
-      throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
-      );
+      throw new BadRequestException('Saldo deve ser válido.');
     }
   })
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    { message: 'O valor do produto precisa ser um número válido.' },
-  )
-  @IsNotEmpty({ message: 'O saldo inicial do cliente é obrigatório.' })
+  @IsNumber({ maxDecimalPlaces: 2 }, { message: 'O saldo válido.' })
+  @IsNotEmpty({ message: 'O saldo inicial é obrigatório.' })
   initialBalance: number;
 }

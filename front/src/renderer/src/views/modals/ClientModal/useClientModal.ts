@@ -13,7 +13,9 @@ import { z } from 'zod';
 
 const clientFormSchema = z.object({
   name: z.string({ required_error: 'O nome do cliente é obrigatório.' }).min(2, 'O nome do cliente é obrigatório'),
-  phone: z.string().optional(),
+  phone: z.string().optional().refine((value) => !value || value.length === 11, {
+    message: 'O telefone precisa ter 11 digitos ou estar vazio',
+  }),
   address: z.string().optional(),
   cpf: z.string().optional().refine(value => !value || isValidCPF(value), {
     message: 'O CPF precisa ser válido ou estar vazio',
@@ -73,14 +75,15 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
       closeModal();
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log(error.response?.data.message);
 
         toast({
           type: 'danger',
-          text: 'Dados inválidos.',
+          text: error.response?.data.message,
         });
+
         return;
       }
+
       toast({
         type: 'danger',
         text: 'Ocorreu um erro cadastrar o cliente!',
