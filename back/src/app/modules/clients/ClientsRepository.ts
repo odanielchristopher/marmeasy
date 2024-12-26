@@ -44,15 +44,13 @@ export class ClientsRepository {
   }
 
   async create(client: IClient) {
-    console.log(client.balance);
-
     const newClient = await prismaClient.client.create({
       data: {
         name: client.name,
         phone: client.phone,
         address: client.address,
         type: client.type,
-        document: client.document,
+        document: client.document === '' ? null : client.document,
         balance: client.balance as number,
         user_id: client.userId,
       },

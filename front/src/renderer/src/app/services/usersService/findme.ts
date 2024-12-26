@@ -7,7 +7,7 @@ export interface FindMeResponse {
 }
 
 export async function findMe() {
-  const { data } = await httpClient.get<FindMeResponse>('/users/find-me');
+  const { data } = await httpClient.get<FindMeResponse>('/users/me');
 
   return data;
 }

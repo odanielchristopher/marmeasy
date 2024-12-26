@@ -1,0 +1,10 @@
+name: marmeasy
+services:
+  postgres:
+    image: postgres:latest
+    container_name: marmeasy
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5432:5432"

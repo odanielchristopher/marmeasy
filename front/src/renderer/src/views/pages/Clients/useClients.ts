@@ -47,21 +47,24 @@ export default function useClient() {
       return clientsService.remove(data);
     },
     onSuccess: () => {
-      queryClient.refetchQueries({
+      queryClient.setQueryData(['clients', 'getAll'], (oldClients: Client[]) => {
+        return oldClients.filter((client) => client.id !== clientBeingDeleted!.id);
+      });
+
+      queryClient.invalidateQueries({
         queryKey: ['clients', 'getAll'],
-        type: 'active',
         exact: true,
       });
     },
   });
 
 
-  const { data, isFetching } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['clients', 'getAll'],
     queryFn: async () => {
       return await clientsService.getAll();
     },
-    staleTime: 60000,
+    staleTime: 60000 * 2,
   });
 
   function loadClient() {
@@ -74,8 +77,11 @@ export default function useClient() {
   }
 
   const filteredClients = useMemo(
-    () =>
-      clients.filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase())),
+    () => (
+      clients
+        .filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
+    ),
     [clients, searchTerm],
   );
 
@@ -88,7 +94,7 @@ export default function useClient() {
 
   return {
     isDeleteClientModalVisible,
-    isFetching,
+    isLoading,
     isSearchEmpty,
     hasClient,
     searchTerm,

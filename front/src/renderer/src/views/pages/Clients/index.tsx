@@ -21,7 +21,7 @@ export default function Clients() {
     hasClient,
     isDeleteClientModalVisible,
     clientBeingDeleted,
-    isFetching,
+    isLoading,
     isSearchEmpty,
     searchTerm,
     filteredClients,
@@ -61,9 +61,9 @@ export default function Clients() {
         onValueChange={handleChangeSearchTerm}
       />
 
-      {isFetching && <Loader $isLoading size={50} />}
+      {isLoading && <Loader $isLoading size={50} />}
 
-      {!isFetching && (
+      {!isLoading && (
         <Content>
           {hasClient && (
             <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />

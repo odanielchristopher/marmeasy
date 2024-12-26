@@ -57,8 +57,25 @@ export const Header= styled.div`
     gap: .2rem;
     color: ${({ theme }) => theme.colors.black.light};
 
-    strong {
-      font-size: 1.8rem;
+    .infos-header {
+      display: flex;
+      align-items: center;
+      gap: .8rem;
+
+      strong {
+        font-size: 1.8rem;
+      }
+
+      span {
+        background: ${({ theme }) => theme.colors.orange.lighter};
+        color: #FFFF;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 1.2rem;
+        letter-spacing: 0.02rem;
+        padding: .1rem 1.2rem;
+        border-radius: .2rem;
+      }
     }
 
     span {

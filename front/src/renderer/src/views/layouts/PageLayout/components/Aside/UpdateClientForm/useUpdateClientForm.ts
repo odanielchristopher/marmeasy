@@ -3,9 +3,11 @@ import { queryClient } from '@renderer/App';
 import { Client } from '@renderer/app/entities/Client';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { UpdateClientParams } from '@renderer/app/services/clientsService/update';
+import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import { isValidCPF } from '@renderer/app/utils/isCPFValid';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,7 +16,12 @@ const clientFormSchema = z.object({
   name: z
     .string({ required_error: 'O nome do cliente é obrigatório.' })
     .min(2, 'O nome do cliente é obrigatório'),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine((value) => !value || value.length === 11, {
+      message: 'O telefone precisa ter 11 digitos ou estar vazio',
+    }),
   address: z.string().optional(),
   cpf: z
     .string()
@@ -22,11 +29,21 @@ const clientFormSchema = z.object({
     .refine((value) => !value || isValidCPF(value), {
       message: 'O CPF precisa ser válido ou estar vazio',
     }),
+  cnpj: z
+    .string()
+    .optional()
+    .refine((value) => !value || isCNPJValid(value), {
+      message: 'O CNPJ precisa ser válido ou estar vazio',
+    }),
+  balance: z.string({ required_error: 'Saldo é obrigatório' }).min(1, 'Saldo é obrigatório'),
 });
 
 export type FormData = z.infer<typeof clientFormSchema>
 
-export default function useClientForm(isShow: boolean, client: Client | null, onConfirm: () => void) {
+export default function useUpdateClientForm(
+  isShow: boolean,
+  client: Client | null,
+) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -39,10 +56,17 @@ export default function useClientForm(isShow: boolean, client: Client | null, on
 
   const { mutateAsync: updateClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: UpdateClientParams) => clientsService.update(data),
-    onSuccess: () => {
-      queryClient.refetchQueries({
+    onSuccess: (updatedClient) => {
+      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => {
+
+        return clients.map((client) => {
+
+          return client.id === updatedClient.id ? updatedClient : client;
+        });
+      });
+
+      queryClient.invalidateQueries({
         queryKey: ['clients', 'getAll'],
-        type: 'active',
         exact: true,
       });
     },
@@ -53,8 +77,10 @@ export default function useClientForm(isShow: boolean, client: Client | null, on
       reset({
         name: client.name,
         address: client.address ?? '',
-        cpf: client.document ?? '',
+        cpf: (client.type === 'FISICO' ? client.document : '') ?? '',
+        cnpj: (client.type ==='JURIDICO' ? client.document : '') ?? '',
         phone: client.phone ?? '',
+        balance: String(client.balance),
       });
     } else if (!isShow) {
       reset();
@@ -66,23 +92,37 @@ export default function useClientForm(isShow: boolean, client: Client | null, on
   }, [isShow, client]);
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
+    const { name, address, phone, cnpj, cpf, balance } = data;
+
     try {
       await updateClient({
-        ...data,
         id: client!.id,
         type: client!.type,
+        name,
+        address: address || undefined,
+        phone: phone || undefined,
+        document: client!.type === 'FISICO' ? (cpf || undefined) : (cnpj || undefined),
+        balance,
       });
 
       toast({
         type: 'success',
         text: 'Cliente editado com sucesso.',
       });
+    } catch (error) {
+      if (error instanceof AxiosError) {
 
-      onConfirm();
-    } catch {
+        toast({
+          type: 'danger',
+          text: error.response?.data.message,
+        });
+
+        return;
+      }
+
       toast({
         type: 'danger',
-        text: 'Ocorreu um erro ao editar o cliente!',
+        text: 'Ocorreu um erro cadastrar o cliente!',
       });
     }
   });
