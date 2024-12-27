@@ -23,6 +23,7 @@ export default function Categories() {
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
+    setCategorySelected(null);
     setOpenEditModal(false);
   }, []);
 
@@ -32,6 +33,7 @@ export default function Categories() {
   }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
+    setCategorySelected(null);
     setOpenDeleteModal(false);
   }, []);
 
@@ -45,9 +47,23 @@ export default function Categories() {
 
   return (
     <>
-      <EditCategoryModal open={openEditModal} onClose={handleCloseEditModal} category={categorySelected}/>
-      <DeleteCategoryModal open={openDeleteModal} onClose={handleCloseDeleteModal} category={categorySelected}/>
-      <NewCategoryModal open={openNewCategoryModal} onClose={handleCloseNewCategoryModal}/>
+      {categorySelected && (
+        <EditCategoryModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          category={categorySelected}
+        />
+      )}
+
+      {categorySelected && (
+        <DeleteCategoryModal
+          open={openDeleteModal}
+          onClose={handleCloseDeleteModal}
+          category={categorySelected}
+        />
+      )}
+
+      <NewCategoryModal open={openNewCategoryModal} onClose={handleCloseNewCategoryModal} />
       <Container>
         <Header>
           <div className="infos">
