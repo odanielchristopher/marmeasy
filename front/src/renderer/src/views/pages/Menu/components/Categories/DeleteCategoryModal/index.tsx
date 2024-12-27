@@ -21,7 +21,7 @@ export default function DeleteCategoryModal({ open, onClose, category }: DeleteP
     >
       <Container>
        <Warning>
-        Tem certeza que deseja excluir o produto?
+        Tem certeza que deseja excluir a categoria?
        </Warning>
 
        <CategoryContainer>

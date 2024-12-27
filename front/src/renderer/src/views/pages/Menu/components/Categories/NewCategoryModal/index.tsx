@@ -1,17 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CancelButton, Container, Footer, Form } from './styles';
+import { Container, Form } from './styles';
 
 interface EditProductModalProps {
-  open: boolean;
-  onClose?(): void;
-  category: ProductCategory | null;
+  open: boolean
+  onClose?(): void
 }
 
 const categoryFormSchema = z.object({
@@ -27,17 +25,13 @@ const categoryFormSchema = z.object({
 
 export type FormData = z.infer<typeof categoryFormSchema>
 
-export default function EditCategoryModal({ open, onClose, category }: EditProductModalProps) {
+export default function NewCategoryModal({ open, onClose }: EditProductModalProps) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(categoryFormSchema),
-    defaultValues: {
-      icon: category?.icon,
-      name: category?.name,
-    },
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
@@ -45,14 +39,10 @@ export default function EditCategoryModal({ open, onClose, category }: EditProdu
   });
 
   return (
-    <Modal
-      title="Editar categoria"
-      open={open}
-      onClose={onClose}
-    >
+    <Modal title="Nova categoria" open={open} onClose={onClose}>
       <Container>
         <Form noValidate onSubmit={handleSubmit}>
-          <p>Aqui estão os dados da categoria</p>
+          <p>Escreva os dados da categoria</p>
 
           <Input
             type="text"
@@ -68,17 +58,8 @@ export default function EditCategoryModal({ open, onClose, category }: EditProdu
             {...register('name')}
           />
 
-          <Footer>
-            <CancelButton onClick={onClose}>
-              Cancelar
-            </CancelButton>
-            <Button>
-              Salvar alterações
-            </Button>
-          </Footer>
+          <Button type="submit">Adicionar nova categoria</Button>
         </Form>
-
-
       </Container>
     </Modal>
   );

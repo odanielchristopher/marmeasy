@@ -1,12 +1,20 @@
 import styled from 'styled-components';
 
-export const Container = styled.div``;
+export const Container = styled.div`
+  margin-top: 4.8rem;
+`;
 
 export const Form = styled.form`
   p {
     color: ${({ theme }) => theme.colors.gray.main};
     font-size: 1.4rem;
     margin-bottom: 1.2rem;
+  }
+
+  button {
+    margin-top: 4.8rem;
+    width: 100%;
+    height: 4.8rem;
   }
 `;
 
@@ -40,19 +48,5 @@ export const CancelButton = styled.button`
   &[disabled] {
     background: ${({ theme }) => theme.colors.gray.lighter} !important;
     cursor: default !important;
-  }
-`;
-
-export const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.2rem;
-
-  margin-top: 4.8rem;
-
-  button {
-    height: 4.8rem;
   }
 `;
