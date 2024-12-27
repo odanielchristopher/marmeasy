@@ -9,14 +9,15 @@ interface ModalProps {
   onClose?(): void;
   title: string;
   action?: React.ReactNode;
+  $maxWidth?: string;
 }
 
-export default function Modal({ title, action, open, children, onClose }: ModalProps) {
+export default function Modal({ title, action, open, children, onClose, $maxWidth }: ModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
 		<Dialog.Portal>
 			<StyledRdxDialogOverlay/>
-			<StyledRdxDialogContent aria-describedby=''>
+			<StyledRdxDialogContent aria-describedby='' $maxWidth={$maxWidth}>
         <Dialog.Title about={title}>
           <Header>
             <CloseButton onClick={onClose}>

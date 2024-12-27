@@ -40,3 +40,27 @@ export const Title = styled.h2`
   font-weight: 600;
   line-height: 120%;
 `;
+
+export const ProductImage = styled.img`
+  border-radius: .4rem;
+  height: 3.2rem;
+  object-fit: cover;
+  width: 4.8rem;
+`;
+
+export const ActionButton = styled.button`
+  background: transparent;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: .8rem;
+`;
+
+export const CategoryContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+`;

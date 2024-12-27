@@ -41,3 +41,14 @@ export const Title = styled.h2`
   line-height: 120%;
 `;
 
+export const ActionButton = styled.button`
+  background: transparent;
+  border: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: .8rem;
+`;
+
