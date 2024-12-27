@@ -5,14 +5,17 @@ import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
 
 import { Actions, CancelButton, CategoryContainer, Container, Warning } from './styles';
+import useDeleteCategoryModal from './useDeleteCategoryModal';
 
 interface DeleteProductModalProps {
   open: boolean;
-  onClose?(): void;
+  onClose(): void;
   category: ProductCategory | null;
 }
 
 export default function DeleteCategoryModal({ open, onClose, category }: DeleteProductModalProps) {
+  const { handleConfirm, isloading } = useDeleteCategoryModal(category, onClose);
+
   return (
     <Modal
       title="Excluir categoria"
@@ -33,7 +36,11 @@ export default function DeleteCategoryModal({ open, onClose, category }: DeleteP
           <CancelButton onClick={onClose}>
             Cancelar
           </CancelButton>
-          <Button danger>
+          <Button
+            danger
+            isLoading={isloading}
+            onClick={handleConfirm}
+          >
               Sim, desejo excluir
           </Button>
        </Actions>

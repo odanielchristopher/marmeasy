@@ -1,48 +1,23 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { isEmoji } from '@renderer/app/utils/isEmoji';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { CancelButton, Container, Footer, Form } from './styles';
+import useEditCategoryModal from './useEditCategoryModal';
 
 interface EditProductModalProps {
   open: boolean;
-  onClose?(): void;
+  onClose(): void;
   category: ProductCategory | null;
 }
 
-const categoryFormSchema = z.object({
-  icon: z
-    .string({ required_error: 'O emoji é obrigatório.' })
-    .refine((value) => isEmoji(value), {
-      message: 'Precisa ser somente um emoji.',
-    }),
-  name: z
-    .string({ required_error: 'O nome é obrigatório.' })
-    .min(2, 'O nome deve ter pelo menos 2 carateres.'),
-});
-
-export type FormData = z.infer<typeof categoryFormSchema>
-
 export default function EditCategoryModal({ open, onClose, category }: EditProductModalProps) {
   const {
+    errors,
+    isLoading,
     register,
-    handleSubmit: hookFormHandleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(categoryFormSchema),
-    defaultValues: {
-      icon: category?.icon,
-      name: category?.name,
-    },
-  });
-
-  const handleSubmit = hookFormHandleSubmit(async (data) => {
-    console.log(data);
-  });
+    handleSubmit,
+  } = useEditCategoryModal(category, onClose);
 
   return (
     <Modal
@@ -72,7 +47,7 @@ export default function EditCategoryModal({ open, onClose, category }: EditProdu
             <CancelButton onClick={onClose}>
               Cancelar
             </CancelButton>
-            <Button>
+            <Button type="submit" isLoading={isLoading}>
               Salvar alterações
             </Button>
           </Footer>

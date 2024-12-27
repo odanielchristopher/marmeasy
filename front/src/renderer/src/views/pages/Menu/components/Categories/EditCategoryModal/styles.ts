@@ -54,5 +54,9 @@ export const Footer = styled.div`
 
   button {
     height: 4.8rem;
+
+    &:nth-child(2) {
+      width: 18.0rem;
+    }
   }
 `;
