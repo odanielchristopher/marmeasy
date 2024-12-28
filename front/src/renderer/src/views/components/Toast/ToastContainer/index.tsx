@@ -6,7 +6,7 @@ import ToastMessage, { IMessage } from '../ToastMessage';
 import useAnimatedList from '@renderer/app/hooks/useAnimatedList';
 import { Container } from './styles';
 
-export default function ToastContainer(): JSX.Element {
+export default function ToastContainer() {
   const {
     setItems: setMessages,
     renderList,
@@ -14,7 +14,7 @@ export default function ToastContainer(): JSX.Element {
   } = useAnimatedList<IMessage>();
 
   useEffect(() => {
-    function handleAddToast({ type, text, duration }) {
+    function handleAddToast({ type, text, duration }: IMessage) {
       setMessages((prevState) => [
         ...prevState,
         {id: Math.random(), type, text, duration},

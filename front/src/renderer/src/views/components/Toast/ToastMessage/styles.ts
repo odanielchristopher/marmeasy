@@ -33,12 +33,12 @@ const containerVariants = {
   default: css`
     background: ${({ theme }) => theme.colors.orange.main};
   `,
-  sucess: css`
+  success: css`
     background: ${({ theme }) => theme.colors.green.main};
   `,
   danger: css`
     background: ${({ theme }) => theme.colors.red.main};
-  `
+  `,
 };
 
 export const Container = styled.div<IContainer>`

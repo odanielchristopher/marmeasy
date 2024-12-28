@@ -2,35 +2,51 @@ import { LuPlus } from 'react-icons/lu';
 
 import { DropdownMenu } from '../DropdownMenu';
 
-import { ClientIcon } from '@renderer/views/components/Icons/ClientIcon';
-import { EnterpriseIcon } from '../Icons/EnterpriseIcon';
+import { BusinessIcon } from '@renderer/assets/Icons/Business';
+import { ClientIcon } from '@renderer/assets/Icons/ClientIcon';
+
 import { Container, StyledButton, StyledItem } from './styles';
 
+import ClientModal from '@renderer/views/modals/ClientModal';
+import CompanyModal from '@renderer/views/modals/CompanyModal';
+import { useFab } from './useFab';
+
 export default function Fab() {
+  const {
+    isOpenModalClient,
+    isOpenModalCompany,
+    handleOpenClientModal,
+    handleOpenCompanyModal,
+    handleCloseClientModal,
+    handleCloseCompanyModal,
+  } = useFab();
+
   return (
     <Container>
+      <ClientModal isOpen={isOpenModalClient} onClose={handleCloseClientModal} />
+      <CompanyModal isOpen={isOpenModalCompany} onClose={handleCloseCompanyModal} />
       <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <StyledButton>
-          <LuPlus size={24} />
-        </StyledButton>
-      </DropdownMenu.Trigger>
+        <DropdownMenu.Trigger asChild>
+          <StyledButton>
+            <LuPlus size={24} />
+          </StyledButton>
+        </DropdownMenu.Trigger>
 
-        <DropdownMenu.Content side='top' sideOffset={4} align='end'>
-          <DropdownMenu.Item onSelected={() => console.log('funcoinou')} asChild>
+        <DropdownMenu.Content side="top" sideOffset={4} align="end">
+          <DropdownMenu.Item onSelected={() => handleOpenClientModal()} asChild>
             <StyledItem>
               <ClientIcon />
               Novo cliente
             </StyledItem>
           </DropdownMenu.Item>
-          <DropdownMenu.Item onSelected={() => console.log('funcoinou')} asChild>
+          <DropdownMenu.Item onSelected={() => handleOpenCompanyModal()} asChild>
             <StyledItem>
-              <EnterpriseIcon />
+              <BusinessIcon />
               Nova empresa
             </StyledItem>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
-    </DropdownMenu.Root>
+      </DropdownMenu.Root>
     </Container>
   );
 }

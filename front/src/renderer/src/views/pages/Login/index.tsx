@@ -1,19 +1,19 @@
 
 import { Link } from 'react-router-dom';
 
-import useLoginController from './useLoginController';
+import useLogin from './useLogin';
 
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import { Container, Description, Title } from './styles';
 
-export default function Login(): JSX.Element {
+export default function Login() {
   const {
     errors,
     isLoading,
     register,
     handleSubmit,
-  } = useLoginController();
+  } = useLogin();
 
   return (
     <Container>

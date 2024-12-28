@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken';
 
 import { env } from '../../../shared/config/env';
 import { InvalidCredentials } from '../../../shared/errors/InvalidCredentials';
+import { UserNotFound } from '../../../shared/errors/UserNotFound';
 import { UsersRepository } from '../UsersRepository';
 
 interface IInput {
@@ -19,20 +20,20 @@ export class SignInUseCase {
   constructor(private readonly usersRepository: UsersRepository) {}
 
   async execute({ email, password }: IInput): Promise<IOutput> {
-    const account = await this.usersRepository.findUserByEmail(email);
+    const user = await this.usersRepository.findByEmail(email);
 
-    if (!account) {
-      throw new InvalidCredentials();
+    if (!user) {
+      throw new UserNotFound();
     }
 
-    const isPasswordValid = await compare(password, account.password);
+    const isPasswordValid = await compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new InvalidCredentials();
     }
 
     const accessToken = sign(
-      { sub: account.id },
+      { sub: user.id },
       env.JWT_SECRET,
     );
 

@@ -4,23 +4,23 @@ import { Container } from './styles';
 import { CgCloseO } from 'react-icons/cg';
 import { FaRegCircleCheck } from 'react-icons/fa6';
 
-export type ToastType = 'default' | 'danger' | 'sucess';
+export type ToastType = 'default' | 'danger' | 'success';
 
 export interface IMessage {
-  id: number
-  text: string
-  type?: ToastType
-  duration?: number
+  id: number;
+  text: string;
+  type?: ToastType;
+  duration?: number;
 }
 
 interface IToastMessage {
-  message: IMessage
-  isLeaving: boolean
-  onRemoveMessage: (id) => void // eslint-disable-line no-unused-vars
-  animatedRef?: React.RefObject<HTMLDivElement>
+  message: IMessage;
+  isLeaving: boolean;
+  onRemoveMessage(id: number): void;
+  animatedRef?: React.RefObject<HTMLDivElement>;
 }
 
-export default function ToastMessage({ message, isLeaving, onRemoveMessage, animatedRef }: IToastMessage): JSX.Element | null {
+export default function ToastMessage({ message, isLeaving, onRemoveMessage, animatedRef }: IToastMessage) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       onRemoveMessage(message.id);
@@ -45,7 +45,7 @@ export default function ToastMessage({ message, isLeaving, onRemoveMessage, anim
       $isLeaving={isLeaving}
       ref={animatedRef}
     >
-      {message.type === 'sucess' && <FaRegCircleCheck size={20}/>}
+      {message.type === 'success' && <FaRegCircleCheck size={20}/>}
       {message.type === 'danger' && <CgCloseO size={22}/>}
       <strong>{message.text}</strong>
     </Container>

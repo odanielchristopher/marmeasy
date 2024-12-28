@@ -15,6 +15,7 @@ export default [
       'semi': ['error', 'always'],
       'comma-dangle': ['error', 'always-multiline'],
       '@typescript-eslint/no-explicit-any': 'off',
+      'no-console': 'warn', // Avisar sobre console.log
     },
   },
 ];

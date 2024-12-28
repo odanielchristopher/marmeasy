@@ -21,11 +21,14 @@
     "@types/pg": "^8.11.10",
     "eslint": "^9.16.0",
     "globals": "^15.13.0",
+    "prisma": "^6.0.1",
     "tsx": "^4.4.0",
     "typescript": "^5.3.2",
     "typescript-eslint": "^8.17.0"
   },
   "dependencies": {
+    "@prisma/client": "^6.0.1",
+    "@prisma/extension-accelerate": "^1.2.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

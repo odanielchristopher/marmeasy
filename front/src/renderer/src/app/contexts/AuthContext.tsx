@@ -1,8 +1,8 @@
+import { queryClient } from '@renderer/App';
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
 import LaunchScreen from '@renderer/views/components/LaunchScreen';
-import { useQuery } from '@tanstack/react-query';
 import { createContext, useCallback, useEffect, useState } from 'react';
-import { usersService } from '../services/usersService';
+import useFindMeQuery from '../hooks/queries/useFindMeQuery';
 import toast from '../utils/toast';
 
 export interface AuthContextValue {
@@ -20,24 +20,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storedAccessToken;
   });
 
-  const { isError, isFetching, isSuccess, remove } = useQuery({
-    queryKey: ['users', 'find-me'],
-    queryFn: () => usersService.findMe(),
-    enabled: signedIn,
-    staleTime: Infinity,
-  });
+  const { isError, isLoading, isSuccess } = useFindMeQuery(signedIn);
 
-  const signin = useCallback((accessToken: string) => {
+  const signin = useCallback(async (accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
     setSignedIn(true);
   }, []);
 
-  const signout = useCallback(() => {
+  const signout = useCallback(async () => {
+    queryClient.clear();
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
-    remove();
-
     setSignedIn(false);
-  }, [remove]);
+  }, []);
 
   useEffect(() => {
     if (isError) {
@@ -50,8 +44,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (isSuccess) {
       toast({
-        type: 'sucess',
-        text: 'Usuário autenticado.',
+        type: 'success',
+        text: 'Usuário autenticado',
       });
     }
   }, [isError, signout, isSuccess]);
@@ -62,8 +56,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       signin,
       signout,
     }}>
-      <LaunchScreen isLoading={isFetching}/>
-      {!isFetching && children}
+      <LaunchScreen isLoading={isLoading}/>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 }

@@ -3,8 +3,8 @@ import Spinner from '../Spinner';
 import { StyledButton } from './styles';
 
 interface ButtonProps extends ComponentProps<'button'> {
-  isLoading?: boolean
-  danger?: boolean
+  isLoading?: boolean;
+  danger?: boolean;
 }
 
 export default function Button({
@@ -19,7 +19,7 @@ export default function Button({
     <StyledButton
       type={type}
       disabled={disabled || isLoading}
-      danger={danger}
+      $danger={danger}
       onClick={onClick}
     >
       {!isLoading && children}

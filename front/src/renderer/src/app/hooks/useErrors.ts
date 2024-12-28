@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 
 interface ErrorProps {
-  field: string
-  message: string
+  field: string;
+  message: string;
 }
 
 export default function useErrors() {
@@ -31,6 +31,6 @@ export default function useErrors() {
     errors,
     setError,
     removeError,
-    getErrorMessageByFieldName
+    getErrorMessageByFieldName,
   };
 }
