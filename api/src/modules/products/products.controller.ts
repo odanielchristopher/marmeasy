@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -40,15 +41,21 @@ export class ProductsController {
   @UseInterceptors(FileInterceptor('image'))
   create(
     @ActiveUserId() userId: string,
-    @UploadedFile() image: any,
+    @UploadedFile() image: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
-    createProductDto = {
-      ...createProductDto,
-      imagePath: image.path,
-    };
+    // createProductDto = {
+    //   ...createProductDto,
+    //   imagePath: image.path,
+    // };
 
-    return this.productsService.create(userId, createProductDto);
+    // return this.productsService.create(userId, createProductDto);
+
+    if (image && !image.mimetype.startsWith('image/')) {
+      throw new BadRequestException('Formato de arquivo inválido.');
+    }
+
+    return { image };
   }
 
   @Put(':productId')
