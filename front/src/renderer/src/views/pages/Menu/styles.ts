@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  padding-top: 1.6rem;
+  padding-block: 1.6rem;
+  padding-right: 5.0rem;
 `;
 
 export const Header = styled.header`
@@ -24,16 +25,7 @@ export const Header = styled.header`
 `;
 
 export const Main = styled.main`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2.4rem;
+  margin-top: 4.0rem;
   width: 100%;
-  height: calc(100vh - 15.0rem);
-
-  img {
-    width: 50.0rem;
-  }
 `;
 

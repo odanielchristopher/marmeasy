@@ -21,14 +21,18 @@ const contentShow = keyframes`
 	}
 `;
 
-export const StyledRdxDialogContent = styled(Dialog.Content)`
+interface DialogContentProps {
+  $maxWidth?: string;
+}
+
+export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>`
   animation: ${contentShow} 0.3s forwards;
   background: #FFF;
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0rem .4rem 0rem rgba(0, 0, 0, 0.04);
   padding: 2.4rem;
   width: 100%;
-  max-width: 45.0rem;
+  max-width: ${({ $maxWidth }) => $maxWidth || '45.0rem'};
 
   position: fixed;
 	top: 50%;
