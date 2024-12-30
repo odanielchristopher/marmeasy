@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
-import { ValidateUserOwnershipService } from '../users/services/validate-user-ownership.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto } from '../dto/create-product.dto';
+import { UpdateProductDto } from '../dto/update-product.dto';
+import { ProducImagesService } from './product-images.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    private readonly productImagesService: ProducImagesService,
   ) {}
 
   findAllByUserId(userId: string, categoryName: string) {
@@ -47,11 +49,17 @@ export class ProductsService {
     return `This action returns a #${productId} product`;
   }
 
-  async create(userId: string, createProductDto: CreateProductDto) {
+  async create(
+    userId: string,
+    createProductDto: CreateProductDto,
+    image: Express.Multer.File,
+  ) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { name, description, price, imagePath, categoryId, ingredientsIds } =
+    const { name, description, price, categoryId, ingredientsIds } =
       createProductDto;
+
+    const { imagePath } = await this.productImagesService.upload(image);
 
     return this.productsRepository.create({
       data: {

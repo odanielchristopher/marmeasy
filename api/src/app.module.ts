@@ -9,7 +9,6 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
-import { UploadModule } from './modules/upload/upload.module';
 
 @Module({
   imports: [
@@ -20,7 +19,6 @@ import { UploadModule } from './modules/upload/upload.module';
     ProductCategoriesModule,
     ProductsModule,
     IngredientsModule,
-    UploadModule,
   ],
   controllers: [],
   providers: [

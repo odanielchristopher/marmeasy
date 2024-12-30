@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -15,7 +14,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductsService } from './products.service';
+import { ProductsService } from './services/products.service';
 
 @Controller('products')
 export class ProductsController {
@@ -44,18 +43,7 @@ export class ProductsController {
     @UploadedFile() image: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
-    // createProductDto = {
-    //   ...createProductDto,
-    //   imagePath: image.path,
-    // };
-
-    // return this.productsService.create(userId, createProductDto);
-
-    if (image && !image.mimetype.startsWith('image/')) {
-      throw new BadRequestException('Formato de arquivo inválido.');
-    }
-
-    return { image };
+    return this.productsService.create(userId, createProductDto, image);
   }
 
   @Put(':productId')

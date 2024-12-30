@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import * as fs from 'fs/promises';
+import { randomUUID } from 'node:crypto';
 import * as path from 'path';
 
 @Injectable()
-export class UploadService {
-  async uploadFile(userId: string, image: Express.Multer.File) {
+export class ProducImagesService {
+  async upload(image: Express.Multer.File) {
     if (!image.mimetype.startsWith('image/')) {
       throw new BadRequestException('Formato de arquivo inválido.');
     }
@@ -12,7 +13,7 @@ export class UploadService {
     // Salvar o arquivo no disco apenas após a validação
     const uploadDirectory = path.resolve(process.cwd(), 'uploads');
 
-    const imageName = `${userId}-${Date.now()}-${image.originalname}`;
+    const imageName = `${randomUUID()}-${image.originalname}`;
 
     const uploadPath = path.join(uploadDirectory, imageName);
 
