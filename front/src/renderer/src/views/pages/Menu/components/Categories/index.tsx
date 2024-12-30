@@ -17,7 +17,8 @@ export default function Categories() {
     categories,
     hasCategories,
     isLoading,
-    categorySelected,
+    categoryBeignDeleted,
+    categoryBeingEdited,
     openDeleteModal,
     openEditModal,
     openNewCategoryModal,
@@ -31,19 +32,19 @@ export default function Categories() {
 
   return (
     <>
-      {categorySelected && (
+      {categoryBeingEdited && (
         <EditCategoryModal
           open={openEditModal}
           onClose={handleCloseEditModal}
-          category={categorySelected}
+          category={categoryBeingEdited}
         />
       )}
 
-      {categorySelected && (
+      {categoryBeignDeleted && (
         <DeleteCategoryModal
           open={openDeleteModal}
           onClose={handleCloseDeleteModal}
-          category={categorySelected}
+          category={categoryBeignDeleted}
         />
       )}
 

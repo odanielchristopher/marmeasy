@@ -8,26 +8,28 @@ export default function useCategories() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openNewCategoryModal, setOpenNewCategoryModal] = useState(false);
 
-  const [categorySelected, setCategorySelected] = useState<ProductCategory | null>(null);
+  const [categoryBeignDeleted, setCategoryBeignDeleted] = useState<ProductCategory | null>(null);
+  const [categoryBeingEdited, setCategoryBeingEdited] = useState<ProductCategory | null>(null);
+
   const [categories, setCategories] = useState<ProductCategory[]>([]);
 
   const handleOpenEditModal = useCallback((category: ProductCategory) => {
-    setCategorySelected(category);
+    setCategoryBeingEdited(category);
     setOpenEditModal(true);
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
-    setCategorySelected(null);
+    setCategoryBeingEdited(null);
     setOpenEditModal(false);
   }, []);
 
   const handleOpenDeleteModal = useCallback((category: ProductCategory) => {
-    setCategorySelected(category);
+    setCategoryBeignDeleted(category);
     setOpenDeleteModal(true);
   }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
-    setCategorySelected(null);
+    setCategoryBeignDeleted(null);
     setOpenDeleteModal(false);
   }, []);
 
@@ -67,7 +69,8 @@ export default function useCategories() {
     categories: sortedCategories,
     hasCategories,
     isLoading,
-    categorySelected,
+    categoryBeignDeleted,
+    categoryBeingEdited,
     openDeleteModal,
     openEditModal,
     openNewCategoryModal,

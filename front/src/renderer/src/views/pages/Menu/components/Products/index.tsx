@@ -12,36 +12,50 @@ import EditProductModal from './EditProductModal';
 import { ActionButton, CategoryContainer, Container, Header, ProductImage, Title } from './styles';
 
 export default function Produtos() {
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(true);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  const [productSelected, setProductSelected] = useState<Product | null>(null);
+  const [productBeingDeleted, setProductBeingDeleted] = useState<Product | null>(null);
+  const [productBeingEdited, setproductBeingEdited] = useState<Product | null>(null);
 
-  const handleOpenEditModal = useCallback(() => {
+  const handleOpenEditModal = useCallback((product: Product) => {
+    setproductBeingEdited(product);
     setOpenEditModal(true);
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
+    setproductBeingEdited(null);
     setOpenEditModal(false);
   }, []);
 
   const handleOpenDeleteModal = useCallback((product: Product) => {
-    setProductSelected(product);
+    setProductBeingDeleted(product);
     setOpenDeleteModal(true);
   }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
+    setproductBeingEdited(null);
     setOpenDeleteModal(false);
   }, []);
 
   return (
     <>
-      <EditProductModal open={openEditModal} onClose={handleCloseEditModal} />
-      <DeleteProductModal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        product={productSelected}
-      />
+      {productBeingEdited && (
+        <EditProductModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          product={productBeingEdited}
+        />
+      )}
+
+      {productBeingDeleted && (
+        <DeleteProductModal
+          open={openDeleteModal}
+          onClose={handleCloseDeleteModal}
+          product={productBeingDeleted}
+        />
+      )}
+
       <Container>
         <Header>
           <div className="infos">
@@ -82,7 +96,7 @@ export default function Produtos() {
                 </Table.Cell>
                 <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>
                 <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
-                  <ActionButton onClick={handleOpenEditModal}>
+                  <ActionButton onClick={() => handleOpenEditModal(product)}>
                     <Pencil />
                   </ActionButton>
                   <ActionButton onClick={() => handleOpenDeleteModal(product)}>
