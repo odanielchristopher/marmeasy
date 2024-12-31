@@ -40,6 +40,7 @@ export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
         type="text"
         placeholder={`Nome ${client?.type === 'FISICO' ? 'do cliente' : 'da empresa'}`}
         $error={errors.name?.message}
+        maxLength={15}
         {...register('name')}
       />
 

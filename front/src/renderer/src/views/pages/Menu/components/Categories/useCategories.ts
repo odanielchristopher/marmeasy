@@ -1,5 +1,5 @@
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { useProductCategories } from '@renderer/app/hooks/queries/useProductCategories';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
 import { useCallback, useMemo, useState } from 'react';
 
 export default function useCategories() {
@@ -38,7 +38,7 @@ export default function useCategories() {
     setOpenNewCategoryModal(false);
   }, []);
 
-  const { categories, isLoading } = useProductCategories();
+  const { categories, isLoading } = useProductCategoriesQuery();
 
   const hasCategories = categories.length > 0;
 

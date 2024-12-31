@@ -1,8 +1,8 @@
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
 import { Pencil } from '@renderer/assets/Icons/Pencil';
+import { Table } from '@renderer/views/components/Table';
 
-import { Table } from '../Table';
 import DeleteCategoryModal from './DeleteCategoryModal';
 import EditCategoryModal from './EditCategoryModal';
 import NewCategoryModal from './NewCategoryModal';

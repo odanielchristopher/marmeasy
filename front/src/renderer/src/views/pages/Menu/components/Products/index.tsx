@@ -4,8 +4,8 @@ import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
 import { Pencil } from '@renderer/assets/Icons/Pencil';
+import { Table } from '@renderer/views/components/Table';
 
-import { Table } from '../Table';
 import DeleteProductModal from './modals/DeleteProductModal';
 import EditProductModal from './modals/EditProductModal';
 import NewProductModal from './modals/NewProductModal';

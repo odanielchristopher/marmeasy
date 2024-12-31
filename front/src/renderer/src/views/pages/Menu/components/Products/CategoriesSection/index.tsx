@@ -1,5 +1,5 @@
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { useProductCategories } from '@renderer/app/hooks/queries/useProductCategories';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Loader from '@renderer/views/components/Loader';
 import { CgCloseO } from 'react-icons/cg';
@@ -16,7 +16,7 @@ export default function CategoriesSection({
   selectedCategory,
   onSelect,
 }: CategoriesSectionProps) {
-  const { categories, isLoading } = useProductCategories();
+  const { categories, isLoading } = useProductCategoriesQuery();
 
   return (
     <Container>

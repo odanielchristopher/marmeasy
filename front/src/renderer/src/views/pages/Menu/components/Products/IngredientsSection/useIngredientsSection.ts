@@ -1,9 +1,9 @@
-import { useIngredients } from '@renderer/app/hooks/queries/useIngredients';
+import { useIngredientsQuery } from '@renderer/app/hooks/queries/useIngredientsQuery';
 import { useMemo, useState } from 'react';
 
 export default function useIngredientsSection() {
   const [searchTerm, setSearchTerm] = useState('');
-  const { ingredients, isLoading } = useIngredients();
+  const { ingredients, isLoading } = useIngredientsQuery();
 
   function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);

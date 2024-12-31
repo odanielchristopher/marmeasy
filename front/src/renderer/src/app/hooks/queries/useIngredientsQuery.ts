@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { ingredientsService } from '@renderer/app/services/ingredientsService';
 
-export function useIngredients() {
+export function useIngredientsQuery() {
   const { data, isLoading } = useQuery({
     queryKey: ['ingredients', 'getAll'],
     queryFn: async () => ingredientsService.getAll(),

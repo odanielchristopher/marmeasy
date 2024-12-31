@@ -43,6 +43,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
           type="text"
           placeholder="Nome do cliente"
           $error={errors.name?.message}
+          maxLength={15}
           {...register('name')}
         />
 
