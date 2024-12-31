@@ -29,7 +29,7 @@ export const ContainerImg = styled.div`
     align-items: center;
     background: transparent;
     border: none;
-    color: ${({ theme }) => theme.colors.orange.light};
+    color: ${({ theme }) => theme.colors.orange.main};
     display: flex;
     font-size: 16px;
     font-weight: 600;

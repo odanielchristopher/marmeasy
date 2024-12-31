@@ -9,11 +9,13 @@ import { Pencil } from '@renderer/assets/Icons/Pencil';
 import { useCallback, useState } from 'react';
 import DeleteProductModal from './DeleteProductModal';
 import EditProductModal from './EditProductModal';
+import NewProductModal from './NewProductModal';
 import { ActionButton, CategoryContainer, Container, Header, ProductImage, Title } from './styles';
 
 export default function Produtos() {
   const [openEditModal, setOpenEditModal] = useState(true);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [openNewProductModal, setOpenNewProductModal] = useState(true);
 
   const [productBeingDeleted, setProductBeingDeleted] = useState<Product | null>(null);
   const [productBeingEdited, setproductBeingEdited] = useState<Product | null>(null);
@@ -38,8 +40,18 @@ export default function Produtos() {
     setOpenDeleteModal(false);
   }, []);
 
+  const handleOpenNewProductModal = useCallback(() => {
+    setOpenNewProductModal(true);
+  }, []);
+
+  const handleCloseNewProductModal = useCallback(() => {
+    setOpenNewProductModal(false);
+  }, []);
+
   return (
     <>
+      <NewProductModal open={openNewProductModal} onClose={handleCloseNewProductModal} />
+
       {productBeingEdited && (
         <EditProductModal
           open={openEditModal}
@@ -63,7 +75,7 @@ export default function Produtos() {
             <span>{products.length}</span>
           </div>
 
-          <button>Adicionar produto</button>
+          <button onClick={handleOpenNewProductModal}>Adicionar produto</button>
         </Header>
 
         <Table.Container>

@@ -1,12 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { queryClient } from '@renderer/App';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { CreateProductCategoryParams } from '@renderer/app/services/productCategoriesService/create';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import toast from '@renderer/app/utils/toast';
 import { AxiosError } from 'axios';
@@ -23,7 +18,7 @@ const categoryFormSchema = z.object({
 
 export type FormData = z.infer<typeof categoryFormSchema>
 
-export default function useNewCategoryModal(onCreate: () => void, isOpen: boolean) {
+export default function useNewIngredientModal(onCreate: () => void, isOpen: boolean) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -33,24 +28,25 @@ export default function useNewCategoryModal(onCreate: () => void, isOpen: boolea
     resolver: zodResolver(categoryFormSchema),
   });
 
-  const { mutateAsync: createCategory, isPending: isLoading } = useMutation({
-    mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
-    onSuccess: (newCategory: ProductCategory) => {
-      queryClient.setQueryData(
-        ['product-categories', 'getAll'],
-        (categories: ProductCategory[]) => [...categories, newCategory],
-      );
+  // const { mutateAsync: createIngredient, isPending: isLoading } = useMutation({
+  //   mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
+  //   onSuccess: (newCategory: ProductCategory) => {
+  //     queryClient.setQueryData(
+  //       ['ingredients', 'getAll'],
+  //       (categories: ProductCategory[]) => [...categories, newCategory],
+  //     );
 
-      queryClient.invalidateQueries({
-        queryKey: ['product-categories', 'getAll'],
-        exact: true,
-      });
-    },
-  });
+  //     queryClient.invalidateQueries({
+  //       queryKey: ['ingredients', 'getAll'],
+  //       exact: true,
+  //     });
+  //   },
+  // });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await createCategory(data);
+      // await createIngredient(data);
+      console.log(data);
       toast({
         type: 'success',
         text: 'Categoria criada com sucesso.',
@@ -84,7 +80,7 @@ export default function useNewCategoryModal(onCreate: () => void, isOpen: boolea
   }, [isOpen]);
 
   return {
-    isLoading,
+    isLoading: false,
     errors,
     register,
     handleSubmit,

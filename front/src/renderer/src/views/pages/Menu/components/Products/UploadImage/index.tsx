@@ -29,7 +29,7 @@ export default function UploadImage({ previewImageUrl, onUpload }: UploadImagePr
             <input {...getInputProps()} />
 
             <button type="button" onClick={open}>
-              <ImageIcon />
+              <ImageIcon color="#DF6F28"/>
               Alterar imagem
             </button>
           </ContainerImg>
