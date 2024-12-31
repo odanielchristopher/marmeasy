@@ -1,12 +1,11 @@
 import Modal from '@renderer/views/components/Modal';
 
-import * as Checkbox from '@radix-ui/react-checkbox';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Loader from '@renderer/views/components/Loader';
 import { CgCloseO } from 'react-icons/cg';
-import { FaCheck } from 'react-icons/fa6';
+import Ingredients from '../../Ingredients';
 import NewIngredientModal from '../../Ingredients/NewIngredientModal';
 import UploadImage from '../UploadImage';
 import {
@@ -17,9 +16,7 @@ import {
   Content,
   Footer,
   ImageSection,
-  IngredientsSection,
   InputsContainer,
-  StyledRdxCheckbox,
 } from './styles';
 import useNewProductModal from './useNewProductModal';
 
@@ -32,8 +29,6 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
   const {
     errors,
     width,
-    ingredients,
-    isLoadingIngredients,
     categories,
     isLoadingCategories,
     selectedCategory,
@@ -122,44 +117,7 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
             </CategoryList>
           </CategorySection>
 
-          <IngredientsSection>
-            <header>
-              <h3>Ingredientes</h3>
-              <button onClick={handleOpenNewIngredientModal}>Novo ingrediente</button>
-            </header>
-
-            <div className="filter">
-              <span>Busque o ingrediente</span>
-
-              <input type="text" placeholder="Ex: Baião" />
-            </div>
-
-            <div className="list">
-              {isLoadingIngredients && (
-                <div className="ingredient-loader">
-                  <Loader $isLoading size={24} />
-                </div>
-              )}
-
-              {!isLoadingIngredients &&
-                ingredients.map((ingredient, key) => (
-                  <label className="item" htmlFor={ingredient.id} key={key}>
-                    <span>
-                      {ingredient.icon} {ingredient.name}
-                    </span>
-
-                    <StyledRdxCheckbox
-                      id={ingredient.id}
-                      onCheckedChange={() => handleSelectedIngredients(ingredient)}
-                    >
-                      <Checkbox.Indicator className="indicator">
-                        <FaCheck size={10} />
-                      </Checkbox.Indicator>
-                    </StyledRdxCheckbox>
-                  </label>
-                ))}
-            </div>
-          </IngredientsSection>
+          <Ingredients openNewIngredientModal={handleOpenNewIngredientModal} onSelected={handleSelectedIngredients}/>
         </Content>
 
         <Footer>
