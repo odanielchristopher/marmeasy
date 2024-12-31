@@ -1,7 +1,6 @@
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useProductCategories } from '@renderer/app/hooks/queries/useProductCategories';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function useCategories() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -10,8 +9,6 @@ export default function useCategories() {
 
   const [categoryBeignDeleted, setCategoryBeignDeleted] = useState<ProductCategory | null>(null);
   const [categoryBeingEdited, setCategoryBeingEdited] = useState<ProductCategory | null>(null);
-
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
 
   const handleOpenEditModal = useCallback((category: ProductCategory) => {
     setCategoryBeingEdited(category);
@@ -41,19 +38,7 @@ export default function useCategories() {
     setOpenNewCategoryModal(false);
   }, []);
 
-  const { data, isLoading } =useQuery({
-    queryKey: ['product-categories', 'getAll'],
-    queryFn: async () => productCategoriesService.getAll(),
-    staleTime: 60000,
-  });
-
-  useEffect(() => {
-    function loadCategories() {
-      setCategories(data ?? []);
-    }
-
-    loadCategories();
-  }, [data]);
+  const { categories, isLoading } = useProductCategories();
 
   const hasCategories = categories.length > 0;
 

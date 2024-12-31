@@ -5,18 +5,10 @@ const widthBreak = '1024px';
 
 export const Container = styled.div`
   @media (max-width: ${widthBreak}) {
-    height: 500px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 50.0rem;
-
-    overflow: auto;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   h3 {
@@ -110,6 +102,11 @@ export const CategoryList = styled.div`
   overflow: auto;
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  .categories-loader {
+    width: 42.0rem;
+    height: 4.8rem;
   }
 `;
 
@@ -211,6 +208,10 @@ export const IngredientsSection = styled.div`
       &:hover {
         background: #555;
       }
+    }
+
+    .ingredient-loader {
+      height: 42.0rem;
     }
 
     .item {

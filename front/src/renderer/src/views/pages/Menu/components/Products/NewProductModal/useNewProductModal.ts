@@ -5,6 +5,8 @@ import { z } from 'zod';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { useIngredients } from '@renderer/app/hooks/queries/useIngredients';
+import { useProductCategories } from '@renderer/app/hooks/queries/useProductCategories';
 import { useWindowWidth } from '@renderer/app/hooks/useWindowWidth';
 
 const schema = z.object({
@@ -37,6 +39,9 @@ export default function useNewProductModal() {
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
 
   const width = useWindowWidth();
+
+  const { ingredients, isLoading: isLoadingIngredients } = useIngredients();
+  const { categories, isLoading: isLoadingCategories } = useProductCategories();
 
   const {
     register,
@@ -98,6 +103,10 @@ export default function useNewProductModal() {
   return {
     errors,
     width,
+    ingredients,
+    isLoadingIngredients,
+    categories,
+    isLoadingCategories,
     selectedCategory,
     selectedIngredients,
     previewImageUrl,

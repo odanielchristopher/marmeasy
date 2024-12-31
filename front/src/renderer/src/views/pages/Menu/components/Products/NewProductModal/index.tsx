@@ -1,14 +1,13 @@
 import Modal from '@renderer/views/components/Modal';
 
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { ingredients } from '@renderer/app/mocks/ingredients';
-import { productCategories } from '@renderer/app/mocks/productCategories';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
+import Loader from '@renderer/views/components/Loader';
 import { CgCloseO } from 'react-icons/cg';
 import { FaCheck } from 'react-icons/fa6';
-import NewIngredientModal from '../../NewIngredientModal';
+import NewIngredientModal from '../../Ingredients/NewIngredientModal';
 import UploadImage from '../UploadImage';
 import {
   CategoryItem,
@@ -33,6 +32,10 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
   const {
     errors,
     width,
+    ingredients,
+    isLoadingIngredients,
+    categories,
+    isLoadingCategories,
     selectedCategory,
     previewImageUrl,
     openNewIngredientModal,
@@ -96,18 +99,26 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
             </header>
 
             <CategoryList>
-              {productCategories.map((categorie, key) => (
-                <CategoryItem
-                  key={key}
-                  $selected={categorie.id === selectedCategory?.id}
-                  onClick={() => handleSelectedCategory(categorie)}
-                  tabIndex={0} // Permite navegação por teclado
-                  onKeyDown={(e) => e.key === 'Enter' && handleSelectedCategory(categorie)}
-                >
-                  <span>{categorie.icon}</span>
-                  <span>{capitalizeFirstLetter(categorie.name)}</span>
-                </CategoryItem>
-              ))}
+              {isLoadingCategories && (
+                <div className='categories-loader'>
+                  <Loader size={14} $isLoading/>
+                </div>
+              )}
+
+              {!isLoadingCategories && (
+                categories.map((categorie, key) => (
+                  <CategoryItem
+                    key={key}
+                    $selected={categorie.id === selectedCategory?.id}
+                    onClick={() => handleSelectedCategory(categorie)}
+                    tabIndex={0} // Permite navegação por teclado
+                    onKeyDown={(e) => e.key === 'Enter' && handleSelectedCategory(categorie)}
+                  >
+                    <span>{categorie.icon}</span>
+                    <span>{capitalizeFirstLetter(categorie.name)}</span>
+                  </CategoryItem>
+                ))
+              )}
             </CategoryList>
           </CategorySection>
 
@@ -124,22 +135,29 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
             </div>
 
             <div className="list">
-              {ingredients.map((ingredient, key) => (
-                <label className="item" htmlFor={ingredient.id} key={key}>
-                  <span>
-                    {ingredient.icon} {ingredient.name}
-                  </span>
+              {isLoadingIngredients && (
+                <div className="ingredient-loader">
+                  <Loader $isLoading size={24} />
+                </div>
+              )}
 
-                  <StyledRdxCheckbox
-                    id={ingredient.id}
-                    onCheckedChange={() => handleSelectedIngredients(ingredient)}
-                  >
-                    <Checkbox.Indicator className="indicator">
-                      <FaCheck size={10} />
-                    </Checkbox.Indicator>
-                  </StyledRdxCheckbox>
-                </label>
-              ))}
+              {!isLoadingIngredients &&
+                ingredients.map((ingredient, key) => (
+                  <label className="item" htmlFor={ingredient.id} key={key}>
+                    <span>
+                      {ingredient.icon} {ingredient.name}
+                    </span>
+
+                    <StyledRdxCheckbox
+                      id={ingredient.id}
+                      onCheckedChange={() => handleSelectedIngredients(ingredient)}
+                    >
+                      <Checkbox.Indicator className="indicator">
+                        <FaCheck size={10} />
+                      </Checkbox.Indicator>
+                    </StyledRdxCheckbox>
+                  </label>
+                ))}
             </div>
           </IngredientsSection>
         </Content>

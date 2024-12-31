@@ -2,8 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { queryClient } from '@renderer/App';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
+import { CreateProductCategoryParams } from '@renderer/app/services/productCategoriesService/create';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
@@ -28,25 +33,24 @@ export default function useNewIngredientModal(onCreate: () => void, isOpen: bool
     resolver: zodResolver(categoryFormSchema),
   });
 
-  // const { mutateAsync: createIngredient, isPending: isLoading } = useMutation({
-  //   mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
-  //   onSuccess: (newCategory: ProductCategory) => {
-  //     queryClient.setQueryData(
-  //       ['ingredients', 'getAll'],
-  //       (categories: ProductCategory[]) => [...categories, newCategory],
-  //     );
+  const { mutateAsync: createIngredient, isPending: isLoading } = useMutation({
+    mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
+    onSuccess: (newCategory: ProductCategory) => {
+      queryClient.setQueryData(
+        ['ingredients', 'getAll'],
+        (categories: ProductCategory[]) => [...categories, newCategory],
+      );
 
-  //     queryClient.invalidateQueries({
-  //       queryKey: ['ingredients', 'getAll'],
-  //       exact: true,
-  //     });
-  //   },
-  // });
+      queryClient.invalidateQueries({
+        queryKey: ['ingredients', 'getAll'],
+        exact: true,
+      });
+    },
+  });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      // await createIngredient(data);
-      console.log(data);
+      await createIngredient(data);
       toast({
         type: 'success',
         text: 'Categoria criada com sucesso.',
@@ -80,7 +84,7 @@ export default function useNewIngredientModal(onCreate: () => void, isOpen: bool
   }, [isOpen]);
 
   return {
-    isLoading: false,
+    isLoading,
     errors,
     register,
     handleSubmit,
