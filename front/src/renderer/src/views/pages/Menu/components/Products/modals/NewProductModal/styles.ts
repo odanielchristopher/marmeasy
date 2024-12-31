@@ -31,7 +31,7 @@ export const Content = styled.main`
   flex-direction: column;
   flex-wrap: wrap;
   gap: 3.2rem;
-  max-height: 68rem;
+  max-height: 75rem;
 `;
 
 export const Footer = styled.div`

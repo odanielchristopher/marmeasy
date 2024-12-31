@@ -9,13 +9,9 @@ import UploadImage from '../../UploadImage';
 
 import useNewProductModal from './useNewProductModal';
 
-import {
-  Container,
-  Content,
-  Footer,
-  ImageSection,
-  InputsContainer,
-} from './styles';
+import { NumericInput } from '@renderer/views/components/NumericInput';
+import { Controller } from 'react-hook-form';
+import { Container, Content, Footer, ImageSection, InputsContainer } from './styles';
 
 interface NewProductModalProps {
   open: boolean
@@ -26,6 +22,7 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
   const {
     errors,
     width,
+    control,
     selectedCategory,
     selectedIngredients,
     previewImageUrl,
@@ -59,6 +56,8 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
           </ImageSection>
 
           <InputsContainer>
+
+
             <Input
               type="text"
               placeholder="Nome do produto"
@@ -75,6 +74,20 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
             />
 
             <p>Máximo 110 caracteres</p>
+
+            <Controller
+              control={control}
+              name="price"
+              render={({ field: { onChange, value, name } }) => (
+                <NumericInput
+                  name={name}
+                  placeholder="Valor do produto"
+                  $error={errors.price?.message}
+                  onInputChange={onChange}
+                  value={value}
+                />
+              )}
+            />
           </InputsContainer>
 
           <CategoriesSection

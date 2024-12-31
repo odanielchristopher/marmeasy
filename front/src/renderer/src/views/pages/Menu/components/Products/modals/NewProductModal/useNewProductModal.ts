@@ -10,7 +10,8 @@ import { useWindowWidth } from '@renderer/app/hooks/useWindowWidth';
 const schema = z.object({
   image: z.instanceof(File).optional(),
   name: z.string().min(4, { message: 'O nome deve ter pelo menos 4 caracteres.' }),
-  description: z.string().min(1, { message: 'Descrição é obrigatória.' }),
+  description: z.string().min(1, { message: 'A descrição é obrigatória.' }),
+  price: z.string({ required_error: 'O valor é obrigatório' }),
   category: z
     .object(
       {
@@ -18,9 +19,9 @@ const schema = z.object({
         name: z.string(),
         icon: z.string(),
       },
-      { required_error: 'Categoria é obrigatória.' },
+      { required_error: 'A categoria é obrigatória.' },
     )
-    .refine((data) => !!data.id, { message: 'Categoria é obrigatória.' }),
+    .refine((data) => !!data.id, { message: 'A categoria é obrigatória.' }),
   ingredients: z.array(
     z.object({
       id: z.string().uuid(),
@@ -44,6 +45,7 @@ export default function useNewProductModal() {
     formState: { errors },
     watch,
     setValue,
+    control,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -95,6 +97,7 @@ export default function useNewProductModal() {
   return {
     errors,
     width,
+    control,
     selectedCategory,
     selectedIngredients,
     previewImageUrl,
