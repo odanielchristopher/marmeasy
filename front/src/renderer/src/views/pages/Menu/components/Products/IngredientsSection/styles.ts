@@ -1,10 +1,13 @@
+import * as Checkbox from '@radix-ui/react-checkbox';
 import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
-  width: 42rem;
+
+  width: 100%;
+  max-width: 42.0rem;
 
   header {
     display: flex;
@@ -70,7 +73,7 @@ export const Container = styled.div`
     }
 
     .ingredient-loader {
-      height: 42.0rem;
+      height: 9.4rem;
     }
 
     .item {
@@ -87,5 +90,20 @@ export const Container = styled.div`
 
       padding: 1.6rem;
     }
+  }
+`;
+
+export const StyledRdxCheckbox = styled(Checkbox.Root)`
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.colors.gray.main};
+  color: ${({ theme }) => theme.colors.gray.main};
+  border-radius: 0.4rem;
+  height: 1.8rem;
+  width: 1.8rem;
+
+  .indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;

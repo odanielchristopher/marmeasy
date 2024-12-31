@@ -3,18 +3,26 @@ import { FaCheck } from 'react-icons/fa6';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import Loader from '@renderer/views/components/Loader';
-import { StyledRdxCheckbox } from '../Products/NewProductModal/styles';
 
-import { useIngredients } from '@renderer/app/hooks/queries/useIngredients';
-import { Container } from './styles';
+import { Container, StyledRdxCheckbox } from './styles';
+import useIngredientsSection from './useIngredientsSection';
 
 interface IngredientsProps {
-  openNewIngredientModal(): void
-  onSelected(ingredient: Ingredient): void
+  openNewIngredientModal(): void;
+  onSelected(ingredient: Ingredient): void;
+  selectedIngredients: Ingredient[];
 }
 
-export default function Ingredients({ openNewIngredientModal, onSelected }: IngredientsProps) {
-  const { ingredients, isLoading } = useIngredients();
+export default function IngredientsSection({
+  openNewIngredientModal,
+  onSelected,
+  selectedIngredients,
+}: IngredientsProps) {
+  const {
+    isLoading,
+    filteredIngredients,
+    handleChangeSearchTerm,
+  } = useIngredientsSection();
 
   return (
     <Container>
@@ -26,7 +34,7 @@ export default function Ingredients({ openNewIngredientModal, onSelected }: Ingr
       <div className="filter">
         <span>Busque o ingrediente</span>
 
-        <input type="text" placeholder="Ex: Baião" />
+        <input type="text" placeholder="Ex: Baião" onChange={(event) => handleChangeSearchTerm(event)}/>
       </div>
 
       <div className="list">
@@ -37,19 +45,24 @@ export default function Ingredients({ openNewIngredientModal, onSelected }: Ingr
         )}
 
         {!isLoading &&
-          ingredients.map((ingredient, key) => (
-            <label className="item" htmlFor={ingredient.id} key={key}>
+          filteredIngredients.map((ingredient, key) => {
+            const isChecked = selectedIngredients.some((ing) => ing.id === ingredient.id);
+
+
+            return (
+              <label className="item" htmlFor={ingredient.id} key={key}>
               <span>
                 {ingredient.icon} {ingredient.name}
               </span>
 
-              <StyledRdxCheckbox id={ingredient.id} onCheckedChange={() => onSelected(ingredient)}>
+              <StyledRdxCheckbox id={ingredient.id} onCheckedChange={() => onSelected(ingredient)} checked={isChecked}>
                 <Checkbox.Indicator className="indicator">
                   <FaCheck size={10} />
                 </Checkbox.Indicator>
               </StyledRdxCheckbox>
             </label>
-          ))}
+            );
+          })}
       </div>
     </Container>
   );
