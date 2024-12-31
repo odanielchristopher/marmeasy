@@ -10,13 +10,13 @@ import useIngredientsSection from './useIngredientsSection';
 interface IngredientsProps {
   openNewIngredientModal(): void;
   onSelected(ingredient: Ingredient): void;
-  selectedIngredients: Ingredient[];
+  selectedIngredientsIds: string[];
 }
 
 export default function IngredientsSection({
   openNewIngredientModal,
   onSelected,
-  selectedIngredients,
+  selectedIngredientsIds,
 }: IngredientsProps) {
   const {
     isLoading,
@@ -46,7 +46,7 @@ export default function IngredientsSection({
 
         {!isLoading &&
           filteredIngredients.map((ingredient, key) => {
-            const isChecked = selectedIngredients.some((ing) => ing.id === ingredient.id);
+            const isChecked = selectedIngredientsIds.some((ingredientsId) => ingredientsId === ingredient.id);
 
 
             return (

@@ -23,8 +23,8 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
     errors,
     width,
     control,
-    selectedCategory,
-    selectedIngredients,
+    selectedCategoryId,
+    selectedIngredientsIds,
     previewImageUrl,
     openNewIngredientModal,
     register,
@@ -91,15 +91,15 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
           </InputsContainer>
 
           <CategoriesSection
-            $error={errors.category?.message}
+            $error={errors.categoryId?.message}
             onSelect={handleSelectedCategory}
-            selectedCategory={selectedCategory}
+            selectedCategoryId={selectedCategoryId}
           />
 
           <IngredientsSection
             openNewIngredientModal={handleOpenNewIngredientModal}
             onSelected={handleSelectedIngredients}
-            selectedIngredients={selectedIngredients}
+            selectedIngredientsIds={selectedIngredientsIds}
           />
         </Content>
 

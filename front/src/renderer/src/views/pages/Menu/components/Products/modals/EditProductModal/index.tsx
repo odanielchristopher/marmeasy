@@ -6,6 +6,8 @@ import { Product } from '@renderer/app/entities/Product';
 
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
+import { NumericInput } from '@renderer/views/components/NumericInput';
+import { Controller } from 'react-hook-form';
 import NewIngredientModal from '../../../Ingredients/NewIngredientModal';
 import CategoriesSection from '../../CategoriesSection';
 import IngredientsSection from '../../IngredientsSection';
@@ -21,8 +23,9 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
   const {
     errors,
     width,
-    selectedCategory,
-    selectedIngredients,
+    control,
+    selectedCategoryId,
+    selectedIngredientsIds,
     previewImageUrl,
     openNewIngredientModal,
     register,
@@ -70,23 +73,37 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
             />
 
             <p>Máximo 110 caracteres</p>
+
+            <Controller
+              control={control}
+              name="price"
+              render={({ field: { onChange, value, name } }) => (
+                <NumericInput
+                  name={name}
+                  placeholder="Valor do produto"
+                  $error={errors.price?.message}
+                  onInputChange={onChange}
+                  value={value}
+                />
+              )}
+            />
           </InputsContainer>
 
           <CategoriesSection
-            $error={errors.category?.message}
+            $error={errors.categoryId?.message}
             onSelect={handleSelectedCategory}
-            selectedCategory={selectedCategory}
+            selectedCategoryId={selectedCategoryId}
           />
 
           <IngredientsSection
             openNewIngredientModal={handleOpenNewIngredientModal}
             onSelected={handleSelectedIngredients}
-            selectedIngredients={selectedIngredients}
+            selectedIngredientsIds={selectedIngredientsIds}
           />
         </Content>
 
         <Footer>
-          <Button onClick={handleSubmit}>Adicionar produtos</Button>
+          <Button onClick={handleSubmit}>Salvar alterações</Button>
         </Footer>
       </Container>
     </Modal>

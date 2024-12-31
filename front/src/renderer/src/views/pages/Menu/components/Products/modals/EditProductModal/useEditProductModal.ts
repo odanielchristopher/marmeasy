@@ -13,23 +13,9 @@ const schema = z.object({
   image: z.instanceof(File).optional(),
   name: z.string().min(4, { message: 'O nome deve ter pelo menos 4 caracteres.' }),
   description: z.string().min(1, { message: 'Descrição é obrigatória.' }),
-  category: z
-    .object(
-      {
-        id: z.string().uuid(),
-        name: z.string(),
-        icon: z.string(),
-      },
-      { required_error: 'Categoria é obrigatória.' },
-    )
-    .refine((data) => !!data.id, { message: 'Categoria é obrigatória.' }),
-  ingredients: z.array(
-    z.object({
-      id: z.string().uuid(),
-      name: z.string(),
-      icon: z.string(),
-    }),
-  ),
+  price: z.string({ required_error: 'O valor é obrigatório' }),
+  categoryId: z.string().uuid(),
+  ingredientsIds: z.array(z.string().uuid()),
 });
 
 type FormData = z.infer<typeof schema>
@@ -49,20 +35,22 @@ export default function useEditProductModal(product: Product | null) {
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
     watch,
+    control,
     setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       id: product?.id,
       name: product?.name,
-      category: product?.category,
+      price: product?.price.toString(),
       description: product?.description,
-      ingredients: product?.ingredients ?? [],
+      categoryId: product?.category.id,
+      ingredientsIds: product?.ingredients.map((ingredient) => ingredient.id) ?? [],
     },
   });
 
-  const selectedCategory = watch('category');
-  const selectedIngredients = watch('ingredients');
+  const selectedCategoryId = watch('categoryId');
+  const selectedIngredientsIds = watch('ingredientsIds');
 
   function handleOpenNewIngredientModal() {
     setOpenNewIngredientModal(true);
@@ -78,23 +66,23 @@ export default function useEditProductModal(product: Product | null) {
   }
 
   function handleSelectedCategory(category: ProductCategory) {
-    setValue('category', category, { shouldValidate: true }); // Força a validação ao definir o valor
+    setValue('categoryId', category.id, { shouldValidate: true }); // Força a validação ao definir o valor
   }
 
   function handleSelectedIngredients(ingredient: Ingredient) {
-    const currentIngredients = selectedIngredients || []; // Garante que é sempre um array
-    const isAlreadySelected = currentIngredients.some((ing) => ing.id === ingredient.id);
+    const currentIngredients = selectedIngredientsIds || []; // Garante que é sempre um array
+    const isAlreadySelected = currentIngredients.some((ingredientId) => ingredientId === ingredient.id);
 
     if (isAlreadySelected) {
       // Remove o ingrediente se já estiver selecionado (toggle)
       setValue(
-        'ingredients',
-        currentIngredients.filter((ing) => ing.id !== ingredient.id),
+        'ingredientsIds',
+        currentIngredients.filter((ingredientId) => ingredientId !== ingredient.id),
         { shouldValidate: true },
       );
     } else {
       // Adiciona o ingrediente
-      setValue('ingredients', [...currentIngredients, ingredient], { shouldValidate: true });
+      setValue('ingredientsIds', [...currentIngredients, ingredient.id], { shouldValidate: true });
     }
   }
 
@@ -105,8 +93,9 @@ export default function useEditProductModal(product: Product | null) {
   return {
     errors,
     width,
-    selectedCategory,
-    selectedIngredients,
+    control,
+    selectedCategoryId,
+    selectedIngredientsIds,
     previewImageUrl,
     openNewIngredientModal,
     register,

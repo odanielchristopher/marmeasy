@@ -7,13 +7,13 @@ import { Container, Item, List } from './styles';
 
 interface CategoriesSectionProps {
   $error?: string;
-  selectedCategory: ProductCategory;
+  selectedCategoryId: string;
   onSelect(category: ProductCategory): void;
 }
 
 export default function CategoriesSection({
   $error,
-  selectedCategory,
+  selectedCategoryId,
   onSelect,
 }: CategoriesSectionProps) {
   const { categories, isLoading } = useProductCategoriesQuery();
@@ -42,7 +42,7 @@ export default function CategoriesSection({
           categories.map((categorie, key) => (
             <Item
               key={key}
-              $selected={categorie.id === selectedCategory?.id}
+              $selected={categorie.id === selectedCategoryId}
               onClick={() => onSelect(categorie)}
               tabIndex={0} // Permite navegação por teclado
               onKeyDown={(e) => e.key === 'Enter' && onSelect(categorie)}

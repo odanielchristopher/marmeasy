@@ -22,6 +22,7 @@ export const NumericInput = forwardRef< HTMLInputElement, InputProps>(
         id={inputId}
         type={type}
         placeholder=" "
+        prefix='R$ '
         $error={$error}
         disabled={isLoading}
         onValueChange={({ value }) => onInputChange?.(value)}
