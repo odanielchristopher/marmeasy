@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -60,13 +60,6 @@ export default function useEditProductModal(product: Product | null) {
       ingredients: product?.ingredients ?? [],
     },
   });
-
-  useEffect(() => {
-    if (product) {
-      setValue('category', product.category);
-      setValue('ingredients', product.ingredients ?? []);
-    }
-  }, [product, setValue]);
 
   const selectedCategory = watch('category');
   const selectedIngredients = watch('ingredients');

@@ -4,6 +4,11 @@ export const Container = styled.div`
   margin-top: 3.2rem;
 `;
 
+export const LoaderContainer = styled.div`
+  height: calc(100vh - 38.0rem);
+`;
+
+
 export const Header = styled.header`
   align-items: center;
   display: flex;

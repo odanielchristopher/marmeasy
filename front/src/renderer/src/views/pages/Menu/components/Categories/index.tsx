@@ -15,7 +15,6 @@ import { ActionButton, Container, Header, LoaderContainer, Title } from './style
 export default function Categories() {
   const {
     categories,
-    hasCategories,
     isLoading,
     categoryBeignDeleted,
     categoryBeingEdited,
@@ -59,38 +58,36 @@ export default function Categories() {
           <button onClick={handleOpenNewCategoryModal}>Adicionar categoria</button>
         </Header>
 
-        {(isLoading) && (
-          <LoaderContainer>
-            <Loader $isLoading size={32}/>
-          </LoaderContainer>
-        )}
-
-        {(hasCategories && !isLoading) && (
-          <Table.Container>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCollumn style={{ width: '5%' }}>Emoji</Table.HeaderCollumn>
-                <Table.HeaderCollumn>Nome</Table.HeaderCollumn>
-                <Table.HeaderCollumn style={{ width: '12%' }}>Ações</Table.HeaderCollumn>
+        <Table.Container>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCollumn style={{ width: '5%' }}>Emoji</Table.HeaderCollumn>
+              <Table.HeaderCollumn>Nome</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '12%' }}>Ações</Table.HeaderCollumn>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {categories.map((category) => (
+              <Table.Row key={category.id}>
+                <Table.Cell style={{ textAlign: 'center' }}>{category.icon}</Table.Cell>
+                <Table.Cell>{capitalizeFirstLetter(category.name)}</Table.Cell>
+                <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
+                  <ActionButton onClick={() => handleOpenEditModal(category)}>
+                    <Pencil />
+                  </ActionButton>
+                  <ActionButton onClick={() => handleOpenDeleteModal(category)}>
+                    <DeleteIcon />
+                  </ActionButton>
+                </Table.Cell>
               </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {categories.map((category) => (
-                <Table.Row key={category.id}>
-                  <Table.Cell style={{ textAlign: 'center' }}>{category.icon}</Table.Cell>
-                  <Table.Cell>{capitalizeFirstLetter(category.name)}</Table.Cell>
-                  <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
-                    <ActionButton onClick={() => handleOpenEditModal(category)}>
-                      <Pencil />
-                    </ActionButton>
-                    <ActionButton onClick={() => handleOpenDeleteModal(category)}>
-                      <DeleteIcon />
-                    </ActionButton>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Container>
+            ))}
+          </Table.Body>
+        </Table.Container>
+
+        {isLoading && (
+          <LoaderContainer>
+            <Loader $isLoading size={32} />
+          </LoaderContainer>
         )}
       </Container>
     </>

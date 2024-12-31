@@ -1,6 +1,7 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { Product } from '@renderer/app/entities/Product';
+import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
 
 export default function useProducts() {
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -38,7 +39,22 @@ export default function useProducts() {
     setOpenNewProductModal(false);
   }, []);
 
+  const { products, isLoading } = useProductsQuery();
+
+  const hasProducts = products.length > 0;
+
+  const sortedProducts = useMemo(
+    () => (
+      products
+        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
+    ),
+    [products],
+  );
+
   return {
+    products: sortedProducts,
+    hasProducts,
+    isLoading,
     productBeingDeleted,
     productBeingEdited,
     openEditModal,

@@ -1,5 +1,3 @@
-import { products } from '@renderer/app/mocks/products';
-
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
@@ -12,10 +10,21 @@ import NewProductModal from './modals/NewProductModal';
 
 import useProducts from './useProducts';
 
-import { ActionButton, CategoryContainer, Container, Header, ProductImage, Title } from './styles';
+import Loader from '@renderer/views/components/Loader';
+import {
+  ActionButton,
+  CategoryContainer,
+  Container,
+  Header,
+  LoaderContainer,
+  ProductImage,
+  Title,
+} from './styles';
 
 export default function Products() {
   const {
+    products,
+    isLoading,
     productBeingDeleted,
     productBeingEdited,
     openEditModal,
@@ -102,6 +111,12 @@ export default function Products() {
             ))}
           </Table.Body>
         </Table.Container>
+
+        {isLoading && (
+          <LoaderContainer>
+            <Loader $isLoading size={32} />
+          </LoaderContainer>
+        )}
       </Container>
     </>
   );
