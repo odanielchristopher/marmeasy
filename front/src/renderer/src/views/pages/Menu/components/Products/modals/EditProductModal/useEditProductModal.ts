@@ -3,10 +3,14 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { queryClient } from '@renderer/App';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Product } from '@renderer/app/entities/Product';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { useWindowWidth } from '@renderer/app/hooks/useWindowWidth';
+import { productsService } from '@renderer/app/services/productsService';
+import { UpdateProductParams } from '@renderer/app/services/productsService/update';
+import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
   id: z.string().uuid(),
@@ -20,7 +24,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function useEditProductModal(product: Product | null) {
+export default function useEditProductModal(product: Product | null, onSuccess: () => void) {
   const imagePath = product?.imagePath ? (
     `${import.meta.env.VITE_API_URL}/${product.imagePath}`
   ) : undefined;
@@ -65,7 +69,7 @@ export default function useEditProductModal(product: Product | null) {
     setPreviewImageUrl(URL.createObjectURL(image));
   }
 
-  function handleSelectedCategory(category: ProductCategory) {
+  function handleSelectedCategory(category: Product) {
     setValue('categoryId', category.id, { shouldValidate: true }); // Força a validação ao definir o valor
   }
 
@@ -86,14 +90,42 @@ export default function useEditProductModal(product: Product | null) {
     }
   }
 
-  const handleSubmit = hookFormHandleSubmit((data) => {
-    console.log(data);
+  const { mutateAsync: updateProduct, isPending: isLoading } = useMutation({
+    mutationFn: async (data: UpdateProductParams) => productsService.update(data),
+    onSuccess: (updatedProduct: Product) => {
+      queryClient.setQueryData(['products', 'getAll'], (currentProducts: Product[]) => {
+
+        return currentProducts.map((product) => product.id === updatedProduct.id ? updatedProduct : product);
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['products', 'getAll'],
+        exact: true,
+      });
+    },
+  });
+
+  const handleSubmit = hookFormHandleSubmit(async (data) => {
+    try {
+      await updateProduct(data);
+      toast({
+        type: 'success',
+        text: 'Produto editado com sucesso.',
+      });
+      onSuccess();
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um error ao editar o produto.',
+      });
+    }
   });
 
   return {
     errors,
     width,
     control,
+    isLoading,
     selectedCategoryId,
     selectedIngredientsIds,
     previewImageUrl,

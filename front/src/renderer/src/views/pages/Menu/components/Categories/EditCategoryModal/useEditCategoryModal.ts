@@ -42,7 +42,7 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
     onSuccess: (updatedCategory: ProductCategory) => {
       queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
 
-        return categories.map((client) => client.id === updatedCategory.id ? updatedCategory : client);
+        return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
       });
 
       queryClient.invalidateQueries({

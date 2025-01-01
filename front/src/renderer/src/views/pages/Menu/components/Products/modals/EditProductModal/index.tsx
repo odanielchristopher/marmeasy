@@ -15,7 +15,7 @@ import { Container, Content, Footer, ImageSection, InputsContainer } from './sty
 
 interface EditProductModalProps {
   open: boolean;
-  onClose?(): void;
+  onClose(): void;
   product: Product | null;
 }
 
@@ -35,7 +35,7 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
     handleUploadImage,
     handleCloseNewIngredientModal,
     handleOpenNewIngredientModal,
-  } = useEditProductModal(product);
+  } = useEditProductModal(product, onClose);
 
   if (openNewIngredientModal) {
     return <NewIngredientModal open onClose={handleCloseNewIngredientModal} />;
