@@ -3,9 +3,15 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { queryClient } from '@renderer/App';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { Product } from '@renderer/app/entities/Product';
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { useWindowWidth } from '@renderer/app/hooks/useWindowWidth';
+import { productsService } from '@renderer/app/services/productsService';
+import { CreateProductParams } from '@renderer/app/services/productsService/create';
+import toast from '@renderer/app/utils/toast';
+import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
   image: z.instanceof(File, { message: 'A imagem é obrigatória.' }),
@@ -18,7 +24,7 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>
 
-export default function useNewProductModal() {
+export default function useNewProductModal(onSuccess: () => void) {
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(undefined);
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
 
@@ -75,8 +81,35 @@ export default function useNewProductModal() {
     }
   }
 
-  const handleSubmit = hookFormHandleSubmit((data) => {
-    console.log(data);
+  const { mutateAsync: createProduct, isPending: isLoading } = useMutation({
+    mutationFn: async (data: CreateProductParams) => productsService.create(data),
+    onSuccess: (newCategory: Product) => {
+      queryClient.setQueryData(
+        ['products', 'getAll'],
+        (categories: Product[]) => [...categories, newCategory],
+      );
+
+      queryClient.invalidateQueries({
+        queryKey: ['products', 'getAll'],
+        exact: true,
+      });
+    },
+  });
+
+  const handleSubmit = hookFormHandleSubmit(async (data) => {
+    try {
+      await createProduct(data);
+      toast({
+        type: 'success',
+        text: 'Produto criado com sucesso.',
+      });
+      onSuccess();
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao tentar criar produto.',
+      });
+    }
 
   });
 
@@ -84,6 +117,7 @@ export default function useNewProductModal() {
     errors,
     width,
     control,
+    isLoading,
     selectedCategoryId,
     selectedIngredientsIds,
     previewImageUrl,

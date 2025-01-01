@@ -16,7 +16,7 @@ import { Container, Content, Footer, ImageSection, InputsContainer } from './sty
 
 interface NewProductModalProps {
   open: boolean
-  onClose?(): void
+  onClose(): void
 }
 
 export default function NewProductModal({ open, onClose }: NewProductModalProps) {
@@ -24,6 +24,7 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
     errors,
     width,
     control,
+    isLoading,
     selectedCategoryId,
     selectedIngredientsIds,
     previewImageUrl,
@@ -35,7 +36,7 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
     handleUploadImage,
     handleCloseNewIngredientModal,
     handleOpenNewIngredientModal,
-  } = useNewProductModal();
+  } = useNewProductModal(onClose);
 
   if (openNewIngredientModal) {
     return <NewIngredientModal open onClose={handleCloseNewIngredientModal} />;
@@ -114,7 +115,7 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
         </Content>
 
         <Footer>
-          <Button onClick={handleSubmit}>Adicionar produtos</Button>
+          <Button onClick={handleSubmit} isLoading={isLoading}>Adicionar produto</Button>
         </Footer>
       </Container>
     </Modal>
