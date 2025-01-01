@@ -3,9 +3,9 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { queryClient } from '@renderer/App';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { CreateProductCategoryParams } from '@renderer/app/services/productCategoriesService/create';
+import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { ingredientsService } from '@renderer/app/services/ingredientsService';
+import { CreateIngredientParams } from '@renderer/app/services/ingredientsService/create';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
@@ -34,11 +34,11 @@ export default function useNewIngredientModal(onCreate: () => void, isOpen: bool
   });
 
   const { mutateAsync: createIngredient, isPending: isLoading } = useMutation({
-    mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
-    onSuccess: (newCategory: ProductCategory) => {
+    mutationFn: (data: CreateIngredientParams) => ingredientsService.create(data),
+    onSuccess: (newIngredient: Ingredient) => {
       queryClient.setQueryData(
         ['ingredients', 'getAll'],
-        (categories: ProductCategory[]) => [...categories, newCategory],
+        (ingredients: Ingredient[]) => [...ingredients, newIngredient],
       );
 
       queryClient.invalidateQueries({
