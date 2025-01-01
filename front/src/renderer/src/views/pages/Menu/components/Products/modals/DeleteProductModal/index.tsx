@@ -4,14 +4,20 @@ import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
 import { Actions, CancelButton, Container, Infos, ProductContainer, Warning } from './styles';
+import useDeleteProductModal from './useDeleteProductModal';
 
 interface DeleteProductModalProps {
   open: boolean;
-  onClose?(): void;
+  onClose(): void;
   product: Product | null;
 }
 
 export default function DeleteProductModal({ open, onClose, product }: DeleteProductModalProps) {
+  const {
+    isLoading,
+    handleDeleteProduct,
+  } = useDeleteProductModal(onClose, product);
+
   return (
     <Modal
       title="Excluir produto"
@@ -41,7 +47,7 @@ export default function DeleteProductModal({ open, onClose, product }: DeletePro
           <CancelButton onClick={onClose}>
             Cancelar
           </CancelButton>
-          <Button danger>
+          <Button danger isLoading={isLoading} onClick={handleDeleteProduct}>
               Sim, desejo excluir
           </Button>
        </Actions>

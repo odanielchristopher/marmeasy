@@ -1,33 +1,32 @@
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function useCategories() {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openNewCategoryModal, setOpenNewCategoryModal] = useState(false);
 
-  const [categorySelected, setCategorySelected] = useState<ProductCategory | null>(null);
-  const [categories, setCategories] = useState<ProductCategory[]>([]);
+  const [categoryBeignDeleted, setCategoryBeignDeleted] = useState<ProductCategory | null>(null);
+  const [categoryBeingEdited, setCategoryBeingEdited] = useState<ProductCategory | null>(null);
 
   const handleOpenEditModal = useCallback((category: ProductCategory) => {
-    setCategorySelected(category);
+    setCategoryBeingEdited(category);
     setOpenEditModal(true);
   }, []);
 
   const handleCloseEditModal = useCallback(() => {
-    setCategorySelected(null);
+    setCategoryBeingEdited(null);
     setOpenEditModal(false);
   }, []);
 
   const handleOpenDeleteModal = useCallback((category: ProductCategory) => {
-    setCategorySelected(category);
+    setCategoryBeignDeleted(category);
     setOpenDeleteModal(true);
   }, []);
 
   const handleCloseDeleteModal = useCallback(() => {
-    setCategorySelected(null);
+    setCategoryBeignDeleted(null);
     setOpenDeleteModal(false);
   }, []);
 
@@ -39,19 +38,7 @@ export default function useCategories() {
     setOpenNewCategoryModal(false);
   }, []);
 
-  const { data, isLoading } =useQuery({
-    queryKey: ['product-categories', 'getAll'],
-    queryFn: async () => productCategoriesService.getAll(),
-    staleTime: 60000,
-  });
-
-  useEffect(() => {
-    function loadCategories() {
-      setCategories(data ?? []);
-    }
-
-    loadCategories();
-  }, [data]);
+  const { categories, isLoading } = useProductCategoriesQuery();
 
   const hasCategories = categories.length > 0;
 
@@ -67,7 +54,8 @@ export default function useCategories() {
     categories: sortedCategories,
     hasCategories,
     isLoading,
-    categorySelected,
+    categoryBeignDeleted,
+    categoryBeingEdited,
     openDeleteModal,
     openEditModal,
     openNewCategoryModal,

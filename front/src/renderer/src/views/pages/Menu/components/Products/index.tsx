@@ -1,47 +1,69 @@
-import { products } from '@renderer/app/mocks/products';
-import { Table } from '../Table';
-
-import { Product } from '@renderer/app/entities/Product';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
 import { Pencil } from '@renderer/assets/Icons/Pencil';
-import { useCallback, useState } from 'react';
-import DeleteProductModal from './DeleteProductModal';
-import EditProductModal from './EditProductModal';
-import { ActionButton, CategoryContainer, Container, Header, ProductImage, Title } from './styles';
+import { Table } from '@renderer/views/components/Table';
 
-export default function Produtos() {
-  const [openEditModal, setOpenEditModal] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+import DeleteProductModal from './modals/DeleteProductModal';
+import EditProductModal from './modals/EditProductModal';
+import NewProductModal from './modals/NewProductModal';
 
-  const [productSelected, setProductSelected] = useState<Product | null>(null);
+import emptyCart from '@renderer/assets/Images/empty-cart.svg';
 
-  const handleOpenEditModal = useCallback(() => {
-    setOpenEditModal(true);
-  }, []);
+import useProducts from './useProducts';
 
-  const handleCloseEditModal = useCallback(() => {
-    setOpenEditModal(false);
-  }, []);
+import Loader from '@renderer/views/components/Loader';
+import {
+  ActionButton,
+  CategoryContainer,
+  Container,
+  EmptyImageContainer,
+  Header,
+  LoaderContainer,
+  ProductImage,
+  Title,
+} from './styles';
 
-  const handleOpenDeleteModal = useCallback((product: Product) => {
-    setProductSelected(product);
-    setOpenDeleteModal(true);
-  }, []);
-
-  const handleCloseDeleteModal = useCallback(() => {
-    setOpenDeleteModal(false);
-  }, []);
+export default function Products() {
+  const {
+    products,
+    isLoading,
+    hasProducts,
+    productBeingDeleted,
+    productBeingEdited,
+    openEditModal,
+    openDeleteModal,
+    openNewProductModal,
+    handleOpenEditModal,
+    handleOpenDeleteModal,
+    handleOpenNewProductModal,
+    handleCloseEditModal,
+    handleCloseDeleteModal,
+    handleCloseNewProductModal,
+  } = useProducts();
 
   return (
     <>
-      <EditProductModal open={openEditModal} onClose={handleCloseEditModal} />
-      <DeleteProductModal
-        open={openDeleteModal}
-        onClose={handleCloseDeleteModal}
-        product={productSelected}
-      />
+      {openNewProductModal && (
+        <NewProductModal open={openNewProductModal} onClose={handleCloseNewProductModal} />
+      )}
+
+      {productBeingEdited && (
+        <EditProductModal
+          open={openEditModal}
+          onClose={handleCloseEditModal}
+          product={productBeingEdited}
+        />
+      )}
+
+      {productBeingDeleted && (
+        <DeleteProductModal
+          open={openDeleteModal}
+          onClose={handleCloseDeleteModal}
+          product={productBeingDeleted}
+        />
+      )}
+
       <Container>
         <Header>
           <div className="infos">
@@ -49,7 +71,7 @@ export default function Produtos() {
             <span>{products.length}</span>
           </div>
 
-          <button>Adicionar produto</button>
+          <button onClick={handleOpenNewProductModal}>Adicionar produto</button>
         </Header>
 
         <Table.Container>
@@ -82,7 +104,7 @@ export default function Produtos() {
                 </Table.Cell>
                 <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>
                 <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
-                  <ActionButton onClick={handleOpenEditModal}>
+                  <ActionButton onClick={() => handleOpenEditModal(product)}>
                     <Pencil />
                   </ActionButton>
                   <ActionButton onClick={() => handleOpenDeleteModal(product)}>
@@ -93,6 +115,19 @@ export default function Produtos() {
             ))}
           </Table.Body>
         </Table.Container>
+
+        {(!hasProducts && !isLoading) && (
+          <EmptyImageContainer>
+            <img src={emptyCart} alt="Sem produtos" />
+            <span>Sem produtos cadastros</span>
+          </EmptyImageContainer>
+        )}
+
+        {isLoading && (
+          <LoaderContainer>
+            <Loader $isLoading size={32} />
+          </LoaderContainer>
+        )}
       </Container>
     </>
   );

@@ -1,7 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import {
-  ArrayNotEmpty,
   IsArray,
   IsNotEmpty,
   IsNumber,
@@ -52,14 +51,9 @@ export class CreateProductDto {
     }
   })
   @IsArray({ message: 'Os ingredientes devem ser passados como um array.' })
-  @ArrayNotEmpty({ message: 'A lista de ingredientes não pode estar vazia.' })
   @IsUUID('4', {
     each: true,
     message: 'Cada ingrediente precisa ter um UUID válido.',
   })
   ingredientsIds: string[];
-
-  @IsOptional()
-  @IsString()
-  imagePath: string;
 }

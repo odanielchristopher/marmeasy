@@ -71,8 +71,7 @@ export default function useClient() {
     setClients(data ?? []);
   }
 
-  // @ts-ignore
-  function handleChangeSearchTerm(event) {
+  function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);
   }
 

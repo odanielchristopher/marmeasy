@@ -19,7 +19,7 @@ const categoryFormSchema = z.object({
     }),
   name: z
     .string({ required_error: 'O nome é obrigatório.' })
-    .min(2, 'O nome deve ter pelo menos 2 carateres.'),
+    .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
 });
 
 export type FormData = z.infer<typeof categoryFormSchema>
@@ -42,7 +42,7 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
     onSuccess: (updatedCategory: ProductCategory) => {
       queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
 
-        return categories.map((client) => client.id === updatedCategory.id ? updatedCategory : client);
+        return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
       });
 
       queryClient.invalidateQueries({
