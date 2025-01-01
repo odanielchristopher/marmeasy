@@ -8,6 +8,8 @@ import DeleteProductModal from './modals/DeleteProductModal';
 import EditProductModal from './modals/EditProductModal';
 import NewProductModal from './modals/NewProductModal';
 
+import emptyCart from '@renderer/assets/Images/empty-cart.svg';
+
 import useProducts from './useProducts';
 
 import Loader from '@renderer/views/components/Loader';
@@ -15,6 +17,7 @@ import {
   ActionButton,
   CategoryContainer,
   Container,
+  EmptyImageContainer,
   Header,
   LoaderContainer,
   ProductImage,
@@ -25,6 +28,7 @@ export default function Products() {
   const {
     products,
     isLoading,
+    hasProducts,
     productBeingDeleted,
     productBeingEdited,
     openEditModal,
@@ -111,6 +115,13 @@ export default function Products() {
             ))}
           </Table.Body>
         </Table.Container>
+
+        {(!hasProducts && !isLoading) && (
+          <EmptyImageContainer>
+            <img src={emptyCart} alt="Sem produtos" />
+            <span>Sem produtos cadastros</span>
+          </EmptyImageContainer>
+        )}
 
         {isLoading && (
           <LoaderContainer>
