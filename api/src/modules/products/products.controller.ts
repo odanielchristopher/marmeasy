@@ -31,14 +31,6 @@ export class ProductsController {
     return this.productsService.findAllByUserId(userId, categoryName);
   }
 
-  @Get(':productId')
-  findOne(
-    @ActiveUserId() userId: string,
-    @Param('productId') productId: string,
-  ) {
-    return this.productsService.findOneByUserId(userId, productId);
-  }
-
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   create(
@@ -54,19 +46,26 @@ export class ProductsController {
   }
 
   @Put(':productId')
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @ActiveUserId() userId: string,
     @Param('productId') productId: string,
+    @UploadedFile() image: Express.Multer.File,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productsService.update(userId, productId, updateProductDto);
+    return this.productsService.update(
+      userId,
+      productId,
+      updateProductDto,
+      image,
+    );
   }
 
-  @Delete(':id')
+  @Delete(':productId')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(
     @ActiveUserId() userId: string,
-    @Param(':productId') productId: string,
+    @Param('productId') productId: string,
   ) {
     return this.productsService.remove(userId, productId);
   }

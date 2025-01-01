@@ -47,10 +47,6 @@ export class ProductsService {
     });
   }
 
-  findOneByUserId(userId: string, productId: string) {
-    return `This action returns a #${productId} product`;
-  }
-
   async create(
     userId: string,
     createProductDto: CreateProductDto,
@@ -125,7 +121,7 @@ export class ProductsService {
     }
 
     return this.productsRepository.update({
-      where: { id: productId },
+      where: { userId, id: productId },
       data: {
         name,
         description,
