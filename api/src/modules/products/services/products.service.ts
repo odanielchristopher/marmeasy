@@ -4,12 +4,14 @@ import { ProductsRespository } from 'src/shared/database/repositories/products.r
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 import { ProducImagesService } from './product-images.service';
+import { ValidateProductOwnershipService } from './validate-product-ownership.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    private readonly validateProductOwnershipService: ValidateProductOwnershipService,
     private readonly productImagesService: ProducImagesService,
   ) {}
 
@@ -97,15 +99,80 @@ export class ProductsService {
     });
   }
 
-  update(
+  async update(
     userId: string,
     productId: string,
     updateProductDto: UpdateProductDto,
+    image?: Express.Multer.File,
   ) {
-    return `This action updates a #${productId} product`;
+    const currentProduct = await this.validateProductOwnershipService.validate(
+      userId,
+      productId,
+    );
+
+    const { name, categoryId, description, ingredientsIds, price } =
+      updateProductDto;
+
+    let updatedImagePath = currentProduct.imagePath;
+
+    if (image) {
+      const { imagePath } = await this.productImagesService.update(
+        currentProduct.imagePath,
+        image,
+      );
+
+      updatedImagePath = imagePath;
+    }
+
+    return this.productsRepository.update({
+      where: { id: productId },
+      data: {
+        name,
+        description,
+        price,
+        imagePath: updatedImagePath,
+        categoryId,
+        ingredients: {
+          set: [], // Limpa os ingredientes antigos
+          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        price: true,
+        imagePath: true,
+        ingredients: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+        category: {
+          select: {
+            id: true,
+            name: true,
+            icon: true,
+          },
+        },
+      },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(userId: string, productId: string) {
+    const product = await this.validateProductOwnershipService.validate(
+      userId,
+      productId,
+    );
+
+    await this.productImagesService.remove(product.imagePath);
+
+    await this.productsRepository.delete({
+      where: { userId, id: productId },
+    });
+
+    return null;
   }
 }

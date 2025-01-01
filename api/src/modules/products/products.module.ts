@@ -6,6 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { ProductsController } from './products.controller';
 import { ProducImagesService } from './services/product-images.service';
 import { ProductsService } from './services/products.service';
+import { ValidateProductOwnershipService } from './services/validate-product-ownership.service';
 
 @Module({
   imports: [
@@ -15,6 +16,10 @@ import { ProductsService } from './services/products.service';
     UsersModule,
   ],
   controllers: [ProductsController],
-  providers: [ProductsService, ProducImagesService],
+  providers: [
+    ProductsService,
+    ProducImagesService,
+    ValidateProductOwnershipService,
+  ],
 })
 export class ProductsModule {}
