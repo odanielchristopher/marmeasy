@@ -11,6 +11,7 @@ import useNewProductModal from './useNewProductModal';
 
 import { NumericInput } from '@renderer/views/components/NumericInput';
 import { Controller } from 'react-hook-form';
+import { CgCloseO } from 'react-icons/cg';
 import { Container, Content, Footer, ImageSection, InputsContainer } from './styles';
 
 interface NewProductModalProps {
@@ -50,7 +51,16 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
       <Container>
         <Content>
           <ImageSection>
-            <h3>Imagem</h3>
+            <header>
+              <h3>Imagem</h3>
+
+              {errors.image && (
+                <div className='error'>
+                <CgCloseO color='#F63131'/>
+                <span>{errors.image.message}</span>
+              </div>
+              )}
+            </header>
 
             <UploadImage onUpload={handleUploadImage} previewImageUrl={previewImageUrl} />
           </ImageSection>

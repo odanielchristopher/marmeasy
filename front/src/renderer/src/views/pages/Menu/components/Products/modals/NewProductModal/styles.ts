@@ -54,6 +54,24 @@ export const ImageSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+
+  header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .error {
+    align-items: center;
+    color: ${({ theme }) => theme.colors.red.dark};
+    display: flex;
+    gap: .6rem;
+    margin-top: .2rem;
+
+    span {
+      font-size: 1.2rem;
+    }
+  }
+  }
 `;
 
 export const InputsContainer = styled.div`
