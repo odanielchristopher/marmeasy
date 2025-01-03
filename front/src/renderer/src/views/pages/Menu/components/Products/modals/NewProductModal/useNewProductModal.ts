@@ -93,11 +93,6 @@ export default function useNewProductModal(onSuccess: () => void) {
         ['products', 'getAll'],
         (categories: Product[]) => [...categories, newCategory],
       );
-
-      queryClient.invalidateQueries({
-        queryKey: ['products', 'getAll'],
-        exact: true,
-      });
     },
   });
 

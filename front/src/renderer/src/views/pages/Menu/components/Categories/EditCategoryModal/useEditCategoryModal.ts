@@ -44,11 +44,6 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
 
         return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['product-categories', 'getAll'],
-        exact: true,
-      });
     },
   });
 

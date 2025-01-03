@@ -51,11 +51,6 @@ export default function useCompanyModal(isOpen: boolean, closeModal: () => void)
         ...oldData,
         newData,
       ]));
-
-      queryClient.invalidateQueries({
-        queryKey: ['clients', 'getAll'],
-        exact: true,
-      });
     },
   });;
 

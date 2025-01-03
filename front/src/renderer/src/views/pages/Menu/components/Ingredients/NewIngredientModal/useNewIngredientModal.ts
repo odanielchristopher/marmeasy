@@ -40,11 +40,6 @@ export default function useNewIngredientModal(onCreate: () => void, isOpen: bool
         ['ingredients', 'getAll'],
         (ingredients: Ingredient[]) => [...ingredients, newIngredient],
       );
-
-      queryClient.invalidateQueries({
-        queryKey: ['ingredients', 'getAll'],
-        exact: true,
-      });
     },
   });
 

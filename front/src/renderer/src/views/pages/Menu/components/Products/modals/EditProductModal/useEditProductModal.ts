@@ -105,11 +105,6 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
 
         return currentProducts.map((product) => product.id === updatedProduct.id ? updatedProduct : product);
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['products', 'getAll'],
-        exact: true,
-      });
     },
   });
 

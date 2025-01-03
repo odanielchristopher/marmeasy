@@ -1,13 +1,13 @@
 import { queryClient } from '@renderer/App';
 import { Client } from '@renderer/app/entities/Client';
+import { useClientsQuery } from '@renderer/app/hooks/queries/useClientsQuery';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
 import toast from '@renderer/app/utils/toast';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useMemo, useState } from 'react';
 
 export default function useClient() {
-  const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
 
   const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] = useState(false);
@@ -50,26 +50,11 @@ export default function useClient() {
       queryClient.setQueryData(['clients', 'getAll'], (oldClients: Client[]) => {
         return oldClients.filter((client) => client.id !== clientBeingDeleted!.id);
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['clients', 'getAll'],
-        exact: true,
-      });
     },
   });
 
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['clients', 'getAll'],
-    queryFn: async () => {
-      return await clientsService.getAll();
-    },
-    staleTime: 60000 * 2,
-  });
-
-  function loadClient() {
-    setClients(data ?? []);
-  }
+  const { clients, isLoading } = useClientsQuery();
 
   function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);
@@ -86,10 +71,6 @@ export default function useClient() {
 
   const isSearchEmpty = filteredClients.length < 1;
   const hasClient = filteredClients.length > 0;
-
-  useEffect(() => {
-    loadClient();
-  }, [data]);
 
   return {
     isDeleteClientModalVisible,
