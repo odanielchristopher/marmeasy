@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -6,11 +7,11 @@ import { z } from 'zod';
 import { queryClient } from '@renderer/App';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Product } from '@renderer/app/entities/Product';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { useWindowWidth } from '@renderer/app/hooks/useWindowWidth';
 import { productsService } from '@renderer/app/services/productsService';
 import { UpdateProductParams } from '@renderer/app/services/productsService/update';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
   id: z.string().uuid(),
@@ -69,7 +70,7 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
     setPreviewImageUrl(URL.createObjectURL(image));
   }
 
-  function handleSelectedCategory(category: Product) {
+  function handleSelectedCategory(category: ProductCategory) {
     setValue('categoryId', category.id, { shouldValidate: true }); // Força a validação ao definir o valor
   }
 

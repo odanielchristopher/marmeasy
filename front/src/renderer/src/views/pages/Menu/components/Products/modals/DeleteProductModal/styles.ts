@@ -99,8 +99,11 @@ export const Actions = styled.div`
   margin-top: 4.8rem;
 
   button {
-    /* width: 100%; */
     height: 4.8rem;
+  }
+
+  .delete {
+    width: 20.0rem;
   }
 `;
 

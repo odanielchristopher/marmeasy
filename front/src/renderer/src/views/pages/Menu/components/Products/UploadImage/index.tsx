@@ -1,7 +1,8 @@
-import { EmptyImage } from '@renderer/assets/Icons/EmptyImage';
 import { ImageIcon } from '@renderer/assets/Icons/ImageIcon';
 import Dropzone from 'react-dropzone';
-import { Container, ContainerImg, NoContentImage, Preview } from './styles';
+import { Container, ContainerImg, Preview } from './styles';
+
+import emptyImg from '@renderer/assets/Images/empty-image.svg';
 
 interface UploadImageProps {
   previewImageUrl: string | undefined;
@@ -11,10 +12,8 @@ interface UploadImageProps {
 export default function UploadImage({ previewImageUrl, onUpload }: UploadImageProps) {
   return (
     <Container>
-      { previewImageUrl
-          ? (<Preview src={previewImageUrl}/>)
-          : (<NoContentImage> <EmptyImage /> </NoContentImage>)
-      }
+
+      <Preview src={previewImageUrl || emptyImg}/>
 
       <Dropzone
         accept={{

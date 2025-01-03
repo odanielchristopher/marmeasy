@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -38,10 +37,6 @@ export class ProductsController {
     @UploadedFile() image: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
-    if (!image) {
-      throw new BadRequestException('Imagem do produto é obrigatória.');
-    }
-
     return this.productsService.create(userId, createProductDto, image);
   }
 

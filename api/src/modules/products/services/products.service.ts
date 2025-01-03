@@ -50,14 +50,20 @@ export class ProductsService {
   async create(
     userId: string,
     createProductDto: CreateProductDto,
-    image: Express.Multer.File,
+    image?: Express.Multer.File,
   ) {
     await this.validateUserOwnershipService.validate(userId);
 
     const { name, description, price, categoryId, ingredientsIds } =
       createProductDto;
 
-    const { imagePath } = await this.productImagesService.upload(image);
+    let imagePath: string;
+
+    if (image) {
+      const path = await this.productImagesService.upload(image);
+
+      imagePath = path.imagePath;
+    }
 
     return this.productsRepository.create({
       data: {
@@ -163,7 +169,9 @@ export class ProductsService {
       productId,
     );
 
-    await this.productImagesService.remove(product.imagePath);
+    if (product.imagePath) {
+      await this.productImagesService.remove(product.imagePath);
+    }
 
     await this.productsRepository.delete({
       where: { userId, id: productId },
