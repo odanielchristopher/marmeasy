@@ -55,9 +55,14 @@ export default function useNewProductModal(onSuccess: () => void) {
     setOpenNewIngredientModal(false);
   }
 
-  function handleUploadImage<T extends File>([image]: T[]) {
-    setValue('image', image, { shouldValidate: true });
+  function handleAddUploadImage<T extends File>([image]: T[]) {
+    setValue('image', image);
     setPreviewImageUrl(URL.createObjectURL(image));
+  }
+
+  function handleRemoveUploadImage() {
+    setValue('image', undefined);
+    setPreviewImageUrl(undefined);
   }
 
   function handleSelectedCategory(category: ProductCategory) {
@@ -127,7 +132,8 @@ export default function useNewProductModal(onSuccess: () => void) {
     handleSelectedIngredients,
     handleOpenNewIngredientModal,
     handleCloseNewIngredientModal,
-    handleUploadImage,
+    handleAddUploadImage,
+    handleRemoveUploadImage,
     handleSubmit,
   };
 }

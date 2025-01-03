@@ -58,6 +58,15 @@ export class AuthService {
         name,
         email,
         password: hashedPassword,
+        productCategories: {
+          createMany: {
+            data: [
+              { icon: '🍝', name: 'Marmita' },
+              { icon: '🍹', name: 'Bebida' },
+              { icon: '🍟', name: 'Lanche' },
+            ],
+          },
+        },
       },
     });
 

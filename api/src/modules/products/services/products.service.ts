@@ -104,6 +104,7 @@ export class ProductsService {
   async update(
     userId: string,
     productId: string,
+    removeImage: boolean,
     updateProductDto: UpdateProductDto,
     image?: Express.Multer.File,
   ) {
@@ -115,7 +116,11 @@ export class ProductsService {
     const { name, categoryId, description, ingredientsIds, price } =
       updateProductDto;
 
-    let updatedImagePath = currentProduct.imagePath;
+    let updatedImagePath = removeImage ? null : currentProduct.imagePath;
+
+    if (removeImage) {
+      await this.productImagesService.remove(currentProduct.imagePath);
+    }
 
     if (image) {
       const { imagePath } = await this.productImagesService.update(

@@ -14,9 +14,9 @@ import IngredientsSection from '../../IngredientsSection';
 import { Container, Content, Footer, ImageSection, InputsContainer } from './styles';
 
 interface EditProductModalProps {
-  open: boolean;
-  onClose(): void;
-  product: Product | null;
+  open: boolean
+  onClose(): void
+  product: Product | null
 }
 
 export default function EditProductModal({ open, onClose, product }: EditProductModalProps) {
@@ -24,6 +24,7 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
     errors,
     width,
     control,
+    isLoading,
     selectedCategoryId,
     selectedIngredientsIds,
     previewImageUrl,
@@ -32,7 +33,8 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
     handleSelectedCategory,
     handleSelectedIngredients,
     handleSubmit,
-    handleUploadImage,
+    handleAddUploadImage,
+    handleRemoveUploadImage,
     handleCloseNewIngredientModal,
     handleOpenNewIngredientModal,
   } = useEditProductModal(product, onClose);
@@ -53,7 +55,11 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
           <ImageSection>
             <h3>Imagem</h3>
 
-            <UploadImage onUpload={handleUploadImage} previewImageUrl={previewImageUrl || product?.imagePath} />
+            <UploadImage
+              onUpload={handleAddUploadImage}
+              onRemoveImg={handleRemoveUploadImage}
+              previewImageUrl={previewImageUrl}
+            />
           </ImageSection>
 
           <InputsContainer>
@@ -103,7 +109,9 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
         </Content>
 
         <Footer>
-          <Button onClick={handleSubmit}>Salvar alterações</Button>
+          <Button onClick={handleSubmit} isLoading={isLoading}>
+            Salvar alterações
+          </Button>
         </Footer>
       </Container>
     </Modal>

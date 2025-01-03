@@ -16,8 +16,8 @@ import toast from '@renderer/app/utils/toast';
 const schema = z.object({
   id: z.string().uuid(),
   image: z.instanceof(File).optional(),
-  name: z.string().min(4, { message: 'O nome deve ter pelo menos 4 caracteres.' }),
-  description: z.string().min(1, { message: 'Descrição é obrigatória.' }),
+  name: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+  description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
   categoryId: z.string().uuid(),
   ingredientsIds: z.array(z.string().uuid()),
@@ -32,6 +32,7 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
 
   const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(imagePath);
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
+  const [removeImage, setRemoveImage] = useState(false);
 
   const width = useWindowWidth();
 
@@ -46,9 +47,9 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
     resolver: zodResolver(schema),
     defaultValues: {
       id: product?.id,
-      name: product?.name,
+      name: product?.name ?? '',
       price: product?.price.toString(),
-      description: product?.description,
+      description: product?.description ?? '',
       categoryId: product?.category.id,
       ingredientsIds: product?.ingredients.map((ingredient) => ingredient.id) ?? [],
     },
@@ -65,9 +66,15 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
     setOpenNewIngredientModal(false);
   }
 
-  function handleUploadImage<T extends File>([image]: T[]) {
+  function handleAddUploadImage<T extends File>([image]: T[]) {
     setValue('image', image);
     setPreviewImageUrl(URL.createObjectURL(image));
+  }
+
+  function handleRemoveUploadImage() {
+    setValue('image', undefined);
+    setPreviewImageUrl(undefined);
+    setRemoveImage(true);
   }
 
   function handleSelectedCategory(category: ProductCategory) {
@@ -108,7 +115,10 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await updateProduct(data);
+      await updateProduct({
+        ...data,
+        removeImage,
+      });
       toast({
         type: 'success',
         text: 'Produto editado com sucesso.',
@@ -136,7 +146,8 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
     handleSelectedIngredients,
     handleOpenNewIngredientModal,
     handleCloseNewIngredientModal,
-    handleUploadImage,
+    handleAddUploadImage,
+    handleRemoveUploadImage,
     handleSubmit,
   };
 }

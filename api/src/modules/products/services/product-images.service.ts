@@ -32,17 +32,19 @@ export class ProducImagesService {
       throw new BadRequestException('Formato de arquivo inválido.');
     }
 
-    const oldImageFullPath = path.resolve(process.cwd(), oldImagePath);
+    if (oldImagePath) {
+      const oldImageFullPath = path.resolve(process.cwd(), oldImagePath);
 
-    try {
-      // Verificar se o arquivo original existe
-      await fs.access(oldImageFullPath);
-    } catch {
-      throw new NotFoundException('Imagem antiga não encontrada.');
+      try {
+        // Verificar se o arquivo original existe
+        await fs.access(oldImageFullPath);
+      } catch {
+        throw new NotFoundException('Imagem antiga não encontrada.');
+      }
+
+      // Excluir a imagem antiga
+      await fs.unlink(oldImageFullPath);
     }
-
-    // Excluir a imagem antiga
-    await fs.unlink(oldImageFullPath);
 
     // Salvar a nova imagem
     const imageName = `${randomUUID()}-${newImage.originalname}`;

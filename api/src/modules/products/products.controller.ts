@@ -45,12 +45,14 @@ export class ProductsController {
   update(
     @ActiveUserId() userId: string,
     @Param('productId') productId: string,
+    @Query('removeImage') removeImage: boolean,
     @UploadedFile() image: Express.Multer.File,
     @Body() updateProductDto: UpdateProductDto,
   ) {
     return this.productsService.update(
       userId,
       productId,
+      removeImage,
       updateProductDto,
       image,
     );
