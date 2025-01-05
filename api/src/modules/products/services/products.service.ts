@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
+
+import { ValidateIngredientOwnershipService } from 'src/modules/ingredients/services/validate-ingredient-ownership.service';
+import { ValidateProductCategoryOwnershipService } from 'src/modules/product-categories/services/validate-product-category-ownership.service';
+import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
 import { ProducImagesService } from './product-images.service';
 import { ValidateProductOwnershipService } from './validate-product-ownership.service';
 
@@ -10,15 +13,17 @@ import { ValidateProductOwnershipService } from './validate-product-ownership.se
 export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
+    private readonly productImagesService: ProducImagesService,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
     private readonly validateProductOwnershipService: ValidateProductOwnershipService,
-    private readonly productImagesService: ProducImagesService,
+    private readonly validateProductCategorieOwnershipService: ValidateProductCategoryOwnershipService,
+    private readonly validadeIngredientsOwnershipService: ValidateIngredientOwnershipService,
   ) {}
 
   findAllByUserId(userId: string, categoryName: string) {
     const filters = {
       userId,
-      ...(categoryName && { category: { name: categoryName } }),
+      ...(categoryName && { category: { name: categoryName } }), // Se tiver uma categoryName entao ela adiciona nos filtros
     };
 
     return this.productsRepository.findMany({
@@ -52,10 +57,14 @@ export class ProductsService {
     createProductDto: CreateProductDto,
     image?: Express.Multer.File,
   ) {
-    await this.validateUserOwnershipService.validate(userId);
-
     const { name, description, price, categoryId, ingredientsIds } =
       createProductDto;
+
+    await this.validateEntitiesOwnership({
+      userId,
+      productCategoryId: categoryId,
+      ingredientIds: ingredientsIds ? ingredientsIds : undefined,
+    });
 
     let imagePath: string;
 
@@ -108,13 +117,15 @@ export class ProductsService {
     updateProductDto: UpdateProductDto,
     image?: Express.Multer.File,
   ) {
-    const currentProduct = await this.validateProductOwnershipService.validate(
-      userId,
-      productId,
-    );
-
     const { name, categoryId, description, ingredientsIds, price } =
       updateProductDto;
+
+    const currentProduct = await this.validateEntitiesOwnership({
+      userId,
+      productId,
+      productCategoryId: categoryId,
+      ingredientIds: ingredientsIds ? ingredientsIds : undefined,
+    });
 
     let updatedImagePath = removeImage ? null : currentProduct.imagePath;
 
@@ -169,10 +180,10 @@ export class ProductsService {
   }
 
   async remove(userId: string, productId: string) {
-    const product = await this.validateProductOwnershipService.validate(
+    const product = await this.validateEntitiesOwnership({
       userId,
       productId,
-    );
+    });
 
     if (product.imagePath) {
       await this.productImagesService.remove(product.imagePath);
@@ -183,5 +194,36 @@ export class ProductsService {
     });
 
     return null;
+  }
+
+  private async validateEntitiesOwnership({
+    userId,
+    productId,
+    productCategoryId,
+    ingredientIds,
+  }: {
+    userId: string;
+    productId?: string;
+    productCategoryId?: string;
+    ingredientIds?: string[];
+  }) {
+    const [product] = await Promise.all([
+      productId &&
+        this.validateProductOwnershipService.validate(userId, productId),
+      productCategoryId &&
+        this.validateProductCategorieOwnershipService.validate(
+          userId,
+          productCategoryId,
+        ),
+      ingredientIds &&
+        ingredientIds.forEach((ingredientId) =>
+          this.validadeIngredientsOwnershipService.validate(
+            userId,
+            ingredientId,
+          ),
+        ),
+    ]);
+
+    return product;
   }
 }

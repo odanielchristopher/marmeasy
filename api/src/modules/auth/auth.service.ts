@@ -61,9 +61,9 @@ export class AuthService {
         productCategories: {
           createMany: {
             data: [
-              { icon: '🍝', name: 'Marmita' },
-              { icon: '🍹', name: 'Bebida' },
-              { icon: '🍟', name: 'Lanche' },
+              { icon: '🍝', name: 'marmita' },
+              { icon: '🍹', name: 'bebida' },
+              { icon: '🍟', name: 'lanche' },
             ],
           },
         },
