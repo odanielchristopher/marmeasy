@@ -43,14 +43,14 @@ model Product {
   id          String          @id @default(uuid()) @db.Uuid
   userId      String          @map("user_id") @db.Uuid
   name        String
-  description String
-  imagePath   String
+  description String?
+  imagePath   String?
   price       Float
-  categoryId  String          @map("product_category_id") @db.Uuid
   category    ProductCategory @relation(fields: [categoryId], references: [id])
   ingredients Ingredient[]    @relation("product_ingredient")
 
   user         User    @relation(fields: [userId], references: [id])
+  categoryId   String  @map("product_category_id") @db.Uuid
   ingredientId String? @db.Uuid
 
   @@map("products")

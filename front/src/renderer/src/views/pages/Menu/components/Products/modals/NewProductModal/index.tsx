@@ -33,7 +33,8 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
     handleSelectedCategory,
     handleSelectedIngredients,
     handleSubmit,
-    handleUploadImage,
+    handleAddUploadImage,
+    handleRemoveUploadImage,
     handleCloseNewIngredientModal,
     handleOpenNewIngredientModal,
   } = useNewProductModal(onClose);
@@ -56,19 +57,21 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
               <h3>Imagem</h3>
 
               {errors.image && (
-                <div className='error'>
-                <CgCloseO color='#F63131'/>
-                <span>{errors.image.message}</span>
-              </div>
+                <div className="error">
+                  <CgCloseO color="#F63131" />
+                  <span>{errors.image.message}</span>
+                </div>
               )}
             </header>
 
-            <UploadImage onUpload={handleUploadImage} previewImageUrl={previewImageUrl} />
+            <UploadImage
+              onUpload={handleAddUploadImage}
+              onRemoveImg={handleRemoveUploadImage}
+              previewImageUrl={previewImageUrl}
+            />
           </ImageSection>
 
           <InputsContainer>
-
-
             <Input
               type="text"
               placeholder="Nome do produto"
@@ -115,7 +118,9 @@ export default function NewProductModal({ open, onClose }: NewProductModalProps)
         </Content>
 
         <Footer>
-          <Button onClick={handleSubmit} isLoading={isLoading}>Adicionar produto</Button>
+          <Button onClick={handleSubmit} isLoading={isLoading}>
+            Adicionar produto
+          </Button>
         </Footer>
       </Container>
     </Modal>

@@ -2,10 +2,12 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import { FaCheck } from 'react-icons/fa6';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Loader from '@renderer/views/components/Loader';
 
-import { Container, StyledRdxCheckbox } from './styles';
 import useIngredientsSection from './useIngredientsSection';
+
+import { Container, StyledRdxCheckbox } from './styles';
 
 interface IngredientsProps {
   openNewIngredientModal(): void;
@@ -48,11 +50,10 @@ export default function IngredientsSection({
           filteredIngredients.map((ingredient, key) => {
             const isChecked = selectedIngredientsIds.some((ingredientsId) => ingredientsId === ingredient.id);
 
-
             return (
               <label className="item" htmlFor={ingredient.id} key={key}>
               <span>
-                {ingredient.icon} {ingredient.name}
+                {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}
               </span>
 
               <StyledRdxCheckbox id={ingredient.id} onCheckedChange={() => onSelected(ingredient)} checked={isChecked}>

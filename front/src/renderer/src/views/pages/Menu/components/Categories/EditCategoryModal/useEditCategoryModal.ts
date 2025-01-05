@@ -1,15 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { queryClient } from '@renderer/App';
 import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
 import { UpdateProductCategoryParams } from '@renderer/app/services/productCategoriesService/update';
+
+import { queryClient } from '@renderer/App';
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 
 const categoryFormSchema = z.object({
   icon: z
@@ -32,8 +34,8 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
   } = useForm<FormData>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
-      icon: category?.icon,
-      name: category?.name,
+      icon: category?.icon ?? '',
+      name: capitalizeFirstLetter(category?.name || ''),
     },
   });
 
@@ -43,11 +45,6 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
       queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
 
         return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['product-categories', 'getAll'],
-        exact: true,
       });
     },
   });

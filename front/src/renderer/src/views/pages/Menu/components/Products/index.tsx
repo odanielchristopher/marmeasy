@@ -9,6 +9,7 @@ import EditProductModal from './modals/EditProductModal';
 import NewProductModal from './modals/NewProductModal';
 
 import emptyCart from '@renderer/assets/Images/empty-cart.svg';
+import noImage from '@renderer/assets/Images/empty-image.svg';
 
 import useProducts from './useProducts';
 
@@ -85,34 +86,38 @@ export default function Products() {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {products.map((product) => (
-              <Table.Row key={product.id}>
-                <Table.Cell style={{ width: '20%' }}>
-                  <ProductImage
-                    src={`${import.meta.env.VITE_API_URL}/${product.imagePath}`}
-                    alt={product.description}
-                  />
-                </Table.Cell>
-                <Table.Cell style={{ width: '20%' }}>
-                  {capitalizeFirstLetter(product.name)}
-                </Table.Cell>
-                <Table.Cell style={{ width: '20%' }}>
-                  <CategoryContainer>
-                    <span>{product.category.icon}</span>
-                    <span>{capitalizeFirstLetter(product.category.name)}</span>
-                  </CategoryContainer>
-                </Table.Cell>
-                <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>
-                <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
-                  <ActionButton onClick={() => handleOpenEditModal(product)}>
-                    <Pencil />
-                  </ActionButton>
-                  <ActionButton onClick={() => handleOpenDeleteModal(product)}>
-                    <DeleteIcon />
-                  </ActionButton>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+            {products.map((product) => {
+              const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
+
+              return (
+                <Table.Row key={product.id}>
+                  <Table.Cell style={{ width: '20%' }}>
+                    <ProductImage
+                      src={imagePath || noImage}
+                      alt={product.description}
+                    />
+                  </Table.Cell>
+                  <Table.Cell style={{ width: '20%' }}>
+                    {capitalizeFirstLetter(product.name)}
+                  </Table.Cell>
+                  <Table.Cell style={{ width: '20%' }}>
+                    <CategoryContainer>
+                      <span>{product.category.icon}</span>
+                      <span>{capitalizeFirstLetter(product.category.name)}</span>
+                    </CategoryContainer>
+                  </Table.Cell>
+                  <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>
+                  <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
+                    <ActionButton onClick={() => handleOpenEditModal(product)}>
+                      <Pencil />
+                    </ActionButton>
+                    <ActionButton onClick={() => handleOpenDeleteModal(product)}>
+                      <DeleteIcon />
+                    </ActionButton>
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
           </Table.Body>
         </Table.Container>
 

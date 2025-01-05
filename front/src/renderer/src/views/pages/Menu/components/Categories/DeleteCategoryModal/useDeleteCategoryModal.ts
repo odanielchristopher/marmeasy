@@ -12,11 +12,6 @@ export default function useDeleteCategoryModal(categoryBeingDeleted: ProductCate
       queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
         return categories.filter((category) => category.id !== categoryBeingDeleted!.id);
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['product-categories', 'getAll'],
-        exact: true,
-      });
     },
   });
 

@@ -63,7 +63,7 @@ export class ProductCategoriesService {
     return this.productCategoriesRepository.create({
       data: {
         userId,
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {
@@ -100,7 +100,7 @@ export class ProductCategoriesService {
     return this.productCategoriesRepository.update({
       where: { userId, id: productCategoryId },
       data: {
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {
