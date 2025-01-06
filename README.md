@@ -60,6 +60,7 @@ O Marmeasy é voltado para gerentes de marmitarias, com uma interface intuitiva 
 
 3. **Configuração do Banco de Dados**:
    - Crie um arquivo `.env` na pasta **api** com as variáveis necessárias (exemplo no `.env.example`).
+   - Modifique o valor da JWT_SECRET para uma hash de sua preferência.
    - Configure as credenciais do PostgreSQL.
 
 4. **Iniciar o Sistema**:
