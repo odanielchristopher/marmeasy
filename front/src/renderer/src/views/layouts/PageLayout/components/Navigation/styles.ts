@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface ILinkNavigation {
@@ -82,4 +83,44 @@ export const LinkNavigation = styled.button<ILinkNavigation>`
         text-decoration: underline;
       }
     `}
+`;
+
+export const StyledLink = styled(Link)<ILinkNavigation>`
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: ${({ theme }) => theme.colors.black.main};
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+  transition: all ease-in 100ms;
+  text-decoration: none;
+
+  span {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  & + & {
+    margin-top: 3.2rem;
+  }
+
+  &:hover {
+    color: #fff;
+
+    span {
+      text-decoration: underline;
+    }
+  }
+
+  ${({ active }) =>
+    active &&
+    css`
+      color: #fff;
+
+      span {
+        text-decoration: underline;
+      }
+    `
+  }
 `;

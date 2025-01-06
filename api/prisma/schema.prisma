@@ -49,7 +49,7 @@ model Product {
   category    ProductCategory @relation(fields: [categoryId], references: [id])
   ingredients Ingredient[]    @relation("product_ingredient")
 
-  user         User    @relation(fields: [userId], references: [id])
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   categoryId   String  @map("product_category_id") @db.Uuid
   ingredientId String? @db.Uuid
 
@@ -59,12 +59,13 @@ model Product {
 model ProductCategory {
   id       String    @id @default(uuid()) @db.Uuid
   userId   String    @map("user_id") @db.Uuid
-  name     String    @unique
+  name     String
   icon     String
   products Product[]
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, name]) // Adicionando a restrição de unicidade composta
   @@map("product_category")
 }
 
@@ -75,7 +76,7 @@ model Ingredient {
   icon     String
   products Product[] @relation("product_ingredient")
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("ingredient")
 }
