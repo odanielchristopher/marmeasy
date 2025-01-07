@@ -1,12 +1,39 @@
 import styled, { css } from 'styled-components';
 
+import 'swiper/css';
+import { Swiper } from 'swiper/react';
+
+export const StyledSwiper = styled(Swiper)`
+  padding-block: .4rem;
+  position: initial;
+
+  .categories-loader {
+    width: 42.0rem;
+    height: 4.8rem;
+  }
+
+  .swiper-pagination {
+    bottom: -10px;
+
+    .swiper-pagination-bullet-active {
+      background-color: ${({ theme }) => theme.colors.orange.main}; /* Cor do bullet ativo */
+    }
+  }
+
+  .swiper-slide {
+    width: fit-content;
+  }
+`;
+
 export const Container = styled.section`
   max-width: 42rem;
 
+  position: relative;
   header {
     align-items: center;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1.2rem;
 
     .title {
       color: ${({ theme }) => theme.colors.gray.light};
@@ -34,9 +61,12 @@ export const List = styled.div`
   margin-bottom: 3.2rem;
   padding-block: 0.2rem;
 
-  overflow: auto;
+  overflow-x: auto; /* Habilita rolagem horizontal */
+  overflow-y: hidden; /* Esconde rolagem vertical */
+  scrollbar-width: none; /* Remove barra de rolagem no Firefox */
+
   &::-webkit-scrollbar {
-    display: none;
+    display: none; /* Remove barra de rolagem no Chrome e similares */
   }
 
   .categories-loader {
