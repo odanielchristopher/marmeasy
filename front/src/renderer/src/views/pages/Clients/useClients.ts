@@ -53,7 +53,6 @@ export default function useClient() {
     },
   });
 
-
   const { clients, isLoading } = useClientsQuery();
 
   function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
