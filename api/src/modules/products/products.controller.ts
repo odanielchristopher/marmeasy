@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -14,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductsService } from './products.service';
+import { ProductsService } from './services/products.service';
 
 @Controller('products')
 export class ProductsController {
@@ -28,40 +30,40 @@ export class ProductsController {
     return this.productsService.findAllByUserId(userId, categoryName);
   }
 
-  @Get(':productId')
-  findOne(
-    @ActiveUserId() userId: string,
-    @Param('productId') productId: string,
-  ) {
-    return this.productsService.findOneByUserId(userId, productId);
-  }
-
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   create(
     @ActiveUserId() userId: string,
-    @UploadedFile() image: any,
+    @UploadedFile() image: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
-    createProductDto = {
-      ...createProductDto,
-      imagePath: image.path,
-    };
-
-    return this.productsService.create(userId, createProductDto);
+    return this.productsService.create(userId, createProductDto, image);
   }
 
   @Put(':productId')
+  @UseInterceptors(FileInterceptor('image'))
   update(
     @ActiveUserId() userId: string,
     @Param('productId') productId: string,
+    @Query('removeImage') removeImage: boolean,
+    @UploadedFile() image: Express.Multer.File,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productsService.update(userId, productId, updateProductDto);
+    return this.productsService.update(
+      userId,
+      productId,
+      removeImage,
+      updateProductDto,
+      image,
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productsService.remove(+id);
+  @Delete(':productId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(
+    @ActiveUserId() userId: string,
+    @Param('productId') productId: string,
+  ) {
+    return this.productsService.remove(userId, productId);
   }
 }

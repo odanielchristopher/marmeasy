@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ProductCategoriesRespository } from 'src/shared/database/repositories/product-categories.repository';
 import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
 import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
@@ -14,7 +14,7 @@ export class ProductCategoriesService {
   ) {}
 
   async findAllByUserId(userId: string) {
-    return this.productCategoriesRepository.findMany({
+    const productsCategories = await this.productCategoriesRepository.findMany({
       where: { userId },
       select: {
         id: true,
@@ -22,6 +22,12 @@ export class ProductCategoriesService {
         icon: true,
       },
     });
+
+    const sortedProductsCategories = productsCategories.sort((a, b) =>
+      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+    );
+
+    return sortedProductsCategories;
   }
 
   async findOneByUserId(userId: string, productCategoryId: string) {
@@ -46,10 +52,18 @@ export class ProductCategoriesService {
 
     const { name, icon } = createProductCategoryDto;
 
+    const nameAlreadyExists = await this.productCategoriesRepository.findFirst({
+      where: { userId, name },
+    });
+
+    if (nameAlreadyExists) {
+      throw new BadRequestException('Esse nome já está sendo usado.');
+    }
+
     return this.productCategoriesRepository.create({
       data: {
         userId,
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {
@@ -72,10 +86,21 @@ export class ProductCategoriesService {
 
     const { name, icon } = updateProductCategoryDto;
 
+    const nameAlreadyExists = await this.productCategoriesRepository.findFirst({
+      where: { userId, name },
+      select: {
+        id: true,
+      },
+    });
+
+    if (nameAlreadyExists && productCategoryId !== nameAlreadyExists.id) {
+      throw new BadRequestException('Esse nome já está sendo usado.');
+    }
+
     return this.productCategoriesRepository.update({
       where: { userId, id: productCategoryId },
       data: {
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {

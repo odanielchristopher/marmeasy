@@ -49,7 +49,7 @@ export class IngredientsService {
     return this.ingredientsRepository.create({
       data: {
         userId,
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {
@@ -75,7 +75,7 @@ export class IngredientsService {
     return this.ingredientsRepository.update({
       where: { userId, id: productCategoryId },
       data: {
-        name,
+        name: name.toLowerCase(),
         icon,
       },
       select: {

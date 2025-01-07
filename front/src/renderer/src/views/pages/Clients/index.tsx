@@ -3,12 +3,13 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import { Container, Content, Header, NotFoundContainer } from './styles';
+import { Container, Content, NotFoundContainer } from './styles';
 
 import ClientList from './components/ClientList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
+import { SectionHeader } from '@renderer/views/components/SectionHeader';
 import DeleteModal from '@renderer/views/modals/DeleteModal';
 import useClients from './useClients';
 
@@ -47,13 +48,13 @@ export default function Clients() {
 
       <Fab />
 
-      <Header>
+      <SectionHeader>
         <div>
           <TbUsers size={32} />
           <h1>Clientes</h1>
         </div>
         <p>Gerencie os clientes do seu estabelecimento</p>
-      </Header>
+      </SectionHeader>
 
       <SearchInput
         placeholder="Pesquisa por nome..."

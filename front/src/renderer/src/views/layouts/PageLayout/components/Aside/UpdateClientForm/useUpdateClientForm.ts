@@ -42,7 +42,7 @@ export type FormData = z.infer<typeof clientFormSchema>
 
 export default function useUpdateClientForm(
   isShow: boolean,
-  client: Client | null,
+  clientBeingUpdated: Client | null,
 ) {
   const {
     register,
@@ -57,30 +57,21 @@ export default function useUpdateClientForm(
   const { mutateAsync: updateClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: UpdateClientParams) => clientsService.update(data),
     onSuccess: (updatedClient) => {
-      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => {
-
-        return clients.map((client) => {
-
-          return client.id === updatedClient.id ? updatedClient : client;
-        });
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: ['clients', 'getAll'],
-        exact: true,
-      });
+      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => (
+        clients.map((client) => client.id === updatedClient.id ? updatedClient : client)
+      ));
     },
   });
 
   useEffect(() => {
-    if (isShow && client) {
+    if (isShow && clientBeingUpdated) {
       reset({
-        name: client.name,
-        address: client.address ?? '',
-        cpf: (client.type === 'FISICO' ? client.document : '') ?? '',
-        cnpj: (client.type ==='JURIDICO' ? client.document : '') ?? '',
-        phone: client.phone ?? '',
-        balance: String(client.balance),
+        name: clientBeingUpdated.name,
+        address: clientBeingUpdated.address ?? '',
+        cpf: (clientBeingUpdated.type === 'FISICO' ? clientBeingUpdated.document : '') ?? '',
+        cnpj: (clientBeingUpdated.type ==='JURIDICO' ? clientBeingUpdated.document : '') ?? '',
+        phone: clientBeingUpdated.phone ?? '',
+        balance: String(clientBeingUpdated.balance),
       });
     } else if (!isShow) {
       reset();
@@ -89,19 +80,19 @@ export default function useUpdateClientForm(
     return () => {
       reset();
     };
-  }, [isShow, client]);
+  }, [isShow, clientBeingUpdated]);
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     const { name, address, phone, cnpj, cpf, balance } = data;
 
     try {
       await updateClient({
-        id: client!.id,
-        type: client!.type,
+        id: clientBeingUpdated!.id,
+        type: clientBeingUpdated!.type,
         name,
         address: address || undefined,
         phone: phone || undefined,
-        document: client!.type === 'FISICO' ? (cpf || undefined) : (cnpj || undefined),
+        document: clientBeingUpdated!.type === 'FISICO' ? (cpf || undefined) : (cnpj || undefined),
         balance,
       });
 
