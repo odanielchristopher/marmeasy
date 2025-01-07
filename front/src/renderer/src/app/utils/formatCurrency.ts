@@ -1,8 +1,11 @@
 export function formatCurrency(value: number): string {
   if (isNaN(value)) {
-      throw new Error('Invalid number provided');
+    throw new Error('Invalid number provided');
   }
 
-  // Converte o número para uma string no formato com duas casas decimais
-  return value.toFixed(2).replace('.', ',');
+  // Formata o número com separador de milhares "." e decimal ","
+  return new Intl.NumberFormat('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
 }

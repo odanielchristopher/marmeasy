@@ -21,19 +21,29 @@ const contentShow = keyframes`
 	}
 `;
 
-export const StyledRdxDialogContent = styled(Dialog.Content)`
+interface DialogContentProps {
+  $maxWidth?: string
+}
+
+export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>`
   animation: ${contentShow} 0.3s forwards;
-  background: #FFF;
+  background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: 0rem .4rem 0rem rgba(0, 0, 0, 0.04);
+  box-shadow: 0rem 0.4rem 0rem rgba(0, 0, 0, 0.04);
   padding: 2.4rem;
   width: 100%;
-  max-width: 45.0rem;
+  max-width: ${({ $maxWidth }) => $maxWidth || '45.0rem'};
+  max-height: 92vh;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 50;
   outline: none;
 `;
@@ -41,7 +51,7 @@ export const StyledRdxDialogContent = styled(Dialog.Content)`
 export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`
   animation: ${overlayShow} 0.3s forwards;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(.25rem);
+  backdrop-filter: blur(0.25rem);
   position: fixed;
   left: 0;
   top: 0;

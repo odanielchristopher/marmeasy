@@ -6,7 +6,8 @@ import { useLocation } from 'react-router-dom';
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import UpdateClientForm from './UpdateClientForm';
-import frase from '/frase.png?url';
+
+import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 
 interface AsideProps {
   area: string;
@@ -41,7 +42,7 @@ export default function Aside({ area }: AsideProps) {
   return (
     <Container $area={area}>
       <Header>
-        <img src={frase} alt='' />
+        <img src={fraseSvg} alt='Marmeasy' />
       </Header>
 
       <Actions>
