@@ -1,4 +1,4 @@
-# Sistema de Gerenciamento de Marmitaria - Marmeasy
+# Marmeasy - Sistema de Gerenciamento de Marmitaria
 
 ## Visão Geral
 Bem-vindo ao **Marmeasy**, um sistema desktop projetado para facilitar o gerenciamento de marmitarias. O objetivo é oferecer uma solução eficiente para controle de pedidos, pagamentos, cardápios e relatórios financeiros, garantindo uma gestão mais organizada e produtiva.
@@ -59,13 +59,14 @@ O Marmeasy é voltado para gerentes de marmitarias, com uma interface intuitiva 
      ```
 
 3. **Configuração do Banco de Dados**:
-   - Crie um arquivo `.env` na pasta api com as variáveis necessárias (exemplo no `.env.example`).
+   - Crie um arquivo `.env` na pasta **api** com as variáveis necessárias (exemplo no `.env.example`).
+   - Modifique o valor da JWT_SECRET para uma hash de sua preferência.
    - Configure as credenciais do PostgreSQL.
 
 4. **Iniciar o Sistema**:
-   - Inicie os contêineres com Docker Compose:
+   - Entre na pasta **api** e inicie os contêineres com Docker Compose:
      ```bash
-     docker-compose up
+     cd api && docker-compose up
      ```
    - Execute o frontend:
      ```bash
