@@ -18,9 +18,12 @@ export default function useIngredientsSection() {
     [ingredients, searchTerm],
   );
 
+  const hasIngredients = filteredIngredients.length > 0;
+
   return {
-    filteredIngredients,
     isLoading,
+    hasIngredients,
+    filteredIngredients,
     handleChangeSearchTerm,
   };
 }

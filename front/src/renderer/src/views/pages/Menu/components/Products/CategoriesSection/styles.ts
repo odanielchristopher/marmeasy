@@ -52,29 +52,6 @@ export const Container = styled.section`
   }
 `;
 
-export const List = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  max-width: 42rem;
-  margin-top: 1.6rem;
-  margin-bottom: 3.2rem;
-  padding-block: 0.2rem;
-
-  overflow-x: auto; /* Habilita rolagem horizontal */
-  overflow-y: hidden; /* Esconde rolagem vertical */
-  scrollbar-width: none; /* Remove barra de rolagem no Firefox */
-
-  &::-webkit-scrollbar {
-    display: none; /* Remove barra de rolagem no Chrome e similares */
-  }
-
-  .categories-loader {
-    width: 42.0rem;
-    height: 4.8rem;
-  }
-`;
-
 interface CategoryItemProps {
   $selected?: boolean
 }

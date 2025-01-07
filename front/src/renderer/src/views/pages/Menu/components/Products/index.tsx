@@ -102,8 +102,14 @@ export default function Products() {
                   </Table.Cell>
                   <Table.Cell style={{ width: '20%' }}>
                     <CategoryContainer>
-                      <span>{product.category.icon}</span>
-                      <span>{capitalizeFirstLetter(product.category.name)}</span>
+                      {product.category && (
+                        <>
+                          <span>{product.category.icon}</span>
+                          <span>{capitalizeFirstLetter(product.category.name)}</span>
+                        </>
+                      )}
+
+                      {!product.category && (<span>Nenhuma</span>)}
                     </CategoryContainer>
                   </Table.Cell>
                   <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>

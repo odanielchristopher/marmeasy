@@ -95,15 +95,15 @@ export class ProductsService {
         ingredients: {
           select: {
             id: true,
-            name: true,
             icon: true,
+            name: true,
           },
         },
         category: {
           select: {
             id: true,
-            name: true,
             icon: true,
+            name: true,
           },
         },
       },
@@ -149,7 +149,7 @@ export class ProductsService {
         description,
         price,
         imagePath: updatedImagePath,
-        categoryId,
+        categoryId: categoryId ?? null,
         ingredients: {
           set: [], // Limpa os ingredientes antigos
           connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
@@ -164,15 +164,15 @@ export class ProductsService {
         ingredients: {
           select: {
             id: true,
-            name: true,
             icon: true,
+            name: true,
           },
         },
         category: {
           select: {
             id: true,
-            name: true,
             icon: true,
+            name: true,
           },
         },
       },
