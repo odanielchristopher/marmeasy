@@ -51,7 +51,7 @@ O Marmeasy é voltado para gerentes de marmitarias, com uma interface intuitiva 
 2. **Configuração do Ambiente**:
    - Clone este repositório:
      ```bash
-     git clone https://github.com/seu-repositorio/marmeasy.git
+     git clone https://github.com/odanielchristopher/marmeasy.git
      ```
    - Instale as dependências do frontend:
      ```bash
