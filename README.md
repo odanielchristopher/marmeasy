@@ -55,9 +55,9 @@ O Marmeasy é voltado para gerentes de marmitarias, com uma interface intuitiva 
      ```
 
    - Entre na pasta marmeasy e troque para a branch docker:
-    ```bash
-    cd marmeasy && git checkout docker
-    ```
+      ```bash
+      cd marmeasy && git checkout docker
+      ```
    - Instale as dependências do frontend:
      ```bash
      cd frontend && npm install
