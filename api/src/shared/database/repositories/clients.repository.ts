@@ -78,7 +78,7 @@ export class ClientsRepository implements IClientsRepository {
     return {
       id: data.id,
       userId: data.userId,
-      name: data.id,
+      name: data.name,
       phone: data.phone,
       address: data.address,
       type: data.type,
@@ -88,38 +88,43 @@ export class ClientsRepository implements IClientsRepository {
   }
 
   private parseSelectInput(select: SelectClientInput) {
-    return {
-      id: select.id,
-      userId: select.userId,
-      name: select.id,
-      phone: select.phone,
-      address: select.address,
-      type: select.type,
-      document: select.document,
-      balance: select.balance,
-      user: {
-        select: select.user,
-      },
+    if (!select) return undefined;
+
+    const parsedSelect = {
+      id: select.id ?? false,
+      userId: select.userId ?? false,
+      name: select.name ?? false,
+      phone: select.phone ?? false,
+      address: select.address ?? false,
+      type: select.type ?? false,
+      document: select.document ?? false,
+      balance: select.balance ?? false,
+      user: select.user ? { select: select.user } : undefined,
     };
+
+    // Verifica se ao menos um campo é `true`
+    const hasTruthyValue = Object.values(parsedSelect).some(
+      (value) => value === true || typeof value === 'object',
+    );
+
+    return hasTruthyValue ? parsedSelect : undefined;
   }
 
   private parseWhereInput(where: WhereClientInput) {
     return {
-      id: where.id,
-      userId: where.userId,
-      name: where.id,
-      phone: where.phone,
-      address: where.address,
-      type: {
-        equals: where.type,
-      },
-      document: where.document,
-      balance: where.balance,
-      user: where.user,
+      ...(where.id && { id: where.id }),
+      ...(where.userId && { userId: where.userId }),
+      ...(where.name && { name: where.name }),
+      ...(where.phone && { phone: where.phone }),
+      ...(where.address && { address: where.address }),
+      ...(where.type && { type: { equals: where.type } }),
+      ...(where.document && { document: where.document }),
+      ...(where.balance && { balance: where.balance }),
+      ...(where.user && { user: where.user }),
     };
   }
 
-  private clientMapper(clientData: {
+  private clientMapper(clientData?: {
     id: string;
     userId: string;
     name: string;
@@ -128,7 +133,11 @@ export class ClientsRepository implements IClientsRepository {
     type: $Enums.ClientType;
     document: string | null;
     balance: number;
-  }): Client {
+  }): Client | null {
+    if (!clientData) {
+      return null;
+    }
+
     return {
       ...clientData,
       type: clientData.type as Client['type'],

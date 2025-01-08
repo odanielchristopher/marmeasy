@@ -62,21 +62,30 @@ export class UsersRepository implements IUsersRepository {
     });
   }
 
-  private parseSelectInput(select: SelectUserInput) {
-    return {
-      id: select.id,
-      name: select.name,
-      email: select.email,
-      password: select.password,
+  private parseSelectInput(select?: SelectUserInput) {
+    if (!select) return undefined;
+
+    const parsedSelect = {
+      id: select.id ?? false,
+      name: select.name ?? false,
+      email: select.email ?? false,
+      password: select.password ?? false,
     };
+
+    // Verifica se ao menos um campo é `true`
+    const hasTruthyValue = Object.values(parsedSelect).some(
+      (value) => value === true,
+    );
+
+    return hasTruthyValue ? parsedSelect : undefined;
   }
 
-  private parseWhereInput(where: WhereUserInput) {
+  private parseWhereInput(where?: WhereUserInput) {
     return {
-      id: where.id,
-      email: where.email,
-      name: where.name,
-      password: where.password,
+      ...(where.id && { id: where.id }),
+      ...(where.email && { email: where.email }),
+      ...(where.name && { name: where.name }),
+      ...(where.password && { password: where.password }),
     };
   }
 
