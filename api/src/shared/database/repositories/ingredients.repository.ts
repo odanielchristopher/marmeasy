@@ -2,8 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { type Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 
+export interface IIngredientsRepository {
+  findMany(findManyDto: Prisma.IngredientFindManyArgs);
+
+  findFirst(findFirstDto: Prisma.IngredientFindFirstArgs);
+
+  create(createDto: Prisma.IngredientCreateArgs);
+
+  update(updateDto: Prisma.IngredientUpdateArgs);
+
+  delete(deleteDto: Prisma.IngredientDeleteArgs);
+}
+
 @Injectable()
-export class IngredientsRespository {
+export class IngredientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   findMany(findManyDto: Prisma.IngredientFindManyArgs) {

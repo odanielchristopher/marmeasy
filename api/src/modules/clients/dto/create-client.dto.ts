@@ -9,7 +9,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ClientType } from '../entities/Client';
+import { ClientType } from '../entities/client.entity';
 
 export class CreateClientDto {
   @IsString()

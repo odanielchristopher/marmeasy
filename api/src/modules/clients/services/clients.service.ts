@@ -1,14 +1,16 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
-import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
+import { IClientsRepository } from 'src/shared/database/interfaces/clients.repository.interface';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
+import { ClientType } from '../entities/client.entity';
 import { ValidateClientOwnershipService } from './validate-client-ownership.service';
 
 @Injectable()
 export class ClientsService {
   constructor(
-    private readonly clientsRepository: ClientsRespository,
+    @Inject('IClientsRepository')
+    private readonly clientsRepository: IClientsRepository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
     private readonly validateClientOwnershipService: ValidateClientOwnershipService,
   ) {}
@@ -122,7 +124,7 @@ export class ClientsService {
         phone: phone || null,
         address: address || null,
         document: document || null,
-        type,
+        type: type as ClientType,
         balance,
       },
       select: {

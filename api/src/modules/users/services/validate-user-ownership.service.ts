@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IUsersRepository } from 'src/shared/database/interfaces/users.repository.interface';
 
 @Injectable()
 export class ValidateUserOwnershipService {
-  constructor(private readonly usersRepository: UsersRespository) {}
+  constructor(
+    @Inject('IUsersRepository')
+    private readonly usersRepository: IUsersRepository,
+  ) {}
 
   async validate(userId: string) {
     const isOwner = await this.usersRepository.findFirst({

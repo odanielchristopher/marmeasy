@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { CreateProductCategoryDto } from 'src/modules/product-categories/dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from 'src/modules/product-categories/dto/update-product-category.dto';
 import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
-import { IngredientsRespository } from 'src/shared/database/repositories/ingredients.repository';
+import { IngredientsRepository } from 'src/shared/database/repositories/ingredients.repository';
 import { ValidateIngredientOwnershipService } from './validate-ingredient-ownership.service';
 
 @Injectable()
 export class IngredientsService {
   constructor(
-    private readonly ingredientsRepository: IngredientsRespository,
+    private readonly ingredientsRepository: IngredientsRepository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
     private readonly validateIngredientOwnershipService: ValidateIngredientOwnershipService,
   ) {}

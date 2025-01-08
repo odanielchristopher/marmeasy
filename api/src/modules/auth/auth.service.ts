@@ -1,19 +1,21 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 
 import { compare, hash } from 'bcryptjs';
+import { IUsersRepository } from 'src/shared/database/interfaces/users.repository.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRespository: UsersRespository,
+    @Inject('IUsersRepository')
+    private readonly userRespository: IUsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -58,15 +60,11 @@ export class AuthService {
         name,
         email,
         password: hashedPassword,
-        productCategories: {
-          createMany: {
-            data: [
-              { icon: '🍝', name: 'marmitas' },
-              { icon: '🍹', name: 'bebidas' },
-              { icon: '🍟', name: 'lanches' },
-            ],
-          },
-        },
+        productCategories: [
+          { icon: '🍝', name: 'marmitas' },
+          { icon: '🍹', name: 'bebidas' },
+          { icon: '🍟', name: 'lanches' },
+        ],
       },
     });
 

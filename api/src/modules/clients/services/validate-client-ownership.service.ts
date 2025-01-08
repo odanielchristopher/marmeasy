@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IClientsRepository } from 'src/shared/database/interfaces/clients.repository.interface';
 
 @Injectable()
 export class ValidateClientOwnershipService {
-  constructor(private readonly clientsRepository: ClientsRespository) {}
+  constructor(
+    @Inject('IClientsRepository')
+    private readonly clientsRepository: IClientsRepository,
+  ) {}
 
   async validate(userId: string, clientId: string) {
     const isOwner = await this.clientsRepository.findFirst({
