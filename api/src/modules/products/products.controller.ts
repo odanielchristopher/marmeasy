@@ -6,6 +6,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Logger,
   Param,
   Post,
   Put,
@@ -21,13 +22,15 @@ import { ProductsService } from './services/products.service';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(private readonly productsService: ProductsService,
+  ) {}
 
   @Get()
   findAll(
     @ActiveUserId() userId: string,
     @Query('category') categoryName: string,
   ) {
+    
     return this.productsService.findAllByUserId(userId, categoryName);
   }
 
@@ -38,10 +41,12 @@ export class ProductsController {
     @UploadedFile() image: Express.Multer.File,
     @Body() createProductDto: CreateProductDto,
   ) {
+
     if (!image) {
+      console.log('image: ', image);
       throw new BadRequestException('Imagem do produto é obrigatória.');
     }
-
+    console.log('dto', createProductDto);
     return this.productsService.create(userId, createProductDto, image);
   }
 

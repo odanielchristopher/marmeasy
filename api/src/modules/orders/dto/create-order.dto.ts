@@ -9,7 +9,7 @@ import {
   IsUUID,
 } from 'class-validator';
 
-export class CreateProductDto {
+export class CreateOrderDto {
   @IsNotEmpty({ message: 'O nome do produto é obrigatório.' })
   @IsString()
   name: string;
@@ -23,7 +23,7 @@ export class CreateProductDto {
       return Number(value);
     } catch {
       throw new BadRequestException(
-        'O valor do produto precisa ser um número válido.',
+        'Os ingredientes devem ser passados como um array válido.',
       );
     }
   })
@@ -41,12 +41,14 @@ export class CreateProductDto {
 
   @IsOptional()
   @Transform(({ value }) => {
-    if (Array.isArray(value)) {
-      return value;
+    // Converte o valor enviado (string JSON) para array
+    try {
+      return JSON.parse(value); // Converte o JSON stringificado em array
+    } catch {
+      throw new BadRequestException(
+        'Os ingredientes devem ser passados como um array válido.',
+      );
     }
-    throw new BadRequestException(
-      'Os ingredientes devem ser passados como um array válido.',
-    );
   })
   @IsArray({ message: 'Os ingredientes devem ser passados como um array.' })
   @IsUUID('4', {
@@ -54,7 +56,4 @@ export class CreateProductDto {
     message: 'Cada ingrediente precisa ter um UUID válido.',
   })
   ingredientsIds: string[];
-
-
 }
-

@@ -25,5 +25,6 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     'no-console': 'warn',
     'quotes': ['error', 'single'],
+    'endOfLine': 'auto',
   },
 };

@@ -58,7 +58,6 @@ export class ProductsService {
       createProductDto;
 
     const { imagePath } = await this.productImagesService.upload(image);
-
     return this.productsRepository.create({
       data: {
         userId,
