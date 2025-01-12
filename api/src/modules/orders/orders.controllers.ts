@@ -49,4 +49,12 @@ export class OrdersController {
   ) {
     return this.ordersService.updateStatus(userId, orderId, updateStatusOrderDto);
   }
+
+  @Delete(':orderId')
+  delete(
+    @ActiveUserId() userId: string,
+    @Param('orderId', ParseUUIDPipe) orderId: string,
+  ) {
+    return this.ordersService.delete(userId, orderId);
+  }
 }

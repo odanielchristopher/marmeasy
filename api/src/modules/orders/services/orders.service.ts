@@ -100,4 +100,14 @@ export class OrdersService {
             data: { status: updateOrderStatusDto.status },
         });
     }
+
+    async delete(userId: string, orderId: string) {
+        await this.validateOrderOwnershipService.validate(userId, orderId);
+
+        await this.ordersRepository.delete({
+            where: { id: orderId },
+        });
+
+        return { message: 'Pedido excluído com sucesso.' };
+    }
 }
