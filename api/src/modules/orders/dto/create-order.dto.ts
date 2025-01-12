@@ -1,5 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
   IsNotEmpty,
@@ -7,53 +6,27 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
+import { Item } from '../entities/item.entity';
 
 export class CreateOrderDto {
-  @IsNotEmpty({ message: 'O nome do produto é obrigatório.' })
+  @IsNotEmpty({ message: 'O id do cliente é obrigatório.' })
   @IsString()
-  name: string;
+  @IsUUID('4', { message: 'O cliente precisa ter um id válido.' })
+  clientId: string;
 
-  @IsNotEmpty({ message: 'A descrição do produto é obrigatória.' })
-  @IsString()
-  description: string;
+  @IsNotEmpty({ message: 'Os items não podem ser vazios.' })
+  @IsArray({ message: 'Os items devem ser um array.' })
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[];
 
-  @Transform(({ value }) => {
-    try {
-      return Number(value);
-    } catch {
-      throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
-      );
-    }
-  })
-  @IsNotEmpty({ message: 'O valor do produto é obrigatório.' })
+  @Transform(({ value }) => Number(value))
+  @IsOptional()
   @IsNumber(
     { maxDecimalPlaces: 2 },
-    { message: 'O valor do produto precisa ser um número válido.' },
+    { message: 'O valor do desconto precisa ser um número válido.' },
   )
-  price: number;
-
-  @IsNotEmpty({ message: 'O id da categoria do produto é obrigatório.' })
-  @IsString()
-  @IsUUID('4', { message: 'A categoria precisa ter um id válido.' })
-  categoryId: string;
-
-  @IsOptional()
-  @Transform(({ value }) => {
-    // Converte o valor enviado (string JSON) para array
-    try {
-      return JSON.parse(value); // Converte o JSON stringificado em array
-    } catch {
-      throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
-      );
-    }
-  })
-  @IsArray({ message: 'Os ingredientes devem ser passados como um array.' })
-  @IsUUID('4', {
-    each: true,
-    message: 'Cada ingrediente precisa ter um UUID válido.',
-  })
-  ingredientsIds: string[];
+  discount: number;
 }

@@ -9,4 +9,8 @@ export class OrderItemsRepository {
   create(createDto: Prisma.OrderItemCreateArgs) {
     return this.prismaService.orderItem.create(createDto);
   }
+
+  findFirst(findFirstDto: Prisma.OrderItemFindFirstArgs) {
+    return this.prismaService.orderItem.findFirst(findFirstDto);
+  }
 }

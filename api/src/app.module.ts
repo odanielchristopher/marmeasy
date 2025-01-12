@@ -10,6 +10,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { OrderItemsModule } from './modules/order-items/order-items.module';
     ProductCategoriesModule,
     ProductsModule,
     IngredientsModule,
-    OrderItemsModule
+    OrderItemsModule,
+    OrdersModule
   ],
   controllers: [],
   providers: [

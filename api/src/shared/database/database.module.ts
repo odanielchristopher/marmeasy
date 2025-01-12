@@ -6,6 +6,7 @@ import { ProductCategoriesRespository } from './repositories/product-categories.
 import { ProductsRespository } from './repositories/products.repository';
 import { UsersRespository } from './repositories/users.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
+import { OrdersRespository } from './repositories/orders.repository';
 
 @Global()
 @Module({
@@ -16,6 +17,7 @@ import { OrderItemsRepository } from './repositories/order-items.repository';
     ProductCategoriesRespository,
     IngredientsRespository,
     ProductsRespository,
+    OrdersRespository,
     OrderItemsRepository
   ],
   exports: [
@@ -24,6 +26,7 @@ import { OrderItemsRepository } from './repositories/order-items.repository';
     ProductCategoriesRespository,
     IngredientsRespository,
     ProductsRespository,
+    OrdersRespository,
     OrderItemsRepository
   ],
 })
