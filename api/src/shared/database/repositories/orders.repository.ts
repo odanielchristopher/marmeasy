@@ -29,5 +29,4 @@ export class OrdersRespository {
   delete(deleteDto: Prisma.OrderDeleteArgs) {
     return this.prismaService.order.delete(deleteDto);
   }
-
 }

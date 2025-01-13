@@ -54,7 +54,5 @@ export class CreateProductDto {
     message: 'Cada ingrediente precisa ter um UUID válido.',
   })
   ingredientsIds: string[];
-
-
 }
 

@@ -8,11 +8,4 @@ export class Item {
   @IsNotEmpty({ message: 'A quantidade é obrigatória.' })
   @IsNumber({}, { message: 'A quantidade precisa ser um número válido.' })
   quantity: number;
-
-  @IsNotEmpty({ message: 'O preço unitário é obrigatório.' })
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    { message: 'O preço unitário precisa ser um número válido.' },
-  )
-  unitPrice: number;
 }

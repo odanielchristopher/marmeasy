@@ -13,4 +13,20 @@ export class OrderItemsRepository {
   findFirst(findFirstDto: Prisma.OrderItemFindFirstArgs) {
     return this.prismaService.orderItem.findFirst(findFirstDto);
   }
+
+  findMany(findManyDto: Prisma.OrderItemFindManyArgs) {
+    return this.prismaService.orderItem.findMany(findManyDto);
+  }
+
+  findUnique(findUniqueDto: Prisma.OrderItemFindUniqueArgs) {
+    return this.prismaService.orderItem.findFirst(findUniqueDto);
+  }
+
+  update(updateDto: Prisma.OrderItemUpdateArgs) {
+    return this.prismaService.orderItem.update(updateDto);
+  }
+
+  delete(deleteDto: Prisma.OrderItemDeleteArgs) {
+    return this.prismaService.orderItem.delete(deleteDto);
+  }
 }

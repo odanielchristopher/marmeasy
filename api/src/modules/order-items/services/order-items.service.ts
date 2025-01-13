@@ -3,6 +3,9 @@ import { ValidateUserOwnershipService } from '../../users/services/validate-user
 import { ProductsRespository } from "src/shared/database/repositories/products.repository";
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
 import { OrderItemsRepository } from "src/shared/database/repositories/order-items.repository";
+import { ValidateOrderItemsOwnershipService } from "./validate-product-order-item.service";
+import { UpdateOrderDto } from "src/modules/orders/dto/update-order.dto";
+import { UpdateQuantityOrderItemDto } from "../dto/update-ordem-item.dto";
 
 @Injectable()
 export class OrderItemsService {
@@ -10,15 +13,33 @@ export class OrderItemsService {
         private readonly productsRepository: ProductsRespository,
         private readonly orderItemsRepository: OrderItemsRepository,
         private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+        private readonly validateOrderItemsOwnershipService: ValidateOrderItemsOwnershipService,
     ) {}
+
+    async findAll(userId: string) {
+        await this.validateUserOwnershipService.validate(userId);
+
+        return this.orderItemsRepository.findMany({
+            where: { userId },
+        });
+    }
+
+    async findOneById(userId: string, orderItemId: string) {
+        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+
+        return this.orderItemsRepository.findUnique({
+            where: { id: orderItemId, userId },
+        });
+    }
 
     async create(
         userId: string,
+        orderId: string,
         createOrderItemDto: CreateOrderItemDto,
     ) {
         await this.validateUserOwnershipService.validate(userId);
         
-        const { productId, quantity, unitPrice } = createOrderItemDto;
+        const { productId, quantity } = createOrderItemDto;
 
         const productAlreadyExists = await this.productsRepository.findFirst({
             where: { userId, id: productId },
@@ -28,16 +49,43 @@ export class OrderItemsService {
             throw new BadRequestException('Produto não encontrado.');
         }
 
-        const total = quantity * unitPrice;
+        const total = quantity * productAlreadyExists.price;
 
         return this.orderItemsRepository.create({
             data: {
                 product: { connect: { id: productId } },
+                order: { connect: { id: orderId } },
+                user: { connect: { id: userId } },
                 quantity,
-                unitPrice,
+                unitPrice: productAlreadyExists.price,
                 total,
             },
         });
+    }
+
+    async update(
+        userId: string,
+        orderItemId: string,
+        updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
+    ) {
+        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+        return this.orderItemsRepository.update({
+            where: { id: orderItemId },
+            data: updateQuantityOrderItemDto,
+        });
+    }
+
+    async delete(
+        userId: string,
+        orderItemId: string,
+    ) {
+        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+
+        await this.orderItemsRepository.delete({
+            where: { id: orderItemId, userId },
+        });
+
+        return { message: 'Pedido excluído com sucesso.' };
     }
 }
 

@@ -1,16 +1,12 @@
 import { BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
 import {
+  IsInt,
   IsNotEmpty,
   IsNumber,
-  IsUUID,
 } from 'class-validator';
 
-export class CreateOrderItemDto {
-  @IsNotEmpty({ message: 'O id do produto é obrigatório.' })
-  @IsUUID('4', { message: 'O id do produto precisa ser um UUID válido.' })
-  productId: string;
-
+export class UpdateQuantityOrderItemDto {
   @Transform(({ value }) => {
     try {
       return Number(value);
@@ -19,6 +15,19 @@ export class CreateOrderItemDto {
     }
   })
   @IsNotEmpty({ message: 'A quantidade é obrigatória.' })
+  @IsInt()
   @IsNumber({}, { message: 'A quantidade precisa ser um número válido.' })
   quantity: number;
+
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException('Total precisa ser um número válido.');
+    }
+  })
+  @IsNotEmpty({ message: 'O total é obrigatória.' })
+  @IsNumber({ maxDecimalPlaces: 2 },
+     { message: 'O total precisa ser um número válido.' })
+  total: number;
 }
