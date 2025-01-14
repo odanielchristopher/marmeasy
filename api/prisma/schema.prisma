@@ -26,11 +26,12 @@ model Client {
   phone    String?
   address  String?
   type     ClientType
-  document String?    @unique
+  document String?
   balance  Float      @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, document])
   @@map("clients")
 }
 

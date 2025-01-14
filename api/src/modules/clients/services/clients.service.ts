@@ -70,6 +70,8 @@ export class ClientsService {
         },
       });
 
+      console.log(documentAlreadyExists);
+
       const errorMessage =
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
