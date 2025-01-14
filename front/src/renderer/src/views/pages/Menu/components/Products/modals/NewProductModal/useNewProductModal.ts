@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
   image: z.instanceof(File, { message: 'A imagem é obrigatória.' }).optional(),
-  name: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+  name: z.string().min(1, { message: 'O nome deve ter pelo menos 1 caracter.' }),
   description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
   categoryId: z.string().optional(),

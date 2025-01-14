@@ -16,7 +16,7 @@ import toast from '@renderer/app/utils/toast';
 const schema = z.object({
   id: z.string().uuid(),
   image: z.instanceof(File).optional(),
-  name: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+  name: z.string().min(1, { message: 'O nome deve ter pelo menos 1 caracter.' }),
   description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
   categoryId: z.string().optional(),

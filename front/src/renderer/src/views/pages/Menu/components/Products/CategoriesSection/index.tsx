@@ -12,7 +12,7 @@ import { Container, Item, StyledSwiper } from './styles';
 
 interface CategoriesSectionProps {
   $error?: string;
-  selectedCategoryId: string;
+  selectedCategoryId?: string;
   onSelect(category: ProductCategory): void;
 }
 

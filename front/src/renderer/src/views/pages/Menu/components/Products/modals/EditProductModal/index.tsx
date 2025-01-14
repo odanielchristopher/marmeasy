@@ -65,9 +65,10 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
           <InputsContainer>
             <Input
               type="text"
-              placeholder="Nome do produto"
+              placeholder="Nome do produto*"
               {...register('name')}
               $error={errors.name?.message}
+              maxLength={30}
             />
 
             <Input
@@ -86,7 +87,7 @@ export default function EditProductModal({ open, onClose, product }: EditProduct
               render={({ field: { onChange, value, name } }) => (
                 <NumericInput
                   name={name}
-                  placeholder="Valor do produto"
+                  placeholder="Valor do produto*"
                   $error={errors.price?.message}
                   onInputChange={onChange}
                   value={value}
