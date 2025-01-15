@@ -5,7 +5,7 @@ import Modal from '@renderer/views/components/Modal';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Actions, CancelButton, CategoryContainer, Container, Warning } from './styles';
-import useDeleteIngredientModal from './useDeleteCategoryModal';
+import useDeleteIngredientModal from './useDeleteIngredientModal';
 
 interface DeleteIngredientModalProps {
   open: boolean;
