@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { UpdateProductCategoryParams } from '@renderer/app/services/productCategoriesService/update';
 
 import { queryClient } from '@renderer/App';
+import { ingredientsService } from '@renderer/app/services/ingredientsService';
+import { UpdateIngredientParams } from '@renderer/app/services/ingredientsService/update';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
 import toast from '@renderer/app/utils/toast';
@@ -26,7 +26,7 @@ const ingredientFormSchema = z.object({
 
 export type FormData = z.infer<typeof ingredientFormSchema>
 
-export default function useEditIngredientModal(category: Ingredient | null, onConfirm: () => void) {
+export default function useEditIngredientModal(ingredientBeingEdited: Ingredient | null, onConfirm: () => void) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -34,25 +34,25 @@ export default function useEditIngredientModal(category: Ingredient | null, onCo
   } = useForm<FormData>({
     resolver: zodResolver(ingredientFormSchema),
     defaultValues: {
-      icon: category?.icon ?? '',
-      name: capitalizeFirstLetter(category?.name || ''),
+      icon: ingredientBeingEdited?.icon ?? '',
+      name: capitalizeFirstLetter(ingredientBeingEdited?.name || ''),
     },
   });
 
-  const {mutateAsync: updateCategory, isPending: isLoading} = useMutation({
-    mutationFn: async (data: UpdateProductCategoryParams) => productCategoriesService.update(data),
-    onSuccess: (updatedCategory: Ingredient) => {
-      queryClient.setQueryData(['product-categories', 'getAll'], (categories: Ingredient[]) => {
+  const {mutateAsync: updateIngredient, isPending: isLoading} = useMutation({
+    mutationFn: async (data: UpdateIngredientParams) => ingredientsService.update(data),
+    onSuccess: (updatedIngredient: Ingredient) => {
+      queryClient.setQueryData(['ingredients', 'getAll'], (ingredients: Ingredient[]) => {
 
-        return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
+        return ingredients.map((ingredient) => ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient);
       });
     },
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await updateCategory({
-        id: category!.id,
+      await updateIngredient({
+        id: ingredientBeingEdited!.id,
         ...data,
       });
 
