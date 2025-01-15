@@ -17,3 +17,8 @@ export const StyledRdxTabTrigger = styled(RdxTabs.Trigger)`
     font-weight: 400;
   }
 `;
+
+export const StyledRdxTabList = styled(RdxTabs.List)`
+  background-color: transparent;
+  border-bottom: 1px solid hsla(0, 0.00%, 80.00%, 0.40);
+`;

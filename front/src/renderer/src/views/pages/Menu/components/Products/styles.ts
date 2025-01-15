@@ -8,21 +8,6 @@ export const LoaderContainer = styled.div`
   height: calc(100vh - 38.0rem);
 `;
 
-export const EmptyImageContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 1.8rem;
-  height: 50vh;
-
-  img {
-    width: 300px;
-  }
-`;
-
-
 export const Header = styled.header`
   align-items: center;
   display: flex;

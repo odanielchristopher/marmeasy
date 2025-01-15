@@ -1,5 +1,5 @@
 import * as RdxTabs from '@radix-ui/react-tabs';
-import { StyledRdxTabTrigger } from './styles';
+import { StyledRdxTabList, StyledRdxTabTrigger } from './styles';
 
 interface TabsRootProps {
   children: React.ReactNode;
@@ -16,9 +16,9 @@ function TabsRoot({ children, defaultValue }: TabsRootProps) {
 
 function TabsList({ children }: { children: React.ReactNode}) {
   return (
-    <RdxTabs.List>
+    <StyledRdxTabList>
       {children}
-    </RdxTabs.List>
+    </StyledRdxTabList>
   );
 }
 
