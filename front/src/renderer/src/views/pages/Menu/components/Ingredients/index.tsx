@@ -10,11 +10,15 @@ import NewIngredientModal from './NewIngredientModal';
 import useIngredients from './useIngredients';
 
 import Loader from '@renderer/views/components/Loader';
+
+import emptyCart from '@renderer/assets/Images/empty-cart.svg';
+import { EmptyImageContainer } from '../../styles';
 import { ActionButton, Container, Header, LoaderContainer, Title } from './styles';
 
 export default function Ingredients() {
   const {
     sortedIngredients,
+    hasIngredients,
     isLoading,
     ingredientBeignDeleted,
     ingredientBeingEdited,
@@ -83,6 +87,13 @@ export default function Ingredients() {
             ))}
           </Table.Body>
         </Table.Container>
+
+        {(!hasIngredients && !isLoading) && (
+          <EmptyImageContainer>
+            <img src={emptyCart} alt="Sem ingredientes cadastrados" />
+            <span>Sem ingredientes cadastros</span>
+          </EmptyImageContainer>
+        )}
 
         {isLoading && (
           <LoaderContainer>
