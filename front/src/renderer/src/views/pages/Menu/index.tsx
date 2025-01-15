@@ -7,6 +7,7 @@ import Products from './components/Products';
 
 import { SectionHeader } from '@renderer/views/components/SectionHeader';
 
+import Ingredients from './components/Ingredients';
 import { Container, Main } from './styles';
 
 export default function Menu() {
@@ -34,6 +35,10 @@ export default function Menu() {
               value='categories'
               text='Categorias'
             />
+            <Tabs.Trigger
+              value='ingredients'
+              text='Ingredientes'
+            />
           </Tabs.List>
 
           <Tabs.Content value='products' >
@@ -42,6 +47,10 @@ export default function Menu() {
 
           <Tabs.Content value='categories' >
             <Categories />
+          </Tabs.Content>
+
+          <Tabs.Content value='ingredients' >
+            <Ingredients />
           </Tabs.Content>
         </Tabs.Root>
       </Main>

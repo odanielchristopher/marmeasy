@@ -12,7 +12,7 @@ import useIngredients from './useIngredients';
 import Loader from '@renderer/views/components/Loader';
 import { ActionButton, Container, Header, LoaderContainer, Title } from './styles';
 
-export default function Categories() {
+export default function Ingredients() {
   const {
     sortedIngredients,
     isLoading,
