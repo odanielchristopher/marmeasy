@@ -1,23 +1,18 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { Ingredient } from '@renderer/app/entities/Ingredient';
-import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
-import { RemoveProductCategoryParams } from '@renderer/app/services/productCategoriesService/remove';
+import { ingredientsService } from '@renderer/app/services/ingredientsService';
+import { RemoveIngredientParams } from '@renderer/app/services/ingredientsService/remove';
 
 import { queryClient } from '@renderer/App';
 import toast from '@renderer/app/utils/toast';
 
 export default function useDeleteIngredientModal(ingredientBeingDeleted: Ingredient | null, onCofirm: () => void) {
   const { mutateAsync: removeCategory, isPending: isloading } = useMutation({
-    mutationFn: async (data: RemoveProductCategoryParams) => productCategoriesService.remove(data),
+    mutationFn: async (data: RemoveIngredientParams) => ingredientsService.remove(data),
     onSuccess: () => {
-      queryClient.setQueryData(['product-categories', 'getAll'], (categories: Ingredient[]) => {
-        return categories.filter((category) => category.id !== ingredientBeingDeleted!.id);
-      });
-
-      queryClient.refetchQueries({
-        queryKey: ['products', 'getAll'],
-        exact: true,
+      queryClient.setQueryData(['ingredients', 'getAll'], (ingredients: Ingredient[]) => {
+        return ingredients.filter((ingredient) => ingredient.id !== ingredientBeingDeleted!.id);
       });
     },
   });
