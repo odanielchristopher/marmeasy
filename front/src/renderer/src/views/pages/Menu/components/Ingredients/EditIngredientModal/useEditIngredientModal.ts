@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { productCategoriesService } from '@renderer/app/services/productCategoriesService';
 import { UpdateProductCategoryParams } from '@renderer/app/services/productCategoriesService/update';
 
@@ -26,7 +26,7 @@ const ingredientFormSchema = z.object({
 
 export type FormData = z.infer<typeof ingredientFormSchema>
 
-export default function useEditIngredientModal(category: ProductCategory | null, onConfirm: () => void) {
+export default function useEditIngredientModal(category: Ingredient | null, onConfirm: () => void) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -41,8 +41,8 @@ export default function useEditIngredientModal(category: ProductCategory | null,
 
   const {mutateAsync: updateCategory, isPending: isLoading} = useMutation({
     mutationFn: async (data: UpdateProductCategoryParams) => productCategoriesService.update(data),
-    onSuccess: (updatedCategory: ProductCategory) => {
-      queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
+    onSuccess: (updatedCategory: Ingredient) => {
+      queryClient.setQueryData(['product-categories', 'getAll'], (categories: Ingredient[]) => {
 
         return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
       });
@@ -58,7 +58,7 @@ export default function useEditIngredientModal(category: ProductCategory | null,
 
       toast({
         type: 'success',
-        text: 'Categoria editada com sucesso.',
+        text: 'Ingrediente editado com sucesso.',
       });
 
       onConfirm();
@@ -77,7 +77,7 @@ export default function useEditIngredientModal(category: ProductCategory | null,
 
         toast({
           type: 'danger',
-          text: 'Ocorreu um erro ao editar a categoria.',
+          text: 'Ocorreu um erro ao editar o ingrediente.',
         });
       }
     }

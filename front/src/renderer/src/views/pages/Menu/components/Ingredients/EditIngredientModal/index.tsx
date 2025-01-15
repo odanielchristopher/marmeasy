@@ -1,4 +1,4 @@
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { Ingredient } from '@renderer/app/entities/Ingredient';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
@@ -8,16 +8,16 @@ import useEditIngredientModal from './useEditIngredientModal';
 interface EditIngredientModalProps {
   open: boolean;
   onClose(): void;
-  category: ProductCategory | null;
+  ingredient: Ingredient | null;
 }
 
-export default function EditCategoryModal({ open, onClose, category }: EditIngredientModalProps) {
+export default function EditCategoryModal({ open, onClose, ingredient }: EditIngredientModalProps) {
   const {
     errors,
     isLoading,
     register,
     handleSubmit,
-  } = useEditIngredientModal(category, onClose);
+  } = useEditIngredientModal(ingredient, onClose);
 
   return (
     <Modal
