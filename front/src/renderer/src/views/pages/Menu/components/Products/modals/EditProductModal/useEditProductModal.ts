@@ -13,7 +13,7 @@ import { productsService } from '@renderer/app/services/productsService';
 import { UpdateProductParams } from '@renderer/app/services/productsService/update';
 import toast from '@renderer/app/utils/toast';
 
-const schema = z.object({
+const productSchema = z.object({
   id: z.string().uuid(),
   image: z.instanceof(File).optional(),
   name: z.string().min(1, { message: 'O nome deve ter pelo menos 1 caracter.' }),
@@ -23,7 +23,7 @@ const schema = z.object({
   ingredientsIds: z.array(z.string()),
 });
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof productSchema>
 
 export default function useEditProductModal(product: Product | null, onSuccess: () => void) {
   const imagePath = product?.imagePath ? (
@@ -44,7 +44,7 @@ export default function useEditProductModal(product: Product | null, onSuccess: 
     control,
     setValue,
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(productSchema),
     defaultValues: {
       id: product?.id,
       name: product?.name ?? '',

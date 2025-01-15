@@ -3,31 +3,31 @@ import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 import { CancelButton, Container, Footer, Form } from './styles';
-import useEditCategoryModal from './useEditCategoryModal';
+import useEditIngredientModal from './useEditIngredientModal';
 
-interface EditCategoryModalProps {
+interface EditIngredientModalProps {
   open: boolean;
   onClose(): void;
   category: ProductCategory | null;
 }
 
-export default function EditCategoryModal({ open, onClose, category }: EditCategoryModalProps) {
+export default function EditCategoryModal({ open, onClose, category }: EditIngredientModalProps) {
   const {
     errors,
     isLoading,
     register,
     handleSubmit,
-  } = useEditCategoryModal(category, onClose);
+  } = useEditIngredientModal(category, onClose);
 
   return (
     <Modal
-      title="Editar categoria"
+      title="Editar ingrediente"
       open={open}
       onClose={onClose}
     >
       <Container>
         <Form noValidate onSubmit={handleSubmit}>
-          <p>Aqui estão os dados da categoria</p>
+          <p>Aqui estão os dados do ingrediente</p>
 
           <Input
             type="text"

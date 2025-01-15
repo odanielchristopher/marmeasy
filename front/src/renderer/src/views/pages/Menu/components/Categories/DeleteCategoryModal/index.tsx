@@ -7,13 +7,13 @@ import Modal from '@renderer/views/components/Modal';
 import { Actions, CancelButton, CategoryContainer, Container, Warning } from './styles';
 import useDeleteCategoryModal from './useDeleteCategoryModal';
 
-interface DeleteProductModalProps {
+interface DeleteCategoryModalProps {
   open: boolean;
   onClose(): void;
   category: ProductCategory | null;
 }
 
-export default function DeleteCategoryModal({ open, onClose, category }: DeleteProductModalProps) {
+export default function DeleteCategoryModal({ open, onClose, category }: DeleteCategoryModalProps) {
   const { handleConfirm, isloading } = useDeleteCategoryModal(category, onClose);
 
   return (
