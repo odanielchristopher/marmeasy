@@ -25,14 +25,14 @@ export default function NewIngredientModal({ open, onClose }: EditProductModalPr
 
           <Input
             type="text"
-            placeholder="Emoji"
+            placeholder="Emoji*"
             $error={errors.icon?.message}
             {...register('icon')}
           />
 
           <Input
             type="text"
-            placeholder="Nome"
+            placeholder="Nome*"
             $error={errors.name?.message}
             {...register('name')}
           />
