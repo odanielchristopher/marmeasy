@@ -6,8 +6,10 @@ import { useLocation } from 'react-router-dom';
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import UpdateClientForm from './UpdateClientForm';
+import AddOrder from './AddOrder';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
+import DetailsOrder from './DetailsOrder';
 
 interface AsideProps {
   area: string;
@@ -63,7 +65,12 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />}
+      {/* {showClientData && !hasOrders && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
+      {showClientData && showDetails && [
+        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
+      ]}
+      
+      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
 
     </Container >
   );
