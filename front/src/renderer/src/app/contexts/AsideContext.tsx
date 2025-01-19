@@ -29,7 +29,7 @@ export function AsideProvider({ children }: { children: React.ReactNode }) {
       handleShowClientData,
       handleHiddenClientData,
       showClientData,
-      seletedClient,
+      seletedClient
     }}>
       {children}
     </AsideContext.Provider>
