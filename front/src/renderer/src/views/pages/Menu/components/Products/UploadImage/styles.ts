@@ -10,6 +10,25 @@ export const Container = styled.div`
   border: 1px solid #CCC;
   border-radius: 1.0rem;
   position: relative;
+
+  .remove {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    color: #f2f2ff;
+    width: 2.4rem;
+    height: 2.4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    top: 1.0rem;
+    right: 1.0rem;
+
+    position: absolute;
+    z-index: 3;
+  }
 `;
 
 export const NoContentImage = styled.div`

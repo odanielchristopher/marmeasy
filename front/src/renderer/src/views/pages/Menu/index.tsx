@@ -5,12 +5,14 @@ import { Tabs } from '@renderer/views/components/Tabs';
 import Categories from './components/Categories';
 import Products from './components/Products';
 
-import { Container, Header, Main } from './styles';
+import { SectionHeader } from '@renderer/views/components/SectionHeader';
+
+import { Container, Main } from './styles';
 
 export default function Menu() {
   return (
     <Container>
-      <Header>
+      <SectionHeader>
         <div>
           <BiFoodMenu size={32}/>
           <h1>Cardápio</h1>
@@ -19,7 +21,7 @@ export default function Menu() {
         <p>
           Gerencie os produtos do seu estabelecimento
         </p>
-      </Header>
+      </SectionHeader>
 
       <Main>
         <Tabs.Root defaultValue='products'>

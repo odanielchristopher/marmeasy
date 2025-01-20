@@ -2,30 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
-  grid-area: main;
   margin-top: 1.6rem;
   width: 100%;
   height: 100%;
-`;
-
-export const Header = styled.header`
-  margin-bottom: 3.6rem;
-  div {
-    align-items: center;
-    display: flex;
-
-    h1 {
-      color: ${({ theme }) => theme.colors.black.light};
-      font-size: 2.8rem;
-      font-weight: 600;
-      margin-left: 1rem;
-    }
-  }
-
-  p {
-    color: ${({ theme }) => theme.colors.gray.light};
-    margin-top: 0.4rem;
-  }
 `;
 
 export const Content = styled.div`

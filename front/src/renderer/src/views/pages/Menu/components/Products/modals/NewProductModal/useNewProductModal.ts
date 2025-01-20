@@ -14,9 +14,9 @@ import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
-  image: z.instanceof(File, { message: 'A imagem é obrigatória.' }),
-  name: z.string().min(4, { message: 'O nome deve ter pelo menos 4 caracteres.' }),
-  description: z.string().min(1, { message: 'A descrição é obrigatória.' }),
+  image: z.instanceof(File, { message: 'A imagem é obrigatória.' }).optional(),
+  name: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+  description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
   categoryId: z.string({ required_error: 'A categoria é obrigatória.' }).uuid(),
   ingredientsIds: z.array(z.string().uuid()),
@@ -55,9 +55,14 @@ export default function useNewProductModal(onSuccess: () => void) {
     setOpenNewIngredientModal(false);
   }
 
-  function handleUploadImage<T extends File>([image]: T[]) {
-    setValue('image', image, { shouldValidate: true });
+  function handleAddUploadImage<T extends File>([image]: T[]) {
+    setValue('image', image);
     setPreviewImageUrl(URL.createObjectURL(image));
+  }
+
+  function handleRemoveUploadImage() {
+    setValue('image', undefined);
+    setPreviewImageUrl(undefined);
   }
 
   function handleSelectedCategory(category: ProductCategory) {
@@ -88,11 +93,6 @@ export default function useNewProductModal(onSuccess: () => void) {
         ['products', 'getAll'],
         (categories: Product[]) => [...categories, newCategory],
       );
-
-      queryClient.invalidateQueries({
-        queryKey: ['products', 'getAll'],
-        exact: true,
-      });
     },
   });
 
@@ -127,7 +127,8 @@ export default function useNewProductModal(onSuccess: () => void) {
     handleSelectedIngredients,
     handleOpenNewIngredientModal,
     handleCloseNewIngredientModal,
-    handleUploadImage,
+    handleAddUploadImage,
+    handleRemoveUploadImage,
     handleSubmit,
   };
 }

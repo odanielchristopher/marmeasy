@@ -1,4 +1,3 @@
-
 import logo from '/logo.png?url';
 
 import { BiFoodMenu } from 'react-icons/bi';
@@ -6,20 +5,23 @@ import { LuLogOut } from 'react-icons/lu';
 import { PiUserCircle } from 'react-icons/pi';
 import { TbUsers } from 'react-icons/tb';
 
-import { Container, FootContainer, LinkNavigation, LogoContainer, MainContainer } from './styles';
+import { OrdersIcon } from '@renderer/assets/Icons/OrdersIcon';
+import {
+  Container,
+  FootContainer,
+  LinkNavigation,
+  LogoContainer,
+  MainContainer,
+  StyledLink,
+} from './styles';
 import useNavigation from './useNavigation';
 
 interface NavigationProps {
-  $area: string;
+  $area: string
 }
 
 export default function Navigation({ $area }: NavigationProps) {
-  const {
-    handleClientsLink,
-    handleLogOutLink,
-    handleMenuLink,
-    handleProfileLink,
-  } = useNavigation();
+  const { handleLogOutLink, handleProfileLink } = useNavigation();
 
   return (
     <Container $area={$area}>
@@ -28,15 +30,20 @@ export default function Navigation({ $area }: NavigationProps) {
       </LogoContainer>
 
       <MainContainer>
-        <LinkNavigation type="button" onClick={handleClientsLink}>
+        <StyledLink type="button" to={'/'}>
           <TbUsers size={32} />
           <span>Clientes</span>
-        </LinkNavigation>
+        </StyledLink>
 
-        <LinkNavigation type="button" onClick={handleMenuLink}>
+        <StyledLink type="button" to={'/orders'}>
+          <OrdersIcon />
+          <span>Pedidos</span>
+        </StyledLink>
+
+        <StyledLink type="button" to={'/menu'}>
           <BiFoodMenu size={32} />
           <span>Cardápio</span>
-        </LinkNavigation>
+        </StyledLink>
       </MainContainer>
 
       <FootContainer>

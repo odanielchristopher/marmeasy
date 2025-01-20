@@ -40,11 +40,6 @@ export default function useNewCategoryModal(onCreate: () => void, isOpen: boolea
         ['product-categories', 'getAll'],
         (categories: ProductCategory[]) => [...categories, newCategory],
       );
-
-      queryClient.invalidateQueries({
-        queryKey: ['product-categories', 'getAll'],
-        exact: true,
-      });
     },
   });
 

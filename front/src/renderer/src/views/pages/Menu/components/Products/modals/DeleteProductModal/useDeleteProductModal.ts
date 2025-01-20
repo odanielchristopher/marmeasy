@@ -15,11 +15,6 @@ export default function useDeleteProductModal(
       queryClient.setQueryData(['products', 'getAll'], (products: Product[]) => {
         return products.filter((product) => product.id !== productBeingDeleted!.id);
       });
-
-      queryClient.invalidateQueries({
-        queryKey: ['products', 'getAll'],
-        exact: true,
-      });
     },
   });
 

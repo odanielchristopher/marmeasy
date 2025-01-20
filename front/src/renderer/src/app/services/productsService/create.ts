@@ -2,9 +2,9 @@ import { Product } from '@renderer/app/entities/Product';
 import { httpClient } from '../httpClient';
 
 export interface CreateProductParams {
-  image: File;
+  image?: File;
   name: string;
-  description: string;
+  description?: string;
   price: string;
   categoryId: string;
   ingredientsIds: string[];
@@ -20,9 +20,15 @@ export async function create({
 }: CreateProductParams) {
   const formData = new FormData();
 
-  formData.append('image', image);
+  if (image) {
+    formData.append('image', image);
+  }
+
+  if (description) {
+    formData.append('description', description);
+  }
+
   formData.append('name', name);
-  formData.append('description', description);
   formData.append('price', price);
   formData.append('categoryId', categoryId);
   formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
