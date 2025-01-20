@@ -6,7 +6,6 @@ import { Ingredient } from '@renderer/app/entities/Ingredient';
 
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { isEmoji } from '@renderer/app/utils/isEmoji';
-import { useState } from 'react';
 
 const ingredientFormSchema = z.object({
   icon: z
@@ -23,16 +22,13 @@ export type IngredientFormData = z.infer<typeof ingredientFormSchema>
 
 interface UseIngredientFormProps {
   ingredientBeingEdited?: Ingredient | null;
-  onConfirm?(): void;
   onSubmit(data: IngredientFormData): Promise<void>;
 }
 
 export default function useIngredientForm({
   ingredientBeingEdited,
-  onConfirm,
   onSubmit,
 }: UseIngredientFormProps) {
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -41,21 +37,17 @@ export default function useIngredientForm({
   } = useForm<IngredientFormData>({
     resolver: zodResolver(ingredientFormSchema),
     defaultValues: {
-      icon: ingredientBeingEdited?.icon ?? '',
+      icon: ingredientBeingEdited?.icon ?? '🍚',
       name: capitalizeFirstLetter(ingredientBeingEdited?.name || ''),
     },
   });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
-    setIsLoading(true);
     await onSubmit(data);
-    onConfirm?.();
-    setIsLoading(false);
   });
 
   return {
     errors,
-    isLoading,
     register,
     handleSubmit,
   };

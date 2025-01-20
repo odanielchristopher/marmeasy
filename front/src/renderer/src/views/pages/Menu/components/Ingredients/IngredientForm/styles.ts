@@ -43,20 +43,21 @@ export const CancelButton = styled.button`
   }
 `;
 
-export const Footer = styled.div`
+interface FooterProps {
+  justify?: 'end' | 'center'
+}
+
+export const Footer = styled.div<FooterProps>`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: ${({ justify }) => justify === 'end' ? 'flex-end' : 'space-between'};
   gap: 1.2rem;
 
   margin-top: 4.8rem;
 
   button {
     height: 4.8rem;
-
-    &:nth-child(2) {
-      width: 18.0rem;
-    }
+    width: 18.0rem;
   }
 `;

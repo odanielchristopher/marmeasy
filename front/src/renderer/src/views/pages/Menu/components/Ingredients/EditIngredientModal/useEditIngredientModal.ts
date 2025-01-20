@@ -9,8 +9,15 @@ import { IngredientFormData } from '../IngredientForm/useIngredientForm';
 
 import toast from '@renderer/app/utils/toast';
 
+interface UseEditIngredientModalProps {
+  ingredientBeingEdited: Ingredient | null
+  onSuccess?(): void
+}
 
-export default function useEditIngredientModal(ingredientBeingEdited: Ingredient | null) {
+export default function useEditIngredientModal({
+  ingredientBeingEdited,
+  onSuccess,
+}: UseEditIngredientModalProps) {
   const {mutateAsync: updateIngredient, isPending: isLoading} = useMutation({
     mutationFn: async (data: UpdateIngredientParams) => ingredientsService.update(data),
     onSuccess: (updatedIngredient: Ingredient) => {
@@ -32,6 +39,7 @@ export default function useEditIngredientModal(ingredientBeingEdited: Ingredient
         type: 'success',
         text: 'Ingrediente editado com sucesso.',
       });
+      onSuccess?.();
     } catch (error) {
       if (error instanceof AxiosError) {
         const message = error.response?.data.message;

@@ -14,7 +14,10 @@ export default function EditCategoryModal({ open, onClose, ingredient }: EditIng
   const {
     isLoading,
     handleSubmit,
-  } = useEditIngredientModal(ingredient);
+  } = useEditIngredientModal({
+    ingredientBeingEdited: ingredient,
+    onSuccess: onClose,
+  });
 
   return (
     <Modal

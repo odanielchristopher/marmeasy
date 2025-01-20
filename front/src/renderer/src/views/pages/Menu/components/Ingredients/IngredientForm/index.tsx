@@ -14,9 +14,10 @@ interface IngredientFormProps {
 export default function IngredientForm({ onCancel, ingredient, onSubmit, isLoading }: IngredientFormProps) {
   const { errors, register, handleSubmit } = useIngredientForm({
     ingredientBeingEdited: ingredient,
-    onConfirm: onCancel,
     onSubmit,
   });
+
+  const hasCancelButton = onCancel ? true : false;
 
   return (
     <Form noValidate onSubmit={handleSubmit}>
@@ -26,8 +27,13 @@ export default function IngredientForm({ onCancel, ingredient, onSubmit, isLoadi
 
       <Input type="text" placeholder="Nome*" $error={errors.name?.message} {...register('name')} />
 
-      <Footer>
-        <CancelButton onClick={onCancel}>Cancelar</CancelButton>
+      <Footer
+        justify={hasCancelButton ? 'center' : 'end'}
+      >
+        {hasCancelButton && (
+          <CancelButton onClick={onCancel}>Cancelar</CancelButton>
+        )}
+
         <Button type="submit" isLoading={isLoading}>
           Salvar alterações
         </Button>
