@@ -102,7 +102,10 @@ export default function ProfileModal() {
 
           <InfoContainer>
             <span>Digite sua senha.</span>
-            <NewPasswordButton type="button" onClick={handleWannaChangePassword}>
+            <NewPasswordButton
+              type="button"
+              onClick={handleWannaChangePassword}
+            >
               Alterar senha? <b>Aqui.</b>
             </NewPasswordButton>
           </InfoContainer>

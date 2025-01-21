@@ -7,7 +7,11 @@ interface FormGroupProps {
   isLoading?: boolean;
 }
 
-export default function FormGroup({ children, error, isLoading }: FormGroupProps) {
+export default function FormGroup({
+  children,
+  error,
+  isLoading,
+}: FormGroupProps) {
   return (
     <Container>
       <div className="form-item">

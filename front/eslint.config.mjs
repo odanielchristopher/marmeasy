@@ -6,6 +6,11 @@ import globals from 'globals'; // Globais padrão
 
 export default [
   {
+    settings: {
+      react: {
+        version: 'detect', // Detecta automaticamente a versão instalada do React
+      },
+    },
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'], // Alvo de arquivos para ESLint
     languageOptions: {
       parser: tsParser, // Parser para TypeScript
@@ -31,8 +36,8 @@ export default [
       // Regras do TypeScript
       ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/ban-ts-comment': 'off', // Permitir comentários de TS
-      'semi': ['error', 'always'], // Exigir ponto e vírgula
-      'quotes': ['error', 'single'], // Exigir aspas simples
+      semi: ['error', 'always'], // Exigir ponto e vírgula
+      quotes: ['error', 'single'], // Exigir aspas simples
       'comma-dangle': ['error', 'always-multiline'], // Virgula em listas multilinha
       'no-console': 'warn', // Avisar sobre console.log
       'no-undef': 'off',

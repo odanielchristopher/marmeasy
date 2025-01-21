@@ -10,7 +10,13 @@ import NewCategoryModal from './NewCategoryModal';
 import useCategories from './useCategories';
 
 import Loader from '@renderer/views/components/Loader';
-import { ActionButton, Container, Header, LoaderContainer, Title } from './styles';
+import {
+  ActionButton,
+  Container,
+  Header,
+  LoaderContainer,
+  Title,
+} from './styles';
 
 export default function Categories() {
   const {
@@ -47,7 +53,10 @@ export default function Categories() {
         />
       )}
 
-      <NewCategoryModal open={openNewCategoryModal} onClose={handleCloseNewCategoryModal} />
+      <NewCategoryModal
+        open={openNewCategoryModal}
+        onClose={handleCloseNewCategoryModal}
+      />
       <Container>
         <Header>
           <div className="infos">
@@ -55,21 +64,29 @@ export default function Categories() {
             <span>{categories.length}</span>
           </div>
 
-          <button onClick={handleOpenNewCategoryModal}>Adicionar categoria</button>
+          <button onClick={handleOpenNewCategoryModal}>
+            Adicionar categoria
+          </button>
         </Header>
 
         <Table.Container>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCollumn style={{ width: '5%' }}>Emoji</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '5%' }}>
+                Emoji
+              </Table.HeaderCollumn>
               <Table.HeaderCollumn>Nome</Table.HeaderCollumn>
-              <Table.HeaderCollumn style={{ width: '12%' }}>Ações</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '12%' }}>
+                Ações
+              </Table.HeaderCollumn>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {categories.map((category) => (
               <Table.Row key={category.id}>
-                <Table.Cell style={{ textAlign: 'center' }}>{category.icon}</Table.Cell>
+                <Table.Cell style={{ textAlign: 'center' }}>
+                  {category.icon}
+                </Table.Cell>
                 <Table.Cell>{capitalizeFirstLetter(category.name)}</Table.Cell>
                 <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
                   <ActionButton onClick={() => handleOpenEditModal(category)}>

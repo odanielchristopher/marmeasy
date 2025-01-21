@@ -3,7 +3,6 @@ import { app, BrowserWindow, shell } from 'electron';
 import { join } from 'path';
 import icon from '../../resources/icon.png?asset';
 
-
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({

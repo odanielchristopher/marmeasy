@@ -21,6 +21,6 @@ export const Main = styled.div`
   margin-left: 2.4rem;
   padding-block: 2.4rem;
   &::-webkit-scrollbar {
-      display: none;
-    }
+    display: none;
+  }
 `;

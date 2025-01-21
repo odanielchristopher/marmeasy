@@ -5,17 +5,18 @@ import { Container, Form } from './styles';
 import useNewIngredientModal from './useNewIngredientModal';
 
 interface EditProductModalProps {
-  open: boolean
-  onClose(): void
+  open: boolean;
+  onClose(): void;
 }
 
-export default function NewIngredientModal({ open, onClose }: EditProductModalProps) {
-  const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useNewIngredientModal(onClose, open);
+export default function NewIngredientModal({
+  open,
+  onClose,
+}: EditProductModalProps) {
+  const { errors, isLoading, register, handleSubmit } = useNewIngredientModal(
+    onClose,
+    open,
+  );
 
   return (
     <Modal title="Novo Ingrediente" open={open} onClose={onClose}>
@@ -37,7 +38,9 @@ export default function NewIngredientModal({ open, onClose }: EditProductModalPr
             {...register('name')}
           />
 
-          <Button type="submit" isLoading={isLoading}>Adicionar novo ingrediente</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Adicionar novo ingrediente
+          </Button>
         </Form>
       </Container>
     </Modal>

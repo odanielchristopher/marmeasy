@@ -8,15 +8,15 @@ interface SearchInputProps extends ComponentProps<'input'> {
   placeholder: string;
 }
 
-export default function SearchInput({ value, onValueChange, placeholder }: SearchInputProps) {
+export default function SearchInput({
+  value,
+  onValueChange,
+  placeholder,
+}: SearchInputProps) {
   return (
     <Container>
       <IoIosSearch size={28} />
-      <Input
-        placeholder={placeholder}
-        value={value}
-        onChange={onValueChange}
-      />
+      <Input placeholder={placeholder} value={value} onChange={onValueChange} />
     </Container>
   );
 }
