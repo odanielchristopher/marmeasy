@@ -9,7 +9,8 @@ export const Container = styled.div<ContainerProps>`
   grid-template-columns: ${({ $showAside }) =>
     $showAside ? '7.0rem 1fr minmax(45.0rem, 40.0rem)' : '7.0rem 1fr'};
   grid-template-areas: ${({ $showAside }) =>
-    $showAside ? '\'nav outlet aside\'' : '\'nav outlet\''};
+    // eslint-disable-next-line
+    $showAside ? "'nav outlet aside'" : "'nav outlet'"};
   gap: 3.2rem;
 `;
 
