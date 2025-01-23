@@ -1,8 +1,5 @@
 import { Transform } from 'class-transformer';
-import {
- 
-  IsNumber,
-} from 'class-validator';
+import { IsNumber } from 'class-validator';
 
 export class UpdateOrderDto {
   @Transform(({ value }) => Number(value))

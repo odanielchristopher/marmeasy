@@ -1,10 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsUUID,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
 
 export class CreateOrderItemDto {
   @IsNotEmpty({ message: 'O id do produto é obrigatório.' })

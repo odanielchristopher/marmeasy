@@ -10,5 +10,4 @@ import { OrderItemsModule } from '../order-items/order-items.module';
   controllers: [OrdersController],
   providers: [OrdersService, ValidateOrderOwnershipService],
 })
-
 export class OrdersModule {}
