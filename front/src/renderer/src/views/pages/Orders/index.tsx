@@ -2,7 +2,6 @@ import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
 import Select from '@renderer/views/components/Select';
-import Button from '@renderer/views/components/Button';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
