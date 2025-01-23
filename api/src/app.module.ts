@@ -9,6 +9,8 @@ import { ProductCategoriesModule } from './modules/product-categories/product-ca
 import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
+import { OrderItemsModule } from './modules/order-items/order-items.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { DatabaseModule } from './shared/database/database.module';
     ProductCategoriesModule,
     ProductsModule,
     IngredientsModule,
+    OrderItemsModule,
+    OrdersModule
   ],
   controllers: [],
   providers: [
