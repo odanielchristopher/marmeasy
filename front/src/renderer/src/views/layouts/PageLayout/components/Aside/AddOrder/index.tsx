@@ -1,13 +1,13 @@
-import { useState } from 'react';
 import { Client } from '@renderer/app/entities/Client';
-import { Input } from '@renderer/views/components/Input';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
 import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
-import { Container, IconCategory, ProductList } from './styles';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
+import { Input } from '@renderer/views/components/Input';
+import { useState } from 'react';
+import { Container, IconCategory, ProductList } from './styles';
 
 interface AddOrderProps {
   client: Client | null;
@@ -18,7 +18,7 @@ export default function AddOrder({ client }: AddOrderProps) {
   const { products } = useProductsQuery();
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
   // const [clientName, setClientName] = useState(client?.name || '');
-  const [orderDate, setOrderDate] = useState('');
+  // const [orderDate, setOrderDate] = useState('');
 
   return (
     <Container>
@@ -40,7 +40,7 @@ export default function AddOrder({ client }: AddOrderProps) {
         type="date"
         placeholder="Data do pedido*"
         name="OrderDate"
-        onChange={(e) => setOrderDate(e.target.value)}
+        // onChange={(e) => setOrderDate(e.target.value)}
       />
       {isLoading ? (
         <p>Loading...</p>
