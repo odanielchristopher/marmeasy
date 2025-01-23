@@ -1,10 +1,10 @@
 import {
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
+    ConflictException,
+    Injectable,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
+import { UsersRepository } from 'src/shared/database/repositories/users.repository';
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 
@@ -13,7 +13,7 @@ import { compare, hash } from 'bcryptjs';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userRespository: UsersRespository,
+    private readonly userRespository: UsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 

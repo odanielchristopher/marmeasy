@@ -1,18 +1,18 @@
 import {
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
+    ConflictException,
+    Injectable,
+    UnauthorizedException,
 } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
+import { UsersRepository } from 'src/shared/database/repositories/users.repository';
 import { ValidateUserOwnershipService } from './validate-user-ownership.service';
 
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly usersRepository: UsersRespository,
+    private readonly usersRepository: UsersRepository,
     private readonly validateUserOwnershipService: ValidateUserOwnershipService,
   ) {}
 

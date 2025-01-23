@@ -4,20 +4,20 @@ import { ClientsRespository } from './repositories/clients.repository';
 import { IngredientsRespository } from './repositories/ingredients.repository';
 import { ProductCategoriesRespository } from './repositories/product-categories.repository';
 import { ProductsRespository } from './repositories/products.repository';
-import { UsersRespository } from './repositories/users.repository';
+import { UsersRepository } from './repositories/users.repository';
 
 @Global()
 @Module({
   providers: [
     PrismaService,
-    UsersRespository,
+    UsersRepository,
     ClientsRespository,
     ProductCategoriesRespository,
     IngredientsRespository,
     ProductsRespository,
   ],
   exports: [
-    UsersRespository,
+    UsersRepository,
     ClientsRespository,
     ProductCategoriesRespository,
     IngredientsRespository,
