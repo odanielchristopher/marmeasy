@@ -5,7 +5,10 @@ interface UseDeleteModalProps {
   onConfirm(): void;
 }
 
-export default function useDeleteModal({ onClose, onConfirm }: UseDeleteModalProps) {
+export default function useDeleteModal({
+  onClose,
+  onConfirm,
+}: UseDeleteModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   async function handleConfirmButton() {

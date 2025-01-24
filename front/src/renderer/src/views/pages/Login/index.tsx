@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 
 import useLogin from './useLogin';
@@ -8,12 +7,7 @@ import { Input } from '@renderer/views/components/Input';
 import { Container, Description, Title } from './styles';
 
 export default function Login() {
-  const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useLogin();
+  const { errors, isLoading, register, handleSubmit } = useLogin();
 
   return (
     <Container>
@@ -30,7 +24,6 @@ export default function Login() {
           {...register('email')}
         />
 
-
         <Input
           type="password"
           placeholder="Senha"
@@ -39,20 +32,12 @@ export default function Login() {
           {...register('password')}
         />
 
-        <Button
-          type="submit"
-          isLoading={isLoading}
-        >
+        <Button type="submit" isLoading={isLoading}>
           Entrar
         </Button>
+      </form>
 
-    </form>
-
-      <Link
-        to='/register'
-      >
-        Ainda não possuo conta.
-      </Link>
+      <Link to="/register">Ainda não possuo conta.</Link>
     </Container>
   );
 }

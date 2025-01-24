@@ -20,7 +20,7 @@ export const Container = styled.div`
   }
 
   button {
-    margin-top: 2.0rem;
+    margin-top: 2rem;
     width: 100%;
   }
 `;

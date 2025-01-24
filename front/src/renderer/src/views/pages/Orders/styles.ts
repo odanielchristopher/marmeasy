@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-    .align-container {
+  .align-container {
     display: flex;
     align-items: center;
     justify-content: space-between; /* Distribui o espaço entre os itens */
@@ -26,7 +26,6 @@ export const Container = styled.div`
     flex: 1; /* Permite que o Select ocupe o espaço disponível */
     max-width: 300px; /* Define um limite máximo */
   }
-
 `;
 
 export const Header = styled.header`
@@ -76,6 +75,6 @@ export const NotFoundContainer = styled.div`
 
     b {
       display: block;
-}
-}
+    }
+  }
 `;

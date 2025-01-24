@@ -11,15 +11,25 @@ import { Controller } from 'react-hook-form';
 import NewIngredientModal from '../../../Ingredients/NewIngredientModal';
 import CategoriesSection from '../../CategoriesSection';
 import IngredientsSection from '../../IngredientsSection';
-import { Container, Content, Footer, ImageSection, InputsContainer } from './styles';
+import {
+  Container,
+  Content,
+  Footer,
+  ImageSection,
+  InputsContainer,
+} from './styles';
 
 interface EditProductModalProps {
-  open: boolean
-  onClose(): void
-  product: Product | null
+  open: boolean;
+  onClose(): void;
+  product: Product | null;
 }
 
-export default function EditProductModal({ open, onClose, product }: EditProductModalProps) {
+export default function EditProductModal({
+  open,
+  onClose,
+  product,
+}: EditProductModalProps) {
   const {
     errors,
     width,

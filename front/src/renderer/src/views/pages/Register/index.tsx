@@ -8,12 +8,7 @@ import useRegister from './useRegister';
 import { Container, Description, Title } from './styles';
 
 export default function Register() {
-const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useRegister();
+  const { errors, isLoading, register, handleSubmit } = useRegister();
 
   return (
     <Container>
@@ -38,7 +33,6 @@ const {
           {...register('email')}
         />
 
-
         <Input
           type="password"
           placeholder="Senha"
@@ -47,20 +41,12 @@ const {
           {...register('password')}
         />
 
-        <Button
-          type="submit"
-          isLoading={isLoading}
-        >
+        <Button type="submit" isLoading={isLoading}>
           Registrar conta
         </Button>
+      </form>
 
-    </form>
-
-      <Link
-        to='/login'
-      >
-        Já possuo uma conta.
-      </Link>
+      <Link to="/login">Já possuo uma conta.</Link>
     </Container>
   );
 }

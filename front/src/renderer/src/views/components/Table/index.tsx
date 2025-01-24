@@ -1,4 +1,11 @@
-import { BodyTable, HeaderColumn, HeaderTable, Row, TableCell, TableContainer } from './styles';
+import {
+  BodyTable,
+  HeaderColumn,
+  HeaderTable,
+  Row,
+  TableCell,
+  TableContainer,
+} from './styles';
 
 export const Table = {
   Container: TableContainer,

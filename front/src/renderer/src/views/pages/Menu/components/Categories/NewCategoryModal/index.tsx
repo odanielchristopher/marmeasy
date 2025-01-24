@@ -5,17 +5,18 @@ import { Container, Form } from './styles';
 import useNewCategoryModal from './useNewCategoryModal';
 
 interface EditProductModalProps {
-  open: boolean
-  onClose(): void
+  open: boolean;
+  onClose(): void;
 }
 
-export default function NewCategoryModal({ open, onClose }: EditProductModalProps) {
-  const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useNewCategoryModal(onClose, open);
+export default function NewCategoryModal({
+  open,
+  onClose,
+}: EditProductModalProps) {
+  const { errors, isLoading, register, handleSubmit } = useNewCategoryModal(
+    onClose,
+    open,
+  );
 
   return (
     <Modal title="Nova categoria" open={open} onClose={onClose}>
@@ -37,7 +38,9 @@ export default function NewCategoryModal({ open, onClose }: EditProductModalProp
             {...register('name')}
           />
 
-          <Button type="submit" isLoading={isLoading}>Adicionar nova categoria</Button>
+          <Button type="submit" isLoading={isLoading}>
+            Adicionar nova categoria
+          </Button>
         </Form>
       </Container>
     </Modal>

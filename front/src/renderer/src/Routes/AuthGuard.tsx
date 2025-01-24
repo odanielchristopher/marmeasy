@@ -2,7 +2,7 @@ import { useAuth } from '@renderer/app/hooks/useAuth';
 import { Navigate, Outlet } from 'react-router-dom';
 
 interface AuthGuardProps {
-  isPrivate: boolean
+  isPrivate: boolean;
 }
 
 export default function AuthGuard({ isPrivate }: AuthGuardProps) {

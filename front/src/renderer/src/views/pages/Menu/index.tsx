@@ -1,4 +1,3 @@
-
 import { BiFoodMenu } from 'react-icons/bi';
 
 import { Tabs } from '@renderer/views/components/Tabs';
@@ -14,33 +13,25 @@ export default function Menu() {
     <Container>
       <SectionHeader>
         <div>
-          <BiFoodMenu size={32}/>
+          <BiFoodMenu size={32} />
           <h1>Cardápio</h1>
         </div>
 
-        <p>
-          Gerencie os produtos do seu estabelecimento
-        </p>
+        <p>Gerencie os produtos do seu estabelecimento</p>
       </SectionHeader>
 
       <Main>
-        <Tabs.Root defaultValue='products'>
+        <Tabs.Root defaultValue="products">
           <Tabs.List>
-            <Tabs.Trigger
-              value='products'
-              text='Produtos'
-            />
-            <Tabs.Trigger
-              value='categories'
-              text='Categorias'
-            />
+            <Tabs.Trigger value="products" text="Produtos" />
+            <Tabs.Trigger value="categories" text="Categorias" />
           </Tabs.List>
 
-          <Tabs.Content value='products' >
+          <Tabs.Content value="products">
             <Products />
           </Tabs.Content>
 
-          <Tabs.Content value='categories' >
+          <Tabs.Content value="categories">
             <Categories />
           </Tabs.Content>
         </Tabs.Root>

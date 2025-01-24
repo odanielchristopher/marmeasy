@@ -4,7 +4,13 @@ import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter
 import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
 
-import { Actions, CancelButton, CategoryContainer, Container, Warning } from './styles';
+import {
+  Actions,
+  CancelButton,
+  CategoryContainer,
+  Container,
+  Warning,
+} from './styles';
 import useDeleteCategoryModal from './useDeleteCategoryModal';
 
 interface DeleteProductModalProps {
@@ -13,37 +19,32 @@ interface DeleteProductModalProps {
   category: ProductCategory | null;
 }
 
-export default function DeleteCategoryModal({ open, onClose, category }: DeleteProductModalProps) {
-  const { handleConfirm, isloading } = useDeleteCategoryModal(category, onClose);
+export default function DeleteCategoryModal({
+  open,
+  onClose,
+  category,
+}: DeleteProductModalProps) {
+  const { handleConfirm, isloading } = useDeleteCategoryModal(
+    category,
+    onClose,
+  );
 
   return (
-    <Modal
-      title="Excluir categoria"
-      open={open}
-      onClose={onClose}
-    >
+    <Modal title="Excluir categoria" open={open} onClose={onClose}>
       <Container>
-       <Warning>
-        Tem certeza que deseja excluir a categoria?
-       </Warning>
+        <Warning>Tem certeza que deseja excluir a categoria?</Warning>
 
-       <CategoryContainer>
-        <span>{category?.icon}</span>
-        <span>{capitalizeFirstLetter(category?.name || '')}</span>
-       </CategoryContainer>
+        <CategoryContainer>
+          <span>{category?.icon}</span>
+          <span>{capitalizeFirstLetter(category?.name || '')}</span>
+        </CategoryContainer>
 
-       <Actions>
-          <CancelButton onClick={onClose}>
-            Cancelar
-          </CancelButton>
-          <Button
-            danger
-            isLoading={isloading}
-            onClick={handleConfirm}
-          >
-              Sim, desejo excluir
+        <Actions>
+          <CancelButton onClick={onClose}>Cancelar</CancelButton>
+          <Button danger isLoading={isloading} onClick={handleConfirm}>
+            Sim, desejo excluir
           </Button>
-       </Actions>
+        </Actions>
       </Container>
     </Modal>
   );
