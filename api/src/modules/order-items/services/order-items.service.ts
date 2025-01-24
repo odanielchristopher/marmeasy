@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { OrderItemsRepository } from 'src/shared/database/repositories/order-items.repository';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
-import { UpdateQuantityOrderItemDto } from '../dto/update-ordem-item.dto';
+import { UpdateOrderItemDto } from '../dto/update-ordem-item.dto';
 import { ValidateOrderItemsOwnershipService } from './validate-product-order-item.service';
 
 @Injectable()
@@ -38,25 +38,17 @@ export class OrderItemsService {
   ) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { productId, quantity } = createOrderItemDto;
-
-    const productAlreadyExists = await this.productsRepository.findFirst({
-      where: { userId, id: productId },
-    });
-
-    if (!productAlreadyExists) {
-      throw new BadRequestException('Produto não encontrado.');
-    }
-
-    const total = quantity * productAlreadyExists.price;
+    const { quantity, ingredients, name, total, unitPrice } =
+      createOrderItemDto;
 
     return this.orderItemsRepository.create({
       data: {
-        product: { connect: { id: productId } },
         order: { connect: { id: orderId } },
         user: { connect: { id: userId } },
+        name,
+        ingredients,
         quantity,
-        unitPrice: productAlreadyExists.price,
+        unitPrice,
         total,
       },
     });
@@ -65,7 +57,7 @@ export class OrderItemsService {
   async update(
     userId: string,
     orderItemId: string,
-    updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
+    updateQuantityOrderItemDto: UpdateOrderItemDto,
   ) {
     await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
     return this.orderItemsRepository.update({

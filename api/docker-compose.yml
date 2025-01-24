@@ -1,32 +1,43 @@
+# name: marmeasy
+# services:
+#   postgres:
+#     image: postgres:latest
+#     container_name: marmeasy_db
+#     environment:
+#       POSTGRES_USER: "root"
+#       POSTGRES_PASSWORD: "root"
+#       POSTGRES_DB: "marmeasy"
+#     ports:
+#       - "5433:5432"
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: marmeasy_api
+  #   ports:
+  #     - "3000:3000"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - postgres
+  #   command: npm run start:dev # Comando automatizado
+
+# volumes:
+#   postgres_data:
+
 name: marmeasy
 services:
   postgres:
     image: postgres:latest
-    container_name: marmeasy_db
+    container_name: marmeasy
     environment:
       POSTGRES_USER: "root"
       POSTGRES_PASSWORD: "root"
-      POSTGRES_DB: "marmeasy"
     ports:
-      - "5433:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: marmeasy_api
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    depends_on:
-      - postgres
-    command: npm run start:dev # Comando automatizado
-
-volumes:
-  postgres_data:
+      - "5432:5432"
