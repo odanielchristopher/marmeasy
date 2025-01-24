@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateQuantityOrderItemDto } from './dto/update-order-item.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
 import { OrdersService } from './services/orders.service';
@@ -49,20 +48,6 @@ export class OrdersController {
     return this.ordersService.update(userId, orderId, updateOrderDto);
   }
 
-  @Put('/:orderId/items/:orderItemId')
-  updateQuantity(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Param('orderItemId', ParseUUIDPipe) orderItemId: string,
-    @Body() updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
-  ) {
-    return this.ordersService.updateQuantityItem(
-      userId,
-      orderId,
-      orderItemId,
-      updateQuantityOrderItemDto,
-    );
-  }
   @Put('/status/:orderId')
   updateStatus(
     @ActiveUserId() userId: string,

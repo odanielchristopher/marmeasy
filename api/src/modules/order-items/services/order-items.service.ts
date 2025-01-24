@@ -1,9 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { OrderItemsRepository } from 'src/shared/database/repositories/order-items.repository';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
-import { UpdateQuantityOrderItemDto } from '../dto/update-ordem-item.dto';
+import { UpdateOrderItemDto } from '../dto/update-ordem-item.dto';
 import { ValidateOrderItemsOwnershipService } from './validate-product-order-item.service';
 
 @Injectable()
@@ -39,34 +39,26 @@ export class OrderItemsService {
   ) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { productId, quantity } = createOrderItemDto;
+    const { quantity, ingredients, name, total, unitPrice } =
+      createOrderItemDto;
 
-    const productAlreadyExists = await this.productsRepository.findFirst({
-      where: { userId, id: productId },
+    return this.orderItemsRepository.create({
+      data: {
+        order: { connect: { id: orderId } },
+        user: { connect: { id: userId } },
+        name,
+        ingredients,
+        quantity,
+        unitPrice,
+        total,
+      },
     });
-
-    if (!productAlreadyExists) {
-      throw new BadRequestException('Produto não encontrado.');
-    }
-
-    const total = quantity * productAlreadyExists.price;
-
-    // return this.orderItemsRepository.create({
-    //     data: {
-    //         product: { connect: { id: productId } },
-    //         order: { connect: { id: orderId } },
-    //         user: { connect: { id: userId } },
-    //         quantity,
-    //         unitPrice: productAlreadyExists.price,
-    //         total,
-    //     },
-    // });
   }
 
   async update(
     userId: string,
     orderItemId: string,
-    updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
+    updateQuantityOrderItemDto: UpdateOrderItemDto,
   ) {
     await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
     return this.orderItemsRepository.update({
