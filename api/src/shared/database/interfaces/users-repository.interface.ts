@@ -16,10 +16,6 @@ export type FindUniqueUserByIdDto = {
   userId: string;
 };
 
-export type FindFirstUserByIdDto = {
-  userId: string;
-};
-
 export type FindUniqueUserByEmailDto = {
   email: string;
 };

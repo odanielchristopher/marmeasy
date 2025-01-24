@@ -1,47 +1,40 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ProductCategoriesRespository } from 'src/shared/database/repositories/product-categories.repository';
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
+import { IProductCategoriesRepository } from 'src/shared/database/interfaces/product-categories-repository.interface copy';
 import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
-import { ValidateProductCategoryOwnershipService } from './validate-product-category-ownership.service';
+import { IProductCategoriesService } from '../interfaces/product-categories-service.interface';
+import { IValidateProductCategoryOwnershipService } from '../interfaces/validate-product-category-ownership-service.interface';
 
 @Injectable()
-export class ProductCategoriesService {
+export class ProductCategoriesService implements IProductCategoriesService {
   constructor(
-    private readonly productCategoriesRepository: ProductCategoriesRespository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-    private readonly validateProductCategoryOwnershipService: ValidateProductCategoryOwnershipService,
+    @Inject('IProductCategoriesRepository')
+    private readonly productCategoriesRepository: IProductCategoriesRepository,
+    @Inject('IValidateUserOwnershipService')
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
+    @Inject('IValidateProductCategoryOwnershipService')
+    private readonly validateProductCategoryOwnershipService: IValidateProductCategoryOwnershipService,
   ) {}
 
   async findAllByUserId(userId: string) {
-    const productsCategories = await this.productCategoriesRepository.findMany({
-      where: { userId },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
+    const productsCategories =
+      await this.productCategoriesRepository.findManyByUserId({
+        userId,
+        order: 'asc',
+      });
 
-    const sortedProductsCategories = productsCategories.sort((a, b) =>
-      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
-    );
-
-    return sortedProductsCategories;
+    return productsCategories;
   }
 
   async findOneByUserId(userId: string, productCategoryId: string) {
-    return this.productCategoriesRepository.findFirst({
-      where: {
+    const findedProductCategory =
+      await this.productCategoriesRepository.findFirstByUserId({
         userId,
         id: productCategoryId,
-      },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
+      });
+
+    return findedProductCategory;
   }
 
   async create(
@@ -52,26 +45,19 @@ export class ProductCategoriesService {
 
     const { name, icon } = createProductCategoryDto;
 
-    const nameAlreadyExists = await this.productCategoriesRepository.findFirst({
-      where: { userId, name },
-    });
+    const nameAlreadyExists =
+      await this.productCategoriesRepository.findFirstByName({ userId, name });
 
     if (nameAlreadyExists) {
       throw new BadRequestException('Esse nome já está sendo usado.');
     }
 
-    return this.productCategoriesRepository.create({
-      data: {
-        userId,
-        name: name.toLowerCase(),
-        icon,
-      },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
+    const data = { name, icon };
+
+    const createdProductCategory =
+      await this.productCategoriesRepository.create({ data, userId });
+
+    return createdProductCategory;
   }
 
   async update(
@@ -86,29 +72,20 @@ export class ProductCategoriesService {
 
     const { name, icon } = updateProductCategoryDto;
 
-    const nameAlreadyExists = await this.productCategoriesRepository.findFirst({
-      where: { userId, name },
-      select: {
-        id: true,
-      },
-    });
+    const nameAlreadyExists =
+      await this.productCategoriesRepository.findFirstByName({ userId, name });
 
     if (nameAlreadyExists && productCategoryId !== nameAlreadyExists.id) {
       throw new BadRequestException('Esse nome já está sendo usado.');
     }
 
-    return this.productCategoriesRepository.update({
-      where: { userId, id: productCategoryId },
-      data: {
-        name: name.toLowerCase(),
-        icon,
-      },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
+    const data = {
+      id: productCategoryId,
+      name,
+      icon,
+    };
+
+    return this.productCategoriesRepository.update({ userId, data });
   }
 
   async remove(userId: string, productCategoryId: string) {
@@ -118,7 +95,8 @@ export class ProductCategoriesService {
     );
 
     await this.productCategoriesRepository.delete({
-      where: { userId, id: productCategoryId },
+      userId,
+      id: productCategoryId,
     });
 
     return null;

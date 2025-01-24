@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 
 import { ValidateIngredientOwnershipService } from 'src/modules/ingredients/services/validate-ingredient-ownership.service';
-import { ValidateProductCategoryOwnershipService } from 'src/modules/product-categories/services/validate-product-category-ownership.service';
-import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
+import { IValidateProductCategoryOwnershipService } from 'src/modules/product-categories/interfaces/validate-product-category-ownership-service.interface';
 import { ProducImagesService } from './product-images.service';
 import { ValidateProductOwnershipService } from './validate-product-ownership.service';
 
@@ -14,9 +13,9 @@ export class ProductsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
     private readonly productImagesService: ProducImagesService,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
     private readonly validateProductOwnershipService: ValidateProductOwnershipService,
-    private readonly validateProductCategorieOwnershipService: ValidateProductCategoryOwnershipService,
+    @Inject('IValidateProductCategoryOwnershipService')
+    private readonly validateProductCategorieOwnershipService: IValidateProductCategoryOwnershipService,
     private readonly validadeIngredientsOwnershipService: ValidateIngredientOwnershipService,
   ) {}
 

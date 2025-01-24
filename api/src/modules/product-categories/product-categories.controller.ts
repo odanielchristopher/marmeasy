@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -13,12 +14,13 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductCategoryDto } from './dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from './dto/update-product-category.dto';
-import { ProductCategoriesService } from './services/product-categories.service';
+import { IProductCategoriesService } from './interfaces/product-categories-service.interface';
 
 @Controller('product-categories')
 export class ProductCategoriesController {
   constructor(
-    private readonly productCategoriesService: ProductCategoriesService,
+    @Inject('IProductCategoriesService')
+    private readonly productCategoriesService: IProductCategoriesService,
   ) {}
 
   @Get()

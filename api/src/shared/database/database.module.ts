@@ -4,7 +4,7 @@ import { ClientsRespository } from './repositories/clients.repository';
 import { IngredientsRespository } from './repositories/ingredients.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
 import { OrdersRespository } from './repositories/orders.repository';
-import { ProductCategoriesRespository } from './repositories/product-categories.repository';
+import { ProductCategoriesRepository } from './repositories/product-categories.repository';
 import { ProductsRespository } from './repositories/products.repository';
 import { UsersRepository } from './repositories/users.repository';
 
@@ -14,7 +14,7 @@ import { UsersRepository } from './repositories/users.repository';
     PrismaService,
     UsersRepository,
     ClientsRespository,
-    ProductCategoriesRespository,
+    ProductCategoriesRepository,
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
@@ -23,14 +23,22 @@ import { UsersRepository } from './repositories/users.repository';
       provide: 'IUsersRepository',
       useClass: UsersRepository,
     },
+    {
+      provide: 'IProductCategoriesRepository',
+      useClass: ProductCategoriesRepository,
+    },
   ],
   exports: [
     {
       provide: 'IUsersRepository',
       useClass: UsersRepository,
     },
+    {
+      provide: 'IProductCategoriesRepository',
+      useClass: ProductCategoriesRepository,
+    },
     ClientsRespository,
-    ProductCategoriesRespository,
+    ProductCategoriesRepository,
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
