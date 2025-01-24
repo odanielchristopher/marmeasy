@@ -7,7 +7,24 @@ import { UsersController } from './users.controller';
 @Module({
   imports: [AuthModule],
   controllers: [UsersController],
-  providers: [UsersService, ValidateUserOwnershipService],
-  exports: [ValidateUserOwnershipService],
+  providers: [
+    UsersService,
+    ValidateUserOwnershipService,
+    {
+      provide: 'IValidateUserOwnershipService',
+      useClass: ValidateUserOwnershipService,
+    },
+    {
+      provide: 'IUsersService',
+      useClass: UsersService,
+    },
+  ],
+  exports: [
+    ValidateUserOwnershipService,
+    {
+      provide: 'IValidateUserOwnershipService',
+      useClass: ValidateUserOwnershipService,
+    },
+  ],
 })
 export class UsersModule {}

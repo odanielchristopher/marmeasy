@@ -5,15 +5,18 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Put,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UsersService } from './services/users.service';
+import { IUsersService } from './interfaces/IUsersService';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    @Inject('IUsersService') private readonly usersService: IUsersService,
+  ) {}
 
   @Get('/me')
   me(@ActiveUserId() userId: string) {

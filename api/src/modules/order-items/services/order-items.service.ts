@@ -50,16 +50,16 @@ export class OrderItemsService {
 
         const total = quantity * productAlreadyExists.price;
 
-        return this.orderItemsRepository.create({
-            data: {
-                product: { connect: { id: productId } },
-                order: { connect: { id: orderId } },
-                user: { connect: { id: userId } },
-                quantity,
-                unitPrice: productAlreadyExists.price,
-                total,
-            },
-        });
+        // return this.orderItemsRepository.create({
+        //     data: {
+        //         product: { connect: { id: productId } },
+        //         order: { connect: { id: orderId } },
+        //         user: { connect: { id: userId } },
+        //         quantity,
+        //         unitPrice: productAlreadyExists.price,
+        //         total,
+        //     },
+        // });
     }
 
     async update(

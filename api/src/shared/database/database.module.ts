@@ -18,10 +18,17 @@ import { UsersRepository } from './repositories/users.repository';
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
-    OrderItemsRepository
+    OrderItemsRepository,
+    {
+      provide: 'IUsersRepository',
+      useClass: UsersRepository,
+    },
   ],
   exports: [
-    UsersRepository,
+    {
+      provide: 'IUsersRepository',
+      useClass: UsersRepository,
+    },
     ClientsRespository,
     ProductCategoriesRespository,
     IngredientsRespository,

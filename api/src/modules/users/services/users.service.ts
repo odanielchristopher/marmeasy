@@ -1,25 +1,31 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { UsersRepository } from 'src/shared/database/repositories/users.repository';
-import { ValidateUserOwnershipService } from './validate-user-ownership.service';
+import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepository';
+import { IUsersService } from '../interfaces/IUsersService';
+import { IValidateUserOwnershipService } from '../interfaces/IValidateUserOwnershipService';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements IUsersService {
   constructor(
-    private readonly usersRepository: UsersRepository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject('IUsersRepository')
+    private readonly usersRepository: IUsersRepository,
+    @Inject('IValidateUserOwnershipService')
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
   ) {}
 
   async getUserById(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { id, email, name } = await this.usersRepository.findUniquetById({ userId });
+    const { id, email, name } = await this.usersRepository.findUniquetById({
+      userId,
+    });
 
     return { id, email, name };
   }

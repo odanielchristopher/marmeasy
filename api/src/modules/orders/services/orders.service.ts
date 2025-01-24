@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
-import { OrdersRespository } from "src/shared/database/repositories/orders.repository";
-import { CreateOrderDto } from '../dto/create-order.dto';
-import { UpdateStatusOrderDto } from "../dto/update-status-order.dto";
-import { ValidateOrderOwnershipService } from "./validade-order-ownership.service";
-import { OrderItemsService } from "src/modules/order-items/services/order-items.service";
 import { CreateOrderItemDto } from "src/modules/order-items/dto/create-order-items.dto";
-import { UpdateOrderDto } from "../dto/update-order.dto";
-import { OrderStatus } from "../entities/status.entity";
+import { OrderItemsService } from "src/modules/order-items/services/order-items.service";
+import { OrdersRespository } from "src/shared/database/repositories/orders.repository";
+import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
+import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateQuantityOrderItemDto } from "../dto/update-order-item.dto";
+import { UpdateOrderDto } from "../dto/update-order.dto";
+import { UpdateStatusOrderDto } from "../dto/update-status-order.dto";
+import { OrderStatus } from "../entities/status.entity";
+import { ValidateOrderOwnershipService } from "./validade-order-ownership.service";
 
 @Injectable()
 export class OrdersService {
@@ -73,7 +73,7 @@ export class OrdersService {
     
                 const createdItem = await this.orderItemsService.create(userId, order.id, createOrderItemDto);
     
-                totalItems += createdItem.total;
+                // totalItems += createdItem.total;
             }),
         );
 
@@ -130,10 +130,10 @@ export class OrdersService {
             throw new NotFoundException('Pedido não encontrado.');
         }
 
-        return this.ordersRepository.update({
-            where: { id: orderId },
-            data: { status: updateOrderStatusDto.status },
-        });
+        // return this.ordersRepository.update({
+        //     where: { id: orderId },
+        //     data: { status: updateOrderStatusDto.status },
+        // });
     }
 
     async updateQuantityItem(userId: string, orderId: string, orderItemId: string, updateQuantityOrderItemDto: UpdateQuantityOrderItemDto) {
