@@ -67,7 +67,10 @@ export default function Clients() {
       {!isLoading && (
         <Content>
           {hasClient && (
-            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
+            <ClientList
+              onDeleteClient={handleDeleteClient}
+              clients={filteredClients}
+            />
           )}
 
           {isSearchEmpty && (

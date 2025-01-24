@@ -11,7 +11,9 @@ export default function useErrors() {
   const setError = useCallback(({ field, message }: ErrorProps) => {
     // Verifica se o erro já existe
     setErrors((prevState) => {
-      const errorAlreadyExists = prevState.find((error) => error.field === field);
+      const errorAlreadyExists = prevState.find(
+        (error) => error.field === field,
+      );
       if (errorAlreadyExists) {
         return prevState; // Retorna o estado anterior se o erro já existir
       }
@@ -20,12 +22,17 @@ export default function useErrors() {
   }, []);
 
   const removeError = useCallback((fieldName: string) => {
-    setErrors((prevState) => prevState.filter((error) => error.field !== fieldName));
+    setErrors((prevState) =>
+      prevState.filter((error) => error.field !== fieldName),
+    );
   }, []);
 
-  const getErrorMessageByFieldName = useCallback((fieldName: string) => {
-    return errors.find((error) => error.field === fieldName)?.message;
-  }, [errors]);
+  const getErrorMessageByFieldName = useCallback(
+    (fieldName: string) => {
+      return errors.find((error) => error.field === fieldName)?.message;
+    },
+    [errors],
+  );
 
   return {
     errors,

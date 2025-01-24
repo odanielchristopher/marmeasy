@@ -13,15 +13,20 @@ interface DeleteModalProps {
   onConfirm(): void;
 }
 
-export default function DeleteModal({ open, description, answer, onClose, onConfirm }: DeleteModalProps) {
-  const { isLoading, handleConfirmButton } = useDeleteModal({ onClose, onConfirm });
+export default function DeleteModal({
+  open,
+  description,
+  answer,
+  onClose,
+  onConfirm,
+}: DeleteModalProps) {
+  const { isLoading, handleConfirmButton } = useDeleteModal({
+    onClose,
+    onConfirm,
+  });
 
   return (
-    <Modal
-      open={open}
-      title="Excluir"
-      onClose={onClose}
-    >
+    <Modal open={open} title="Excluir" onClose={onClose}>
       <Container>
         <Content>
           <DeleteRoundedIcon />
@@ -33,9 +38,7 @@ export default function DeleteModal({ open, description, answer, onClose, onConf
           <Button danger onClick={handleConfirmButton} isLoading={isLoading}>
             Sim, desejo excluir
           </Button>
-          <CancelButton onClick={onClose}>
-            Cancelar
-          </CancelButton>
+          <CancelButton onClick={onClose}>Cancelar</CancelButton>
         </Actions>
       </Container>
     </Modal>

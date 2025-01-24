@@ -1,7 +1,7 @@
 import styled, { css, keyframes } from 'styled-components';
 
 interface IIsLeaving {
-  $isLeaving: boolean
+  $isLeaving: boolean;
 }
 
 const fadeIn = keyframes`
@@ -23,7 +23,11 @@ export const Container = styled.div<IIsLeaving>`
   height: calc(100vh);
   background-color: ${({ theme }) => theme.colors.orange.light};
 
-  ${({ $isLeaving }) => $isLeaving && css`animation: ${fadeOut} 0.3s forwards;`}
+  ${({ $isLeaving }) =>
+    $isLeaving &&
+    css`
+      animation: ${fadeOut} 0.3s forwards;
+    `}
 
   div {
     align-items: center;
@@ -32,7 +36,7 @@ export const Container = styled.div<IIsLeaving>`
     gap: 2.4rem;
 
     img {
-      width: 25.0rem;
+      width: 25rem;
     }
   }
 `;

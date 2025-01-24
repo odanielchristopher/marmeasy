@@ -1,12 +1,18 @@
 // @ts-nocheck
 import { createRef, useCallback, useEffect, useRef, useState } from 'react';
 
-export default function useAnimatedList<T extends { id: number }>(initialValue: T[] = []) {
+export default function useAnimatedList<T extends { id: number }>(
+  initialValue: T[] = [],
+) {
   const [items, setItems] = useState<T[]>(initialValue);
-  const [pendingRemovalItemsIds, setPendingRemovalItemsIds] = useState<number[]>([]);
+  const [pendingRemovalItemsIds, setPendingRemovalItemsIds] = useState<
+    number[]
+  >([]);
 
-  const animatedRefs = useRef(new Map<number, React.RefObject<HTMLDivElement>>());
-  const animationEndListeners= useRef(new Map<number, () => void>());
+  const animatedRefs = useRef(
+    new Map<number, React.RefObject<HTMLDivElement>>(),
+  );
+  const animationEndListeners = useRef(new Map<number, () => void>());
 
   const handleAnimationEnd = useCallback((itemId) => {
     const removeListener = animationEndListeners.current.get(itemId);
@@ -18,8 +24,8 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
     }
 
     setItems((prevState) => prevState.filter((item) => item.id !== itemId));
-    setPendingRemovalItemsIds(
-      (prevState) => prevState.filter((id) => itemId !== id),
+    setPendingRemovalItemsIds((prevState) =>
+      prevState.filter((id) => itemId !== id),
     );
   }, []);
 
@@ -51,9 +57,7 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
   }, []);
 
   const handleRemoveItem = useCallback((id) => {
-    setPendingRemovalItemsIds(
-      (prevState) => [...prevState, id],
-    );
+    setPendingRemovalItemsIds((prevState) => [...prevState, id]);
   }, []);
 
   const getAnimatedRef = useCallback((itemId: number) => {
@@ -68,14 +72,16 @@ export default function useAnimatedList<T extends { id: number }>(initialValue: 
   }, []);
 
   // eslint-disable-next-line no-unused-vars
-  const renderList= useCallback((renderItem: (item: T,  { isLeaving, animatedRef }) => JSX.Element) => (
-    items.map((item) => {
-      const isLeaving = pendingRemovalItemsIds.includes(item.id);
-      const animatedRef = getAnimatedRef(item.id);
+  const renderList = useCallback(
+    (renderItem: (item: T, { isLeaving, animatedRef }) => JSX.Element) =>
+      items.map((item) => {
+        const isLeaving = pendingRemovalItemsIds.includes(item.id);
+        const animatedRef = getAnimatedRef(item.id);
 
-      return renderItem(item, { isLeaving, animatedRef });
-    })
-  ), [items, pendingRemovalItemsIds]);
+        return renderItem(item, { isLeaving, animatedRef });
+      }),
+    [items, pendingRemovalItemsIds],
+  );
 
   return {
     items,

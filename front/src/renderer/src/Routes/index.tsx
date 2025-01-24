@@ -24,7 +24,7 @@ export default function AppRoutes() {
         <Route element={<AuthGuard isPrivate />}>
           <Route element={<PageLayout />}>
             <Route path="/menu" element={<Menu />} />
-            <Route path="/orders" element={<Orders />}/>
+            <Route path="/orders" element={<Orders />} />
             <Route path="/" element={<Clients />} />
           </Route>
         </Route>

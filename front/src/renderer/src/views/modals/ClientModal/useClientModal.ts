@@ -12,20 +12,33 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const clientFormSchema = z.object({
-  name: z.string({ required_error: 'O nome do cliente é obrigatório.' }).min(2, 'O nome do cliente é obrigatório'),
-  phone: z.string().optional().refine((value) => !value || value.length === 11, {
-    message: 'O telefone precisa ter 11 digitos ou estar vazio',
-  }),
+  name: z
+    .string({ required_error: 'O nome do cliente é obrigatório.' })
+    .min(2, 'O nome do cliente é obrigatório'),
+  phone: z
+    .string()
+    .optional()
+    .refine((value) => !value || value.length === 11, {
+      message: 'O telefone precisa ter 11 digitos ou estar vazio',
+    }),
   address: z.string().optional(),
-  cpf: z.string().optional().refine(value => !value || isValidCPF(value), {
-    message: 'O CPF precisa ser válido ou estar vazio',
-  }),
-  initialBalance: z.string({ required_error: 'Saldo é obrigatório' }).min(1, 'Saldo é obrigatório'),
+  cpf: z
+    .string()
+    .optional()
+    .refine((value) => !value || isValidCPF(value), {
+      message: 'O CPF precisa ser válido ou estar vazio',
+    }),
+  initialBalance: z
+    .string({ required_error: 'Saldo é obrigatório' })
+    .min(1, 'Saldo é obrigatório'),
 });
 
 export type FormData = z.infer<typeof clientFormSchema>;
 
-export default function useClientModal(isOpen: boolean, closeModal: () => void) {
+export default function useClientModal(
+  isOpen: boolean,
+  closeModal: () => void,
+) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -37,16 +50,17 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
   });
 
   const { mutateAsync: createClient, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateClientParams) => clientsService.create({
-      ...data,
-    }),
+    mutationFn: async (data: CreateClientParams) =>
+      clientsService.create({
+        ...data,
+      }),
     onSuccess: (newData) => {
-      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => ([
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => [
         ...oldData,
         newData,
-      ]));
+      ]);
     },
-  });;
+  });
 
   useEffect(() => {
     return () => {
@@ -70,7 +84,6 @@ export default function useClientModal(isOpen: boolean, closeModal: () => void) 
       closeModal();
     } catch (error) {
       if (error instanceof AxiosError) {
-
         toast({
           type: 'danger',
           text: error.response?.data.message,

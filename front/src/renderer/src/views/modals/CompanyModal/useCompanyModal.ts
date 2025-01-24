@@ -13,19 +13,30 @@ import { z } from 'zod';
 
 const clientFormSchema = z.object({
   name: z.string().min(2, 'O nome do cliente é um campo obrigatório'),
-  phone: z.string().optional().refine((value) => !value || value.length === 11, {
-    message: 'O telefone precisa ter 11 digitos ou estar vazio',
-  }),
+  phone: z
+    .string()
+    .optional()
+    .refine((value) => !value || value.length === 11, {
+      message: 'O telefone precisa ter 11 digitos ou estar vazio',
+    }),
   address: z.string().optional(),
-  cnpj: z.string().optional().refine(value => !value || isCNPJValid(value), {
-    message: 'O CNPJ precisa ser válido ou estar vazio',
-  }),
-  initialBalance: z.string({ required_error: 'Saldo é obrigatório' }).min(1, 'Saldo é obrigatório'),
+  cnpj: z
+    .string()
+    .optional()
+    .refine((value) => !value || isCNPJValid(value), {
+      message: 'O CNPJ precisa ser válido ou estar vazio',
+    }),
+  initialBalance: z
+    .string({ required_error: 'Saldo é obrigatório' })
+    .min(1, 'Saldo é obrigatório'),
 });
 
-type FormData = z.infer<typeof clientFormSchema>
+type FormData = z.infer<typeof clientFormSchema>;
 
-export default function useCompanyModal(isOpen: boolean, closeModal: () => void) {
+export default function useCompanyModal(
+  isOpen: boolean,
+  closeModal: () => void,
+) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -43,16 +54,17 @@ export default function useCompanyModal(isOpen: boolean, closeModal: () => void)
   }, [isOpen]);
 
   const { mutateAsync: createCompany, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateClientParams) => clientsService.create({
-      ...data,
-    }),
+    mutationFn: async (data: CreateClientParams) =>
+      clientsService.create({
+        ...data,
+      }),
     onSuccess: (newData) => {
-      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => ([
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => [
         ...oldData,
         newData,
-      ]));
+      ]);
     },
-  });;
+  });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
@@ -69,7 +81,6 @@ export default function useCompanyModal(isOpen: boolean, closeModal: () => void)
       closeModal();
     } catch (error) {
       if (error instanceof AxiosError) {
-
         toast({
           type: 'danger',
           text: error.response?.data.message,

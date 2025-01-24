@@ -40,13 +40,13 @@ export const List = styled.div`
   }
 
   .categories-loader {
-    width: 42.0rem;
+    width: 42rem;
     height: 4.8rem;
   }
 `;
 
 interface CategoryItemProps {
-  $selected?: boolean
+  $selected?: boolean;
 }
 
 export const Item = styled.div<CategoryItemProps>`

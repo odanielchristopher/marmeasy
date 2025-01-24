@@ -61,18 +61,18 @@ export const StyledRdxDropdownMenuContent = styled(RdxDropdownMenu.Content)`
     margin-top: 0.8rem;
   }
 
-  &[data-side="top"] {
-		animation: ${SlideUpAndFade} 0.1s forwards;
-	}
-	&[data-side="right"] {
-		animation: ${SlideLeftAndFade} 0.1s forwards;
-	}
-	&[data-side="bottom"] {
-		animation: ${SlideDownAndFade} 0.1s forwards;
-	}
-	&[data-side="left"] {
-		animation: ${SlideRightAndFade} 0.1s forwards;
-	}
+  &[data-side='top'] {
+    animation: ${SlideUpAndFade} 0.1s forwards;
+  }
+  &[data-side='right'] {
+    animation: ${SlideLeftAndFade} 0.1s forwards;
+  }
+  &[data-side='bottom'] {
+    animation: ${SlideDownAndFade} 0.1s forwards;
+  }
+  &[data-side='left'] {
+    animation: ${SlideRightAndFade} 0.1s forwards;
+  }
 `;
 
 export const StyledRdxDropdownMenuItem = styled(RdxDropdownMenu.Item)`

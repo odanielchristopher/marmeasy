@@ -11,7 +11,7 @@ export interface UpdateClientParams {
   balance?: number | string;
 }
 
-export async function update({id, ...params}: UpdateClientParams) {
+export async function update({ id, ...params }: UpdateClientParams) {
   const { data } = await httpClient.put<Client>(`/clients/${id}`, params);
 
   return data;

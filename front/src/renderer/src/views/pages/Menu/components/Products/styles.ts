@@ -5,7 +5,7 @@ export const Container = styled.div`
 `;
 
 export const LoaderContainer = styled.div`
-  height: calc(100vh - 38.0rem);
+  height: calc(100vh - 38rem);
 `;
 
 export const EmptyImageContainer = styled.div`
@@ -22,7 +22,6 @@ export const EmptyImageContainer = styled.div`
   }
 `;
 
-
 export const Header = styled.header`
   align-items: center;
   display: flex;
@@ -31,16 +30,16 @@ export const Header = styled.header`
 
   .infos {
     display: flex;
-    gap: .8rem;
+    gap: 0.8rem;
 
     span {
       font-size: 1.6rem;
       font-weight: 500;
       line-height: 120%;
 
-      background: #CCC;
-      border-radius: .4rem;
-      padding: .4rem .8rem;
+      background: #ccc;
+      border-radius: 0.4rem;
+      padding: 0.4rem 0.8rem;
     }
   }
 
@@ -61,7 +60,7 @@ export const Title = styled.h2`
 `;
 
 export const ProductImage = styled.img`
-  border-radius: .4rem;
+  border-radius: 0.4rem;
   height: 3.2rem;
   object-fit: cover;
   width: 4.8rem;
@@ -75,11 +74,11 @@ export const ActionButton = styled.button`
   justify-content: center;
   align-items: center;
 
-  padding: .8rem;
+  padding: 0.8rem;
 `;
 
 export const CategoryContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: .8rem;
+  gap: 0.8rem;
 `;

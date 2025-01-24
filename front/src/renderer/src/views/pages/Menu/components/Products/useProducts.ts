@@ -8,8 +8,11 @@ export default function useProducts() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openNewProductModal, setOpenNewProductModal] = useState(false);
 
-  const [productBeingDeleted, setProductBeingDeleted] = useState<Product | null>(null);
-  const [productBeingEdited, setproductBeingEdited] = useState<Product | null>(null);
+  const [productBeingDeleted, setProductBeingDeleted] =
+    useState<Product | null>(null);
+  const [productBeingEdited, setproductBeingEdited] = useState<Product | null>(
+    null,
+  );
 
   const handleOpenEditModal = useCallback((product: Product) => {
     setproductBeingEdited(product);
@@ -44,10 +47,10 @@ export default function useProducts() {
   const hasProducts = products.length > 0;
 
   const sortedProducts = useMemo(
-    () => (
-      products
-        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
-    ),
+    () =>
+      products.sort((a, b) =>
+        a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+      ),
     [products],
   );
 

@@ -17,11 +17,11 @@ export default function LaunchScreen({ isLoading }: LaunchScreenProps) {
   return (
     <Transition show={isLoading}>
       <Container $isLeaving={!isLoading} ref={animatedElementRef}>
-      <div>
-        <img src={fraseSvg} alt="Marmeasy logo" />
-        <Spinner size={32} color="green" />
-      </div>
-    </Container>
+        <div>
+          <img src={fraseSvg} alt="Marmeasy logo" />
+          <Spinner size={32} color="green" />
+        </div>
+      </Container>
     </Transition>
   );
 }

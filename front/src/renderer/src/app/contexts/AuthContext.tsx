@@ -6,16 +6,18 @@ import useFindMeQuery from '../hooks/queries/useFindMeQuery';
 import toast from '../utils/toast';
 
 export interface AuthContextValue {
-  signedIn: boolean
-  signin(accessToken: string): void
-  signout(): void
+  signedIn: boolean;
+  signin(accessToken: string): void;
+  signout(): void;
 }
 
 export const AuthContext = createContext({} as AuthContextValue);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
-    const storedAccessToken = localStorage.getItem(localStorageKeys.ACCESS_TOKEN);
+    const storedAccessToken = localStorage.getItem(
+      localStorageKeys.ACCESS_TOKEN,
+    );
 
     return !!storedAccessToken;
   });
@@ -51,12 +53,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [isError, signout, isSuccess]);
 
   return (
-    <AuthContext.Provider value={{
-      signedIn: signedIn && isSuccess,
-      signin,
-      signout,
-    }}>
-      <LaunchScreen isLoading={isLoading}/>
+    <AuthContext.Provider
+      value={{
+        signedIn: signedIn && isSuccess,
+        signin,
+        signout,
+      }}
+    >
+      <LaunchScreen isLoading={isLoading} />
       {!isLoading && children}
     </AuthContext.Provider>
   );

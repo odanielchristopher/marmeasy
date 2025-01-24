@@ -7,19 +7,11 @@ interface TabsRootProps {
 }
 
 function TabsRoot({ children, defaultValue }: TabsRootProps) {
-  return (
-    <RdxTabs.Root defaultValue={defaultValue}>
-      {children}
-    </RdxTabs.Root>
-  );
+  return <RdxTabs.Root defaultValue={defaultValue}>{children}</RdxTabs.Root>;
 }
 
-function TabsList({ children }: { children: React.ReactNode}) {
-  return (
-    <RdxTabs.List>
-      {children}
-    </RdxTabs.List>
-  );
+function TabsList({ children }: { children: React.ReactNode }) {
+  return <RdxTabs.List>{children}</RdxTabs.List>;
 }
 
 interface TabTriggerProps {
@@ -28,11 +20,7 @@ interface TabTriggerProps {
 }
 
 function TabsTrigger({ text, value }: TabTriggerProps) {
-  return (
-    <StyledRdxTabTrigger value={value}>
-      {text}
-    </StyledRdxTabTrigger>
-  );
+  return <StyledRdxTabTrigger value={value}>{text}</StyledRdxTabTrigger>;
 }
 
 interface TabContentProps {
@@ -41,11 +29,7 @@ interface TabContentProps {
 }
 
 function TabsContent({ children, value }: TabContentProps) {
-  return (
-    <RdxTabs.Content value={value}>
-      {children}
-    </RdxTabs.Content>
-  );
+  return <RdxTabs.Content value={value}>{children}</RdxTabs.Content>;
 }
 
 export const Tabs = {

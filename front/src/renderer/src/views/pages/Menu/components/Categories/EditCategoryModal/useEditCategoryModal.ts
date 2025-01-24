@@ -24,9 +24,12 @@ const categoryFormSchema = z.object({
     .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
 });
 
-export type FormData = z.infer<typeof categoryFormSchema>
+export type FormData = z.infer<typeof categoryFormSchema>;
 
-export default function useEditCategoryModal(category: ProductCategory | null, onConfirm: () => void) {
+export default function useEditCategoryModal(
+  category: ProductCategory | null,
+  onConfirm: () => void,
+) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -39,13 +42,18 @@ export default function useEditCategoryModal(category: ProductCategory | null, o
     },
   });
 
-  const {mutateAsync: updateCategory, isPending: isLoading} = useMutation({
-    mutationFn: async (data: UpdateProductCategoryParams) => productCategoriesService.update(data),
+  const { mutateAsync: updateCategory, isPending: isLoading } = useMutation({
+    mutationFn: async (data: UpdateProductCategoryParams) =>
+      productCategoriesService.update(data),
     onSuccess: (updatedCategory: ProductCategory) => {
-      queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
-
-        return categories.map((category) => category.id === updatedCategory.id ? updatedCategory : category);
-      });
+      queryClient.setQueryData(
+        ['product-categories', 'getAll'],
+        (categories: ProductCategory[]) => {
+          return categories.map((category) =>
+            category.id === updatedCategory.id ? updatedCategory : category,
+          );
+        },
+      );
     },
   });
 

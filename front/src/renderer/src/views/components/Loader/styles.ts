@@ -24,5 +24,9 @@ export const Overlay = styled.div<OverlayProps>`
   width: 100%;
   z-index: 20;
 
-  ${({ $isLeaving }) => $isLeaving && css`animation: ${fadeOut} 0.2s`}
+  ${({ $isLeaving }) =>
+    $isLeaving &&
+    css`
+      animation: ${fadeOut} 0.2s;
+    `}
 `;

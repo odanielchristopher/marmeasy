@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
+import {
+  Actions,
+  ActionsButton,
+  Container,
+  Empty,
+  Header,
+  Main,
+} from './styles';
 
 import { useLocation } from 'react-router-dom';
 
@@ -44,12 +51,21 @@ export default function Aside({ area }: AsideProps) {
   return (
     <Container $area={area}>
       <Header>
-        <img src={fraseSvg} alt='Marmeasy' />
+        <img src={fraseSvg} alt="Marmeasy" />
       </Header>
 
       <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
-        {hasOrders && <ActionsButton $isActive={showAddOrders} onClick={handleShowAddOrders}>Adicionar pedido</ActionsButton>}
+        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>
+          Mostrar detalhes
+        </ActionsButton>
+        {hasOrders && (
+          <ActionsButton
+            $isActive={showAddOrders}
+            onClick={handleShowAddOrders}
+          >
+            Adicionar pedido
+          </ActionsButton>
+        )}
       </Actions>
 
       {!showClientData && (
@@ -66,12 +82,20 @@ export default function Aside({ area }: AsideProps) {
       )}
 
       {/* {showClientData && !hasOrders && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
-      {showClientData && showDetails && [
-        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
-      ]}
-      
-      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
+      {showClientData &&
+        showDetails && [
+          hasOrders ? (
+            <DetailsOrder key="detailsOrder" client={seletedClient} />
+          ) : (
+            <UpdateClientForm
+              key="updateClientForm"
+              client={seletedClient}
+              $isShow={showClientData}
+            />
+          ),
+        ]}
 
-    </Container >
+      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
+    </Container>
   );
 }

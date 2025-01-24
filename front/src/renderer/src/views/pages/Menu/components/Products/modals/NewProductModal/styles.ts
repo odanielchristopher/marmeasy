@@ -23,7 +23,7 @@ export const Content = styled.main`
   @media (max-width: ${widthBreak}) {
     flex-wrap: nowrap;
     align-self: center;
-    max-width: 42.0rem;
+    max-width: 42rem;
     max-height: 100%;
   }
 
@@ -61,16 +61,16 @@ export const ImageSection = styled.div`
     justify-content: space-between;
 
     .error {
-    align-items: center;
-    color: ${({ theme }) => theme.colors.red.dark};
-    display: flex;
-    gap: .6rem;
-    margin-top: .2rem;
+      align-items: center;
+      color: ${({ theme }) => theme.colors.red.dark};
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 0.2rem;
 
-    span {
-      font-size: 1.2rem;
+      span {
+        font-size: 1.2rem;
+      }
     }
-  }
   }
 `;
 

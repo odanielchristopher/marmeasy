@@ -18,10 +18,10 @@ export const Warning = styled.p`
 export const CategoryContainer = styled.div`
   align-items: center;
   border-radius: 7.5rem;
-  box-shadow: .0rem .0rem .3rem .0rem rgba(0, 0, 0, 0.10);
+  box-shadow: 0rem 0rem 0.3rem 0rem rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: center;
-  gap: .8rem;
+  gap: 0.8rem;
   padding: 1.4rem;
   margin-top: 2.4rem;
 `;
@@ -29,7 +29,7 @@ export const CategoryContainer = styled.div`
 export const CancelButton = styled.button`
   align-items: center;
   background: transparent;
-  border: .1rem solid transparent;
+  border: 0.1rem solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colors.black.main};
   display: flex;
@@ -38,14 +38,14 @@ export const CancelButton = styled.button`
   justify-content: center;
   height: 4.2rem;
   padding: 0 1.4rem;
-  transition: background .2s ease-in;
+  transition: background 0.2s ease-in;
 
   &:hover {
     color: ${({ theme }) => theme.colors.gray.main};
   }
 
   &:focus {
-    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+    outline: 0.1rem solid ${({ theme }) => theme.colors.green.main};
   }
 
   &:active {
@@ -72,8 +72,7 @@ export const Actions = styled.div`
     height: 4.8rem;
 
     &:nth-child(2) {
-      width: 18.0rem;
+      width: 18rem;
     }
   }
 `;
-
