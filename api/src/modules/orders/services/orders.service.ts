@@ -84,7 +84,14 @@ export class OrdersService {
     const updatedOrder = await this.ordersRepository.update({
       where: { id: order.id },
       data: { totalValue: totalValueOrder },
-      include: { items: true },
+      select: {
+        id: true,
+        clientId: true,
+        date: true,
+        totalValue: true,
+        discount: true,
+        items: true,
+      },
     });
 
     return updatedOrder;
@@ -104,7 +111,8 @@ export class OrdersService {
       throw new NotFoundException('Pedido não encontrado.');
     }
 
-    const newTotalValue = order.totalValue + order.discount - discount;
+    const newTotalValue =
+      order.totalValue + (order.discount ?? 0) - (discount ?? 0);
 
     const updatedItems = items.map((item) => ({
       where: { id: item.id },
@@ -119,6 +127,14 @@ export class OrdersService {
         items: {
           update: updatedItems,
         },
+      },
+      select: {
+        id: true,
+        clientId: true,
+        date: true,
+        totalValue: true,
+        discount: true,
+        items: true,
       },
     });
   }
