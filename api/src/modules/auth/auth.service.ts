@@ -1,7 +1,7 @@
 import {
-    ConflictException,
-    Injectable,
-    UnauthorizedException,
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersRepository } from 'src/shared/database/repositories/users.repository';
@@ -20,9 +20,7 @@ export class AuthService {
   async signin(signinDto: SigninDto) {
     const { email, password } = signinDto;
 
-    const user = await this.userRespository.findUnique({
-      where: { email },
-    });
+    const user = await this.userRespository.findUniqueByEmail({ email });
 
     if (!user) {
       throw new UnauthorizedException('Usuário não cadastrado.');
@@ -42,10 +40,7 @@ export class AuthService {
   async signup(signupDto: SignupDto) {
     const { name, email, password } = signupDto;
 
-    const emailTaken = await this.userRespository.findUnique({
-      where: { email },
-      select: { id: true },
-    });
+    const emailTaken = await this.userRespository.findUniqueByEmail({ email });
 
     if (emailTaken) {
       throw new ConflictException('Esse e-mail já está em uso.');
@@ -53,21 +48,15 @@ export class AuthService {
 
     const hashedPassword = await hash(password, 10);
 
-    const user = await this.userRespository.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        productCategories: {
-          createMany: {
-            data: [
-              { icon: '🍝', name: 'marmitas' },
-              { icon: '🍹', name: 'bebidas' },
-              { icon: '🍟', name: 'lanches' },
-            ],
-          },
-        },
-      },
+    const user = await this.userRespository.create({ 
+      data: { name, email, password: hashedPassword },
+      relations: {
+        productCategories: [
+          { icon: '🍝', name: 'marmitas' },
+          { icon: '🍹', name: 'bebidas' },
+          { icon: '🍟', name: 'lanches' },
+        ],
+      }
     });
 
     const accessToken = await this.generateAccessToken(user.id);

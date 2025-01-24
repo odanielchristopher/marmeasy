@@ -1,7 +1,7 @@
 import {
-    ConflictException,
-    Injectable,
-    UnauthorizedException,
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
@@ -19,13 +19,9 @@ export class UsersService {
   async getUserById(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    return this.usersRepository.findUnique({
-      where: { id: userId },
-      select: {
-        name: true,
-        email: true,
-      },
-    });
+    const { id, email, name } = await this.usersRepository.findUniquetById({ userId });
+
+    return { id, email, name };
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {
@@ -41,10 +37,8 @@ export class UsersService {
     }
 
     if (user.email !== updateUserDto.email) {
-      const emailAlredyInUse = await this.usersRepository.findUnique({
-        where: {
-          email: updateUserDto.email,
-        },
+      const emailAlredyInUse = await this.usersRepository.findUniqueByEmail({
+        email: updateUserDto.email,
       });
 
       if (emailAlredyInUse) {
@@ -57,28 +51,22 @@ export class UsersService {
       hashedNewPassword = await hash(updateUserDto.newPassword, 10);
     }
 
-    return this.usersRepository.update({
-      where: {
-        id: userId,
-      },
+    const { id, name, email } = await this.usersRepository.update({
+      userId,
       data: {
         name: updateUserDto.name,
         email: updateUserDto.email,
         password: updateUserDto.newPassword ? hashedNewPassword : user.password,
       },
-      select: {
-        name: true,
-        email: true,
-      },
     });
+
+    return { id, name, email };
   }
 
   async remove(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    await this.usersRepository.delete({
-      where: { id: userId },
-    });
+    await this.usersRepository.delete({ userId });
 
     return null;
   }

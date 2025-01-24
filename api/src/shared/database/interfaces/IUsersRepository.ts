@@ -1,38 +1,41 @@
 import { User } from 'src/modules/users/entities/user.entity';
 
 export interface IUsersRepository {
-  findUniqueById(
+  findUniquetById(
     findUniqueByIdDto: FindUniqueUserByIdDto,
   ): Promise<User | null>;
-  findFirstById(findFirstByIdDto: FindFirstUserByIdDto): Promise<User | null>;
-  findFirstByEmail(
-    findFirstByEmail: FindFirstUserByEmailDto,
+  findUniqueByEmail(
+    findUniqueByEmail: FindUniqueUserByEmailDto,
   ): Promise<User | null>;
   create(createUserDto: CreateUserDto): Promise<User | null>;
   update(updateUserDto: UpdateUserDto): Promise<User | null>;
-  delete(deleteUserDto: DeleteUserDto): void;
+  delete(deleteUserDto: DeleteUserDto): Promise<void>;
 }
 
 export type FindUniqueUserByIdDto = {
-  id: string;
+  userId: string;
 };
 
 export type FindFirstUserByIdDto = {
-  id: string;
+  userId: string;
 };
 
-export type FindFirstUserByEmailDto = {
+export type FindUniqueUserByEmailDto = {
   email: string;
 };
 
 export type CreateUserDto = {
   data: User;
+  relations?: {
+    productCategories?: { icon: string, name: string }[],
+  }
 };
 
 export type UpdateUserDto = {
+  userId: string;
   data: User;
 };
 
 export type DeleteUserDto = {
-  id: string;
+  userId: string;
 };
