@@ -12,7 +12,7 @@ interface DatePickerInputProps {
   onChange?(date: Date): void;
 }
 
-export function DatePickerInput({ className, value, onChange, error }: DatePickerInputProps) {
+export default function DatePickerInput({ className, value, onChange, error }: DatePickerInputProps) {
   const [selectedDate, setSelectedDate] = useState(value ?? new Date());
 
   function handleChangeDate(date: Date) {

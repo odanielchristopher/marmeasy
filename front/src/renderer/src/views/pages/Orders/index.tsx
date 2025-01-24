@@ -65,10 +65,9 @@ export default function Clients() {
         <div className="date-container">
           <p>Escolha um período</p>
         </div>
-
-        <div className="date-container">
+        <div>
           <DatePickerInput />
-          </div>
+        </div>
       </div>
 
 
