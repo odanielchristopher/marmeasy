@@ -66,13 +66,15 @@ export default function Clients() {
         </div>
       </div>
 
-
       {isLoading && <Loader $isLoading size={50} />}
 
       {!isLoading && (
         <Content>
           {hasClient && (
-            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
+            <ClientList
+              onDeleteClient={handleDeleteClient}
+              clients={filteredClients}
+            />
           )}
 
           {isSearchEmpty && (
@@ -84,5 +86,5 @@ export default function Clients() {
         </Content>
       )}
     </Container>
-);
+  );
 }

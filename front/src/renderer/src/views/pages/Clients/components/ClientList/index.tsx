@@ -17,20 +17,29 @@ export default function ClientList({ clients, onDeleteClient }: CardListProps) {
     <>
       {clients.map((client) => (
         <Container key={client.id}>
-          <button onClick={() => {
-            onDeleteClient(client);
-            handleHiddenClientData();
-          }} className="deleteButton">
+          <button
+            onClick={() => {
+              onDeleteClient(client);
+              handleHiddenClientData();
+            }}
+            className="deleteButton"
+          >
             <DeleteIcon />
           </button>
           <Content onClick={() => handleShowClientData(client)}>
             <Header>
               <div className="infos">
-                <div className='infos-header'>
+                <div className="infos-header">
                   <strong>{client.name}</strong>
-                  <span>{client.type === 'FISICO' ? 'cliente' : 'empresa'}</span>
+                  <span>
+                    {client.type === 'FISICO' ? 'cliente' : 'empresa'}
+                  </span>
                 </div>
-                <span>{client.phone ? formatPhone(client.phone ?? '') : 'Sem telefone'}</span>
+                <span>
+                  {client.phone
+                    ? formatPhone(client.phone ?? '')
+                    : 'Sem telefone'}
+                </span>
               </div>
             </Header>
             <Main>

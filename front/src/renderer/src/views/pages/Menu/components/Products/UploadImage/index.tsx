@@ -12,10 +12,14 @@ interface UploadImageProps {
   onRemoveImg?(): void;
 }
 
-export default function UploadImage({ previewImageUrl, onUpload, onRemoveImg }: UploadImageProps) {
+export default function UploadImage({
+  previewImageUrl,
+  onUpload,
+  onRemoveImg,
+}: UploadImageProps) {
   return (
     <Container>
-      {(previewImageUrl && onRemoveImg) && (
+      {previewImageUrl && onRemoveImg && (
         <button className="remove" onClick={onRemoveImg}>
           <RxCrossCircled size={24} />
         </button>

@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface ILinkNavigation {
-  active?: boolean
+  active?: boolean;
 }
 
 interface IContainer {
-  margin?: string
+  margin?: string;
   $area: string;
 }
 
@@ -54,7 +54,7 @@ export const LinkNavigation = styled.button<ILinkNavigation>`
   color: ${({ theme }) => theme.colors.black.main};
   display: flex;
   flex-direction: column;
-  gap: .8rem;
+  gap: 0.8rem;
   transition: all ease-in 100ms;
 
   span {
@@ -92,7 +92,7 @@ export const StyledLink = styled(Link)<ILinkNavigation>`
   color: ${({ theme }) => theme.colors.black.main};
   display: flex;
   flex-direction: column;
-  gap: .8rem;
+  gap: 0.8rem;
   transition: all ease-in 100ms;
   text-decoration: none;
 
@@ -121,6 +121,5 @@ export const StyledLink = styled(Link)<ILinkNavigation>`
       span {
         text-decoration: underline;
       }
-    `
-  }
+    `}
 `;

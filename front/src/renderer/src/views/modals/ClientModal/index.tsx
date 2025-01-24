@@ -14,7 +14,10 @@ interface ClientModalProps {
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useClientModal(isOpen, onClose);
+  const { errors, handleSubmit, isLoading, register, control } = useClientModal(
+    isOpen,
+    onClose,
+  );
 
   return (
     <Modal open={isOpen} title="Novo cliente" onClose={onClose}>
@@ -22,8 +25,8 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         <p>Digite as informações do seu cliente.</p>
 
         <BalanceContainer>
-          <span className='label'>Saldo inicial</span>
-          <div className='input'>
+          <span className="label">Saldo inicial</span>
+          <div className="input">
             <span>R$</span>
             <Controller
               control={control}
@@ -64,7 +67,11 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
           )}
         />
 
-        <Input type="text" placeholder="Endereço do cliente" {...register('address')} />
+        <Input
+          type="text"
+          placeholder="Endereço do cliente"
+          {...register('address')}
+        />
         <Controller
           control={control}
           name="cpf"

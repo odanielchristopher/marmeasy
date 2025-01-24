@@ -22,10 +22,12 @@ const contentShow = keyframes`
 `;
 
 interface DialogContentProps {
-  $maxWidth?: string
+  $maxWidth?: string;
 }
 
-export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>`
+export const StyledRdxDialogContent = styled(
+  Dialog.Content,
+)<DialogContentProps>`
   animation: ${contentShow} 0.3s forwards;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};

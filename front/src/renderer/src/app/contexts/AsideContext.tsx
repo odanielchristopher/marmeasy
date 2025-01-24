@@ -25,12 +25,14 @@ export function AsideProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AsideContext.Provider value={{
-      handleShowClientData,
-      handleHiddenClientData,
-      showClientData,
-      seletedClient
-    }}>
+    <AsideContext.Provider
+      value={{
+        handleShowClientData,
+        handleHiddenClientData,
+        showClientData,
+        seletedClient,
+      }}
+    >
       {children}
     </AsideContext.Provider>
   );

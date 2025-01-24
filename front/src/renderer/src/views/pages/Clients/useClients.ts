@@ -10,8 +10,11 @@ import { useMemo, useState } from 'react';
 export default function useClient() {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] = useState(false);
-  const [clientBeingDeleted, setClientBeingDeleted] = useState<Client | null>(null);
+  const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] =
+    useState(false);
+  const [clientBeingDeleted, setClientBeingDeleted] = useState<Client | null>(
+    null,
+  );
 
   function handleDeleteClient(client: Client) {
     setClientBeingDeleted(client);
@@ -24,15 +27,14 @@ export default function useClient() {
 
   async function handleOnConfirmDeleteClient() {
     try {
-      await deleteClient({id: clientBeingDeleted!.id});
+      await deleteClient({ id: clientBeingDeleted!.id });
 
       toast({
         type: 'success',
-        text: (
+        text:
           clientBeingDeleted?.type === 'FISICO'
             ? 'Cliente removido'
-            : 'Empresa removida'
-        ),
+            : 'Empresa removida',
       });
     } catch {
       toast({
@@ -47,12 +49,16 @@ export default function useClient() {
       return clientsService.remove(data);
     },
     onSuccess: () => {
-      queryClient.setQueryData(['clients', 'getAll'], (oldClients: Client[]) => {
-        return oldClients.filter((client) => client.id !== clientBeingDeleted!.id);
-      });
+      queryClient.setQueryData(
+        ['clients', 'getAll'],
+        (oldClients: Client[]) => {
+          return oldClients.filter(
+            (client) => client.id !== clientBeingDeleted!.id,
+          );
+        },
+      );
     },
   });
-
 
   const { clients, isLoading } = useClientsQuery();
 
@@ -61,11 +67,12 @@ export default function useClient() {
   }
 
   const filteredClients = useMemo(
-    () => (
+    () =>
       clients
-        .filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase()))
-        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
-    ),
+        .filter((contact) =>
+          contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        )
+        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],
   );
 

@@ -19,8 +19,8 @@ export default function NavLayout() {
     <ModalsProvider>
       <AsideProvider>
         <ProfileModal />
-        <Container $showAside={showAside} >
-          <Navigation $area='nav'/>
+        <Container $showAside={showAside}>
+          <Navigation $area="nav" />
           <Main>
             <Outlet />
           </Main>

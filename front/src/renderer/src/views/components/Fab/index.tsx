@@ -23,8 +23,14 @@ export default function Fab() {
 
   return (
     <Container>
-      <ClientModal isOpen={isOpenModalClient} onClose={handleCloseClientModal} />
-      <CompanyModal isOpen={isOpenModalCompany} onClose={handleCloseCompanyModal} />
+      <ClientModal
+        isOpen={isOpenModalClient}
+        onClose={handleCloseClientModal}
+      />
+      <CompanyModal
+        isOpen={isOpenModalCompany}
+        onClose={handleCloseCompanyModal}
+      />
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <StyledButton>
@@ -39,7 +45,10 @@ export default function Fab() {
               Novo cliente
             </StyledItem>
           </DropdownMenu.Item>
-          <DropdownMenu.Item onSelected={() => handleOpenCompanyModal()} asChild>
+          <DropdownMenu.Item
+            onSelected={() => handleOpenCompanyModal()}
+            asChild
+          >
             <StyledItem>
               <BusinessIcon />
               Nova empresa

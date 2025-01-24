@@ -13,7 +13,10 @@ export interface EditMeResponse {
 }
 
 export async function editMe(params: EditMeParams) {
-  const { data } = await httpClient.put<EditMeResponse>('/users/edit-me', params);
+  const { data } = await httpClient.put<EditMeResponse>(
+    '/users/edit-me',
+    params,
+  );
 
   return data;
 }

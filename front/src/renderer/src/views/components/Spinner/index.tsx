@@ -5,7 +5,6 @@ export interface SpinnerProps {
   color?: string;
 }
 
-
 export default function Spinner({ size, color }: SpinnerProps) {
   return <StyledSpinner size={size} color={color} />;
 }
