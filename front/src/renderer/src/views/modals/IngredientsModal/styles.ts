@@ -15,9 +15,10 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
 
-    input {
-      border-radius: 8px;
+    div {
+      width: 20%;
     }
   }
 `;

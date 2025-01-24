@@ -43,7 +43,7 @@ export default function AddOrder({ client }: AddOrderProps) {
             {isLoadingCategories ? (
                 <div className="ingredient-loader">
                     <Loader $isLoading size={24} />
-                </div>//! estilizar o loading
+                </div>
             ) : (
                 <footer>
                     <ul className='categoriesOptions'>

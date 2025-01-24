@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '@renderer/views/components/Modal';
-import { CheckBoxStyle, Container } from './styles';
-import { IngredientBox } from './styles';
+import { CheckBoxStyle, Container, IngredientBox } from './styles';
 import { Product } from '@renderer/app/entities/Product';
 import { Input } from '@renderer/views/components/Input';
 import * as Checkbox from '@radix-ui/react-checkbox';
@@ -19,44 +18,52 @@ interface IngredientsModalProps {
 }
 
 export default function IngredientsModal({ open, answer, onClose, product }: IngredientsModalProps) {
+  const [selectedIngredients, setSelectedIngredients] = useState<{ [key: string]: boolean }>({});
+
+  const handleCheckboxChange = (ingredientId: string) => {
+    setSelectedIngredients((prev) => ({
+      ...prev,
+      [ingredientId]: !prev[ingredientId],
+    }));
+  };
 
   return (
-    <Modal
-      open={open}
-      title="Ingredientes"
-      onClose={onClose}>
-        
-        <Container>
-          {answer}
-          <div>
-            <div key={product.id}>
-              {product.ingredients.map((ingredient) => {
-                // const isChecked = selectedIngredientsIds.some((ingredient) => ingredientsId === ingredient.id);
-                const [isChecked, setIsChecked] = useState(false);
-                
-                // console.log(ingredient.id);
-                return (
-                    <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id}>
-                      <IngredientBox>
-                        {ingredient.icon}
-                      </IngredientBox>
+    <Modal open={open} title="Ingredientes" onClose={onClose}>
+      <Container>
+        {answer}
+        <div>
+          <div key={product.id}>
+            {product.ingredients.map((ingredient) => {
+              const isChecked = selectedIngredients[ingredient.id] || false;
 
-                      {/* onCheckedChange={() => onSelected(ingredient)} checked={isChecked} */}
-                      <CheckBoxStyle id={ingredient.id} onCheckedChange={ () => setIsChecked(!isChecked) } checked={isChecked}>
-                        <Checkbox.Indicator className="indicator">
-                          <FaCheck size={10} />
-                        </Checkbox.Indicator>
-                      </CheckBoxStyle>
-                  </label>
-              )})}
-            </div>
+              return (
+                <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id} onClick={() => handleCheckboxChange(ingredient.id)}>
+                  <IngredientBox>
+                    {ingredient.icon}
+                    {ingredient.name}
+                    <CheckBoxStyle
+                      id={ingredient.id}
+                      checked={isChecked}
+                    >
+                    <Checkbox.Indicator className="indicator">
+                      <FaCheck size={10} />
+                    </Checkbox.Indicator>
+                  </CheckBoxStyle>
+                  </IngredientBox>
+                </label>
+              );
+            })}
           </div>
-          <div className='quantity-box'>
-            <p>Quantidade*:</p>
-            {/*//! mudar para react-hook-form */}
-            <Input type="number" name={'quantity'} />
-          </div>
-        </Container>
+        </div>
+        <div className='quantity-box'>
+          <p>Quantidade*:</p>
+          <Input type="number" name={'quantity'} />
+        </div>
+
+        <button onClick={onClose}>Cancelar</button>
+        <button onClick={onClose}>Adicionar</button>
+        
+      </Container>
     </Modal>
   );
 }
