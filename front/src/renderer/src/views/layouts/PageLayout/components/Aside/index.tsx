@@ -12,8 +12,9 @@ import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
-import AddOrder from './AddOrder';
 import UpdateClientForm from './UpdateClientForm';
+// import AddOrder from './AddOrder';
+
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
@@ -24,19 +25,14 @@ interface AsideProps {
 
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
-  const [showAddOrders, setShowAddOrders] = useState(false);
+  // const [showAddOrders, setShowAddOrders] = useState(false);
 
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
-    setShowAddOrders(false);
   }
 
-  function handleShowAddOrders() {
-    setShowAddOrders(true);
-    setShowDetails(false);
-  }
 
   useEffect(() => {
     return () => {
@@ -55,17 +51,8 @@ export default function Aside({ area }: AsideProps) {
       </Header>
 
       <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>
-          Mostrar detalhes
-        </ActionsButton>
-        {hasOrders && (
-          <ActionsButton
-            $isActive={showAddOrders}
-            onClick={handleShowAddOrders}
-          >
-            Adicionar pedido
-          </ActionsButton>
-        )}
+        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
+
       </Actions>
 
       {!showClientData && (
@@ -81,19 +68,11 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {/* {showClientData && !hasOrders && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
-      {showClientData &&
-        showDetails && [
-          hasOrders ? (
-            <DetailsOrder key="detailsOrder" client={seletedClient} />
-          ) : (
-            <UpdateClientForm
-              key="updateClientForm"
-              client={seletedClient}
-              $isShow={showClientData}
-            />
-          ),
-        ]}
+      {/* {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
+      {showClientData && showDetails && [
+        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
+      ]}
+
 
       {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
     </Container>

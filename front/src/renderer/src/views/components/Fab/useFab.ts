@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 export const useFab = () => {
   const [isOpenModalClient, setOpenModalClient] = useState(false);
   const [isOpenModalCompany, setOpenModalCompany] = useState(false);
+  const [isOpenOrderModal, setOpenOrderModal] = useState(false);
 
   const handleOpenClientModal = useCallback(() => {
     setOpenModalClient(true);
@@ -24,6 +25,14 @@ export const useFab = () => {
     setOpenModalClient(false);
   }, []);
 
+  const handleOpenOrderModal = useCallback(() => {
+    setOpenOrderModal(true);
+  }, []);
+
+  const handleCloseOrderModal = useCallback(() => {
+    setOpenOrderModal(false);
+  }, []);
+
   return {
     isOpenModalClient,
     isOpenModalCompany,
@@ -32,5 +41,8 @@ export const useFab = () => {
     handleCloseClientModal,
     handleCloseCompanyModal,
     handleClientSubmit,
+    isOpenOrderModal,
+    handleOpenOrderModal,
+    handleCloseOrderModal,
   };
 };
