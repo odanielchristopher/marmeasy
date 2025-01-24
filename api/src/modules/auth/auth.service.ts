@@ -10,11 +10,13 @@ import { SignupDto } from './dto/signup.dto';
 
 import { compare, hash } from 'bcryptjs';
 import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepository';
+import { IAuthService } from './interfaces/IAuthService';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(
-    @Inject('IUsersRepository') private readonly userRespository: IUsersRepository,
+    @Inject('IUsersRepository')
+    private readonly userRespository: IUsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -49,7 +51,7 @@ export class AuthService {
 
     const hashedPassword = await hash(password, 10);
 
-    const user = await this.userRespository.create({ 
+    const user = await this.userRespository.create({
       data: { name, email, password: hashedPassword },
       relations: {
         productCategories: [
@@ -57,7 +59,7 @@ export class AuthService {
           { icon: '🍹', name: 'bebidas' },
           { icon: '🍟', name: 'lanches' },
         ],
-      }
+      },
     });
 
     const accessToken = await this.generateAccessToken(user.id);

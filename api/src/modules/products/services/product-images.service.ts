@@ -11,12 +11,7 @@ import * as path from 'path';
 export class ProducImagesService {
   private readonly uploadDirectory = path.resolve(process.cwd(), 'uploads');
 
-
-
-  
-
   async upload(image: Express.Multer.File) {
-console.log(this.uploadDirectory)
     if (!image.mimetype.startsWith('image/')) {
       throw new BadRequestException('Formato de arquivo inválido.');
     }

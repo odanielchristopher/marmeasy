@@ -3,8 +3,13 @@ import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepositor
 import { IValidateUserOwnershipService } from '../interfaces/IValidateUserOwnershipService';
 
 @Injectable()
-export class ValidateUserOwnershipService implements IValidateUserOwnershipService {
-  constructor(@Inject('IUsersRepository') private readonly usersRepository: IUsersRepository) {}
+export class ValidateUserOwnershipService
+  implements IValidateUserOwnershipService
+{
+  constructor(
+    @Inject('IUsersRepository')
+    private readonly usersRepository: IUsersRepository,
+  ) {}
 
   async validate(userId: string) {
     const isOwner = await this.usersRepository.findUniquetById({ userId });

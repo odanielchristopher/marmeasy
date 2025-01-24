@@ -34,7 +34,7 @@ import { UsersRepository } from './repositories/users.repository';
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
-    OrderItemsRepository
+    OrderItemsRepository,
   ],
 })
 export class DatabaseModule {}

@@ -3,8 +3,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
@@ -12,10 +10,10 @@ import {
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { OrdersService } from './services/orders.service';
-import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
 import { UpdateQuantityOrderItemDto } from './dto/update-order-item.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
+import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
+import { OrdersService } from './services/orders.service';
 
 @Controller('orders')
 export class OrdersController {
@@ -33,7 +31,6 @@ export class OrdersController {
   ) {
     return this.ordersService.findOneById(userId, orderId);
   }
-
 
   @Post()
   create(
@@ -59,7 +56,12 @@ export class OrdersController {
     @Param('orderItemId', ParseUUIDPipe) orderItemId: string,
     @Body() updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
   ) {
-    return this.ordersService.updateQuantityItem(userId, orderId, orderItemId, updateQuantityOrderItemDto);
+    return this.ordersService.updateQuantityItem(
+      userId,
+      orderId,
+      orderItemId,
+      updateQuantityOrderItemDto,
+    );
   }
   @Put('/status/:orderId')
   updateStatus(
@@ -67,7 +69,11 @@ export class OrdersController {
     @Param('orderId', ParseUUIDPipe) orderId: string,
     @Body() updateStatusOrderDto: UpdateStatusOrderDto,
   ) {
-    return this.ordersService.updateStatus(userId, orderId, updateStatusOrderDto);
+    return this.ordersService.updateStatus(
+      userId,
+      orderId,
+      updateStatusOrderDto,
+    );
   }
 
   @Delete(':orderId')

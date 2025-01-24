@@ -27,8 +27,8 @@ export type FindUniqueUserByEmailDto = {
 export type CreateUserDto = {
   data: User;
   relations?: {
-    productCategories?: { icon: string, name: string }[],
-  }
+    productCategories?: { icon: string; name: string }[];
+  };
 };
 
 export type UpdateUserDto = {

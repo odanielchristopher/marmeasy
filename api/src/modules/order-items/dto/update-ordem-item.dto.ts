@@ -1,10 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Transform } from 'class-transformer';
-import {
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-} from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateQuantityOrderItemDto {
   @Transform(({ value }) => {
@@ -27,7 +23,9 @@ export class UpdateQuantityOrderItemDto {
     }
   })
   @IsNotEmpty({ message: 'O total é obrigatória.' })
-  @IsNumber({ maxDecimalPlaces: 2 },
-     { message: 'O total precisa ser um número válido.' })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    { message: 'O total precisa ser um número válido.' },
+  )
   total: number;
 }

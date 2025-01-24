@@ -6,14 +6,16 @@ import {
   FindUniqueUserByEmailDto,
   FindUniqueUserByIdDto,
   IUsersRepository,
-  UpdateUserDto
+  UpdateUserDto,
 } from '../interfaces/IUsersRepository';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class UsersRepository implements IUsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  async findUniquetById(findUniqueByIdDto: FindUniqueUserByIdDto): Promise<User | null> {
+  async findUniquetById(
+    findUniqueByIdDto: FindUniqueUserByIdDto,
+  ): Promise<User | null> {
     const { userId } = findUniqueByIdDto;
 
     const findedUser = await this.prismaService.user.findUnique({
@@ -28,8 +30,10 @@ export class UsersRepository implements IUsersRepository {
 
     return findedUser;
   }
-  
-  async findUniqueByEmail(findUniqueByEmail: FindUniqueUserByEmailDto): Promise<User | null> {
+
+  async findUniqueByEmail(
+    findUniqueByEmail: FindUniqueUserByEmailDto,
+  ): Promise<User | null> {
     const { email } = findUniqueByEmail;
 
     const findedUser = await this.prismaService.user.findUnique({
@@ -46,7 +50,10 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User | null> {
-    const { data, relations: { productCategories } } = createUserDto;
+    const {
+      data,
+      relations: { productCategories },
+    } = createUserDto;
 
     const newUser = await this.prismaService.user.create({
       data: {
@@ -55,14 +62,14 @@ export class UsersRepository implements IUsersRepository {
           createMany: {
             data: productCategories,
           },
-        }
+        },
       },
       select: {
         id: true,
         name: true,
         email: true,
         password: true,
-      }
+      },
     });
 
     return newUser;
@@ -72,7 +79,7 @@ export class UsersRepository implements IUsersRepository {
     const { data, userId } = updateUserDto;
 
     const updatedUser = await this.prismaService.user.update({
-      where: { id: userId, },
+      where: { id: userId },
       data,
       select: {
         id: true,
