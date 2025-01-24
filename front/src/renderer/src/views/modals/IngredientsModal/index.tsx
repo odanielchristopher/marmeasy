@@ -15,9 +15,10 @@ interface IngredientsModalProps {
   answer: string;
   onConfirm(): void;
   product: Product;
+  title: string;
 }
 
-export default function IngredientsModal({ open, answer, onClose, product }: IngredientsModalProps) {
+export default function IngredientsModal({ open, answer, onClose, product, title }: IngredientsModalProps) {
   const [selectedIngredients, setSelectedIngredients] = useState<{ [key: string]: boolean }>({});
 
   const handleCheckboxChange = (ingredientId: string) => {
@@ -28,7 +29,7 @@ export default function IngredientsModal({ open, answer, onClose, product }: Ing
   };
 
   return (
-    <Modal open={open} title="Ingredientes" onClose={onClose}>
+    <Modal open={open} title={title} onClose={onClose}>
       <Container>
         {answer}
         <div>

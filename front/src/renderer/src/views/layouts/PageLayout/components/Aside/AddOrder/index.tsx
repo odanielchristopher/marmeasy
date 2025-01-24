@@ -76,13 +76,12 @@ export default function AddOrder({ client }: AddOrderProps) {
                                                 <IngredientModal
                                                     open={openModalIngredients}
                                                     onClose={handleCloseModalIngredients}
-                                                    answer={ hasIngredients ? 'Escolha os ingredientes que serão adicionados ao pedido' : 'Escolha a quantidade de itens'}
+                                                    answer={hasIngredients ? 'Escolha os ingredientes que serão adicionados ao pedido' : 'Escolha a quantidade de itens'}
                                                     product={selectedProduct}
                                                     onConfirm={() => {
                                                         //! to-do
                                                         handleCloseModalIngredients();
-                                                    }}
-                                                />
+                                                    } } title={''}                                                />
                                             )}
                                         </div>
                                     </div>
