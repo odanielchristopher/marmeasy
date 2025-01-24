@@ -1,8 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IIngredientsRepository } from 'src/shared/database/interfaces/ingredients-repository.interface';
+import { IValidateIngredientOwnershipService } from '../interfaces/validate-ingredient-ownership-service.interface';
 
 @Injectable()
-export class ValidateIngredientOwnershipService {
+export class ValidateIngredientOwnershipService
+  implements IValidateIngredientOwnershipService
+{
   constructor(
     @Inject(IIngredientsRepository)
     private readonly ingredientsRepository: IIngredientsRepository,

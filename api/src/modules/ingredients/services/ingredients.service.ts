@@ -3,16 +3,18 @@ import { CreateProductCategoryDto } from 'src/modules/product-categories/dto/cre
 import { UpdateProductCategoryDto } from 'src/modules/product-categories/dto/update-product-category.dto';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IIngredientsRepository } from 'src/shared/database/interfaces/ingredients-repository.interface';
-import { ValidateIngredientOwnershipService } from './validate-ingredient-ownership.service';
+import { IIngredientsService } from '../interfaces/ingredients-service.interface';
+import { IValidateIngredientOwnershipService } from '../interfaces/validate-ingredient-ownership-service.interface';
 
 @Injectable()
-export class IngredientsService {
+export class IngredientsService implements IIngredientsService {
   constructor(
     @Inject(IIngredientsRepository)
     private readonly ingredientsRepository: IIngredientsRepository,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
-    private readonly validateIngredientOwnershipService: ValidateIngredientOwnershipService,
+    @Inject(IValidateIngredientOwnershipService)
+    private readonly validateIngredientOwnershipService: IValidateIngredientOwnershipService,
   ) {}
 
   async findAllByUserId(userId: string) {
