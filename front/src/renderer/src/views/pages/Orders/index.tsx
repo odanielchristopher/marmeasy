@@ -2,7 +2,7 @@ import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
 import Select from '@renderer/views/components/Select';
-import Button from '@renderer/views/components/Button';
+import DatePickerInput from '@renderer/views/components/DatePickerInput';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
@@ -65,6 +65,10 @@ export default function Clients() {
         <div className="date-container">
           <p>Escolha um período</p>
         </div>
+
+        <div className="date-container">
+          <DatePickerInput />
+          </div>
       </div>
 
 
@@ -85,5 +89,5 @@ export default function Clients() {
         </Content>
       )}
     </Container>
-);
+  );
 }
