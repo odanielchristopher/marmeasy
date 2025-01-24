@@ -7,7 +7,7 @@ export class ValidateUserOwnershipService
   implements IValidateUserOwnershipService
 {
   constructor(
-    @Inject('IUsersRepository')
+    @Inject(IUsersRepository)
     private readonly usersRepository: IUsersRepository,
   ) {}
 

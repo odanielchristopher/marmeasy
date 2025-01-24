@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
-import { IProductCategoriesRepository } from 'src/shared/database/interfaces/product-categories-repository.interface copy';
+import { IProductCategoriesRepository } from 'src/shared/database/interfaces/product-categories-repository.interface';
 import { CreateProductCategoryDto } from '../dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from '../dto/update-product-category.dto';
 import { IProductCategoriesService } from '../interfaces/product-categories-service.interface';
@@ -9,7 +9,7 @@ import { IValidateProductCategoryOwnershipService } from '../interfaces/validate
 @Injectable()
 export class ProductCategoriesService implements IProductCategoriesService {
   constructor(
-    @Inject('IProductCategoriesRepository')
+    @Inject(IProductCategoriesRepository)
     private readonly productCategoriesRepository: IProductCategoriesRepository,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,

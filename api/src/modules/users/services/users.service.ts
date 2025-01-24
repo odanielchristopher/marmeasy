@@ -14,7 +14,7 @@ import { IValidateUserOwnershipService } from '../interfaces/validate-user-owner
 @Injectable()
 export class UsersService implements IUsersService {
   constructor(
-    @Inject('IUsersRepository')
+    @Inject(IUsersRepository)
     private readonly usersRepository: IUsersRepository,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,

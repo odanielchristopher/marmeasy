@@ -1,28 +1,94 @@
 import { Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { Ingredient } from 'src/modules/ingredients/entities/ingredient.entity';
+import {
+  CreateIngredientDto,
+  DeleteIngredientDto,
+  FindFirstIngredientDto,
+  FindManyIngredientsByIdDto,
+  IIngredientsRepository,
+  UpdateIngredientDto,
+} from '../interfaces/ingredients-repository.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
-export class IngredientsRespository {
+export class IngredientsRepository implements IIngredientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
+  async findManyByUserId(
+    findManyDto: FindManyIngredientsByIdDto,
+  ): Promise<Ingredient[]> {
+    const { userId, order } = findManyDto;
 
-  findMany(findManyDto: Prisma.IngredientFindManyArgs) {
-    return this.prismaService.ingredient.findMany(findManyDto);
+    const ingredients = await this.prismaService.ingredient.findMany({
+      where: { userId },
+      orderBy: {
+        name: order,
+      },
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+      },
+    });
+
+    return ingredients;
   }
 
-  findFirst(findFirstDto: Prisma.IngredientFindFirstArgs) {
-    return this.prismaService.ingredient.findFirst(findFirstDto);
+  async findFirstByUserId(
+    findFirstByIdDto: FindFirstIngredientDto,
+  ): Promise<Ingredient> {
+    const { userId, id } = findFirstByIdDto;
+
+    const findedIngredient = await this.prismaService.ingredient.findFirst({
+      where: { userId, id },
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+      },
+    });
+
+    return findedIngredient;
   }
 
-  create(createDto: Prisma.IngredientCreateArgs) {
-    return this.prismaService.ingredient.create(createDto);
+  async create(createIngredientDto: CreateIngredientDto): Promise<Ingredient> {
+    const { data, userId } = createIngredientDto;
+
+    const createdIngredient = await this.prismaService.ingredient.create({
+      data: {
+        ...data,
+        userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+      },
+    });
+
+    return createdIngredient;
   }
 
-  update(updateDto: Prisma.IngredientUpdateArgs) {
-    return this.prismaService.ingredient.update(updateDto);
+  async update(updateIngredientDto: UpdateIngredientDto): Promise<Ingredient> {
+    const { data, userId } = updateIngredientDto;
+
+    const updatedIngredient = await this.prismaService.ingredient.update({
+      where: { userId, id: data.id },
+      data,
+      select: {
+        id: true,
+        name: true,
+        icon: true,
+      },
+    });
+
+    return updatedIngredient;
   }
 
-  delete(deleteDto: Prisma.IngredientDeleteArgs) {
-    return this.prismaService.ingredient.delete(deleteDto);
+  async delete(deleteIngredientDto: DeleteIngredientDto): Promise<void> {
+    const { id, userId } = deleteIngredientDto;
+
+    await this.prismaService.ingredient.delete({
+      where: { userId, id },
+    });
   }
 }

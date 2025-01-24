@@ -8,7 +8,7 @@ import {
   FindManyProductCategoriesDto,
   IProductCategoriesRepository,
   UpdateProductCategoryDto,
-} from '../interfaces/product-categories-repository.interface copy';
+} from '../interfaces/product-categories-repository.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
@@ -40,9 +40,9 @@ export class ProductCategoriesRepository
   }
 
   async findFirstByUserId(
-    findUniqueDto: FindFirstProductCategoryDto,
+    findFirstByIdDto: FindFirstProductCategoryDto,
   ): Promise<ProductCategory | null> {
-    const { userId, id } = findUniqueDto;
+    const { userId, id } = findFirstByIdDto;
 
     const findedProductCategory =
       await this.prismaService.productCategory.findFirst({

@@ -15,7 +15,7 @@ import { IAuthService } from './interfaces/auth-service.interface';
 @Injectable()
 export class AuthService implements IAuthService {
   constructor(
-    @Inject('IUsersRepository')
+    @Inject(IUsersRepository)
     private readonly userRespository: IUsersRepository,
     private readonly jwtService: JwtService,
   ) {}

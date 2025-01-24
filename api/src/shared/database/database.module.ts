@@ -1,7 +1,10 @@
 import { Global, Module } from '@nestjs/common';
+import { IIngredientsRepository } from './interfaces/ingredients-repository.interface';
+import { IProductCategoriesRepository } from './interfaces/product-categories-repository.interface';
+import { IUsersRepository } from './interfaces/users-repository.interface';
 import { PrismaService } from './prisma.service';
 import { ClientsRespository } from './repositories/clients.repository';
-import { IngredientsRespository } from './repositories/ingredients.repository';
+import { IngredientsRepository } from './repositories/ingredients.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
 import { OrdersRespository } from './repositories/orders.repository';
 import { ProductCategoriesRepository } from './repositories/product-categories.repository';
@@ -15,31 +18,38 @@ import { UsersRepository } from './repositories/users.repository';
     UsersRepository,
     ClientsRespository,
     ProductCategoriesRepository,
-    IngredientsRespository,
+    IngredientsRepository,
     ProductsRespository,
     OrdersRespository,
     OrderItemsRepository,
     {
-      provide: 'IUsersRepository',
+      provide: IUsersRepository,
       useClass: UsersRepository,
     },
     {
-      provide: 'IProductCategoriesRepository',
+      provide: IProductCategoriesRepository,
       useClass: ProductCategoriesRepository,
+    },
+    {
+      provide: IIngredientsRepository,
+      useClass: IngredientsRepository,
     },
   ],
   exports: [
     {
-      provide: 'IUsersRepository',
+      provide: IUsersRepository,
       useClass: UsersRepository,
     },
     {
-      provide: 'IProductCategoriesRepository',
+      provide: IProductCategoriesRepository,
       useClass: ProductCategoriesRepository,
+    },
+    {
+      provide: IIngredientsRepository,
+      useClass: IngredientsRepository,
     },
     ClientsRespository,
     ProductCategoriesRepository,
-    IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
     OrderItemsRepository,

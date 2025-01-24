@@ -1,5 +1,9 @@
 import { ProductCategory } from 'src/modules/product-categories/entities/product-category.entity';
 
+export const IProductCategoriesRepository = Symbol(
+  'IProductCategoriesRepository',
+);
+
 export interface IProductCategoriesRepository {
   findManyByUserId(
     findManyDto: FindManyProductCategoriesDto,

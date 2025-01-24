@@ -1,13 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { IngredientsRespository } from 'src/shared/database/repositories/ingredients.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IIngredientsRepository } from 'src/shared/database/interfaces/ingredients-repository.interface';
 
 @Injectable()
 export class ValidateIngredientOwnershipService {
-  constructor(private readonly ingredientsRepository: IngredientsRespository) {}
+  constructor(
+    @Inject(IIngredientsRepository)
+    private readonly ingredientsRepository: IIngredientsRepository,
+  ) {}
 
-  async validate(userId: string, productCategoryId: string) {
-    const isOwner = await this.ingredientsRepository.findFirst({
-      where: { id: productCategoryId, userId },
+  async validate(userId: string, ingredientId: string) {
+    const isOwner = await this.ingredientsRepository.findFirstByUserId({
+      userId,
+      id: ingredientId,
     });
 
     if (!isOwner) {
