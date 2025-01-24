@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Actions, ActionsButton, Container, Empty, Header, Main } from './styles';
+import {
+  Actions,
+  ActionsButton,
+  Container,
+  Empty,
+  Header,
+  Main,
+} from './styles';
 
 import { useLocation } from 'react-router-dom';
 
@@ -7,6 +14,7 @@ import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import UpdateClientForm from './UpdateClientForm';
 // import AddOrder from './AddOrder';
+
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
@@ -39,11 +47,12 @@ export default function Aside({ area }: AsideProps) {
   return (
     <Container $area={area}>
       <Header>
-        <img src={fraseSvg} alt='Marmeasy' />
+        <img src={fraseSvg} alt="Marmeasy" />
       </Header>
 
       <Actions>
         <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
+
       </Actions>
 
       {!showClientData && (
@@ -64,6 +73,8 @@ export default function Aside({ area }: AsideProps) {
         hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
       ]}
 
-    </Container >
+
+      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
+    </Container>
   );
 }

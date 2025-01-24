@@ -28,7 +28,13 @@ interface SelectProps {
   onChange?(value: string): void;
 }
 
-export default function Select({ $error, options, onChange, placeholder, value }: SelectProps) {
+export default function Select({
+  $error,
+  options,
+  onChange,
+  placeholder,
+  value,
+}: SelectProps) {
   const [selectedValue, setSelectedValue] = useState(value ?? '');
 
   function handleSelect(value: string) {
@@ -59,10 +65,10 @@ export default function Select({ $error, options, onChange, placeholder, value }
               </StyledRdxSelectUpButton>
 
               <StyledRdxSelectViewport>
-                {options.map(option => (
-                  <StyledRdxSelectItem  key={option.value} value={option.value}>
-                  <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
-                </StyledRdxSelectItem>
+                {options.map((option) => (
+                  <StyledRdxSelectItem key={option.value} value={option.value}>
+                    <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
+                  </StyledRdxSelectItem>
                 ))}
               </StyledRdxSelectViewport>
 

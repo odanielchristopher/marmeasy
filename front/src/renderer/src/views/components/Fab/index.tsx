@@ -31,6 +31,7 @@ export default function Fab() {
       <ClientModal isOpen={isOpenModalClient} onClose={handleCloseClientModal} />
       <CompanyModal isOpen={isOpenModalCompany} onClose={handleCloseCompanyModal} />
       <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
+
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <StyledButton>
@@ -45,7 +46,10 @@ export default function Fab() {
               Novo cliente
             </StyledItem>
           </DropdownMenu.Item>
-          <DropdownMenu.Item onSelected={() => handleOpenCompanyModal()} asChild>
+          <DropdownMenu.Item
+            onSelected={() => handleOpenCompanyModal()}
+            asChild
+          >
             <StyledItem>
               <BusinessIcon />
               Nova empresa

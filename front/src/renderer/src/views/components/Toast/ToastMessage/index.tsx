@@ -20,7 +20,12 @@ interface IToastMessage {
   animatedRef?: React.RefObject<HTMLDivElement>;
 }
 
-export default function ToastMessage({ message, isLeaving, onRemoveMessage, animatedRef }: IToastMessage) {
+export default function ToastMessage({
+  message,
+  isLeaving,
+  onRemoveMessage,
+  animatedRef,
+}: IToastMessage) {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       onRemoveMessage(message.id);
@@ -30,7 +35,6 @@ export default function ToastMessage({ message, isLeaving, onRemoveMessage, anim
       clearTimeout(timeoutId);
     };
   }, [message, onRemoveMessage]);
-
 
   function handleRemoveToast() {
     onRemoveMessage(message.id);
@@ -45,8 +49,8 @@ export default function ToastMessage({ message, isLeaving, onRemoveMessage, anim
       $isLeaving={isLeaving}
       ref={animatedRef}
     >
-      {message.type === 'success' && <FaRegCircleCheck size={20}/>}
-      {message.type === 'danger' && <CgCloseO size={22}/>}
+      {message.type === 'success' && <FaRegCircleCheck size={20} />}
+      {message.type === 'danger' && <CgCloseO size={22} />}
       <strong>{message.text}</strong>
     </Container>
   );

@@ -7,8 +7,10 @@ export default function useCategories() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openNewCategoryModal, setOpenNewCategoryModal] = useState(false);
 
-  const [categoryBeignDeleted, setCategoryBeignDeleted] = useState<ProductCategory | null>(null);
-  const [categoryBeingEdited, setCategoryBeingEdited] = useState<ProductCategory | null>(null);
+  const [categoryBeignDeleted, setCategoryBeignDeleted] =
+    useState<ProductCategory | null>(null);
+  const [categoryBeingEdited, setCategoryBeingEdited] =
+    useState<ProductCategory | null>(null);
 
   const handleOpenEditModal = useCallback((category: ProductCategory) => {
     setCategoryBeingEdited(category);
@@ -43,10 +45,10 @@ export default function useCategories() {
   const hasCategories = categories.length > 0;
 
   const sortedCategories = useMemo(
-    () => (
-      categories
-        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
-    ),
+    () =>
+      categories.sort((a, b) =>
+        a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+      ),
     [categories],
   );
 

@@ -17,7 +17,7 @@ import {
 import useNavigation from './useNavigation';
 
 interface NavigationProps {
-  $area: string
+  $area: string;
 }
 
 export default function Navigation({ $area }: NavigationProps) {

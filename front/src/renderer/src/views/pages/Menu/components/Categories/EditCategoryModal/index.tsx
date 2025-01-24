@@ -11,20 +11,18 @@ interface EditProductModalProps {
   category: ProductCategory | null;
 }
 
-export default function EditCategoryModal({ open, onClose, category }: EditProductModalProps) {
-  const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useEditCategoryModal(category, onClose);
+export default function EditCategoryModal({
+  open,
+  onClose,
+  category,
+}: EditProductModalProps) {
+  const { errors, isLoading, register, handleSubmit } = useEditCategoryModal(
+    category,
+    onClose,
+  );
 
   return (
-    <Modal
-      title="Editar categoria"
-      open={open}
-      onClose={onClose}
-    >
+    <Modal title="Editar categoria" open={open} onClose={onClose}>
       <Container>
         <Form noValidate onSubmit={handleSubmit}>
           <p>Aqui estão os dados da categoria</p>
@@ -44,16 +42,12 @@ export default function EditCategoryModal({ open, onClose, category }: EditProdu
           />
 
           <Footer>
-            <CancelButton onClick={onClose}>
-              Cancelar
-            </CancelButton>
+            <CancelButton onClick={onClose}>Cancelar</CancelButton>
             <Button type="submit" isLoading={isLoading}>
               Salvar alterações
             </Button>
           </Footer>
         </Form>
-
-
       </Container>
     </Modal>
   );

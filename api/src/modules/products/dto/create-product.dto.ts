@@ -23,7 +23,7 @@ export class CreateProductDto {
       return Number(value);
     } catch {
       throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
+        'O valor do produto precisa ser um número válido.',
       );
     }
   })
@@ -41,14 +41,12 @@ export class CreateProductDto {
 
   @IsOptional()
   @Transform(({ value }) => {
-    // Converte o valor enviado (string JSON) para array
-    try {
-      return JSON.parse(value); // Converte o JSON stringificado em array
-    } catch {
-      throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
-      );
+    if (Array.isArray(value)) {
+      return value;
     }
+    throw new BadRequestException(
+      'Os ingredientes devem ser passados como um array válido.',
+    );
   })
   @IsArray({ message: 'Os ingredientes devem ser passados como um array.' })
   @IsUUID('4', {

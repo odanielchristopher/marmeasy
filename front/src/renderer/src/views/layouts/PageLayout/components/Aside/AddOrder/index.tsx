@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Client } from '@renderer/app/entities/Client';
 import { Input } from '@renderer/views/components/Input';
 import { Container, IconCategory, ProductList } from './styles';
@@ -93,4 +92,5 @@ export default function AddOrder({ client }: AddOrderProps) {
             )}
         </Container>
     );
+
 }

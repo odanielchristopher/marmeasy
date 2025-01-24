@@ -16,9 +16,18 @@ export interface InputProps {
   mask?: string;
 }
 
-export default function InputMask(
-  { type, placeholder, name, id, $error, isLoading, value, format, mask, onChangeValue } : InputProps,
-) {
+export default function InputMask({
+  type,
+  placeholder,
+  name,
+  id,
+  $error,
+  isLoading,
+  value,
+  format,
+  mask,
+  onChangeValue,
+}: InputProps) {
   const inputId = id ?? name;
 
   return (

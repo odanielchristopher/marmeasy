@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Form = styled.form`
-  margin-top: 4.0rem;
+  margin-top: 4rem;
 
   p {
     color: ${({ theme }) => theme.colors.black.main};
@@ -31,7 +31,7 @@ export const Form = styled.form`
   }
 
   button {
-    margin-top: 2.0rem;
+    margin-top: 2rem;
     width: 100%;
     height: 4.8rem;
 
@@ -52,18 +52,18 @@ export const BalanceContainer = styled.div`
   align-items: center;
 
   .label {
-    color: ${({ theme }) => theme.colors.gray.main };
+    color: ${({ theme }) => theme.colors.gray.main};
   }
 
   .input {
     display: flex;
     align-items: center;
-    gap: .8rem;
+    gap: 0.8rem;
 
-    width: 18.0rem;
+    width: 18rem;
 
     span {
-      color: ${({ theme }) => theme.colors.gray.main };
+      color: ${({ theme }) => theme.colors.gray.main};
       letter-spacing: -0.5px;
     }
   }

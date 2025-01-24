@@ -1,19 +1,19 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background-color: #FFF;
+  background-color: #fff;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   margin-top: 1.6rem;
   padding: 1.6rem;
   width: 100%;
-  max-width: 100.0rem;
+  max-width: 100rem;
 
   cursor: pointer;
   transition: all ease-in-out 0.2s;
 
   &:hover {
-    transform: translateY(-.4rem);
+    transform: translateY(-0.4rem);
   }
 
   position: relative;
@@ -34,7 +34,7 @@ export const Container = styled.div`
     z-index: 2;
 
     &:hover {
-      background: #F2F2F2;
+      background: #f2f2f2;
     }
   }
 `;
@@ -45,11 +45,11 @@ export const Content = styled.div`
   align-items: center;
 `;
 
-export const Left= styled.div`
+export const Left = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  height: 5.0rem;
+  height: 5rem;
   margin-bottom: 0.8rem;
 
   .infos {
@@ -61,7 +61,7 @@ export const Left= styled.div`
     .infos-left {
       display: flex;
       align-items: center;
-      gap: .8rem;
+      gap: 0.8rem;
 
       strong {
         font-size: 1.8rem;
@@ -69,13 +69,13 @@ export const Left= styled.div`
 
       span {
         background: ${({ theme }) => theme.colors.orange.lighter};
-        color: #FFFF;
+        color: #ffff;
         text-transform: uppercase;
         font-weight: 500;
         font-size: 1.2rem;
         letter-spacing: 0.02rem;
-        padding: .1rem 1.2rem;
-        border-radius: .2rem;
+        padding: 0.1rem 1.2rem;
+        border-radius: 0.2rem;
       }
     }
 
@@ -93,13 +93,13 @@ export const Right = styled.div`
   .infos {
     display: flex;
     flex-direction: column;
-    gap: .8rem;
+    gap: 0.8rem;
     color: ${({ theme }) => theme.colors.black.lighter};
 
     .infos-right {
       display: flex;
       align-items: center;
-      gap: .6rem;
+      gap: 0.6rem;
       color: ${({ theme }) => theme.colors.orange.lighter};
 
       span.date {
@@ -112,7 +112,6 @@ export const Right = styled.div`
       font-weight: 500;
     }
   }
-
 `;
 
 export const details = styled.div`
@@ -120,5 +119,5 @@ export const details = styled.div`
   justify-content: space-between;
   flex-direction: column;
   margin-bottom: 2.5rem;
-  background-color:red;
+  background-color: red;
 `;

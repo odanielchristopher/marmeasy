@@ -1,6 +1,5 @@
 import { httpClient } from '../httpClient';
 
-
 export interface FindMeResponse {
   name: string;
   email: string;

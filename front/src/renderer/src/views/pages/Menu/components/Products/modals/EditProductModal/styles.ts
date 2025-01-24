@@ -23,7 +23,7 @@ export const Content = styled.main`
   @media (max-width: ${widthBreak}) {
     flex-wrap: nowrap;
     align-self: center;
-    max-width: 42.0rem;
+    max-width: 42rem;
     max-height: 100%;
   }
 

@@ -12,8 +12,8 @@ export const Container = styled.div`
     align-items: center;
     color: ${({ theme }) => theme.colors.red.dark} !important;
     display: flex;
-    gap: .6rem;
-    margin-top: .2rem;
+    gap: 0.6rem;
+    margin-top: 0.2rem;
 
     span {
       font-size: 1.2rem;
@@ -32,11 +32,13 @@ export const StyledInput = styled(NumericFormat)<InputProps>`
   width: 100%;
   background-color: transparent;
 
-  ${({ theme, $error }) => $error && css`
-    color: ${theme.colors.red.main};
-
-    &::placeholder {
+  ${({ theme, $error }) =>
+    $error &&
+    css`
       color: ${theme.colors.red.main};
-    }
-  `}
+
+      &::placeholder {
+        color: ${theme.colors.red.main};
+      }
+    `}
 `;

@@ -15,17 +15,21 @@ import { useMutation } from '@tanstack/react-query';
 
 const schema = z.object({
   image: z.instanceof(File, { message: 'A imagem é obrigatória.' }).optional(),
-  name: z.string().min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+  name: z
+    .string()
+    .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
   description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
   categoryId: z.string({ required_error: 'A categoria é obrigatória.' }).uuid(),
   ingredientsIds: z.array(z.string().uuid()),
 });
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function useNewProductModal(onSuccess: () => void) {
-  const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(undefined);
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | undefined>(
+    undefined,
+  );
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
 
   const width = useWindowWidth();
@@ -71,23 +75,30 @@ export default function useNewProductModal(onSuccess: () => void) {
 
   function handleSelectedIngredients(ingredient: Ingredient) {
     const currentIngredients = selectedIngredientsIds || []; // Garante que é sempre um array
-    const isAlreadySelected = currentIngredients.some((ingredientId) => ingredientId === ingredient.id);
+    const isAlreadySelected = currentIngredients.some(
+      (ingredientId) => ingredientId === ingredient.id,
+    );
 
     if (isAlreadySelected) {
       // Remove o ingrediente se já estiver selecionado (toggle)
       setValue(
         'ingredientsIds',
-        currentIngredients.filter((ingredientId) => ingredientId !== ingredient.id),
+        currentIngredients.filter(
+          (ingredientId) => ingredientId !== ingredient.id,
+        ),
         { shouldValidate: true },
       );
     } else {
       // Adiciona o ingrediente
-      setValue('ingredientsIds', [...currentIngredients, ingredient.id], { shouldValidate: true });
+      setValue('ingredientsIds', [...currentIngredients, ingredient.id], {
+        shouldValidate: true,
+      });
     }
   }
 
   const { mutateAsync: createProduct, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateProductParams) => productsService.create(data),
+    mutationFn: async (data: CreateProductParams) =>
+      productsService.create(data),
     onSuccess: (newCategory: Product) => {
       queryClient.setQueryData(
         ['products', 'getAll'],
@@ -110,7 +121,6 @@ export default function useNewProductModal(onSuccess: () => void) {
         text: 'Ocorreu um erro ao tentar criar produto.',
       });
     }
-
   });
 
   return {
