@@ -56,7 +56,6 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             placeholder="Nome do cliente"
             maxLength={15}
             name='clientName'
-            //   {...register('clientName')}
             />
             
             <BoxCategories>

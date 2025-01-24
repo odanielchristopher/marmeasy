@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import UpdateClientForm from './UpdateClientForm';
-import AddOrder from './AddOrder';
+// import AddOrder from './AddOrder';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';

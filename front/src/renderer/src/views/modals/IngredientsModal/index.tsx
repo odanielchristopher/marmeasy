@@ -5,7 +5,9 @@ import { Product } from '@renderer/app/entities/Product';
 import { Input } from '@renderer/views/components/Input';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { FaCheck } from 'react-icons/fa6';
-import { StyledRdxCheckbox } from '@renderer/views/pages/Menu/components/Products/IngredientsSection/styles';
+// import { StyledRdxCheckbox } from '@renderer/views/pages/Menu/components/Products/IngredientsSection/styles';
+import Button from '@renderer/views/components/Button';
+
 
 interface IngredientsModalProps {
   open: boolean;
@@ -61,8 +63,9 @@ export default function IngredientsModal({ open, answer, onClose, product, title
           <Input type="number" name={'quantity'} />
         </div>
 
-        <button onClick={onClose}>Cancelar</button>
-        <button onClick={onClose}>Adicionar</button>
+        <Button>
+          Adicionar
+        </Button>
         
       </Container>
     </Modal>
