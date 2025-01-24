@@ -1,12 +1,15 @@
+// ! organizar as importações
 import React, { useState, useEffect } from 'react';
 import Modal from '@renderer/views/components/Modal';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
-import { IconCategory, BoxCategories, ProductList } from './styles';
+import { IconCategory, BoxCategories, ProductList, Container } from './styles';
 import useOrderModal from './useOrderModal';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
 import IngredientModal from '@renderer/views/modals/IngredientsModal';
 import { Product } from '@renderer/app/entities/Product';
+import Button from '@renderer/views/components/Button';
+import { Input } from '@renderer/views/components/Input';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -25,6 +28,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     handleCloseModalIngredients,
   } = useOrderModal(isOpen, onClose);
 
+
+  // ! organizar para o hook
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
 
   useEffect(() => {
@@ -45,38 +50,49 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     <>
       {!openModalIngredients && (
         <Modal open={isOrderModalOpen} title="Novo pedido" onClose={onClose}>
-          <input type="text" placeholder='nome do cliente' />
-          
-          <BoxCategories>
-            {categories.map((category) => (
-              <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
-                <div className="circle">
-                  {category.icon}
-                </div>
-                <p>{category.name}</p>
-              </IconCategory>
-            ))}
-          </BoxCategories>
-
-          <ul className='productsOptions'>
-            {selectedCategory && products.filter((product) => product.category.id === selectedCategory.id).map((product) => {
-              const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
-
-              return (
-                <ProductList key={product.id}>
-                  {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
-                  <div className='infos'>
-                    <strong>{product.name}</strong>
-                    <span>{product.description}</span>
-                    <div className="footer">
-                      <strong>R$ {formatCurrency(product.price)}</strong>
-                      <img src={Plus} alt="Adicionar" onClick={() => handleOpenIngredientModal(product)} />
+            <Container>
+            <Input 
+            type="text"
+            placeholder="Nome do cliente"
+            maxLength={15}
+            name='clientName'
+            //   {...register('clientName')}
+            />
+            
+            <BoxCategories>
+                {categories.map((category) => (
+                <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
+                    <div className="circle">
+                    {category.icon}
                     </div>
-                  </div>
-                </ProductList>
-              );
-            })}
-          </ul>
+                    <p>{category.name}</p>
+                </IconCategory>
+                ))}
+            </BoxCategories>
+
+            <ul className='productsOptions'>
+                {selectedCategory && products.filter((product) => product.category.id === selectedCategory.id).map((product) => {
+                const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
+
+                return (
+                        <ProductList key={product.id}>
+                        {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
+                        <div className='infos'>
+                            <strong>{product.name}</strong>
+                            <span>{product.description}</span>
+                            <div className="footer">
+                            <strong>R$ {formatCurrency(product.price)}</strong>
+                            <img src={Plus} alt="Adicionar" onClick={() => handleOpenIngredientModal(product)} />
+                            </div>
+                        </div>
+                        </ProductList>
+                );
+                })}
+            </ul>
+            <Button type="submit">
+                Fazer Pedido
+            </Button>
+            </Container>
         </Modal>
       )}
 

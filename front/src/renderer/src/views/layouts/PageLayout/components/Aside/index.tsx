@@ -17,19 +17,14 @@ interface AsideProps {
 
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
-  const [showAddOrders, setShowAddOrders] = useState(false);
+  // const [showAddOrders, setShowAddOrders] = useState(false);
 
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
-    setShowAddOrders(false);
   }
 
-  function handleShowAddOrders() {
-    setShowAddOrders(true);
-    setShowDetails(false);
-  }
 
   useEffect(() => {
     return () => {
@@ -49,7 +44,6 @@ export default function Aside({ area }: AsideProps) {
 
       <Actions>
         <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
-        {hasOrders && <ActionsButton $isActive={showAddOrders} onClick={handleShowAddOrders}>Adicionar pedido</ActionsButton>}
       </Actions>
 
       {!showClientData && (
@@ -65,12 +59,10 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {/* {showClientData && !hasOrders && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
+      {/* {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
       {showClientData && showDetails && [
         hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
       ]}
-      
-      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
 
     </Container >
   );
