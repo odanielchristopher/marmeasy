@@ -14,7 +14,7 @@ export class ProductsService {
     private readonly productsRepository: ProductsRespository,
     private readonly productImagesService: ProducImagesService,
     private readonly validateProductOwnershipService: ValidateProductOwnershipService,
-    @Inject('IValidateProductCategoryOwnershipService')
+    @Inject(IValidateProductCategoryOwnershipService)
     private readonly validateProductCategorieOwnershipService: IValidateProductCategoryOwnershipService,
     private readonly validadeIngredientsOwnershipService: ValidateIngredientOwnershipService,
   ) {}

@@ -15,7 +15,7 @@ import { IUsersService } from './interfaces/users-service.interface';
 @Controller('users')
 export class UsersController {
   constructor(
-    @Inject('IUsersService') private readonly usersService: IUsersService,
+    @Inject(IUsersService) private readonly usersService: IUsersService,
   ) {}
 
   @Get('/me')

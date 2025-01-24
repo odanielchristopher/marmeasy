@@ -19,7 +19,7 @@ import { IProductCategoriesService } from './interfaces/product-categories-servi
 @Controller('product-categories')
 export class ProductCategoriesController {
   constructor(
-    @Inject('IProductCategoriesService')
+    @Inject(IProductCategoriesService)
     private readonly productCategoriesService: IProductCategoriesService,
   ) {}
 

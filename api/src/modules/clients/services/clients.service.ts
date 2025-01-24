@@ -1,5 +1,5 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
@@ -9,7 +9,8 @@ import { ValidateClientOwnershipService } from './validate-client-ownership.serv
 export class ClientsService {
   constructor(
     private readonly clientsRepository: ClientsRespository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     private readonly validateClientOwnershipService: ValidateClientOwnershipService,
   ) {}
 

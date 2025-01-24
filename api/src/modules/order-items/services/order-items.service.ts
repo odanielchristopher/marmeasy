@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { OrderItemsRepository } from 'src/shared/database/repositories/order-items.repository';
 import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
 import { UpdateQuantityOrderItemDto } from '../dto/update-ordem-item.dto';
 import { ValidateOrderItemsOwnershipService } from './validate-product-order-item.service';
@@ -11,7 +11,8 @@ export class OrderItemsService {
   constructor(
     private readonly productsRepository: ProductsRespository,
     private readonly orderItemsRepository: OrderItemsRepository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     private readonly validateOrderItemsOwnershipService: ValidateOrderItemsOwnershipService,
   ) {}
 

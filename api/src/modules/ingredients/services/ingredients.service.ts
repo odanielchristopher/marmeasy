@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateProductCategoryDto } from 'src/modules/product-categories/dto/create-product-category.dto';
 import { UpdateProductCategoryDto } from 'src/modules/product-categories/dto/update-product-category.dto';
-import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IngredientsRespository } from 'src/shared/database/repositories/ingredients.repository';
 import { ValidateIngredientOwnershipService } from './validate-ingredient-ownership.service';
 
@@ -9,7 +9,8 @@ import { ValidateIngredientOwnershipService } from './validate-ingredient-owners
 export class IngredientsService {
   constructor(
     private readonly ingredientsRepository: IngredientsRespository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     private readonly validateIngredientOwnershipService: ValidateIngredientOwnershipService,
   ) {}
 

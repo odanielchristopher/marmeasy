@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderItemDto } from 'src/modules/order-items/dto/create-order-items.dto';
 import { OrderItemsService } from 'src/modules/order-items/services/order-items.service';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { OrdersRespository } from 'src/shared/database/repositories/orders.repository';
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateQuantityOrderItemDto } from '../dto/update-order-item.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
@@ -15,7 +15,8 @@ export class OrdersService {
   constructor(
     private readonly ordersRepository: OrdersRespository,
     private readonly orderItemsService: OrderItemsService,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     private readonly validateOrderOwnershipService: ValidateOrderOwnershipService,
   ) {}
 

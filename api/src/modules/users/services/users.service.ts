@@ -16,7 +16,7 @@ export class UsersService implements IUsersService {
   constructor(
     @Inject('IUsersRepository')
     private readonly usersRepository: IUsersRepository,
-    @Inject('IValidateUserOwnershipService')
+    @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
   ) {}
 

@@ -11,9 +11,9 @@ export class ProductCategoriesService implements IProductCategoriesService {
   constructor(
     @Inject('IProductCategoriesRepository')
     private readonly productCategoriesRepository: IProductCategoriesRepository,
-    @Inject('IValidateUserOwnershipService')
+    @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
-    @Inject('IValidateProductCategoryOwnershipService')
+    @Inject(IValidateProductCategoryOwnershipService)
     private readonly validateProductCategoryOwnershipService: IValidateProductCategoryOwnershipService,
   ) {}
 

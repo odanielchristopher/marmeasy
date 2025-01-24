@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from '../auth/auth.module';
+import { IUsersService } from './interfaces/users-service.interface';
+import { IValidateUserOwnershipService } from './interfaces/validate-user-ownership-service.interface';
 import { UsersService } from './services/users.service';
 import { ValidateUserOwnershipService } from './services/validate-user-ownership.service';
 import { UsersController } from './users.controller';
@@ -8,21 +10,18 @@ import { UsersController } from './users.controller';
   imports: [AuthModule],
   controllers: [UsersController],
   providers: [
-    UsersService,
-    ValidateUserOwnershipService,
     {
-      provide: 'IValidateUserOwnershipService',
+      provide: IValidateUserOwnershipService,
       useClass: ValidateUserOwnershipService,
     },
     {
-      provide: 'IUsersService',
+      provide: IUsersService,
       useClass: UsersService,
     },
   ],
   exports: [
-    ValidateUserOwnershipService,
     {
-      provide: 'IValidateUserOwnershipService',
+      provide: IValidateUserOwnershipService,
       useClass: ValidateUserOwnershipService,
     },
   ],
