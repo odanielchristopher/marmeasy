@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepository';
-import { IValidateUserOwnershipService } from '../interfaces/IValidateUserOwnershipService';
+import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { IValidateUserOwnershipService } from '../interfaces/validate-user-ownership-service.interface';
 
 @Injectable()
 export class ValidateUserOwnershipService

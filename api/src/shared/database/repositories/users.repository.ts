@@ -7,7 +7,7 @@ import {
   FindUniqueUserByIdDto,
   IUsersRepository,
   UpdateUserDto,
-} from '../interfaces/IUsersRepository';
+} from '../interfaces/users-repository.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()

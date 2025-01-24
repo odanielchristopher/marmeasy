@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IUsersService } from './interfaces/IUsersService';
+import { IUsersService } from './interfaces/users-service.interface';
 
 @Controller('users')
 export class UsersController {

@@ -7,9 +7,9 @@ import {
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepository';
-import { IUsersService } from '../interfaces/IUsersService';
-import { IValidateUserOwnershipService } from '../interfaces/IValidateUserOwnershipService';
+import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { IUsersService } from '../interfaces/users-service.interface';
+import { IValidateUserOwnershipService } from '../interfaces/validate-user-ownership-service.interface';
 
 @Injectable()
 export class UsersService implements IUsersService {

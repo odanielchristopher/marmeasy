@@ -9,8 +9,8 @@ import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { IUsersRepository } from 'src/shared/database/interfaces/IUsersRepository';
-import { IAuthService } from './interfaces/IAuthService';
+import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { IAuthService } from './interfaces/auth-service.interface';
 
 @Injectable()
 export class AuthService implements IAuthService {
