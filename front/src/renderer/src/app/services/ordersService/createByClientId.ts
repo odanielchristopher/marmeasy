@@ -1,39 +1,23 @@
-import { Product } from '@renderer/app/entities/Product';
+import { Order } from '@renderer/app/entities/Order';
 import { httpClient } from '../httpClient';
 
-export interface CreateProductParams {
-  image?: File;
+export type createItem = {
   name: string;
-  description?: string;
-  price: string;
-  categoryId: string;
-  ingredientsIds: string[];
+  unitPrice: number;
+  quantity: number;
+  total: number;
+};
+
+export interface CreateOrderParams {
+  clientId: string;
+  date: Date;
+  items: createItem[];
+  discount: number;
+  totalValue: number;
 }
 
-export async function createByClientId({
-  image,
-  name,
-  description,
-  price,
-  categoryId,
-  ingredientsIds,
-}: CreateProductParams) {
-  const formData = new FormData();
-
-  if (image) {
-    formData.append('image', image);
-  }
-
-  if (description) {
-    formData.append('description', description);
-  }
-
-  formData.append('name', name);
-  formData.append('price', price);
-  formData.append('categoryId', categoryId);
-  formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
-
-  const { data } = await httpClient.post<Product>('/products', formData);
+export async function createByClientId(params: CreateOrderParams) {
+  const { data } = await httpClient.post<Order>('/products', params);
 
   return data;
 }
