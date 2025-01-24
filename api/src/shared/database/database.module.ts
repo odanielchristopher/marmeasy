@@ -18,7 +18,7 @@ import { OrdersRespository } from './repositories/orders.repository';
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
-    OrderItemsRepository
+    OrderItemsRepository,
   ],
   exports: [
     UsersRespository,
@@ -27,7 +27,7 @@ import { OrdersRespository } from './repositories/orders.repository';
     IngredientsRespository,
     ProductsRespository,
     OrdersRespository,
-    OrderItemsRepository
+    OrderItemsRepository,
   ],
 })
 export class DatabaseModule {}

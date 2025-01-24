@@ -55,4 +55,3 @@ export class CreateProductDto {
   })
   ingredientsIds: string[];
 }
-

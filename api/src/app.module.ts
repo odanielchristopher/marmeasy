@@ -22,7 +22,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     ProductsModule,
     IngredientsModule,
     OrderItemsModule,
-    OrdersModule
+    OrdersModule,
   ],
   controllers: [],
   providers: [
