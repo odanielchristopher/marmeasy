@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -29,7 +29,7 @@ export const Container = styled.div`
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 18px;
     `;
 
 export const IconCategory = styled.li`
@@ -39,10 +39,9 @@ export const IconCategory = styled.li`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  gap: 8px;
+  gap: 5px;
   opacity: 0.5;
   font-weight: bold;
-  margin-bottom: 16px;
 
   &.active {
     opacity: 1;
@@ -57,7 +56,10 @@ export const IconCategory = styled.li`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
   }
 `;
 
