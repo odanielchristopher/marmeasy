@@ -68,13 +68,9 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {/* {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
       {showClientData && showDetails && [
-        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
+        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>,
       ]}
-
-
-      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
     </Container>
   );
 }
