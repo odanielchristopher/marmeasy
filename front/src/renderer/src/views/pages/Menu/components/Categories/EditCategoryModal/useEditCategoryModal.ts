@@ -14,7 +14,8 @@ export default function useEditCategoryModal(
   onConfirm: () => void,
 ) {
   const { mutateAsync: updateCategory, isPending: isLoading } = useMutation({
-    mutationFn: async (data: UpdateProductCategoryParams) => productCategoriesService.update(data),
+    mutationFn: async (data: UpdateProductCategoryParams) =>
+      productCategoriesService.update(data),
     onSuccess: (updatedCategory: ProductCategory) => {
       queryClient.setQueryData(
         ['product-categories', 'getAll'],

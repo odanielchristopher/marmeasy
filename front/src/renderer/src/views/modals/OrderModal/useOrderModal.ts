@@ -1,47 +1,72 @@
-import { useState } from 'react';
-import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
-import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { Product } from '@renderer/app/entities/Product';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
+import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
+import { useEffect, useState } from 'react';
 
-export default function useOrderModal(isOpen: boolean, onClose: () => void) {
-    const { categories, isLoading: isLoadingCategories } = useProductCategoriesQuery();
-    const { products, isLoading: isLoadingProducts } = useProductsQuery();
-    const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
-    const [orderDate, setOrderDate] = useState('');
-    const [openModalIngredients, setOpenModalIngredients] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+interface useOrderModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
-    function handleCategorySelect(category: ProductCategory) {
-        setSelectedCategory(category);
-    }
+export default function useOrderModal({ isOpen }: useOrderModalProps) {
+  const { categories, isLoading: isLoadingCategories } =
+    useProductCategoriesQuery();
+  const { products, isLoading: isLoadingProducts } = useProductsQuery();
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
+  const [orderDate, setOrderDate] = useState('');
+  const [openModalIngredients, setOpenModalIngredients] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-    function handleOrderDateChange(date: string) {
-        setOrderDate(date);
-    }
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
 
-    function handleOpenModalIngredients(product: Product) {
-        setSelectedProduct(product);
-        setOpenModalIngredients(true);
-    }
+  useEffect(() => {
+    setIsOrderModalOpen(isOpen);
+  }, [isOpen]);
 
-    function handleCloseModalIngredients() {
-        setOpenModalIngredients(false);
-        setSelectedProduct(null);
-    }
+  const handleOpenIngredientModal = (product: Product) => {
+    handleOpenModalIngredients(product);
+    setIsOrderModalOpen(false);
+  };
 
-    return {
-        categories,
-        products,
-        isLoadingCategories,
-        isLoadingProducts,
-        selectedCategory,
-        orderDate,
-        openModalIngredients,
-        selectedProduct,
-        handleCategorySelect,
-        handleOrderDateChange,
-        handleOpenModalIngredients,
-        handleCloseModalIngredients,
-    };
+  const handleCloseIngredientModal = () => {
+    handleCloseModalIngredients();
+    setIsOrderModalOpen(true);
+  };
+
+  function handleCategorySelect(category: ProductCategory) {
+    setSelectedCategory(category);
+  }
+
+  function handleOrderDateChange(date: string) {
+    setOrderDate(date);
+  }
+
+  function handleOpenModalIngredients(product: Product) {
+    setSelectedProduct(product);
+    setOpenModalIngredients(true);
+  }
+
+  function handleCloseModalIngredients() {
+    setOpenModalIngredients(false);
+    setSelectedProduct(null);
+  }
+
+  return {
+    categories,
+    products,
+    isLoadingCategories,
+    isLoadingProducts,
+    selectedCategory,
+    orderDate,
+    openModalIngredients,
+    selectedProduct,
+    isOrderModalOpen,
+    handleCategorySelect,
+    handleOrderDateChange,
+    handleOpenModalIngredients,
+    handleCloseModalIngredients,
+    handleOpenIngredientModal,
+    handleCloseIngredientModal,
+  };
 }

@@ -24,18 +24,9 @@ export default function Menu() {
       <Main>
         <Tabs.Root defaultValue="products">
           <Tabs.List>
-            <Tabs.Trigger
-              value='products'
-              text='Produtos'
-            />
-            <Tabs.Trigger
-              value='categories'
-              text='Categorias'
-            />
-            <Tabs.Trigger
-              value='ingredients'
-              text='Ingredientes'
-            />
+            <Tabs.Trigger value="products" text="Produtos" />
+            <Tabs.Trigger value="categories" text="Categorias" />
+            <Tabs.Trigger value="ingredients" text="Ingredientes" />
           </Tabs.List>
 
           <Tabs.Content value="products">
@@ -46,7 +37,7 @@ export default function Menu() {
             <Categories />
           </Tabs.Content>
 
-          <Tabs.Content value='ingredients' >
+          <Tabs.Content value="ingredients">
             <Ingredients />
           </Tabs.Content>
         </Tabs.Root>

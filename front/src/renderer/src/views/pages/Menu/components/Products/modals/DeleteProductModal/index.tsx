@@ -42,13 +42,15 @@ export default function DeleteProductModal({
       <Container>
         <Warning>Tem certeza que deseja excluir o produto?</Warning>
 
-       <ProductContainer>
-        <img src={imagePath || noImage} alt={product?.description} />
-        <Infos>
-          <div className='category'>
-            <span>{product?.category?.icon}</span>
-            <span>{capitalizeFirstLetter(product?.category?.name || '')}</span>
-          </div>
+        <ProductContainer>
+          <img src={imagePath || noImage} alt={product?.description} />
+          <Infos>
+            <div className="category">
+              <span>{product?.category?.icon}</span>
+              <span>
+                {capitalizeFirstLetter(product?.category?.name || '')}
+              </span>
+            </div>
 
             <p className="name">{capitalizeFirstLetter(product?.name || '')}</p>
 

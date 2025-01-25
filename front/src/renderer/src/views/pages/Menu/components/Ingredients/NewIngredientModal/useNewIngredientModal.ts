@@ -10,7 +10,6 @@ import { IngredientFormData } from '../IngredientForm/useIngredientForm';
 import toast from '@renderer/app/utils/toast';
 
 export default function useNewIngredientModal(onSuccess: () => void) {
-
   const { mutateAsync: createIngredient, isPending: isLoading } = useMutation({
     mutationFn: (data: CreateIngredientParams) =>
       ingredientsService.create(data),
@@ -21,7 +20,6 @@ export default function useNewIngredientModal(onSuccess: () => void) {
       );
     },
   });
-
 
   async function handleSubmit(data: IngredientFormData) {
     try {

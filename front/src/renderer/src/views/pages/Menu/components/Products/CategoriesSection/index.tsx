@@ -4,7 +4,6 @@ import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter
 import Loader from '@renderer/views/components/Loader';
 import { CgCloseO } from 'react-icons/cg';
 
-
 import 'swiper/css/pagination';
 import { Pagination } from 'swiper/modules';
 import { SwiperSlide } from 'swiper/react';
@@ -52,14 +51,14 @@ export default function CategoriesSection({
           categories.map((categorie, key) => (
             <SwiperSlide key={key}>
               <Item
-              $selected={categorie.id === selectedCategoryId}
-              onClick={() => onSelect(categorie)}
-              tabIndex={0} // Permite navegação por teclado
-              onKeyDown={(e) => e.key === 'Enter' && onSelect(categorie)}
-            >
-              <span>{categorie.icon}</span>
-              <span>{capitalizeFirstLetter(categorie.name)}</span>
-            </Item>
+                $selected={categorie.id === selectedCategoryId}
+                onClick={() => onSelect(categorie)}
+                tabIndex={0} // Permite navegação por teclado
+                onKeyDown={(e) => e.key === 'Enter' && onSelect(categorie)}
+              >
+                <span>{categorie.icon}</span>
+                <span>{capitalizeFirstLetter(categorie.name)}</span>
+              </Item>
             </SwiperSlide>
           ))}
       </StyledSwiper>

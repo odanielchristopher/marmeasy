@@ -78,14 +78,12 @@ export default function IngredientsSection({
             );
           })}
 
-          {(!isLoading && !hasIngredients) && (
-            <EmptyContainer>
-              <img src={addNotes} alt="Sem ingredients" />
-              <span>
-                Não encontramos nenhum ingrediente.
-              </span>
-            </EmptyContainer>
-          )}
+        {!isLoading && !hasIngredients && (
+          <EmptyContainer>
+            <img src={addNotes} alt="Sem ingredients" />
+            <span>Não encontramos nenhum ingrediente.</span>
+          </EmptyContainer>
+        )}
       </div>
     </Container>
   );

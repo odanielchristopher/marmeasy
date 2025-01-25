@@ -18,7 +18,7 @@ const ingredientFormSchema = z.object({
     .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
 });
 
-export type IngredientFormData = z.infer<typeof ingredientFormSchema>
+export type IngredientFormData = z.infer<typeof ingredientFormSchema>;
 
 interface UseIngredientFormProps {
   ingredientBeingEdited?: Ingredient | null;
@@ -29,7 +29,6 @@ export default function useIngredientForm({
   ingredientBeingEdited,
   onSubmit,
 }: UseIngredientFormProps) {
-
   const {
     register,
     handleSubmit: hookFormHandleSubmit,

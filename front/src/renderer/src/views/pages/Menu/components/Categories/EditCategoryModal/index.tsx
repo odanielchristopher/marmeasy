@@ -10,11 +10,12 @@ interface EditCategoryModalProps {
   category: ProductCategory | null;
 }
 
-export default function EditCategoryModal({ open, onClose, category }: EditCategoryModalProps) {
-  const {
-    isLoading,
-    handleSubmit,
-  } = useEditCategoryModal(category, onClose);
+export default function EditCategoryModal({
+  open,
+  onClose,
+  category,
+}: EditCategoryModalProps) {
+  const { isLoading, handleSubmit } = useEditCategoryModal(category, onClose);
 
   return (
     <Modal title="Editar categoria" open={open} onClose={onClose}>

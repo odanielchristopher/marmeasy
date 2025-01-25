@@ -8,19 +8,16 @@ interface EditProductModalProps {
   onClose(): void;
 }
 
-export default function NewCategoryModal({ open, onClose }: EditProductModalProps) {
-  const {
-    isLoading,
-    handleSubmit,
-  } = useNewCategoryModal(onClose);
+export default function NewCategoryModal({
+  open,
+  onClose,
+}: EditProductModalProps) {
+  const { isLoading, handleSubmit } = useNewCategoryModal(onClose);
 
   return (
     <Modal title="Nova categoria" open={open} onClose={onClose}>
       <Container>
-        <ProductCategoryForm
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <ProductCategoryForm onSubmit={handleSubmit} isLoading={isLoading} />
       </Container>
     </Modal>
   );

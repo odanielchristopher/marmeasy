@@ -15,7 +15,6 @@ import clipboard from '@renderer/assets/Images/Clipboard.svg';
 import UpdateClientForm from './UpdateClientForm';
 // import AddOrder from './AddOrder';
 
-
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import AddOrder from './AddOrder';
 import DetailsOrder from './DetailsOrder';
@@ -51,8 +50,9 @@ export default function Aside({ area }: AsideProps) {
       </Header>
 
       <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
-
+        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>
+          Mostrar detalhes
+        </ActionsButton>
       </Actions>
 
       {!showClientData && (
@@ -68,10 +68,18 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && showDetails && [
-        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>,
-      ]}
-
+      {showClientData &&
+        showDetails && [
+          hasOrders ? (
+            <DetailsOrder key="detailsOrder" client={seletedClient} />
+          ) : (
+            <UpdateClientForm
+              key="updateClientForm"
+              client={seletedClient}
+              $isShow={showClientData}
+            />
+          ),
+        ]}
 
       {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
     </Container>

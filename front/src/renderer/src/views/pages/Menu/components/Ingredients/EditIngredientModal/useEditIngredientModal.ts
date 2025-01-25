@@ -10,21 +10,28 @@ import { IngredientFormData } from '../IngredientForm/useIngredientForm';
 import toast from '@renderer/app/utils/toast';
 
 interface UseEditIngredientModalProps {
-  ingredientBeingEdited: Ingredient | null
-  onSuccess?(): void
+  ingredientBeingEdited: Ingredient | null;
+  onSuccess?(): void;
 }
 
 export default function useEditIngredientModal({
   ingredientBeingEdited,
   onSuccess,
 }: UseEditIngredientModalProps) {
-  const {mutateAsync: updateIngredient, isPending: isLoading} = useMutation({
-    mutationFn: async (data: UpdateIngredientParams) => ingredientsService.update(data),
+  const { mutateAsync: updateIngredient, isPending: isLoading } = useMutation({
+    mutationFn: async (data: UpdateIngredientParams) =>
+      ingredientsService.update(data),
     onSuccess: (updatedIngredient: Ingredient) => {
-      queryClient.setQueryData(['ingredients', 'getAll'], (ingredients: Ingredient[]) => {
-
-        return ingredients.map((ingredient) => ingredient.id === updatedIngredient.id ? updatedIngredient : ingredient);
-      });
+      queryClient.setQueryData(
+        ['ingredients', 'getAll'],
+        (ingredients: Ingredient[]) => {
+          return ingredients.map((ingredient) =>
+            ingredient.id === updatedIngredient.id
+              ? updatedIngredient
+              : ingredient,
+          );
+        },
+      );
     },
   });
 

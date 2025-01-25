@@ -2,13 +2,18 @@ import { CgCloseO } from 'react-icons/cg';
 import { Container, StyledInput } from './styles';
 
 interface InputCurrencyProps {
-  $error?: string
-  value?: string | number
-  onChange?(value?: string): void
+  $error?: string;
+  value?: string | number;
+  onChange?(value?: string): void;
   maxLength?: number;
 }
 
-export default function CurrencyInput({ $error, onChange, value, maxLength }: InputCurrencyProps) {
+export default function CurrencyInput({
+  $error,
+  onChange,
+  value,
+  maxLength,
+}: InputCurrencyProps) {
   return (
     <Container>
       <StyledInput

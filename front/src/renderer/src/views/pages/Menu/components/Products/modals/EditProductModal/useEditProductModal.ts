@@ -10,7 +10,10 @@ import { ProductFormData } from '../../ProductForm/useProductForm';
 
 import toast from '@renderer/app/utils/toast';
 
-export default function useEditProductModal(product: Product | null, onSuccess: () => void) {
+export default function useEditProductModal(
+  product: Product | null,
+  onSuccess: () => void,
+) {
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
 
   const width = useWindowWidth();

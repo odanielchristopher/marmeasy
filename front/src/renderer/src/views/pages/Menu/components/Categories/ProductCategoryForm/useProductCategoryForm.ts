@@ -18,11 +18,11 @@ const categoryFormSchema = z.object({
     .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
 });
 
-export type ProductCategoryFormData = z.infer<typeof categoryFormSchema>
+export type ProductCategoryFormData = z.infer<typeof categoryFormSchema>;
 
 interface UseProductCategoryFormProps {
-  category?: ProductCategory | null
-  onSubmit(data: ProductCategoryFormData): Promise<void>
+  category?: ProductCategory | null;
+  onSubmit(data: ProductCategoryFormData): Promise<void>;
 }
 
 export default function useProductCategoryForm({

@@ -12,11 +12,11 @@ import IngredientsSection from '../IngredientsSection';
 import { Content, Footer, ImageSection, InputsContainer } from './styles';
 
 interface EditProductModalProps {
-  product?: Product | null
-  isLoading: boolean
-  onSubmit(data: ProductFormData): Promise<void>
-  onSuccess?(): void
-  onOpenIngredientModal(): void
+  product?: Product | null;
+  isLoading: boolean;
+  onSubmit(data: ProductFormData): Promise<void>;
+  onSuccess?(): void;
+  onOpenIngredientModal(): void;
 }
 
 export default function ProductForm({

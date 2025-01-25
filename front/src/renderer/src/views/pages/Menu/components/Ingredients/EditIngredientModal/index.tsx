@@ -10,21 +10,18 @@ interface EditIngredientModalProps {
   ingredient: Ingredient | null;
 }
 
-export default function EditCategoryModal({ open, onClose, ingredient }: EditIngredientModalProps) {
-  const {
-    isLoading,
-    handleSubmit,
-  } = useEditIngredientModal({
+export default function EditCategoryModal({
+  open,
+  onClose,
+  ingredient,
+}: EditIngredientModalProps) {
+  const { isLoading, handleSubmit } = useEditIngredientModal({
     ingredientBeingEdited: ingredient,
     onSuccess: onClose,
   });
 
   return (
-    <Modal
-      title="Editar ingrediente"
-      open={open}
-      onClose={onClose}
-    >
+    <Modal title="Editar ingrediente" open={open} onClose={onClose}>
       <Container>
         <IngredientForm
           ingredient={ingredient}

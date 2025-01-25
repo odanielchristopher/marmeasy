@@ -6,10 +6,7 @@ export interface UpdateIngredientParams {
   name: string;
 }
 
-export async function update({
-  id,
-  ...params
-}: UpdateIngredientParams) {
+export async function update({ id, ...params }: UpdateIngredientParams) {
   const { data } = await httpClient.put(`/ingredients/${id}`, params);
 
   return data;

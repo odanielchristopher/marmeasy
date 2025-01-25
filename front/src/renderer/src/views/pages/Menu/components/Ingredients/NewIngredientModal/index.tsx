@@ -8,19 +8,16 @@ interface EditProductModalProps {
   onClose(): void;
 }
 
-export default function NewIngredientModal({ open, onClose }: EditProductModalProps) {
-  const {
-    isLoading,
-    handleSubmit,
-  } = useNewIngredientModal(onClose);
+export default function NewIngredientModal({
+  open,
+  onClose,
+}: EditProductModalProps) {
+  const { isLoading, handleSubmit } = useNewIngredientModal(onClose);
 
   return (
     <Modal title="Novo Ingrediente" open={open} onClose={onClose}>
       <Container>
-        <IngredientForm
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <IngredientForm onSubmit={handleSubmit} isLoading={isLoading} />
       </Container>
     </Modal>
   );

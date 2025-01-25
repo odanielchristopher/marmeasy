@@ -4,11 +4,11 @@ import 'swiper/css';
 import { Swiper } from 'swiper/react';
 
 export const StyledSwiper = styled(Swiper)`
-  padding-block: .4rem;
+  padding-block: 0.4rem;
   position: initial;
 
   .categories-loader {
-    width: 42.0rem;
+    width: 42rem;
     height: 4.8rem;
   }
 
@@ -16,7 +16,8 @@ export const StyledSwiper = styled(Swiper)`
     bottom: -10px;
 
     .swiper-pagination-bullet-active {
-      background-color: ${({ theme }) => theme.colors.orange.main}; /* Cor do bullet ativo */
+      background-color: ${({ theme }) =>
+        theme.colors.orange.main}; /* Cor do bullet ativo */
     }
   }
 

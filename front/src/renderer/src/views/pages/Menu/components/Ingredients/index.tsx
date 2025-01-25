@@ -13,7 +13,13 @@ import Loader from '@renderer/views/components/Loader';
 
 import emptyCart from '@renderer/assets/Images/empty-cart.svg';
 import { EmptyImageContainer } from '../../styles';
-import { ActionButton, Container, Header, LoaderContainer, Title } from './styles';
+import {
+  ActionButton,
+  Container,
+  Header,
+  LoaderContainer,
+  Title,
+} from './styles';
 
 export default function Ingredients() {
   const {
@@ -51,7 +57,10 @@ export default function Ingredients() {
         />
       )}
 
-      <NewIngredientModal open={openNewIngredientModal} onClose={handleCloseNewIngredientModal} />
+      <NewIngredientModal
+        open={openNewIngredientModal}
+        onClose={handleCloseNewIngredientModal}
+      />
       <Container>
         <Header>
           <div className="infos">
@@ -59,27 +68,39 @@ export default function Ingredients() {
             <span>{sortedIngredients.length}</span>
           </div>
 
-          <button onClick={handleOpenNewIngredientModal}>Adicionar ingrediente</button>
+          <button onClick={handleOpenNewIngredientModal}>
+            Adicionar ingrediente
+          </button>
         </Header>
 
         <Table.Container>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCollumn style={{ width: '5%' }}>Emoji</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '5%' }}>
+                Emoji
+              </Table.HeaderCollumn>
               <Table.HeaderCollumn>Nome</Table.HeaderCollumn>
-              <Table.HeaderCollumn style={{ width: '12%' }}>Ações</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '12%' }}>
+                Ações
+              </Table.HeaderCollumn>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {sortedIngredients.map((ingredient) => (
               <Table.Row key={ingredient.id}>
-                <Table.Cell style={{ textAlign: 'center' }}>{ingredient.icon}</Table.Cell>
-                <Table.Cell>{capitalizeFirstLetter(ingredient.name)}</Table.Cell>
+                <Table.Cell style={{ textAlign: 'center' }}>
+                  {ingredient.icon}
+                </Table.Cell>
+                <Table.Cell>
+                  {capitalizeFirstLetter(ingredient.name)}
+                </Table.Cell>
                 <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
                   <ActionButton onClick={() => handleOpenEditModal(ingredient)}>
                     <Pencil />
                   </ActionButton>
-                  <ActionButton onClick={() => handleOpenDeleteModal(ingredient)}>
+                  <ActionButton
+                    onClick={() => handleOpenDeleteModal(ingredient)}
+                  >
                     <DeleteIcon />
                   </ActionButton>
                 </Table.Cell>
@@ -88,7 +109,7 @@ export default function Ingredients() {
           </Table.Body>
         </Table.Container>
 
-        {(!hasIngredients && !isLoading) && (
+        {!hasIngredients && !isLoading && (
           <EmptyImageContainer>
             <img src={emptyCart} alt="Sem ingredientes cadastrados" />
             <span>Sem ingredientes cadastros</span>

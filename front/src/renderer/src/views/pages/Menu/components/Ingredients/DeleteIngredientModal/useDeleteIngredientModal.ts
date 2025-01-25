@@ -7,13 +7,22 @@ import { RemoveIngredientParams } from '@renderer/app/services/ingredientsServic
 import { queryClient } from '@renderer/App';
 import toast from '@renderer/app/utils/toast';
 
-export default function useDeleteIngredientModal(ingredientBeingDeleted: Ingredient | null, onCofirm: () => void) {
+export default function useDeleteIngredientModal(
+  ingredientBeingDeleted: Ingredient | null,
+  onCofirm: () => void,
+) {
   const { mutateAsync: removeCategory, isPending: isloading } = useMutation({
-    mutationFn: async (data: RemoveIngredientParams) => ingredientsService.remove(data),
+    mutationFn: async (data: RemoveIngredientParams) =>
+      ingredientsService.remove(data),
     onSuccess: () => {
-      queryClient.setQueryData(['ingredients', 'getAll'], (ingredients: Ingredient[]) => {
-        return ingredients.filter((ingredient) => ingredient.id !== ingredientBeingDeleted!.id);
-      });
+      queryClient.setQueryData(
+        ['ingredients', 'getAll'],
+        (ingredients: Ingredient[]) => {
+          return ingredients.filter(
+            (ingredient) => ingredient.id !== ingredientBeingDeleted!.id,
+          );
+        },
+      );
     },
   });
 

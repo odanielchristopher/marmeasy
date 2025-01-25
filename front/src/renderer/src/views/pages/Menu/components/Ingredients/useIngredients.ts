@@ -7,8 +7,10 @@ export default function useIngredients() {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openNewIngredientModal, setOpenNewIngredientModal] = useState(false);
 
-  const [ingredientBeignDeleted, setIngredientBeignDeleted] = useState<Ingredient | null>(null);
-  const [ingredientBeingEdited, setIngredientBeingEdited] = useState<Ingredient | null>(null);
+  const [ingredientBeignDeleted, setIngredientBeignDeleted] =
+    useState<Ingredient | null>(null);
+  const [ingredientBeingEdited, setIngredientBeingEdited] =
+    useState<Ingredient | null>(null);
 
   const handleOpenEditModal = useCallback((category: Ingredient) => {
     setIngredientBeingEdited(category);
@@ -43,10 +45,10 @@ export default function useIngredients() {
   const hasIngredients = ingredients.length > 0;
 
   const sortedIngredients = useMemo(
-    () => (
-      ingredients
-        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1))
-    ),
+    () =>
+      ingredients.sort((a, b) =>
+        a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
+      ),
     [ingredients],
   );
 

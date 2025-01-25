@@ -10,12 +10,8 @@ function TabsRoot({ children, defaultValue }: TabsRootProps) {
   return <RdxTabs.Root defaultValue={defaultValue}>{children}</RdxTabs.Root>;
 }
 
-function TabsList({ children }: { children: React.ReactNode}) {
-  return (
-    <StyledRdxTabList>
-      {children}
-    </StyledRdxTabList>
-  );
+function TabsList({ children }: { children: React.ReactNode }) {
+  return <StyledRdxTabList>{children}</StyledRdxTabList>;
 }
 
 interface TabTriggerProps {

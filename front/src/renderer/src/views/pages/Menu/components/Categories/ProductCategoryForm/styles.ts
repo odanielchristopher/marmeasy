@@ -13,7 +13,7 @@ export const Form = styled.form`
 export const CancelButton = styled.button`
   align-items: center;
   background: transparent;
-  border: .1rem solid transparent;
+  border: 0.1rem solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius};
   color: ${({ theme }) => theme.colors.black.main};
   display: flex;
@@ -22,14 +22,14 @@ export const CancelButton = styled.button`
   justify-content: center;
   height: 4.2rem;
   padding: 0 1.4rem;
-  transition: background .2s ease-in;
+  transition: background 0.2s ease-in;
 
   &:hover {
     color: ${({ theme }) => theme.colors.gray.main};
   }
 
   &:focus {
-    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+    outline: 0.1rem solid ${({ theme }) => theme.colors.green.main};
   }
 
   &:active {
@@ -44,21 +44,21 @@ export const CancelButton = styled.button`
 `;
 
 interface FooterProps {
-  justify?: 'end' | 'center'
+  justify?: 'end' | 'center';
 }
 
 export const Footer = styled.div<FooterProps>`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: ${({ justify }) => justify === 'end' ? 'flex-end' : 'space-between'};
+  justify-content: ${({ justify }) =>
+    justify === 'end' ? 'flex-end' : 'space-between'};
   gap: 1.2rem;
 
   margin-top: 4.8rem;
 
   button {
     height: 4.8rem;
-    width: 18.0rem;
+    width: 18rem;
   }
 `;
-

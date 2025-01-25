@@ -19,8 +19,15 @@ interface DeleteCategoryModalProps {
   category: ProductCategory | null;
 }
 
-export default function DeleteCategoryModal({ open, onClose, category }: DeleteCategoryModalProps) {
-  const { handleConfirm, isloading } = useDeleteCategoryModal(category, onClose);
+export default function DeleteCategoryModal({
+  open,
+  onClose,
+  category,
+}: DeleteCategoryModalProps) {
+  const { handleConfirm, isloading } = useDeleteCategoryModal(
+    category,
+    onClose,
+  );
 
   return (
     <Modal title="Excluir categoria" open={open} onClose={onClose}>

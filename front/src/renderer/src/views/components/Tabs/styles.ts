@@ -20,5 +20,5 @@ export const StyledRdxTabTrigger = styled(RdxTabs.Trigger)`
 
 export const StyledRdxTabList = styled(RdxTabs.List)`
   background-color: transparent;
-  border-bottom: 1px solid hsla(0, 0.00%, 80.00%, 0.40);
+  border-bottom: 1px solid hsla(0, 0%, 80%, 0.4);
 `;
