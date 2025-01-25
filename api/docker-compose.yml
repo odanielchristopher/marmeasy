@@ -24,6 +24,7 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+      - /usr/src/app/uploads
     depends_on:
       - postgres
     command: npm run start:dev # Comando automatizado

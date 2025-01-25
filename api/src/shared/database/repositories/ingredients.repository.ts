@@ -13,6 +13,7 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class IngredientsRepository implements IIngredientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
   async findManyByUserId(
     findManyDto: FindManyIngredientsByIdDto,
   ): Promise<Ingredient[]> {

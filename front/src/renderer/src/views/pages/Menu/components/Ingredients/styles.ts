@@ -5,7 +5,7 @@ export const Container = styled.div`
 `;
 
 export const LoaderContainer = styled.div`
-  height: calc(100vh - 38rem);
+  height: calc(100vh - 38.0rem);
 `;
 
 export const Header = styled.header`
@@ -16,16 +16,16 @@ export const Header = styled.header`
 
   .infos {
     display: flex;
-    gap: 0.8rem;
+    gap: .8rem;
 
     span {
       font-size: 1.6rem;
       font-weight: 500;
       line-height: 120%;
 
-      background: #ccc;
-      border-radius: 0.4rem;
-      padding: 0.4rem 0.8rem;
+      background: #CCC;
+      border-radius: .4rem;
+      padding: .4rem .8rem;
     }
   }
 
@@ -45,13 +45,6 @@ export const Title = styled.h2`
   line-height: 120%;
 `;
 
-export const ProductImage = styled.img`
-  border-radius: 0.4rem;
-  height: 3.2rem;
-  object-fit: cover;
-  width: 4.8rem;
-`;
-
 export const ActionButton = styled.button`
   background: transparent;
   border: none;
@@ -60,11 +53,6 @@ export const ActionButton = styled.button`
   justify-content: center;
   align-items: center;
 
-  padding: 0.8rem;
+  padding: .8rem;
 `;
 
-export const CategoryContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-`;

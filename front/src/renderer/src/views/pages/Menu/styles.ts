@@ -9,3 +9,17 @@ export const Main = styled.main`
   margin-top: 4rem;
   width: 100%;
 `;
+
+export const EmptyImageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.8rem;
+  height: 50vh;
+
+  img {
+    width: 300px;
+  }
+`;

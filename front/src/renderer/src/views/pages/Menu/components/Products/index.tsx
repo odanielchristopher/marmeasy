@@ -14,11 +14,11 @@ import noImage from '@renderer/assets/Images/empty-image.svg';
 import useProducts from './useProducts';
 
 import Loader from '@renderer/views/components/Loader';
+import { EmptyImageContainer } from '../../styles';
 import {
   ActionButton,
   CategoryContainer,
   Container,
-  EmptyImageContainer,
   Header,
   LoaderContainer,
   ProductImage,

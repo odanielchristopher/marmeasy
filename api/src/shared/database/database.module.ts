@@ -16,6 +16,7 @@ import { UsersRepository } from './repositories/users.repository';
 @Global()
 @Module({
   providers: [
+    UsersRepository,
     PrismaService,
     OrdersRespository,
     OrderItemsRepository,
