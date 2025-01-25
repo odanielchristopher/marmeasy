@@ -39,7 +39,7 @@ export type FindManyProductCategoriesDto = {
 };
 
 export type CreateProductCategoryDto = {
-  data: ProductCategory;
+  data: ProductCategory | Omit<ProductCategory, 'id'>;
   userId: string;
 };
 

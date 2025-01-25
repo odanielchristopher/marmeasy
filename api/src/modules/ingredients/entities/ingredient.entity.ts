@@ -1,10 +1,10 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 import { IsEmoji } from 'src/shared/decorators/IsEmoji';
 
 export class Ingredient {
   @IsUUID()
-  @IsOptional()
-  id?: string;
+  @IsNotEmpty()
+  id: string;
 
   @IsNotEmpty()
   @IsString()

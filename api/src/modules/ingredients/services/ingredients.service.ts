@@ -58,7 +58,7 @@ export class IngredientsService implements IIngredientsService {
     const { name, icon } = updateProductCategoryDto;
 
     return this.ingredientsRepository.update({
-      data: { name, icon },
+      data: { id: productCategoryId, name, icon },
       userId,
     });
   }

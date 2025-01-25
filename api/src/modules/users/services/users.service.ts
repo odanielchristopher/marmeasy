@@ -58,8 +58,8 @@ export class UsersService implements IUsersService {
     }
 
     const { id, name, email } = await this.usersRepository.update({
-      userId,
       data: {
+        id: userId,
         name: updateUserDto.name,
         email: updateUserDto.email,
         password: updateUserDto.newPassword ? hashedNewPassword : user.password,

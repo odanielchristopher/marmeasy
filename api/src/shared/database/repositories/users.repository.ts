@@ -73,10 +73,10 @@ export class UsersRepository implements IUsersRepository {
   }
 
   async update(updateUserDto: UpdateUserDto): Promise<User | null> {
-    const { data, userId } = updateUserDto;
+    const { data } = updateUserDto;
 
     const updatedUser = await this.prismaService.user.update({
-      where: { id: userId },
+      where: { id: data.id },
       data,
       select: {
         id: true,

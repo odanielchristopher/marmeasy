@@ -30,7 +30,7 @@ export type FindManyIngredientsByIdDto = {
 };
 
 export type CreateIngredientDto = {
-  data: Ingredient;
+  data: Ingredient | Omit<Ingredient, 'id'>;
   userId: string;
 };
 
