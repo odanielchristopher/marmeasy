@@ -31,7 +31,7 @@ export async function create({
   formData.append('name', name);
   formData.append('price', price);
   formData.append('categoryId', categoryId);
-  formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
+  ingredientsIds.forEach(id => formData.append('ingredientsIds[]', id));
 
   const { data } = await httpClient.post<Product>('/products', formData);
 
