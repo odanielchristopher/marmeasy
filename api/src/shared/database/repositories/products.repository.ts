@@ -72,12 +72,17 @@ export class ProductsRepository implements IProductsRepository {
   async create(createDto: CreateProductOnDBDto): Promise<Product> {
     const { data, userId } = createDto;
 
-    const { ingredientsIds } = data;
+    const { name, price, categoryId, description, imagePath, ingredientsIds } =
+      data;
 
     const product = await this.prismaService.product.create({
       data: {
         userId,
-        ...data,
+        name,
+        price,
+        categoryId,
+        description,
+        imagePath,
         ingredients: {
           connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
         },
@@ -91,12 +96,24 @@ export class ProductsRepository implements IProductsRepository {
   async update(updateDto: UpdateProductOnDBDto): Promise<Product> {
     const { data, userId } = updateDto;
 
-    const { ingredientsIds, categoryId } = data;
+    const {
+      ingredientsIds,
+      categoryId,
+      id,
+      name,
+      price,
+      description,
+      imagePath,
+    } = data;
 
     const updatedProduct = await this.prismaService.product.update({
       where: { userId, id: data.id },
       data: {
-        ...data,
+        id,
+        name,
+        price,
+        description,
+        imagePath,
         categoryId,
         ingredients: {
           set: [], // Limpa os ingredientes antigos
