@@ -1,53 +1,31 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 
 import { ValidateIngredientOwnershipService } from 'src/modules/ingredients/services/validate-ingredient-ownership.service';
 import { IValidateProductCategoryOwnershipService } from 'src/modules/product-categories/interfaces/validate-product-category-ownership-service.interface';
+import { IProductsRepository } from 'src/shared/database/interfaces/products-repository.interface';
+import { IProductsService } from '../interfaces/products-service.interface';
+import { IValidateProductOwnershipService } from '../interfaces/validate-products-ownership-service.interface';
 import { ProducImagesService } from './product-images.service';
-import { ValidateProductOwnershipService } from './validate-product-ownership.service';
 
 @Injectable()
-export class ProductsService {
+export class ProductsService implements IProductsService {
   constructor(
-    private readonly productsRepository: ProductsRespository,
+    @Inject(IProductsRepository)
+    private readonly productsRepository: IProductsRepository,
     private readonly productImagesService: ProducImagesService,
-    private readonly validateProductOwnershipService: ValidateProductOwnershipService,
+    @Inject(IValidateProductOwnershipService)
+    private readonly validateProductOwnershipService: IValidateProductOwnershipService,
     @Inject(IValidateProductCategoryOwnershipService)
     private readonly validateProductCategorieOwnershipService: IValidateProductCategoryOwnershipService,
     private readonly validadeIngredientsOwnershipService: ValidateIngredientOwnershipService,
   ) {}
 
   findAllByUserId(userId: string, categoryName: string) {
-    const filters = {
-      userId,
-      ...(categoryName && { category: { name: categoryName } }), // Se tiver uma categoryName entao ela adiciona nos filtros
-    };
-
-    return this.productsRepository.findMany({
-      where: filters,
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imagePath: true,
-        ingredients: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
-      },
+    return this.productsRepository.findManyByFilters({
+      filters: { userId, categoryName },
+      order: 'asc',
     });
   }
 
@@ -74,37 +52,14 @@ export class ProductsService {
     }
 
     return this.productsRepository.create({
+      userId,
       data: {
-        userId,
         name,
         description,
-        price,
-        imagePath,
         categoryId,
-        ingredients: {
-          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imagePath: true,
-        ingredients: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
+        ingredientsIds,
+        imagePath,
+        price,
       },
     });
   }
@@ -142,38 +97,15 @@ export class ProductsService {
     }
 
     return this.productsRepository.update({
-      where: { userId, id: productId },
+      userId,
       data: {
+        id: productId,
         name,
         description,
         price,
         imagePath: updatedImagePath,
         categoryId,
-        ingredients: {
-          set: [], // Limpa os ingredientes antigos
-          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        imagePath: true,
-        ingredients: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
-        category: {
-          select: {
-            id: true,
-            name: true,
-            icon: true,
-          },
-        },
+        ingredientsIds,
       },
     });
   }
@@ -188,9 +120,7 @@ export class ProductsService {
       await this.productImagesService.remove(product.imagePath);
     }
 
-    await this.productsRepository.delete({
-      where: { userId, id: productId },
-    });
+    await this.productsRepository.delete({ userId, id: productId });
 
     return null;
   }

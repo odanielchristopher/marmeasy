@@ -1,28 +1,119 @@
 import { Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { Product } from 'src/modules/products/entities/product.entity';
+import {
+  CreateProductOnDBDto,
+  DeleteProductDto,
+  FindFirstProductByUserIdDto,
+  FindManyProductsByFiltersDto,
+  IProductsRepository,
+  UpdateProductOnDBDto,
+} from '../interfaces/products-repository.interface';
 import { PrismaService } from '../prisma.service';
 
+const prismaResponse = {
+  id: true,
+  name: true,
+  description: true,
+  price: true,
+  imagePath: true,
+  ingredients: {
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+    },
+  },
+  category: {
+    select: {
+      id: true,
+      name: true,
+      icon: true,
+    },
+  },
+};
+
 @Injectable()
-export class ProductsRespository {
+export class ProductsRepository implements IProductsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findMany(findManyDto: Prisma.ProductFindManyArgs) {
-    return this.prismaService.product.findMany(findManyDto);
+  async findManyByFilters(
+    findManyByUserIdDto: FindManyProductsByFiltersDto,
+  ): Promise<Product[]> {
+    const {
+      filters: { userId, categoryName },
+      order,
+    } = findManyByUserIdDto;
+
+    const filters = {
+      userId,
+      ...(categoryName && { category: { name: categoryName } }), // Se tiver uma categoryName entao é adicionado nos filtros
+    };
+
+    return this.prismaService.product.findMany({
+      where: filters,
+      select: prismaResponse,
+      orderBy: {
+        name: order,
+      },
+    });
   }
 
-  findFirst(findFirstDto: Prisma.ProductFindFirstArgs) {
-    return this.prismaService.product.findFirst(findFirstDto);
+  async findFirstByUserId(
+    findFirstDto: FindFirstProductByUserIdDto,
+  ): Promise<Product> {
+    const { userId, id } = findFirstDto;
+
+    return this.prismaService.product.findFirst({
+      where: { userId, id },
+      select: prismaResponse,
+    });
   }
 
-  create(createDto: Prisma.ProductCreateArgs) {
-    return this.prismaService.product.create(createDto);
+  async create(createDto: CreateProductOnDBDto): Promise<Product> {
+    const { data, userId } = createDto;
+
+    const { ingredientsIds } = data;
+
+    const product = await this.prismaService.product.create({
+      data: {
+        userId,
+        ...data,
+        ingredients: {
+          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
+        },
+      },
+      select: prismaResponse,
+    });
+
+    return product;
   }
 
-  update(updateDto: Prisma.ProductUpdateArgs) {
-    return this.prismaService.product.update(updateDto);
+  async update(updateDto: UpdateProductOnDBDto): Promise<Product> {
+    const { data, userId } = updateDto;
+
+    const { ingredientsIds, categoryId } = data;
+
+    const updatedProduct = await this.prismaService.product.update({
+      where: { userId, id: data.id },
+      data: {
+        ...data,
+        categoryId,
+        ingredients: {
+          set: [], // Limpa os ingredientes antigos
+          connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
+        },
+      },
+      select: prismaResponse,
+    });
+
+    return updatedProduct;
   }
 
-  delete(deleteDto: Prisma.ProductDeleteArgs) {
-    return this.prismaService.product.delete(deleteDto);
+  async delete(deleteDto: DeleteProductDto): Promise<void> {
+    const { id, userId } = deleteDto;
+
+    await this.prismaService.product.delete({
+      where: { userId, id },
+    });
   }
 }

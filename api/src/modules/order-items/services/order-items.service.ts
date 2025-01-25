@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { OrderItemsRepository } from 'src/shared/database/repositories/order-items.repository';
-import { ProductsRespository } from 'src/shared/database/repositories/products.repository';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
 import { UpdateOrderItemDto } from '../dto/update-ordem-item.dto';
 import { ValidateOrderItemsOwnershipService } from './validate-product-order-item.service';
@@ -9,7 +8,6 @@ import { ValidateOrderItemsOwnershipService } from './validate-product-order-ite
 @Injectable()
 export class OrderItemsService {
   constructor(
-    private readonly productsRepository: ProductsRespository,
     private readonly orderItemsRepository: OrderItemsRepository,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
