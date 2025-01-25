@@ -7,6 +7,6 @@ export interface Product {
   imagePath: string;
   description: string;
   price: number;
-  category: ProductCategory;
+  category?: ProductCategory;
   ingredients: Ingredient[];
 }

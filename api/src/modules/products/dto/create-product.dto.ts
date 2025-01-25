@@ -16,7 +16,7 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @Transform(({ value }) => {
     try {
@@ -34,10 +34,10 @@ export class CreateProductDto {
   )
   price: number;
 
-  @IsNotEmpty({ message: 'O id da categoria do produto é obrigatório.' })
+  @IsOptional()
   @IsString()
   @IsUUID('4', { message: 'A categoria precisa ter um id válido.' })
-  categoryId: string;
+  categoryId?: string;
 
   @IsOptional()
   @Transform(({ value }) => {
@@ -53,7 +53,7 @@ export class CreateProductDto {
     each: true,
     message: 'Cada ingrediente precisa ter um UUID válido.',
   })
-  ingredientsIds: string[];
+  ingredientsIds?: string[];
 
   @IsString()
   @IsOptional()

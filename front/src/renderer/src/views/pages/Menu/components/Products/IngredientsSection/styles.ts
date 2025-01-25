@@ -93,6 +93,21 @@ export const Container = styled.div`
   }
 `;
 
+export const EmptyContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+
+  color: ${({ theme }) => theme.colors.gray.dark};
+
+  img {
+    width: 200px;
+  }
+`;
+
 export const StyledRdxCheckbox = styled(Checkbox.Root)`
   background: transparent;
   border: 1px solid ${({ theme }) => theme.colors.gray.main};

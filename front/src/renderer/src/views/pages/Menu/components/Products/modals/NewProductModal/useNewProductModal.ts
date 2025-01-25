@@ -20,8 +20,8 @@ const schema = z.object({
     .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
   description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
-  categoryId: z.string({ required_error: 'A categoria é obrigatória.' }).uuid(),
-  ingredientsIds: z.array(z.string().uuid()),
+  categoryId: z.string().optional(),
+  ingredientsIds: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof schema>;

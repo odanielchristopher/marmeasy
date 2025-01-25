@@ -45,18 +45,17 @@ enum ClientType {
 }
 
 model Product {
-  id          String          @id @default(uuid()) @db.Uuid
-  userId      String          @map("user_id") @db.Uuid
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String       @map("user_id") @db.Uuid
   name        String
   description String?
   imagePath   String?
   price       Float
-  category    ProductCategory @relation(fields: [categoryId], references: [id])
-  ingredients Ingredient[]    @relation("product_ingredient")
+  categoryId  String?      @map("product_category_id") @db.Uuid
+  ingredients Ingredient[] @relation("product_ingredient")
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId   String  @map("product_category_id") @db.Uuid
-  ingredientId String? @db.Uuid
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("products")
 }

@@ -1,12 +1,39 @@
 import styled, { css } from 'styled-components';
 
+import 'swiper/css';
+import { Swiper } from 'swiper/react';
+
+export const StyledSwiper = styled(Swiper)`
+  padding-block: .4rem;
+  position: initial;
+
+  .categories-loader {
+    width: 42.0rem;
+    height: 4.8rem;
+  }
+
+  .swiper-pagination {
+    bottom: -10px;
+
+    .swiper-pagination-bullet-active {
+      background-color: ${({ theme }) => theme.colors.orange.main}; /* Cor do bullet ativo */
+    }
+  }
+
+  .swiper-slide {
+    width: fit-content;
+  }
+`;
+
 export const Container = styled.section`
   max-width: 42rem;
 
+  position: relative;
   header {
     align-items: center;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1.2rem;
 
     .title {
       color: ${({ theme }) => theme.colors.gray.light};
@@ -22,26 +49,6 @@ export const Container = styled.section`
       gap: 0.6rem;
       margin-top: 0.2rem;
     }
-  }
-`;
-
-export const List = styled.div`
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  max-width: 42rem;
-  margin-top: 1.6rem;
-  margin-bottom: 3.2rem;
-  padding-block: 0.2rem;
-
-  overflow: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  .categories-loader {
-    width: 42rem;
-    height: 4.8rem;
   }
 `;
 

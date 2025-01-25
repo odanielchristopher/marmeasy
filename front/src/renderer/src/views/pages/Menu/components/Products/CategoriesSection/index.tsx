@@ -3,7 +3,12 @@ import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProduc
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Loader from '@renderer/views/components/Loader';
 import { CgCloseO } from 'react-icons/cg';
-import { Container, Item, List } from './styles';
+
+
+import 'swiper/css/pagination';
+import { Pagination } from 'swiper/modules';
+import { SwiperSlide } from 'swiper/react';
+import { Container, Item, StyledSwiper } from './styles';
 
 interface CategoriesSectionProps {
   $error?: string;
@@ -31,7 +36,12 @@ export default function CategoriesSection({
         )}
       </header>
 
-      <List>
+      <StyledSwiper
+        spaceBetween={12}
+        slidesPerView="auto"
+        pagination={{ dynamicBullets: true }}
+        modules={[Pagination]}
+      >
         {isLoading && (
           <div className="categories-loader">
             <Loader size={14} $isLoading />
@@ -40,8 +50,8 @@ export default function CategoriesSection({
 
         {!isLoading &&
           categories.map((categorie, key) => (
-            <Item
-              key={key}
+            <SwiperSlide key={key}>
+              <Item
               $selected={categorie.id === selectedCategoryId}
               onClick={() => onSelect(categorie)}
               tabIndex={0} // Permite navegação por teclado
@@ -50,8 +60,9 @@ export default function CategoriesSection({
               <span>{categorie.icon}</span>
               <span>{capitalizeFirstLetter(categorie.name)}</span>
             </Item>
+            </SwiperSlide>
           ))}
-      </List>
+      </StyledSwiper>
     </Container>
   );
 }

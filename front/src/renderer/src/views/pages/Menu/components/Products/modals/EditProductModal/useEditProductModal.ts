@@ -21,8 +21,8 @@ const schema = z.object({
     .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
   description: z.string().optional(),
   price: z.string({ required_error: 'O valor é obrigatório' }),
-  categoryId: z.string().uuid(),
-  ingredientsIds: z.array(z.string().uuid()),
+  categoryId: z.string().optional(),
+  ingredientsIds: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -57,9 +57,8 @@ export default function useEditProductModal(
       name: product?.name ?? '',
       price: product?.price.toString(),
       description: product?.description ?? '',
-      categoryId: product?.category.id,
-      ingredientsIds:
-        product?.ingredients.map((ingredient) => ingredient.id) ?? [],
+      categoryId: product?.category?.id ?? '',
+      ingredientsIds: product?.ingredients.map((ingredient) => ingredient.id) ?? [],
     },
   });
 
@@ -86,7 +85,11 @@ export default function useEditProductModal(
   }
 
   function handleSelectedCategory(category: ProductCategory) {
-    setValue('categoryId', category.id, { shouldValidate: true }); // Força a validação ao definir o valor
+    if (category.id === selectedCategoryId) {
+      setValue('categoryId', undefined, { shouldValidate: true }); // Força a validação ao definir o valor
+    } else {
+      setValue('categoryId', category.id, { shouldValidate: true }); // Força a validação ao definir o valor
+    }
   }
 
   function handleSelectedIngredients(ingredient: Ingredient) {
