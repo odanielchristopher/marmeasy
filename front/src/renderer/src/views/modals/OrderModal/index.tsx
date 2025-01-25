@@ -20,13 +20,15 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     selectedCategory,
-    handleCategorySelect,
     products,
     selectedProduct,
+    selectedIngredientsIds,
     openModalIngredients,
+    handleCategorySelect,
     handleOpenModalIngredients,
     handleCloseModalIngredients,
-  } = useOrderModal(isOpen, onClose);
+    handleSelectedIngredients,
+  } = useOrderModal();
 
 
   // ! organizar para o hook
@@ -97,13 +99,15 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
 
       {openModalIngredients && selectedProduct && (
         <IngredientModal
+          onSelected={handleSelectedIngredients}
+          selectedIngredientsIds={selectedIngredientsIds}
           open={openModalIngredients}
           onClose={handleCloseIngredientModal}
           product={selectedProduct}
           title={selectedProduct.ingredients.length > 0 ? 'Ingredientes e Quantidade' : 'Quantidade'}
           answer={selectedProduct.ingredients.length > 0 ? 'Selecione os ingredientes desejados' : 'Deseja adicionar este produto ao pedido?'}
           onConfirm={() => {
-            // Implementar lógica de confirmação
+            // !Implementar lógica de confirmação
             handleCloseIngredientModal();
           }}
         />

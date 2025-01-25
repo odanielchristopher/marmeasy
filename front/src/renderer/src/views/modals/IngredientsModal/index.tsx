@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Modal from '@renderer/views/components/Modal';
-import { CheckBoxStyle, Container, IngredientBox } from './styles';
+import { CheckBoxStyle, Container } from './styles';
 import { Product } from '@renderer/app/entities/Product';
 import { Input } from '@renderer/views/components/Input';
 import * as Checkbox from '@radix-ui/react-checkbox';
 import { FaCheck } from 'react-icons/fa6';
-// import { StyledRdxCheckbox } from '@renderer/views/pages/Menu/components/Products/IngredientsSection/styles';
 import Button from '@renderer/views/components/Button';
-
+import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 
 interface IngredientsModalProps {
   open: boolean;
@@ -18,9 +18,11 @@ interface IngredientsModalProps {
   onConfirm(): void;
   product: Product;
   title: string;
+  onSelected(ingredient: Ingredient): void;
+  selectedIngredientsIds: string[];
 }
 
-export default function IngredientsModal({ open, answer, onClose, product, title }: IngredientsModalProps) {
+export default function IngredientsModal({ open, answer, onClose, product, title, onSelected }: IngredientsModalProps) {
   const [selectedIngredients, setSelectedIngredients] = useState<{ [key: string]: boolean }>({});
 
   const handleCheckboxChange = (ingredientId: string) => {
@@ -28,6 +30,7 @@ export default function IngredientsModal({ open, answer, onClose, product, title
       ...prev,
       [ingredientId]: !prev[ingredientId],
     }));
+    onSelected(product.ingredients.find(ingredient => ingredient.id === ingredientId)!);
   };
 
   return (
@@ -40,19 +43,17 @@ export default function IngredientsModal({ open, answer, onClose, product, title
               const isChecked = selectedIngredients[ingredient.id] || false;
 
               return (
-                <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id} onClick={() => handleCheckboxChange(ingredient.id)}>
-                  <IngredientBox onClick={() => handleCheckboxChange(ingredient.id)}>
-                    {ingredient.icon}
-                    {ingredient.name}
-                    <CheckBoxStyle
-                      id={ingredient.id}
-                      checked={isChecked}
-                    >
+                <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id}>
+                  <span> {ingredient.icon} {capitalizeFirstLetter(ingredient.name)} </span>
+                  <CheckBoxStyle
+                    id={ingredient.id}
+                    onCheckedChange={() => handleCheckboxChange(ingredient.id)}
+                    checked={isChecked}
+                  >
                     <Checkbox.Indicator className="indicator">
                       <FaCheck size={10} />
                     </Checkbox.Indicator>
                   </CheckBoxStyle>
-                  </IngredientBox>
                 </label>
               );
             })}
@@ -66,7 +67,6 @@ export default function IngredientsModal({ open, answer, onClose, product, title
         <Button>
           Adicionar
         </Button>
-        
       </Container>
     </Modal>
   );

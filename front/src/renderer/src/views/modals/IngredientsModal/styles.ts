@@ -21,6 +21,22 @@ export const Container = styled.div`
       width: 20%;
     }
   }
+
+  .ingredientLabel {
+    border: 1px solid ${({ theme }) => theme.colors.gray.lighter};
+      border-radius: 1rem;
+      color: ${({ theme }) => theme.colors.gray.light};
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      font-size: 1.4rem;
+      line-height: 150%;
+
+      padding: 1.6rem;
+      margin-top: 10px;
+  }
 `;
 
 export const Content = styled.div`
@@ -89,25 +105,6 @@ export const Actions = styled.div`
     width: 100%;
     height: 4.8rem;
   }
-`;
-
-// ! mudar para um checkbos com react-hook-form
-export const IngredientBox = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: left;
-  gap: 20px;
-  border-radius: 8px;
-  border: 1px solid rgba(204, 204, 204, 0.53);
-  padding: 16px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-
-  /* &:hover {
-    background-color: rgba(204, 204, 204, 0.53);
-    transition: background-color 0.3s;
-  } */
 `;
 
 export const CheckBoxStyle = styled(Checkbox.Root)`
