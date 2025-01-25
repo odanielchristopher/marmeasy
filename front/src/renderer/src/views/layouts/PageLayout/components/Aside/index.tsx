@@ -17,6 +17,7 @@ import UpdateClientForm from './UpdateClientForm';
 
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
+import AddOrder from './AddOrder';
 import DetailsOrder from './DetailsOrder';
 
 interface AsideProps {
@@ -25,14 +26,13 @@ interface AsideProps {
 
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
-  // const [showAddOrders, setShowAddOrders] = useState(false);
+  const [showAddOrders] = useState(false);
 
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 
   function handleShowDetails() {
     setShowDetails(true);
   }
-
 
   useEffect(() => {
     return () => {
@@ -68,9 +68,8 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {/* {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
       {showClientData && showDetails && [
-        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
+        hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>,
       ]}
 
 

@@ -1,12 +1,12 @@
 import { Client } from '@renderer/app/entities/Client';
-import { Input } from '@renderer/views/components/Input';
-import { Container, IconCategory, ProductList } from './styles';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
-import IngredientModal from '@renderer/views/modals/IngredientsModal';
-import useAddOrder from './useAddOrder';
+import { Input } from '@renderer/views/components/Input';
 import Loader from '@renderer/views/components/Loader';
+import IngredientModal from '@renderer/views/modals/IngredientsModal';
+import { Container, IconCategory, ProductList } from './styles';
+import useAddOrder from './useAddOrder';
 
 interface AddOrderProps {
     client: Client | null;
@@ -18,7 +18,6 @@ export default function AddOrder({ client }: AddOrderProps) {
         products,
         isLoadingCategories,
         selectedCategory,
-        orderDate,
         openModalIngredients,
         selectedProduct,
         handleCategorySelect,
@@ -58,7 +57,7 @@ export default function AddOrder({ client }: AddOrderProps) {
                         ))}
                     </ul>
                     <ul className='productsOptions'>
-                        {selectedCategory && products.filter((product) => product.category.id === selectedCategory.id).map((product) => {
+                        {selectedCategory && products.filter((product) => product.category?.id === selectedCategory.id).map((product) => {
                             const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
                             const hasIngredients = product.ingredients.length > 0;
 
