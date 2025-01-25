@@ -36,6 +36,8 @@ export async function update({
     formData.append('categoryId', categoryId);
   }
 
+
+  formData.append('id', id);
   formData.append('name', name);
   formData.append('price', price);
   formData.append('ingredientsIds', JSON.stringify(ingredientsIds));

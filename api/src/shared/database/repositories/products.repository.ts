@@ -114,7 +114,7 @@ export class ProductsRepository implements IProductsRepository {
         price,
         description,
         imagePath,
-        categoryId,
+        categoryId: categoryId ?? null,
         ingredients: {
           set: [], // Limpa os ingredientes antigos
           connect: ingredientsIds ? ingredientsIds.map((id) => ({ id })) : [],
