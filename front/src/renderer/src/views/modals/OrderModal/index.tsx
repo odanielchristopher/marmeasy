@@ -60,12 +60,12 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             
             <BoxCategories>
                 {categories.map((category) => (
-                <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
-                    <div className="circle">
-                    {category.icon}
-                    </div>
-                    <p>{category.name}</p>
-                </IconCategory>
+                  <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
+                      <div className="circle">
+                        {category.icon}
+                      </div>
+                      <p>{category.name}</p>
+                  </IconCategory>
                 ))}
             </BoxCategories>
 
@@ -75,15 +75,15 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
 
                 return (
                         <ProductList key={product.id}>
-                        {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
-                        <div className='infos'>
+                          {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
+                          <div className='infos'>
                             <strong>{product.name}</strong>
                             <span>{product.description}</span>
                             <div className="footer">
-                            <strong>R$ {formatCurrency(product.price)}</strong>
-                            <img src={Plus} alt="Adicionar" onClick={() => handleOpenIngredientModal(product)} />
+                              <strong>R$ {formatCurrency(product.price)}</strong>
+                              <img src={Plus} alt="Adicionar" onClick={() => handleOpenIngredientModal(product)} />
                             </div>
-                        </div>
+                          </div>
                         </ProductList>
                 );
                 })}

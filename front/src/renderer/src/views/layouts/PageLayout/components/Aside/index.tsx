@@ -25,7 +25,6 @@ interface AsideProps {
 
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
-  // const [showAddOrders, setShowAddOrders] = useState(false);
 
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 

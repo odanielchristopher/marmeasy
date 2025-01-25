@@ -41,7 +41,7 @@ export default function IngredientsModal({ open, answer, onClose, product, title
 
               return (
                 <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id} onClick={() => handleCheckboxChange(ingredient.id)}>
-                  <IngredientBox>
+                  <IngredientBox onClick={() => handleCheckboxChange(ingredient.id)}>
                     {ingredient.icon}
                     {ingredient.name}
                     <CheckBoxStyle
