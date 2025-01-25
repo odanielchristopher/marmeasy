@@ -1,9 +1,10 @@
 import { Global, Module } from '@nestjs/common';
+import { IClientsRepository } from './interfaces/clients-repository.interface';
 import { IIngredientsRepository } from './interfaces/ingredients-repository.interface';
 import { IProductCategoriesRepository } from './interfaces/product-categories-repository.interface';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 import { PrismaService } from './prisma.service';
-import { ClientsRespository } from './repositories/clients.repository';
+import { ClientsRepository } from './repositories/clients.repository';
 import { IngredientsRepository } from './repositories/ingredients.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
 import { OrdersRespository } from './repositories/orders.repository';
@@ -15,10 +16,7 @@ import { UsersRepository } from './repositories/users.repository';
 @Module({
   providers: [
     PrismaService,
-    UsersRepository,
-    ClientsRespository,
     ProductCategoriesRepository,
-    IngredientsRepository,
     ProductsRespository,
     OrdersRespository,
     OrderItemsRepository,
@@ -34,6 +32,10 @@ import { UsersRepository } from './repositories/users.repository';
       provide: IIngredientsRepository,
       useClass: IngredientsRepository,
     },
+    {
+      provide: IClientsRepository,
+      useClass: ClientsRepository,
+    },
   ],
   exports: [
     {
@@ -48,7 +50,10 @@ import { UsersRepository } from './repositories/users.repository';
       provide: IIngredientsRepository,
       useClass: IngredientsRepository,
     },
-    ClientsRespository,
+    {
+      provide: IClientsRepository,
+      useClass: ClientsRepository,
+    },
     ProductCategoriesRepository,
     ProductsRespository,
     OrdersRespository,

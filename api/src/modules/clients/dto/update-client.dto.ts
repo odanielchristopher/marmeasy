@@ -1,5 +1,4 @@
 import { BadRequestException } from '@nestjs/common';
-import { ClientType } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import {
   IsEnum,
@@ -10,6 +9,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ClientType } from '../entities/client.entity';
 
 export class UpdateClientDto {
   @IsString()

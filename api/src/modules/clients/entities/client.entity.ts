@@ -1,4 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
+import { Client as PrismaClient } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import {
   IsEnum,
@@ -6,12 +7,21 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUUID,
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { ClientType } from '../entities/client.entity';
 
-export class CreateClientDto {
+export enum ClientType {
+  FISICO = 'FISICO',
+  JURIDICO = 'JURIDICO',
+}
+
+export class Client {
+  @IsUUID()
+  @IsNotEmpty({ message: 'O id é obrigatório.' })
+  id: string;
+
   @IsString()
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
   @MinLength(2, { message: 'O nome precisa ter pelo menos 2 caracteres.' })
@@ -20,11 +30,11 @@ export class CreateClientDto {
   @IsString()
   @IsOptional()
   @MaxLength(11, { message: 'O número precisa ter no maximo 11 digitos.' })
-  phone: string;
+  phone?: string;
 
   @IsString()
   @IsOptional()
-  address: string;
+  address?: string;
 
   @IsNotEmpty({ message: 'O tipo é obrigatório.' })
   @IsEnum(ClientType)
@@ -34,7 +44,7 @@ export class CreateClientDto {
   @IsOptional()
   @MinLength(11, { message: 'Um documento precisa ser válido.' })
   @MaxLength(14, { message: 'Um documento precisa ser válido.' })
-  document: string;
+  document?: string;
 
   @Transform(({ value }) => {
     try {
@@ -45,5 +55,19 @@ export class CreateClientDto {
   })
   @IsNumber({ maxDecimalPlaces: 2 }, { message: 'O saldo válido.' })
   @IsNotEmpty({ message: 'O saldo inicial é obrigatório.' })
-  initialBalance: number;
+  balance: number;
+
+  static parse(persistenteEntity: PrismaClient | null): Client {
+    if (!persistenteEntity) {
+      return null;
+    }
+
+    return {
+      ...persistenteEntity,
+      phone: persistenteEntity.phone ?? undefined,
+      document: persistenteEntity.document ?? undefined,
+      address: persistenteEntity.address ?? undefined,
+      type: ClientType[persistenteEntity.type],
+    };
+  }
 }

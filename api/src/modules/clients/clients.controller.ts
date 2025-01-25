@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -13,11 +14,13 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
-import { ClientsService } from './services/clients.service';
+import { IClientsService } from './interfaces/clients-service.interface';
 
 @Controller('clients')
 export class ClientsController {
-  constructor(private readonly clientsService: ClientsService) {}
+  constructor(
+    @Inject(IClientsService) private readonly clientsService: IClientsService,
+  ) {}
 
   @Get()
   findAll(@ActiveUserId() userId: string) {

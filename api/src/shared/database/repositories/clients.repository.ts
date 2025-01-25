@@ -1,28 +1,84 @@
 import { Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { Client } from 'src/modules/clients/entities/client.entity';
+import {
+  CreateClientDto,
+  DeleteClientDto,
+  FindFirstClientByDocumentDto,
+  FindFirstClientByIdDto,
+  FindManyByUserIdDto,
+  IClientsRepository,
+  UpdateClientDto,
+} from '../interfaces/clients-repository.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
-export class ClientsRespository {
+export class ClientsRepository implements IClientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findMany(findManyDto: Prisma.ClientFindManyArgs) {
-    return this.prismaService.client.findMany(findManyDto);
+  async findManyByUserId(findManyDto: FindManyByUserIdDto): Promise<Client[]> {
+    const { userId, order } = findManyDto;
+
+    const clients = await this.prismaService.client.findMany({
+      where: { userId },
+      orderBy: { name: order },
+    });
+
+    return clients.map(Client.parse);
   }
 
-  findFirst(findFirstDto: Prisma.ClientFindFirstArgs) {
-    return this.prismaService.client.findFirst(findFirstDto);
+  async findFirstById(
+    findFirstByIdDto: FindFirstClientByIdDto,
+  ): Promise<Client> {
+    const { userId, id } = findFirstByIdDto;
+
+    const client = await this.prismaService.client.findFirst({
+      where: { userId, id },
+    });
+
+    return Client.parse(client);
   }
 
-  create(createDto: Prisma.ClientCreateArgs) {
-    return this.prismaService.client.create(createDto);
+  async findFirstByDocument(
+    findFirstByDocumentDto: FindFirstClientByDocumentDto,
+  ): Promise<Client> {
+    const { userId, document } = findFirstByDocumentDto;
+
+    const client = await this.prismaService.client.findFirst({
+      where: { userId, document },
+    });
+
+    return Client.parse(client);
   }
 
-  update(updateDto: Prisma.ClientUpdateArgs) {
-    return this.prismaService.client.update(updateDto);
+  async create(createDto: CreateClientDto): Promise<Client> {
+    const { data, userId } = createDto;
+
+    const createdClient = await this.prismaService.client.create({
+      data: {
+        userId,
+        ...data,
+      },
+    });
+
+    return Client.parse(createdClient);
   }
 
-  delete(deleteDto: Prisma.ClientDeleteArgs) {
-    return this.prismaService.client.delete(deleteDto);
+  async update(updateDto: UpdateClientDto): Promise<Client> {
+    const { data, userId } = updateDto;
+
+    const updatedClient = await this.prismaService.client.update({
+      where: { id: data.id, userId },
+      data,
+    });
+
+    return Client.parse(updatedClient);
+  }
+
+  async delete(deleteDto: DeleteClientDto): Promise<void> {
+    const { userId, id } = deleteDto;
+
+    await this.prismaService.client.delete({
+      where: { id, userId },
+    });
   }
 }

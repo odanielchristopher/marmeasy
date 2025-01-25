@@ -13,20 +13,17 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class UsersRepository implements IUsersRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
   async findUniquetById(
     findUniqueByIdDto: FindUniqueUserByIdDto,
   ): Promise<User | null> {
     const { userId } = findUniqueByIdDto;
 
-    const findedUser = await this.prismaService.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true,
-      },
-    });
+    const [findedUser] = await this.prismaService.$queryRaw<User[]>`
+      SELECT id, name, email, password
+      FROM users
+      WHERE id = ${userId}::uuid
+    `;
 
     return findedUser;
   }
