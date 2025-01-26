@@ -1,5 +1,9 @@
 import { Client } from '@renderer/app/entities/Client';
 import { Input } from '@renderer/views/components/Input';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
+import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
+import { Container, IconCategory, ProductList } from './styles';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { Container, IconCategory, ProductList } from './styles';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import noImage from '@renderer/assets/Images/empty-image.svg';
@@ -92,5 +96,4 @@ export default function AddOrder({ client }: AddOrderProps) {
             )}
         </Container>
     );
-
 }

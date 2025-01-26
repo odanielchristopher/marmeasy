@@ -51,8 +51,8 @@ export default function Aside({ area }: AsideProps) {
       </Header>
 
       <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
 
+        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>Mostrar detalhes</ActionsButton>
       </Actions>
 
       {!showClientData && (
@@ -67,13 +67,10 @@ export default function Aside({ area }: AsideProps) {
           </Empty>
         </Main>
       )}
-
       {/* {showClientData && <UpdateClientForm client={seletedClient} $isShow={showClientData} />} */}
       {showClientData && showDetails && [
         hasOrders ? <DetailsOrder key="detailsOrder" client={seletedClient} /> : <UpdateClientForm key="updateClientForm" client={seletedClient} $isShow={showClientData}/>
       ]}
-
-
       {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
     </Container>
   );
