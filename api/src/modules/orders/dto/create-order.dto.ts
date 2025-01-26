@@ -1,6 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -20,6 +21,10 @@ export class CreateOrderDto {
   @ValidateNested({ each: true })
   @Type(() => OrderItem)
   items: OrderItem[];
+
+  @IsDate({ message: 'Precisa ser no formato válido.' })
+  @IsOptional()
+  date?: Date;
 
   @Transform(({ value }) => Number(value))
   @IsOptional()

@@ -7,6 +7,7 @@ import { IProductCategoriesRepository } from './interfaces/product-categories-re
 import { IProductsRepository } from './interfaces/products-repository.interface';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 
+import { IOrdersRepository } from './interfaces/orders-repository.interface';
 import { PrismaService } from './prisma.service';
 import { ClientsRepository } from './repositories/clients.repository';
 import { IngredientsRepository } from './repositories/ingredients.repository';
@@ -20,7 +21,6 @@ import { UsersRepository } from './repositories/users.repository';
 @Module({
   providers: [
     PrismaService,
-    OrdersRepository,
     {
       provide: IProductsRepository,
       useClass: ProductsRepository,
@@ -44,6 +44,10 @@ import { UsersRepository } from './repositories/users.repository';
     {
       provide: IOrderItemsRepository,
       useClass: OrderItemsRepository,
+    },
+    {
+      provide: IOrdersRepository,
+      useClass: OrdersRepository,
     },
   ],
   exports: [
@@ -71,7 +75,10 @@ import { UsersRepository } from './repositories/users.repository';
       provide: IOrderItemsRepository,
       useClass: OrderItemsRepository,
     },
-    OrdersRepository,
+    {
+      provide: IOrdersRepository,
+      useClass: OrdersRepository,
+    },
   ],
 })
 export class DatabaseModule {}

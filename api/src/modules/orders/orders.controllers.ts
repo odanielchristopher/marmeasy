@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -12,15 +13,20 @@ import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
-import { OrdersService } from './services/orders.service';
+import { IOrdersService } from './interfaces/orders-service.interface';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    @Inject(IOrdersService) private readonly ordersService: IOrdersService,
+  ) {}
 
-  @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.ordersService.findAllByUserId(userId);
+  @Get(':clientId')
+  findAll(
+    @ActiveUserId() userId: string,
+    @Param('clientId', ParseUUIDPipe) clientId: string,
+  ) {
+    return this.ordersService.findAllByClientId(userId, clientId);
   }
 
   @Get(':orderId')
