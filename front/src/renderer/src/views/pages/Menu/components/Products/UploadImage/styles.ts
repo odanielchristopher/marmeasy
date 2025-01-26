@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 100%;
-  max-width: 42.0rem;
+  max-width: 42rem;
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
   padding-bottom: 1.4rem;
-  border: 1px solid #CCC;
-  border-radius: 1.0rem;
+  border: 1px solid #ccc;
+  border-radius: 1rem;
   position: relative;
 
   .remove {
@@ -23,8 +23,8 @@ export const Container = styled.div`
     align-items: center;
     justify-content: center;
 
-    top: 1.0rem;
-    right: 1.0rem;
+    top: 1rem;
+    right: 1rem;
 
     position: absolute;
     z-index: 3;
@@ -38,13 +38,12 @@ export const NoContentImage = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FAFAFA;
+  background: #fafafa;
 
-  border-radius: 1.0rem 1.0rem 0 0;
+  border-radius: 1rem 1rem 0 0;
 `;
 
 export const ContainerImg = styled.div`
-
   button {
     align-items: center;
     background: transparent;
@@ -65,7 +64,7 @@ export const Preview = styled.img`
   height: 160px;
   object-fit: cover;
 
-  border-radius: 1.0rem 1.0rem 0 0;
+  border-radius: 1rem 1rem 0 0;
 `;
 
 export const LoaderOverlay = styled.div`

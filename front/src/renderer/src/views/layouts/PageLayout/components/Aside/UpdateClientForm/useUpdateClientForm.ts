@@ -35,10 +35,12 @@ const clientFormSchema = z.object({
     .refine((value) => !value || isCNPJValid(value), {
       message: 'O CNPJ precisa ser válido ou estar vazio',
     }),
-  balance: z.string({ required_error: 'Saldo é obrigatório' }).min(1, 'Saldo é obrigatório'),
+  balance: z
+    .string({ required_error: 'Saldo é obrigatório' })
+    .min(1, 'Saldo é obrigatório'),
 });
 
-export type FormData = z.infer<typeof clientFormSchema>
+export type FormData = z.infer<typeof clientFormSchema>;
 
 export default function useUpdateClientForm(
   isShow: boolean,
@@ -57,9 +59,11 @@ export default function useUpdateClientForm(
   const { mutateAsync: updateClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: UpdateClientParams) => clientsService.update(data),
     onSuccess: (updatedClient) => {
-      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => (
-        clients.map((client) => client.id === updatedClient.id ? updatedClient : client)
-      ));
+      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) =>
+        clients.map((client) =>
+          client.id === updatedClient.id ? updatedClient : client,
+        ),
+      );
     },
   });
 
@@ -68,8 +72,14 @@ export default function useUpdateClientForm(
       reset({
         name: clientBeingUpdated.name,
         address: clientBeingUpdated.address ?? '',
-        cpf: (clientBeingUpdated.type === 'FISICO' ? clientBeingUpdated.document : '') ?? '',
-        cnpj: (clientBeingUpdated.type ==='JURIDICO' ? clientBeingUpdated.document : '') ?? '',
+        cpf:
+          (clientBeingUpdated.type === 'FISICO'
+            ? clientBeingUpdated.document
+            : '') ?? '',
+        cnpj:
+          (clientBeingUpdated.type === 'JURIDICO'
+            ? clientBeingUpdated.document
+            : '') ?? '',
         phone: clientBeingUpdated.phone ?? '',
         balance: String(clientBeingUpdated.balance),
       });
@@ -92,7 +102,10 @@ export default function useUpdateClientForm(
         name,
         address: address || undefined,
         phone: phone || undefined,
-        document: clientBeingUpdated!.type === 'FISICO' ? (cpf || undefined) : (cnpj || undefined),
+        document:
+          clientBeingUpdated!.type === 'FISICO'
+            ? cpf || undefined
+            : cnpj || undefined,
         balance,
       });
 
@@ -102,7 +115,6 @@ export default function useUpdateClientForm(
       });
     } catch (error) {
       if (error instanceof AxiosError) {
-
         toast({
           type: 'danger',
           text: error.response?.data.message,

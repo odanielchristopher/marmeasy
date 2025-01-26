@@ -14,26 +14,16 @@ export const Button = styled.button<{ error?: boolean }>`
   border-radius: 0.5rem; /* rounded-lg */
   border: 1px solid ${({ error }) => (error ? '#7f1d1d' : '#6b7280')}; /* border-red-900 or border-gray-500 */
   padding: 0 0.75rem; /* px-3 */
-  height: 52px; /* h-[52px] */
   color: #374151; /* text-gray-700 */
   transition: border-color 0.2s;
   outline: none;
   text-align: left;
   position: relative;
-  padding-top: 1rem; /* pt-4 */
+  padding: 0.5rem;
 
   &:focus {
     border-color: #1f2937; /* focus:border-gray-800 */
   }
-`;
-
-export const Label = styled.span`
-  position: absolute;
-  color: #374151; /* text-gray-700 */
-  font-size: 0.75rem; /* text-xs */
-  left: 13px;
-  top: 0.5rem; /* top-2 */
-  pointer-events: none;
 `;
 
 export const ErrorContainer = styled.div`

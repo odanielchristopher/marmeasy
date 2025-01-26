@@ -13,17 +13,22 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
 const categoryFormSchema = z.object({
-  icon: z.string({ required_error: 'O emoji é obrigatório.' }).refine((value) => isEmoji(value), {
-    message: 'Precisa ser um emoji.',
-  }),
+  icon: z
+    .string({ required_error: 'O emoji é obrigatório.' })
+    .refine((value) => isEmoji(value), {
+      message: 'Precisa ser um emoji.',
+    }),
   name: z
     .string({ required_error: 'O nome é obrigatório.' })
     .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
 });
 
-export type FormData = z.infer<typeof categoryFormSchema>
+export type FormData = z.infer<typeof categoryFormSchema>;
 
-export default function useNewCategoryModal(onCreate: () => void, isOpen: boolean) {
+export default function useNewCategoryModal(
+  onCreate: () => void,
+  isOpen: boolean,
+) {
   const {
     register,
     handleSubmit: hookFormHandleSubmit,
@@ -34,7 +39,8 @@ export default function useNewCategoryModal(onCreate: () => void, isOpen: boolea
   });
 
   const { mutateAsync: createCategory, isPending: isLoading } = useMutation({
-    mutationFn: (data: CreateProductCategoryParams) => productCategoriesService.create(data),
+    mutationFn: (data: CreateProductCategoryParams) =>
+      productCategoriesService.create(data),
     onSuccess: (newCategory: ProductCategory) => {
       queryClient.setQueryData(
         ['product-categories', 'getAll'],

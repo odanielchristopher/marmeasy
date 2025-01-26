@@ -23,7 +23,10 @@ const schema = z
       .string()
       .min(1, 'Nome é obrigatório')
       .min(2, 'Nome deve conter pelo menos 2 caracteres.'),
-    email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
+    email: z
+      .string()
+      .min(1, 'E-mail é obrigatório.')
+      .email('Informe um e-mail válido.'),
     currentPassword: z
       .string()
       .min(1, 'Senha atual é obrigatória.')
@@ -51,7 +54,7 @@ const schema = z
     },
   );
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
@@ -82,11 +85,14 @@ export default function useProfileController() {
     },
     onSuccess: ({ name, email }) => {
       // Atualiza o cache imediatamente
-      queryClient.setQueryData<FindMeResponse | undefined>(['users', 'find-me'], (oldData) => ({
-        ...oldData,
-        name,
-        email,
-      }));
+      queryClient.setQueryData<FindMeResponse | undefined>(
+        ['users', 'find-me'],
+        (oldData) => ({
+          ...oldData,
+          name,
+          email,
+        }),
+      );
 
       // Invalida a query para refazer o fetch em segundo plano
       queryClient.invalidateQueries({

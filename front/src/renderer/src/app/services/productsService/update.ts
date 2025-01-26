@@ -37,7 +37,10 @@ export async function update({
   formData.append('categoryId', categoryId);
   formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
 
-  const { data } = await httpClient.put<Product>(`/products/${id}?removeImage=${removeImage}`, formData);
+  const { data } = await httpClient.put<Product>(
+    `/products/${id}?removeImage=${removeImage}`,
+    formData,
+  );
 
   return data;
 }

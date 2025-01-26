@@ -1,8 +1,8 @@
 import styled, { css, keyframes } from 'styled-components';
 
 interface IContainer {
-  type?: string
-  $isLeaving: boolean
+  type?: string;
+  $isLeaving: boolean;
 }
 
 const messageIn = keyframes`
@@ -45,16 +45,18 @@ export const Container = styled.div<IContainer>`
   align-items: center;
   animation: ${messageIn} 0.3s;
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: .0rem 2.0rem 2.0rem -1.6rem rgba(0, 0, 0, 0.25);;
-  color: #FFF;
+  box-shadow: 0rem 2rem 2rem -1.6rem rgba(0, 0, 0, 0.25);
+  color: #fff;
   cursor: pointer;
   display: flex;
   justify-content: center;
   padding: 1.6rem 3.2rem;
 
-  ${({ $isLeaving }) => $isLeaving && css`
-    animation: ${messageOut} 0.3s forwards;
-  `}
+  ${({ $isLeaving }) =>
+    $isLeaving &&
+    css`
+      animation: ${messageOut} 0.3s forwards;
+    `}
 
   ${({ type }) => containerVariants[type || 'default']}
 
@@ -63,6 +65,6 @@ export const Container = styled.div<IContainer>`
   }
 
   svg {
-    margin-right: .8rem;
+    margin-right: 0.8rem;
   }
 `;

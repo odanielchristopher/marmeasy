@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
 
 interface ContainerProps {
-  $area: string
+  $area: string;
 }
 
 export const Container = styled.aside<ContainerProps>`
-  background-color: #FFF;
+  background-color: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   height: calc(100vh - (${({ theme }) => theme.margin} * 2));
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
@@ -34,11 +34,11 @@ export const Actions = styled.div`
   justify-content: space-between;
   gap: 1.2rem;
   padding-bottom: 3.2rem;
-  border-bottom: .2rem solid ${({ theme }) => theme.colors.gray.lighter};
+  border-bottom: 0.2rem solid ${({ theme }) => theme.colors.gray.lighter};
 `;
 
 interface ActionsButtonProps {
-  $isActive?: boolean
+  $isActive?: boolean;
 }
 
 export const ActionsButton = styled.button<ActionsButtonProps>`
@@ -49,7 +49,7 @@ export const ActionsButton = styled.button<ActionsButtonProps>`
   font-size: 1.2rem;
   font-weight: 400;
   padding: 0.4rem 2.4rem;
-  transition: all ease-in .1s;
+  transition: all ease-in 0.1s;
   width: 100%;
 
   &:hover {
@@ -79,7 +79,7 @@ export const Empty = styled.div`
   gap: 2.4rem;
   height: 100%;
   justify-content: center;
-  max-width: 30.0rem;
+  max-width: 30rem;
 
   p {
     font-size: 1.6rem;

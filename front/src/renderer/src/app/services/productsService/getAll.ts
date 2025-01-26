@@ -8,7 +8,9 @@ export interface GetAllParams {
 }
 
 export async function getAll(params?: GetAllParams) {
-  const url = params?.category ? `/products?category=${params.category}` : '/products';
+  const url = params?.category
+    ? `/products?category=${params.category}`
+    : '/products';
 
   const { data } = await httpClient.get<GetAllResponse>(url);
 

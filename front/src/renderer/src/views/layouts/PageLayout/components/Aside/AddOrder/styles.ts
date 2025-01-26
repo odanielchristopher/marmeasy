@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ export const Container = styled.div`
   ul.productsOptions {
     overflow: auto;
   }
-  `;
+`;
 
 export const IconCategory = styled.li`
   list-style-type: none;
@@ -44,8 +44,8 @@ export const IconCategory = styled.li`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #FFF;
-    box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.10);
+    background-color: #fff;
+    box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;

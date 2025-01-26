@@ -1,4 +1,3 @@
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
@@ -12,14 +11,17 @@ import { authService } from '@renderer/app/services/authService';
 import { SingInParams } from '@renderer/app/services/authService/singIn';
 
 const schema = z.object({
-  email: z.string().min(1, 'E-mail é obrigatório.').email('Informe um e-mail válido.'),
+  email: z
+    .string()
+    .min(1, 'E-mail é obrigatório.')
+    .email('Informe um e-mail válido.'),
   password: z
     .string()
     .min(1, 'Senha é obrigatória.')
     .min(6, 'Senha deve conter pelo menos 6 dígitos.'),
 });
 
-type FormData = z.infer<typeof schema>
+type FormData = z.infer<typeof schema>;
 
 export default function useLogin() {
   const {
@@ -32,11 +34,11 @@ export default function useLogin() {
 
   const { signin } = useAuth();
 
-   const { mutateAsync: login, isPending: isLoading } = useMutation({
+  const { mutateAsync: login, isPending: isLoading } = useMutation({
     mutationFn: async (data: SingInParams) => {
       return authService.signIn(data);
     },
-  });;
+  });
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
@@ -52,7 +54,8 @@ export default function useLogin() {
       if (error instanceof AxiosError) {
         toast({
           type: 'danger',
-          text: error.response?.data.message ?? 'Ocorreu um erro ao fazer o login.',
+          text:
+            error.response?.data.message ?? 'Ocorreu um erro ao fazer o login.',
         });
       } else {
         toast({

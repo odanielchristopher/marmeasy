@@ -9,7 +9,7 @@ export const Container = styled.div`
     color: ${({ theme }) => theme.colors.red.main};
     display: block;
     font-size: 1.2rem;
-    margin-top: .8rem;
+    margin-top: 0.8rem;
   }
 
   .form-item {

@@ -9,12 +9,13 @@ import { BalanceContainer, FormModal } from './styles';
 import useCompanyModal from './useCompanyModal';
 
 interface ClientModalProps {
-  isOpen: boolean
-  onClose(): void
+  isOpen: boolean;
+  onClose(): void;
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { errors, handleSubmit, isLoading, register, control } = useCompanyModal(isOpen, onClose);
+  const { errors, handleSubmit, isLoading, register, control } =
+    useCompanyModal(isOpen, onClose);
 
   return (
     <Modal open={isOpen} title="Nova empresa" onClose={onClose}>
@@ -22,8 +23,8 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
         <p>Digite as informações do seu cliente.</p>
 
         <BalanceContainer>
-          <span className='label'>Saldo inicial</span>
-          <div className='input'>
+          <span className="label">Saldo inicial</span>
+          <div className="input">
             <span>R$</span>
             <Controller
               control={control}
@@ -56,7 +57,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="Telefone da empresa"
               format="(##) ##### ####"
-              mask='_'
+              mask="_"
               $error={errors.phone?.message}
               onChangeValue={onChange}
               value={value}
@@ -64,7 +65,11 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
           )}
         />
 
-        <Input type="text" placeholder="Endereço da empresa" {...register('address')} />
+        <Input
+          type="text"
+          placeholder="Endereço da empresa"
+          {...register('address')}
+        />
 
         <Controller
           control={control}
@@ -75,7 +80,7 @@ export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
               type="text"
               placeholder="CNPJ da empresa"
               format="##.###.###/####-##"
-              mask='_'
+              mask="_"
               $error={errors.cnpj?.message}
               onChangeValue={onChange}
               value={value}

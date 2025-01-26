@@ -31,8 +31,8 @@ export default [
       // Regras do TypeScript
       ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/ban-ts-comment': 'off', // Permitir comentários de TS
-      'semi': ['error', 'always'], // Exigir ponto e vírgula
-      'quotes': ['error', 'single'], // Exigir aspas simples
+      semi: ['error', 'always'], // Exigir ponto e vírgula
+      quotes: ['error', 'single'], // Exigir aspas simples
       'comma-dangle': ['error', 'always-multiline'], // Virgula em listas multilinha
       'no-console': 'warn', // Avisar sobre console.log
       'no-undef': 'off',

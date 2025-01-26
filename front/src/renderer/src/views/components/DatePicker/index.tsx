@@ -1,35 +1,36 @@
-import { format } from 'date-fns';
+//import React from 'react';
 import { ptBR } from 'date-fns/locale';
 import { DayPicker } from 'react-day-picker';
-import { capitalizeFirstLetter } from '../../../app/utils/capitalizeFirstLetter';
+import { StyledDayPickerWrapper } from './styles'; // Corrigido o caminho do módulo
 
 interface DatePickerProps {
-  value: { from: Date; to: Date };
-  onChange?(range: { from: Date; to: Date }): void;
+  value: Date;
+  onChange?(date: Date): void;
 }
 
-export function DatePicker({ value, onChange }: DatePickerProps) {
+export function StyledDatePicker({ value, onChange }: DatePickerProps) {
   return (
-    <DayPicker
-      locale={ptBR}
-      selected={value}
-      mode="range"
-      onSelect={(range) => onChange?.(range ?? { from: new Date(), to: new Date() })}
-      classNames={{
-        caption: 'flex items-center justify-between',
-        nav: 'flex gap-1',
-        nav_button_previous: 'text-teal-800 flex items-center justify-center !bg-transparent',
-        nav_button_next: 'text-teal-800 flex items-center justify-center !bg-transparent',
-        head_cell: 'uppercase text-xs text-gray-500 font-medium pt-1 pb-2',
-        button: 'text-gray-700 cursor-pointer w-10 h-10 hover:bg-teal-100 rounded-full',
-        day_today: 'bg-gray-100 font-bold text-gray-900',
-        day_selected: '!bg-teal-900 text-white font-medium',
-      }}
-      formatters={{
-        formatCaption: (date, options) => {
-          return capitalizeFirstLetter(format(date, 'LLLL yyyy', options));
-        },
-      }}
-    />
+    <StyledDayPickerWrapper>
+      <DayPicker
+        locale={ptBR}
+        selected={value}
+        mode="single"
+        onSelect={(date) => onChange?.(date ?? new Date())}
+        className='rdp-root'
+        classNames={{
+          caption: 'rdp-caption', // Estilização do cabeçalho
+          nav: 'rdp-nav', // Botões de navegação
+          nav_button_previous: 'rdp-nav_button_previous',
+          nav_button_next: 'rdp-nav_button_next',
+          head_cell: 'rdp-head_cell', // Cabeçalho dos dias da semana
+          weekday: 'rdp-weekday', // Estilo dos dias da semana
+          month_grid: 'rdp-month_grid', // Estilo do grid de dias
+          day: 'rdp-day', // Estilo de um dia
+          day_today: 'rdp-day_today', // Estilo do dia atual
+          day_selected: 'rdp-day_selected', // Estilo do dia selecionado
+          day_button: 'rdp-day_button', // Botões dos dias
+        }}
+      />
+    </StyledDayPickerWrapper>
   );
 }

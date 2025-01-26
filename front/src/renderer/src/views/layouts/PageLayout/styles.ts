@@ -9,7 +9,7 @@ export const Container = styled.div<ContainerProps>`
   grid-template-columns: ${({ $showAside }) =>
     $showAside ? '7.0rem 1fr minmax(45.0rem, 40.0rem)' : '7.0rem 1fr'};
   grid-template-areas: ${({ $showAside }) =>
-    $showAside ? '\'nav outlet aside\'' : '\'nav outlet\''};
+    $showAside ? "'nav outlet aside'" : "'nav outlet'"};
   gap: 3.2rem;
 `;
 
@@ -21,6 +21,6 @@ export const Main = styled.div`
   margin-left: 2.4rem;
   padding-block: 2.4rem;
   &::-webkit-scrollbar {
-      display: none;
-    }
+    display: none;
+  }
 `;

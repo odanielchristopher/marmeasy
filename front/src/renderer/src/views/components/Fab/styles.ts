@@ -11,32 +11,32 @@ export const StyledButton = styled.button`
   align-items: center;
   background: ${({ theme }) => theme.colors.green.main};
   border-radius: 50%;
-  color: #FFF;
+  color: #fff;
   display: flex;
   height: 4.8rem;
   justify-content: center;
   padding: 1.2rem;
   width: 4.8rem;
   border: none;
-  transition: background .3s;
+  transition: background 0.3s;
 
-  &[data-state="open"] {
+  &[data-state='open'] {
     transform: rotate(90deg);
   }
 
   &:hover {
     background: ${({ theme }) => theme.colors.green.dark};
-    transition: background .3s;
+    transition: background 0.3s;
   }
 `;
 
 export const StyledItem = styled.button`
   width: 100%;
-  gap: .8rem;
-  transition: background .3s;
-  
+  gap: 0.8rem;
+  transition: background 0.3s;
+
   &:hover {
-    transition: background .3s;
+    transition: background 0.3s;
   }
 `;
 

@@ -7,7 +7,7 @@ export const Container = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 42.0rem;
+  max-width: 42rem;
 
   header {
     display: flex;

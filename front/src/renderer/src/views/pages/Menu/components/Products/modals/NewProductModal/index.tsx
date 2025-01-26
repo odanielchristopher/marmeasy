@@ -12,14 +12,23 @@ import useNewProductModal from './useNewProductModal';
 import { NumericInput } from '@renderer/views/components/NumericInput';
 import { Controller } from 'react-hook-form';
 import { CgCloseO } from 'react-icons/cg';
-import { Container, Content, Footer, ImageSection, InputsContainer } from './styles';
+import {
+  Container,
+  Content,
+  Footer,
+  ImageSection,
+  InputsContainer,
+} from './styles';
 
 interface NewProductModalProps {
-  open: boolean
-  onClose(): void
+  open: boolean;
+  onClose(): void;
 }
 
-export default function NewProductModal({ open, onClose }: NewProductModalProps) {
+export default function NewProductModal({
+  open,
+  onClose,
+}: NewProductModalProps) {
   const {
     errors,
     width,
