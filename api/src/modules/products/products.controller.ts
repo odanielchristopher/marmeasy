@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   Post,
   Put,
@@ -16,11 +17,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductsService } from './services/products.service';
+import { IProductsService } from './interfaces/products-service.interface';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    @Inject(IProductsService)
+    private readonly productsService: IProductsService,
+  ) {}
 
   @Get()
   findAll(

@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -13,11 +14,14 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateIngredientDto } from './dto/create-ingredient.dto';
 import { UpdateIngredientDto } from './dto/update-ingredient.dto';
-import { IngredientsService } from './services/ingredients.service';
+import { IIngredientsService } from './interfaces/ingredients-service.interface';
 
 @Controller('ingredients')
 export class IngredientsController {
-  constructor(private readonly ingredientsService: IngredientsService) {}
+  constructor(
+    @Inject(IIngredientsService)
+    private readonly ingredientsService: IIngredientsService,
+  ) {}
 
   @Get()
   findAll(@ActiveUserId() userId: string) {

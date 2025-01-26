@@ -1,29 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateOrderItemDto } from 'src/modules/order-items/dto/create-order-items.dto';
-import { OrderItemsService } from 'src/modules/order-items/services/order-items.service';
-import { OrdersRespository } from 'src/shared/database/repositories/orders.repository';
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IOrderItemsService } from 'src/modules/order-items/interfaces/order-items-service.interface';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
+import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { UpdateStatusOrderDto } from '../dto/update-status-order.dto';
 import { OrderStatus } from '../entities/status.entity';
-import { ValidateOrderOwnershipService } from './validade-order-ownership.service';
+import { IOrdersService } from '../interfaces/orders-service.interface';
+import { IValidateOrderOwnershipService } from '../interfaces/validate-order-ownership-service.interface';
 
 @Injectable()
-export class OrdersService {
+export class OrdersService implements IOrdersService {
   constructor(
-    private readonly ordersRepository: OrdersRespository,
-    private readonly orderItemsService: OrderItemsService,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-    private readonly validateOrderOwnershipService: ValidateOrderOwnershipService,
+    @Inject(IOrdersRepository)
+    private readonly ordersRepository: IOrdersRepository,
+    @Inject(IOrderItemsService)
+    private readonly orderItemsService: IOrderItemsService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
+    @Inject(IValidateOrderOwnershipService)
+    private readonly validateOrderOwnershipService: IValidateOrderOwnershipService,
   ) {}
 
+  async findAllByClientId(userId: string, clientId: string) {
+    return this.ordersRepository.findManyByClientId({
+      clientId,
+      userId,
+      order: 'desc',
+    });
+  }
+
   async findOneById(userId: string, orderId: string) {
-    const order = await this.ordersRepository.findUnique({
-      where: { userId, id: orderId },
-      include: {
-        items: true,
-      },
+    const order = await this.ordersRepository.findUniqueByUserId({
+      userId,
+      id: orderId,
     });
 
     if (!order) {
@@ -33,110 +43,72 @@ export class OrdersService {
     return order;
   }
 
-  async findAllByUserId(userId: string) {
-    return this.ordersRepository.findMany({
-      where: { userId },
-      include: {
-        items: true,
-      },
-    });
-  }
-
   async create(userId: string, createOrderDto: CreateOrderDto) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { clientId, items, discount } = createOrderDto;
+    const { clientId, items, discount, date } = createOrderDto;
 
-    const order = await this.ordersRepository.create({
+    const totalValue =
+      items.reduce((acc, item) => acc + item.total, 0) - (discount ?? 0);
+
+    const createdOrder = await this.ordersRepository.create({
+      userId,
       data: {
-        user: { connect: { id: userId } },
-        client: { connect: { id: clientId } },
-        discount,
+        clientId,
+        discount: discount ?? 0,
+        date: date ?? new Date(),
+        status: OrderStatus['PENDING'],
+        totalValue,
+        items,
       },
     });
 
-    let totalItems = 0;
+    return createdOrder;
+  }
 
-    await Promise.all(
-      items.map(async (item) => {
-        const { name, ingredients, quantity, unitPrice, total } = item;
+  async update(
+    userId: string,
+    orderId: string,
+    updateOrderDto: UpdateOrderDto,
+  ) {
+    await this.validateOrderOwnershipService.validate(userId, orderId);
 
-        const createOrderItemDto = new CreateOrderItemDto({
-          name,
-          ingredients,
-          quantity,
-          unitPrice,
-          total,
-        });
+    const existingOrder = await this.ordersRepository.findUniqueByUserId({
+      id: orderId,
+      userId,
+    });
 
-        const createdItem = await this.orderItemsService.create(
-          userId,
-          order.id,
-          createOrderItemDto,
-        );
+    if (!existingOrder) {
+      throw new NotFoundException('Pedido não encontrado.');
+    }
 
-        totalItems += createdItem.total;
-      }),
+    const { discount, items, date, clientId } = updateOrderDto;
+
+    const currentItemsTotal = existingOrder.items.reduce(
+      (acc, item) => acc + item.total,
+      0,
     );
-
-    const totalValueOrder = totalItems - (discount ?? 0);
+    const newItemsTotal = items.reduce((acc, item) => acc + item.total, 0);
+    const newTotalValue =
+      currentItemsTotal -
+      (existingOrder.discount ?? 0) +
+      newItemsTotal -
+      (discount ?? 0);
 
     const updatedOrder = await this.ordersRepository.update({
-      where: { id: order.id },
-      data: { totalValue: totalValueOrder },
-      select: {
-        id: true,
-        clientId: true,
-        date: true,
-        totalValue: true,
-        discount: true,
-        items: true,
+      userId,
+      data: {
+        id: orderId,
+        clientId,
+        date: date,
+        discount,
+        totalValue: newTotalValue,
+        items,
+        status: OrderStatus['PENDING'],
       },
     });
 
     return updatedOrder;
-  }
-
-  async update(userId: string, orderId: string, updateOrder: UpdateOrderDto) {
-    await this.validateOrderOwnershipService.validate(userId, orderId);
-
-    const { discount, items } = updateOrder;
-
-    const order = await this.ordersRepository.findUnique({
-      where: { userId, id: orderId },
-      include: { items: true },
-    });
-
-    if (!order) {
-      throw new NotFoundException('Pedido não encontrado.');
-    }
-
-    const newTotalValue =
-      order.totalValue + (order.discount ?? 0) - (discount ?? 0);
-
-    const updatedItems = items.map((item) => ({
-      where: { id: item.id },
-      data: { ...item },
-    }));
-
-    return this.ordersRepository.update({
-      where: { id: orderId },
-      data: {
-        discount,
-        totalValue: newTotalValue,
-        items: {
-          update: updatedItems,
-        },
-      },
-      select: {
-        id: true,
-        clientId: true,
-        date: true,
-        totalValue: true,
-        discount: true,
-        items: true,
-      },
-    });
   }
 
   async updateStatus(
@@ -146,8 +118,9 @@ export class OrdersService {
   ) {
     await this.validateOrderOwnershipService.validate(userId, orderId);
 
-    const order = await this.ordersRepository.findUnique({
-      where: { userId, id: orderId },
+    const order = await this.ordersRepository.findUniqueByUserId({
+      userId,
+      id: orderId,
     });
 
     if (!order) {
@@ -155,51 +128,43 @@ export class OrdersService {
     }
 
     return this.ordersRepository.update({
-      where: { id: orderId },
-      data: { status: updateOrderStatusDto.status },
+      userId,
+      data: {
+        ...order,
+        status: OrderStatus[updateOrderStatusDto.status],
+      },
     });
   }
 
   async delete(userId: string, orderId: string) {
     await this.validateOrderOwnershipService.validate(userId, orderId);
 
-    await this.ordersRepository.delete({
-      where: { id: orderId },
-    });
+    await this.ordersRepository.delete({ id: orderId, userId });
 
     return { message: 'Pedido excluído com sucesso.' };
   }
 
   async deleteItem(userId: string, orderId: string, orderItemId: string) {
-    await this.validateOrderOwnershipService.validate(userId, orderId);
+    const findedOrder = await this.validateOrderOwnershipService.validate(
+      userId,
+      orderId,
+    );
 
     await this.orderItemsService.delete(userId, orderItemId);
 
-    const order = (await this.ordersRepository.findUnique({
-      where: { id: orderId },
-      include: { items: true },
-    })) as {
-      id: string;
-      userId: string;
-      clientId: string;
-      date: Date;
-      totalValue: number;
-      discount: number;
-      status: OrderStatus;
-      items: { total: number }[];
-    };
+    const totalItems = findedOrder.items.reduce(
+      (sum, item) => sum + item.total,
+      0,
+    );
 
-    if (!order) {
-      throw new NotFoundException('Pedido não encontrado.');
-    }
-
-    const totalItems = order.items.reduce((sum, item) => sum + item.total, 0);
-
-    const newTotalValue = totalItems - order.discount;
+    const newTotalValue = totalItems - findedOrder.discount;
 
     await this.ordersRepository.update({
-      where: { id: orderId },
-      data: { totalValue: newTotalValue },
+      userId,
+      data: {
+        ...findedOrder,
+        totalValue: newTotalValue,
+      },
     });
 
     return { message: 'Item excluído e pedido atualizado com sucesso.' };

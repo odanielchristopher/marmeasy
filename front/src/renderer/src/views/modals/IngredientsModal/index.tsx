@@ -8,7 +8,6 @@ import { FaCheck } from 'react-icons/fa6';
 // import { StyledRdxCheckbox } from '@renderer/views/pages/Menu/components/Products/IngredientsSection/styles';
 import Button from '@renderer/views/components/Button';
 
-
 interface IngredientsModalProps {
   open: boolean;
   children?: React.ReactNode;
@@ -20,8 +19,16 @@ interface IngredientsModalProps {
   title: string;
 }
 
-export default function IngredientsModal({ open, answer, onClose, product, title }: IngredientsModalProps) {
-  const [selectedIngredients, setSelectedIngredients] = useState<{ [key: string]: boolean }>({});
+export default function IngredientsModal({
+  open,
+  answer,
+  onClose,
+  product,
+  title,
+}: IngredientsModalProps) {
+  const [selectedIngredients, setSelectedIngredients] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const handleCheckboxChange = (ingredientId: string) => {
     setSelectedIngredients((prev) => ({
@@ -40,33 +47,32 @@ export default function IngredientsModal({ open, answer, onClose, product, title
               const isChecked = selectedIngredients[ingredient.id] || false;
 
               return (
-                <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id} onClick={() => handleCheckboxChange(ingredient.id)}>
+                <label
+                  className="ingredientLabel"
+                  htmlFor={ingredient.id}
+                  key={ingredient.id}
+                  onClick={() => handleCheckboxChange(ingredient.id)}
+                >
                   <IngredientBox>
                     {ingredient.icon}
                     {ingredient.name}
-                    <CheckBoxStyle
-                      id={ingredient.id}
-                      checked={isChecked}
-                    >
-                    <Checkbox.Indicator className="indicator">
-                      <FaCheck size={10} />
-                    </Checkbox.Indicator>
-                  </CheckBoxStyle>
+                    <CheckBoxStyle id={ingredient.id} checked={isChecked}>
+                      <Checkbox.Indicator className="indicator">
+                        <FaCheck size={10} />
+                      </Checkbox.Indicator>
+                    </CheckBoxStyle>
                   </IngredientBox>
                 </label>
               );
             })}
           </div>
         </div>
-        <div className='quantity-box'>
+        <div className="quantity-box">
           <p>Quantidade*:</p>
           <Input type="number" name={'quantity'} />
         </div>
 
-        <Button>
-          Adicionar
-        </Button>
-        
+        <Button>Adicionar</Button>
       </Container>
     </Modal>
   );

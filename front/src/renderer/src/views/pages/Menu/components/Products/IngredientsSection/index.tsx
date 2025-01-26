@@ -5,9 +5,11 @@ import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Loader from '@renderer/views/components/Loader';
 
+import addNotes from '@renderer/assets/Images/add-notes.svg';
+
 import useIngredientsSection from './useIngredientsSection';
 
-import { Container, StyledRdxCheckbox } from './styles';
+import { Container, EmptyContainer, StyledRdxCheckbox } from './styles';
 
 interface IngredientsProps {
   openNewIngredientModal(): void;
@@ -20,8 +22,12 @@ export default function IngredientsSection({
   onSelected,
   selectedIngredientsIds,
 }: IngredientsProps) {
-  const { isLoading, filteredIngredients, handleChangeSearchTerm } =
-    useIngredientsSection();
+  const {
+    isLoading,
+    hasIngredients,
+    filteredIngredients,
+    handleChangeSearchTerm,
+  } = useIngredientsSection();
 
   return (
     <Container>
@@ -71,6 +77,13 @@ export default function IngredientsSection({
               </label>
             );
           })}
+
+        {!isLoading && !hasIngredients && (
+          <EmptyContainer>
+            <img src={addNotes} alt="Sem ingredients" />
+            <span>Não encontramos nenhum ingrediente.</span>
+          </EmptyContainer>
+        )}
       </div>
     </Container>
   );

@@ -1,15 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ProductCategoriesRespository } from 'src/shared/database/repositories/product-categories.repository';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { IProductCategoriesRepository } from 'src/shared/database/interfaces/product-categories-repository.interface';
+import { IValidateProductCategoryOwnershipService } from '../interfaces/validate-product-category-ownership-service.interface';
 
 @Injectable()
-export class ValidateProductCategoryOwnershipService {
+export class ValidateProductCategoryOwnershipService
+  implements IValidateProductCategoryOwnershipService
+{
   constructor(
-    private readonly productCategoriesRepository: ProductCategoriesRespository,
+    @Inject(IProductCategoriesRepository)
+    private readonly productCategoriesRepository: IProductCategoriesRepository,
   ) {}
 
   async validate(userId: string, productCategoryId: string) {
-    const isOwner = await this.productCategoriesRepository.findFirst({
-      where: { id: productCategoryId, userId },
+    const isOwner = await this.productCategoriesRepository.findFirstByUserId({
+      id: productCategoryId,
+      userId,
     });
 
     if (!isOwner) {

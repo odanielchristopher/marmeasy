@@ -5,43 +5,44 @@ import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { Product } from '@renderer/app/entities/Product';
 
 export default function useAddOrder() {
-    const { categories, isLoading: isLoadingCategories } = useProductCategoriesQuery();
-    const { products, isLoading: isLoadingProducts } = useProductsQuery();
-    const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
-    const [orderDate, setOrderDate] = useState('');
-    const [openModalIngredients, setOpenModalIngredients] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const { categories, isLoading: isLoadingCategories } =
+    useProductCategoriesQuery();
+  const { products, isLoading: isLoadingProducts } = useProductsQuery();
+  const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
+  const [orderDate, setOrderDate] = useState('');
+  const [openModalIngredients, setOpenModalIngredients] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-    function handleCategorySelect(category: ProductCategory) {
-        setSelectedCategory(category);
-    }
+  function handleCategorySelect(category: ProductCategory) {
+    setSelectedCategory(category);
+  }
 
-    function handleOrderDateChange(date: string) {
-        setOrderDate(date);
-    }
+  function handleOrderDateChange(date: string) {
+    setOrderDate(date);
+  }
 
-    function handleOpenModalIngredients(product: Product) {
-        setSelectedProduct(product);
-        setOpenModalIngredients(true);
-    }
+  function handleOpenModalIngredients(product: Product) {
+    setSelectedProduct(product);
+    setOpenModalIngredients(true);
+  }
 
-    function handleCloseModalIngredients() {
-        setOpenModalIngredients(false);
-        setSelectedProduct(null);
-    }
+  function handleCloseModalIngredients() {
+    setOpenModalIngredients(false);
+    setSelectedProduct(null);
+  }
 
-    return {
-        categories,
-        products,
-        isLoadingCategories,
-        isLoadingProducts,
-        selectedCategory,
-        orderDate,
-        openModalIngredients,
-        selectedProduct,
-        handleCategorySelect,
-        handleOrderDateChange,
-        handleOpenModalIngredients,
-        handleCloseModalIngredients,
-    };
+  return {
+    categories,
+    products,
+    isLoadingCategories,
+    isLoadingProducts,
+    selectedCategory,
+    orderDate,
+    openModalIngredients,
+    selectedProduct,
+    handleCategorySelect,
+    handleOrderDateChange,
+    handleOpenModalIngredients,
+    handleCloseModalIngredients,
+  };
 }

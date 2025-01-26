@@ -1,31 +1,33 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 import { compare, hash } from 'bcryptjs';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
-import { ValidateUserOwnershipService } from './validate-user-ownership.service';
+import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { IUsersService } from '../interfaces/users-service.interface';
+import { IValidateUserOwnershipService } from '../interfaces/validate-user-ownership-service.interface';
 
 @Injectable()
-export class UsersService {
+export class UsersService implements IUsersService {
   constructor(
-    private readonly usersRepository: UsersRespository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
+    @Inject(IUsersRepository)
+    private readonly usersRepository: IUsersRepository,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
   ) {}
 
   async getUserById(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    return this.usersRepository.findUnique({
-      where: { id: userId },
-      select: {
-        name: true,
-        email: true,
-      },
+    const { id, email, name } = await this.usersRepository.findUniquetById({
+      userId,
     });
+
+    return { id, email, name };
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {
@@ -41,10 +43,8 @@ export class UsersService {
     }
 
     if (user.email !== updateUserDto.email) {
-      const emailAlredyInUse = await this.usersRepository.findUnique({
-        where: {
-          email: updateUserDto.email,
-        },
+      const emailAlredyInUse = await this.usersRepository.findUniqueByEmail({
+        email: updateUserDto.email,
       });
 
       if (emailAlredyInUse) {
@@ -57,28 +57,22 @@ export class UsersService {
       hashedNewPassword = await hash(updateUserDto.newPassword, 10);
     }
 
-    return this.usersRepository.update({
-      where: {
-        id: userId,
-      },
+    const { id, name, email } = await this.usersRepository.update({
       data: {
+        id: userId,
         name: updateUserDto.name,
         email: updateUserDto.email,
         password: updateUserDto.newPassword ? hashedNewPassword : user.password,
       },
-      select: {
-        name: true,
-        email: true,
-      },
     });
+
+    return { id, name, email };
   }
 
   async remove(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    await this.usersRepository.delete({
-      where: { id: userId },
-    });
+    await this.usersRepository.delete({ userId });
 
     return null;
   }

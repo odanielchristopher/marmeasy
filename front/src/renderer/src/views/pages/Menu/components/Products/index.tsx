@@ -14,11 +14,11 @@ import noImage from '@renderer/assets/Images/empty-image.svg';
 import useProducts from './useProducts';
 
 import Loader from '@renderer/views/components/Loader';
+import { EmptyImageContainer } from '../../styles';
 import {
   ActionButton,
   CategoryContainer,
   Container,
-  EmptyImageContainer,
   Header,
   LoaderContainer,
   ProductImage,
@@ -109,10 +109,16 @@ export default function Products() {
                   </Table.Cell>
                   <Table.Cell style={{ width: '20%' }}>
                     <CategoryContainer>
-                      <span>{product.category.icon}</span>
-                      <span>
-                        {capitalizeFirstLetter(product.category.name)}
-                      </span>
+                      {product.category && (
+                        <>
+                          <span>{product.category.icon}</span>
+                          <span>
+                            {capitalizeFirstLetter(product.category.name)}
+                          </span>
+                        </>
+                      )}
+
+                      {!product.category && <span>Nenhuma</span>}
                     </CategoryContainer>
                   </Table.Cell>
                   <Table.Cell style={{ width: '20%' }}>
