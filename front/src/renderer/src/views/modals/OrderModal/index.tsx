@@ -126,25 +126,25 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                 {orderDetails.map((order, index) => {
                   const imagePath = order.productImage ? `${import.meta.env.VITE_API_URL}/${order.productImage}` : noImage;
                   return (
-                  <OrderItemsList key={index}>
-                    <img className="smallImg" src={imagePath} alt={order.productName} />
-                      <div className="infoOrder">
-                        <div className="nameDetails">
-                          <p><strong>{order.productName}</strong></p>
-                          {order.selectedIngredients.map((ingredient) => (
-                              <span key={ingredient.id}>{ingredient.name}</span>
-                            ))}
+                    <OrderItemsList key={index}>
+                      <img className="smallImg" src={imagePath} alt={order.productName} />
+                        <div className="infoOrder">
+                          <div className="nameDetails">
+                            <p><strong>{order.productName}</strong></p>
+                            {order.selectedIngredients.map((ingredient) => (
+                                <span key={ingredient.id}>{ingredient.name}</span>
+                              ))}
+                          </div>
+                          <div className="priceQuantity">
+                            <p><strong>R$ {formatCurrency(order.productPrice)}</strong></p>
+                            <span>{order.quantity}X</span>
+                          </div>
                         </div>
-                        <div className="priceQuantity">
-                          <p><strong>R$ {formatCurrency(order.productPrice)}</strong></p>
-                          <span>{order.quantity}X</span>
+                        <div className="functions">
+                          <img src={Edit} alt="" />
+                          <img src={Trash} alt="" />
                         </div>
-                      </div>
-                      <div className="functions">
-                        <img src={Edit} alt="" />
-                        <img src={Trash} alt="" />
-                      </div>
-                  </OrderItemsList>
+                    </OrderItemsList>
                   );
                 })}
               </div>

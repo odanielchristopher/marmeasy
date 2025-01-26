@@ -107,16 +107,6 @@ export const ProductList = styled.li`
   }
 `;
 
-export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
-`;
-
 export const Line = styled.hr`
   margin: 16px 0;
   border: 3px;
@@ -128,7 +118,12 @@ export const OrderItemsList = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 80%;
+  width: 100%;
+  margin-bottom: 26px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   span {
     color: grey;
@@ -150,11 +145,25 @@ export const OrderItemsList = styled.div`
     div.nameDetails {
     display: flex;
     flex-direction: column;
-    gap: 5px;
 
       p {
         font-size: 14px;
       }
+
+      span {
+        font-size: 12px;
+        margin-bottom: -4px;
+      }
+    }
+  }
+
+  div.functions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    img {
+      cursor: pointer;
+      width: 22px;
     }
   }
 `;
