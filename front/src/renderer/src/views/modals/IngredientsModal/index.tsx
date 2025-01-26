@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import Modal from '@renderer/views/components/Modal';
-import { CheckBoxStyle, Container } from './styles';
-import { Product } from '@renderer/app/entities/Product';
-import { Input } from '@renderer/views/components/Input';
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { FaCheck } from 'react-icons/fa6';
-import Button from '@renderer/views/components/Button';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { Product } from '@renderer/app/entities/Product';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
+import Button from '@renderer/views/components/Button';
+import Modal from '@renderer/views/components/Modal';
+import { TimesNumericInput } from '@renderer/views/components/TimesNumericInput';
+import React, { useState } from 'react';
+import { FaCheck } from 'react-icons/fa6';
+import { CheckBoxStyle, Container } from './styles';
 
 interface IngredientsModalProps {
   open: boolean;
@@ -34,6 +34,8 @@ export default function IngredientsModal({
     [key: string]: boolean;
   }>({});
 
+  const [quantity, setQuantity] = useState<string>('');
+
   const handleCheckboxChange = (ingredientId: string) => {
     setSelectedIngredients((prev) => ({
       ...prev,
@@ -42,6 +44,10 @@ export default function IngredientsModal({
     onSelected(
       product.ingredients.find((ingredient) => ingredient.id === ingredientId)!,
     );
+  };
+
+  const handleQuantityChange = (value?: string) => {
+    setQuantity(value || '');
   };
 
   return (
@@ -79,7 +85,11 @@ export default function IngredientsModal({
         </div>
         <div className="quantity-box">
           <p>Quantidade*:</p>
-          <Input type="number" name={'quantity'} />
+          <TimesNumericInput
+            value={quantity}
+            name="quantity"
+            onInputChange={handleQuantityChange}
+          />
         </div>
 
         <Button>Adicionar</Button>
