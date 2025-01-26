@@ -116,3 +116,45 @@ export const Overlay = styled.div`
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 `;
+
+export const Line = styled.hr`
+  margin: 16px 0;
+  border: 3px;
+  border-top: 1px solid #ccc;
+`;
+
+export const OrderItemsList = styled.div`
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 80%;
+
+  span {
+    color: grey;
+    font-size: 14px;
+  }
+
+  .smallImg {
+    max-width: 20%;
+    min-width: 20%;
+    max-height: 50px;
+    border-radius: 12px;
+  }
+
+  div.infoOrder {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    div.nameDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+`;

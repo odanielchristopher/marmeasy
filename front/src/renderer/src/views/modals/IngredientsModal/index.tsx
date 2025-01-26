@@ -21,6 +21,7 @@ interface IngredientsModalProps {
   title: string;
   onSelected(ingredient: Ingredient): void;
   selectedIngredientsIds: string[];
+  onSubmit: (data: { selectedIngredients: Ingredient[], quantity: number, productName: string, productImage: string, productPrice: number, totalPrice: number }) => void;
 }
 
 export default function IngredientsModal({
@@ -30,13 +31,15 @@ export default function IngredientsModal({
   product,
   title,
   onSelected,
+  onSubmit,
 }: IngredientsModalProps) {
   const {
     selectedIngredients,
     quantity,
     handleCheckboxChange,
     handleQuantityChange,
-  } = useIngredientsModal({ onSelected });
+    handleSubmit,
+  } = useIngredientsModal({ onSelected, onSubmit, productName: product.name, productImage: product.imagePath, productPrice: product.price });
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -45,7 +48,7 @@ export default function IngredientsModal({
         <div>
           <div key={product.id}>
             {product.ingredients.map((ingredient) => {
-              const isChecked = selectedIngredients[ingredient.id] || false;
+              const isChecked = selectedIngredients.some((ing) => ing.id === ingredient.id);
 
               return (
                 <label
@@ -59,7 +62,7 @@ export default function IngredientsModal({
                   </span>
                   <CheckBoxStyle
                     id={ingredient.id}
-                    onCheckedChange={() => handleCheckboxChange(ingredient.id)}
+                    onCheckedChange={() => handleCheckboxChange(ingredient)}
                     checked={isChecked}
                   >
                     <Checkbox.Indicator className="indicator">
@@ -80,7 +83,9 @@ export default function IngredientsModal({
           />
         </div>
 
-        <Button>Adicionar</Button>
+        <Button onClick={handleSubmit}>
+          Adicionar
+        </Button>
       </Container>
     </Modal>
   );
