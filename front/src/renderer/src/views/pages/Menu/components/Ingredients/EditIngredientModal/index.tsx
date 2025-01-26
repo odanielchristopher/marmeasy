@@ -28,6 +28,7 @@ export default function EditCategoryModal({
           onSubmit={handleSubmit}
           onCancel={onClose}
           isLoading={isLoading}
+          buttonLabel='Salvar alterações'
         />
       </Container>
     </Modal>

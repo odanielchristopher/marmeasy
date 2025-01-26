@@ -5,17 +5,19 @@ import { CancelButton, Footer, Form } from './styles';
 import useIngredientForm, { IngredientFormData } from './useIngredientForm';
 
 interface IngredientFormProps {
-  onCancel?(): void;
   ingredient?: Ingredient | null;
-  onSubmit(data: IngredientFormData): Promise<void>;
+  buttonLabel: string;
   isLoading?: boolean;
+  onCancel?(): void;
+  onSubmit(data: IngredientFormData): Promise<void>;
 }
 
 export default function IngredientForm({
-  onCancel,
+  buttonLabel,
   ingredient,
-  onSubmit,
   isLoading,
+  onCancel,
+  onSubmit,
 }: IngredientFormProps) {
   const { errors, register, handleSubmit } = useIngredientForm({
     ingredientBeingEdited: ingredient,
@@ -48,7 +50,7 @@ export default function IngredientForm({
         )}
 
         <Button type="submit" isLoading={isLoading}>
-          Salvar alterações
+          {buttonLabel}
         </Button>
       </Footer>
     </Form>
