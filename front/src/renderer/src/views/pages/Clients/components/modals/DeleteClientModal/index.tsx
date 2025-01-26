@@ -1,6 +1,6 @@
 //@ts-ignore
 import { Client } from '@renderer/app/entities/Client';
-import DeleteModal from '../DeleteModal';
+import DeleteModal from '@renderer/views/modals/DeleteModal';
 import useDeleteClientModal from './useDeleteClientModal';
 
 interface EditClientModalProps {

@@ -5,6 +5,7 @@ import Modal from '@renderer/views/components/Modal';
 import ClientForm from '@renderer/views/pages/Clients/components/ClientForm';
 import { useState } from 'react';
 import DeleteClientModal from '../DeleteClientModal';
+import { StyledDeleteButton } from './styles';
 import useEditClientModal from './useEditClientModal';
 
 interface EditClientModalProps {
@@ -50,12 +51,12 @@ export default function EditClientModal({
   return (
     <Modal
       open={isOpen}
-      title="Novo cliente"
+      title={`Editar ${client?.type == 'FISICO' ? 'cliente' : 'empresa'}`}
       onClose={onClose}
       action={
-        <button type="button" onClick={handleOpenDeleteClientModal}>
+        <StyledDeleteButton type="button" onClick={handleOpenDeleteClientModal}>
           <DeleteIcon />
-        </button>
+        </StyledDeleteButton>
       }
     >
       <ClientForm

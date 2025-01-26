@@ -17,25 +17,26 @@ export const Container = styled.div`
   }
 
   position: relative;
+`;
 
-  .deleteButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+export const EditButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    height: 3.2rem;
-    width: 3.2rem;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  height: 3.2rem;
+  width: 3.2rem;
+  color: ${({ theme }) => theme.colors.orange.light };
 
-    position: absolute;
-    right: 1.6rem;
-    z-index: 2;
+  position: absolute;
+  right: 1.6rem;
+  z-index: 2;
 
-    &:hover {
-      background: #f2f2f2;
-    }
+  &:hover {
+    background: #f2f2f2;
   }
 `;
 
