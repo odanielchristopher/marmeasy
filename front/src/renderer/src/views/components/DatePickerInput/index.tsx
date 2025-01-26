@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { formatDate } from '../../../app/utils/formatDate';
 import { StyledDatePicker } from '../DatePicker';
 import { Popover } from '../Popover';
-import { Container, Button, ErrorContainer, ErrorMessage } from './styles';
+import { Button, Container, ErrorContainer, ErrorMessage } from './styles';
 
 interface DatePickerInputProps {
   error?: string;
@@ -29,7 +29,7 @@ return (
     <Container>
       <Popover.Root>
         <Popover.Trigger>
-          <Button type="button" error={!!error} className={className}>
+          <Button type="button" $error={!!error} className={className}>
             <span>{formatDate(selectedDate)}</span>
           </Button>
         </Popover.Trigger>

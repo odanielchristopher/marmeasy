@@ -12,10 +12,8 @@ import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
-import UpdateClientForm from './UpdateClientForm';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
-import AddOrder from './AddOrder';
 import DetailsOrder from './DetailsOrder';
 
 interface AsideProps {
@@ -24,7 +22,6 @@ interface AsideProps {
 
 export default function Aside({ area }: AsideProps) {
   const [showDetails, setShowDetails] = useState(true);
-  const [showAddOrders] = useState(false);
 
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
 
@@ -68,17 +65,10 @@ export default function Aside({ area }: AsideProps) {
       )}
       {showClientData &&
         showDetails && [
-          hasOrders ? (
+          hasOrders && (
             <DetailsOrder key="detailsOrder" client={seletedClient} />
-          ) : (
-            <UpdateClientForm
-              key="updateClientForm"
-              client={seletedClient}
-              $isShow={showClientData}
-            />
           ),
         ]}
-      {showAddOrders && hasOrders && <AddOrder client={seletedClient} />}
     </Container>
   );
 }

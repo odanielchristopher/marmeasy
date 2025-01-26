@@ -8,11 +8,11 @@ export const Container = styled.div`
   color: #7f1d1d; /* text-red-900 */
 `;
 
-export const Button = styled.button<{ error?: boolean }>`
+export const Button = styled.button<{ $error?: boolean }>`
   background-color: white;
   width: 100%;
   border-radius: 0.5rem; /* rounded-lg */
-  border: 1px solid ${({ error }) => (error ? '#7f1d1d' : '#6b7280')}; /* border-red-900 or border-gray-500 */
+  border: 1px solid ${({ $error }) => ($error ? '#7f1d1d' : '#6b7280')}; /* border-red-900 or border-gray-500 */
   padding: 0 0.75rem; /* px-3 */
   color: #374151; /* text-gray-700 */
   transition: border-color 0.2s;

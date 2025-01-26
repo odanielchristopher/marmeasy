@@ -1,4 +1,3 @@
-//import React from 'react';
 import { ptBR } from 'date-fns/locale';
 import { DayPicker } from 'react-day-picker';
 import { StyledDayPickerWrapper } from './styles'; // Corrigido o caminho do módulo
