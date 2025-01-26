@@ -29,7 +29,7 @@ export class CreateClientDto {
     example: '11987654321',
     description: 'Número de telefone do cliente (opcional).',
   })
-  phone: string;
+  phone?: string;
 
   @IsString()
   @IsOptional()
@@ -37,7 +37,7 @@ export class CreateClientDto {
     example: 'Rua das Flores, 123',
     description: 'Endereço do cliente (opcional).',
   })
-  address: string;
+  address?: string;
 
   @IsNotEmpty({ message: 'O tipo é obrigatório.' })
   @IsEnum(ClientType)
@@ -55,7 +55,7 @@ export class CreateClientDto {
     example: '12345678901',
     description: 'Número do documento do cliente, como CPF ou CNPJ.',
   })
-  document: string;
+  document?: string;
 
   @Transform(({ value }) => {
     try {
