@@ -1,7 +1,8 @@
 import styled, { css, keyframes } from 'styled-components';
+import { ToastType } from '.';
 
 interface IContainer {
-  type?: string;
+  type?: ToastType;
   $isLeaving: boolean;
 }
 

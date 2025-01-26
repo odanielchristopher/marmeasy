@@ -8,8 +8,8 @@ interface CardListProps {
   onDeleteClient(client: Client): void;
 }
 
-export default function ClientList({ clients, onDeleteClient }: CardListProps) {
-  const { handleShowClientData, handleHiddenClientData } = useAside();
+export default function ClientList({ clients }: CardListProps) {
+  const { handleShowClientData } = useAside();
 
   return (
     <>

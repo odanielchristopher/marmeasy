@@ -11,7 +11,6 @@ export const Container = styled.aside<ContainerProps>`
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   padding: 2.4rem 2rem;
   margin: 2.4rem;
-  overflow: auto;
 
   grid-area: ${({ $area }) => $area};
 `;

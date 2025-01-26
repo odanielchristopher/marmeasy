@@ -6,6 +6,11 @@ import globals from 'globals'; // Globais padrão
 
 export default [
   {
+    settings: {
+      react: {
+        version: 'detect', // Detecta automaticamente a versão instalada do React
+      },
+    },
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'], // Alvo de arquivos para ESLint
     languageOptions: {
       parser: tsParser, // Parser para TypeScript

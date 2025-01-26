@@ -1,0 +1,78 @@
+import { BadRequestException } from '@nestjs/common';
+import { Transform } from 'class-transformer';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+
+interface ICreateOrderItemInput {
+  name: string;
+  ingredients: string[];
+  unitPrice: number;
+  quantity: number;
+  total: number;
+}
+
+export class CreateOrderItemDto {
+  @IsString()
+  @IsNotEmpty({ message: 'O nome é obrigatório.' })
+  name: string;
+
+  @IsArray()
+  @IsOptional()
+  ingredients: string[];
+
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException(
+        'Preço unitário precisa ser um número válido.',
+      );
+    }
+  })
+  @IsNumber()
+  @IsNotEmpty({ message: 'O preço unitário é obrigatório.' })
+  unitPrice: number;
+
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException(
+        'Preço total precisa ser um número válido.',
+      );
+    }
+  })
+  @IsNumber()
+  @IsNotEmpty({ message: 'O preço total é obrigatório.' })
+  total: number;
+
+  @Transform(({ value }) => {
+    try {
+      return Number(value);
+    } catch {
+      throw new BadRequestException('Quantidade precisa ser um número válido.');
+    }
+  })
+  @IsNotEmpty({ message: 'A quantidade é obrigatória.' })
+  @IsNumber({}, { message: 'A quantidade precisa ser um número válido.' })
+  quantity: number;
+
+  constructor({
+    name,
+    ingredients,
+    quantity,
+    total,
+    unitPrice,
+  }: ICreateOrderItemInput) {
+    this.name = name;
+    this.ingredients = ingredients;
+    this.quantity = quantity;
+    this.total = total;
+    this.unitPrice = unitPrice;
+  }
+}
