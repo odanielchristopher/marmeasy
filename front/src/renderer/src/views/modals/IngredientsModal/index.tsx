@@ -5,9 +5,10 @@ import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter
 import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
 import { TimesNumericInput } from '@renderer/views/components/TimesNumericInput';
-import React, { useState } from 'react';
+import React from 'react';
 import { FaCheck } from 'react-icons/fa6';
 import { CheckBoxStyle, Container } from './styles';
+import useIngredientsModal from './useIngredientsModal';
 
 interface IngredientsModalProps {
   open: boolean;
@@ -30,25 +31,12 @@ export default function IngredientsModal({
   title,
   onSelected,
 }: IngredientsModalProps) {
-  const [selectedIngredients, setSelectedIngredients] = useState<{
-    [key: string]: boolean;
-  }>({});
-
-  const [quantity, setQuantity] = useState<string>('');
-
-  const handleCheckboxChange = (ingredientId: string) => {
-    setSelectedIngredients((prev) => ({
-      ...prev,
-      [ingredientId]: !prev[ingredientId],
-    }));
-    onSelected(
-      product.ingredients.find((ingredient) => ingredient.id === ingredientId)!,
-    );
-  };
-
-  const handleQuantityChange = (value?: string) => {
-    setQuantity(value || '');
-  };
+  const {
+    selectedIngredients,
+    quantity,
+    handleCheckboxChange,
+    handleQuantityChange,
+  } = useIngredientsModal({ onSelected });
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
