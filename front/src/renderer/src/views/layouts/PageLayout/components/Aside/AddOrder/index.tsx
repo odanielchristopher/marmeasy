@@ -33,7 +33,7 @@ export default function AddOrder({ client }: AddOrderProps) {
           Adicionar Pedido ao cliente <strong>{client?.name}</strong>
         </p>
       </header>
-
+      
       <Input
         type="date"
         placeholder="Data do pedido*"
@@ -113,5 +113,4 @@ export default function AddOrder({ client }: AddOrderProps) {
         </footer>
       )}
     </Container>
-  );
 }

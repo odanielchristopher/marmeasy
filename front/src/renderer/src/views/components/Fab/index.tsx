@@ -37,7 +37,6 @@ export default function Fab() {
         onClose={handleCloseCompanyModal}
       />
       <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
-
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <StyledButton>
