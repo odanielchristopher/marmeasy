@@ -5,6 +5,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { IngredientsModule } from '../ingredients/ingredients.module';
 import { ProductCategoriesModule } from '../product-categories/product-categories.module';
 import { UsersModule } from '../users/users.module';
+import { IProducImagesService } from './interfaces/product-images-service.interface';
 import { IProductsService } from './interfaces/products-service.interface';
 import { IValidateProductOwnershipService } from './interfaces/validate-products-ownership-service.interface';
 import { ProductsController } from './products.controller';
@@ -23,7 +24,10 @@ import { ValidateProductOwnershipService } from './services/validate-product-own
   ],
   controllers: [ProductsController],
   providers: [
-    ProducImagesService,
+    {
+      provide: IProducImagesService,
+      useClass: ProducImagesService,
+    },
     {
       provide: IProductsService,
       useClass: ProductsService,
