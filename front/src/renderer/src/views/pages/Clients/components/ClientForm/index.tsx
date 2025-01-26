@@ -1,6 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
 import Button from '@renderer/views/components/Button';
-import CurrencyInput from '@renderer/views/components/CurrencyInput';
+import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import { Controller } from 'react-hook-form';
@@ -16,7 +16,7 @@ interface ClientFormProps {
 }
 
 export default function ClientForm({ client, clientType, buttonLabel, isLoading, onSubmit }: ClientFormProps) {
-  const { errors, handleSubmit, register, control } =
+  const { errors, control, handleSubmit, register, setFocus } =
     useClientForm({
       client,
       clientType,
@@ -37,14 +37,17 @@ export default function ClientForm({ client, clientType, buttonLabel, isLoading,
           <Controller
             control={control}
             name="balance"
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange, value, ref } }) => (
               <CurrencyInput
+                ref={ref}
                 value={value}
                 onChange={onChange}
                 $error={errors.balance?.message}
               />
             )}
           />
+
+          <button type="button" onClick={() => setFocus('balance')}>editar saldo</button>
         </div>
       </BalanceContainer>
 

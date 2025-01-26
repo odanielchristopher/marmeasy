@@ -51,6 +51,7 @@ export default function useClientForm({
     handleSubmit: hookFormHandleSubmit,
     formState: { errors },
     control,
+    setFocus,
   } = useForm<ClientFormData>({
     resolver: zodResolver(clientFormSchema),
     defaultValues: {
@@ -69,8 +70,9 @@ export default function useClientForm({
 
   return {
     errors,
-    register,
     control,
+    setFocus,
+    register,
     handleSubmit,
   };
 }

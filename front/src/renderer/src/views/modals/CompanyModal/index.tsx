@@ -1,6 +1,6 @@
 //@ts-ignore
 import Button from '@renderer/views/components/Button';
-import CurrencyInput from '@renderer/views/components/CurrencyInput';
+import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import Modal from '@renderer/views/components/Modal';

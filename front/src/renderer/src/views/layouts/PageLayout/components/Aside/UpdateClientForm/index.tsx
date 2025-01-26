@@ -1,6 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
 import Button from '@renderer/views/components/Button';
-import CurrencyInput from '@renderer/views/components/CurrencyInput';
+import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import { Controller } from 'react-hook-form';
