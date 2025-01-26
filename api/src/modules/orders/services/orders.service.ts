@@ -1,8 +1,8 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateOrderItemDto } from 'src/modules/order-items/dto/create-order-items.dto';
-import { OrderItemsService } from 'src/modules/order-items/services/order-items.service';
+import { IOrderItemsService } from 'src/modules/order-items/interfaces/order-items-service.interface';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
-import { OrdersRespository } from 'src/shared/database/repositories/orders.repository';
+import { OrdersRepository } from 'src/shared/database/repositories/orders.repository';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { UpdateStatusOrderDto } from '../dto/update-status-order.dto';
@@ -12,8 +12,9 @@ import { ValidateOrderOwnershipService } from './validade-order-ownership.servic
 @Injectable()
 export class OrdersService {
   constructor(
-    private readonly ordersRepository: OrdersRespository,
-    private readonly orderItemsService: OrderItemsService,
+    private readonly ordersRepository: OrdersRepository,
+    @Inject(IOrderItemsService)
+    private readonly orderItemsService: IOrderItemsService,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     private readonly validateOrderOwnershipService: ValidateOrderOwnershipService,

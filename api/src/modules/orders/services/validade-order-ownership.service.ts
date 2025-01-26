@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { OrdersRespository } from 'src/shared/database/repositories/orders.repository';
+import { OrdersRepository } from 'src/shared/database/repositories/orders.repository';
 
 @Injectable()
 export class ValidateOrderOwnershipService {
-  constructor(private readonly ordersRepository: OrdersRespository) {}
+  constructor(private readonly ordersRepository: OrdersRepository) {}
 
   async validate(userId: string, orderId: string) {
     const isOwner = await this.ordersRepository.findFirst({

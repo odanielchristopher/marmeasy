@@ -7,10 +7,10 @@ import {
   IsUUID,
 } from 'class-validator';
 
-export class Item {
-  @IsOptional()
+export class OrderItem {
   @IsUUID()
-  id?: string;
+  @IsNotEmpty()
+  id: string;
 
   @IsString()
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
@@ -31,4 +31,8 @@ export class Item {
   @IsNotEmpty({ message: 'A quantidade é obrigatória.' })
   @IsNumber({}, { message: 'A quantidade precisa ser um número válido.' })
   quantity: number;
+
+  @IsUUID()
+  @IsNotEmpty()
+  orderId: string;
 }

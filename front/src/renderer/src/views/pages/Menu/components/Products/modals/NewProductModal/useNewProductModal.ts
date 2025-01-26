@@ -26,10 +26,10 @@ export default function useNewProductModal(onSuccess: () => void) {
   const { mutateAsync: createProduct, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateProductParams) =>
       productsService.create(data),
-    onSuccess: (newCategory: Product) => {
+    onSuccess: (newProduct: Product) => {
       queryClient.setQueryData(
         ['products', 'getAll'],
-        (categories: Product[]) => [...categories, newCategory],
+        (categories: Product[]) => [...categories, newProduct],
       );
     },
   });

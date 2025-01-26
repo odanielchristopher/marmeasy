@@ -3,7 +3,7 @@ import { type Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
-export class OrdersRespository {
+export class OrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   create(createDto: Prisma.OrderCreateArgs) {

@@ -25,7 +25,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     handleCategorySelect,
     handleOpenIngredientModal,
     handleCloseIngredientModal,
-  } = useOrderModal({isOpen, onClose});
+  } = useOrderModal({ isOpen, onClose });
 
   return (
     <>

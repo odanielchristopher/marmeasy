@@ -8,8 +8,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { Item } from '../entities/item.entity';
-
+import { OrderItem } from 'src/modules/order-items/entities/order-item.entity';
 export class CreateOrderDto {
   @IsNotEmpty({ message: 'O id do cliente é obrigatório.' })
   @IsString()
@@ -19,8 +18,8 @@ export class CreateOrderDto {
   @IsNotEmpty({ message: 'Os items não podem ser vazios.' })
   @IsArray({ message: 'Os items devem ser um array.' })
   @ValidateNested({ each: true })
-  @Type(() => Item)
-  items: Item[];
+  @Type(() => OrderItem)
+  items: OrderItem[];
 
   @Transform(({ value }) => Number(value))
   @IsOptional()

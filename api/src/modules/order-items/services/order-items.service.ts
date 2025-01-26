@@ -1,32 +1,38 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
-import { OrderItemsRepository } from 'src/shared/database/repositories/order-items.repository';
+import { IOrderItemsRepository } from 'src/shared/database/interfaces/orders-item-repository.interface';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
 import { UpdateOrderItemDto } from '../dto/update-ordem-item.dto';
-import { ValidateOrderItemsOwnershipService } from './validate-product-order-item.service';
+import { IOrderItemsService } from '../interfaces/order-items-service.interface';
+import { IValidateOrderItemsOwnershipService } from '../interfaces/validate-order-item-ownership-service.interface';
 
 @Injectable()
-export class OrderItemsService {
+export class OrderItemsService implements IOrderItemsService {
   constructor(
-    private readonly orderItemsRepository: OrderItemsRepository,
+    @Inject(IOrderItemsRepository)
+    private readonly orderItemsRepository: IOrderItemsRepository,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
-    private readonly validateOrderItemsOwnershipService: ValidateOrderItemsOwnershipService,
+    @Inject(IValidateOrderItemsOwnershipService)
+    private readonly validateOrderItemsOwnershipService: IValidateOrderItemsOwnershipService,
   ) {}
 
-  async findAll(userId: string) {
+  async findAllByOrder(userId: string, orderId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    return this.orderItemsRepository.findMany({
-      where: { userId },
+    return this.orderItemsRepository.findManyByOrderId({
+      userId,
+      orderId,
+      order: 'asc',
     });
   }
 
   async findOneById(userId: string, orderItemId: string) {
     await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
 
-    return this.orderItemsRepository.findUnique({
-      where: { id: orderItemId, userId },
+    return this.orderItemsRepository.findUniqueByUserId({
+      id: orderItemId,
+      userId,
     });
   }
 
@@ -41,9 +47,32 @@ export class OrderItemsService {
       createOrderItemDto;
 
     return this.orderItemsRepository.create({
+      userId,
       data: {
-        order: { connect: { id: orderId } },
-        user: { connect: { id: userId } },
+        name,
+        ingredients,
+        quantity,
+        unitPrice,
+        total,
+        orderId,
+      },
+    });
+  }
+
+  async update(
+    userId: string,
+    orderItemId: string,
+    updateOrderItemDto: UpdateOrderItemDto,
+  ) {
+    await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+
+    const { name, ingredients, quantity, unitPrice, total } =
+      updateOrderItemDto;
+
+    return this.orderItemsRepository.update({
+      userId,
+      data: {
+        id: orderItemId,
         name,
         ingredients,
         quantity,
@@ -53,25 +82,11 @@ export class OrderItemsService {
     });
   }
 
-  async update(
-    userId: string,
-    orderItemId: string,
-    updateQuantityOrderItemDto: UpdateOrderItemDto,
-  ) {
-    await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
-    return this.orderItemsRepository.update({
-      where: { id: orderItemId },
-      data: updateQuantityOrderItemDto,
-    });
-  }
-
   async delete(userId: string, orderItemId: string) {
     await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
 
-    await this.orderItemsRepository.delete({
-      where: { id: orderItemId, userId },
-    });
+    await this.orderItemsRepository.delete({ id: orderItemId, userId });
 
-    return { message: 'Pedido excluído com sucesso.' };
+    return { message: 'Item do pedido excluído com sucesso.' };
   }
 }
