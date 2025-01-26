@@ -28,8 +28,14 @@ export default function Fab() {
 
   return (
     <Container>
-      <ClientModal isOpen={isOpenModalClient} onClose={handleCloseClientModal} />
-      <CompanyModal isOpen={isOpenModalCompany} onClose={handleCloseCompanyModal} />
+      <ClientModal
+        isOpen={isOpenModalClient}
+        onClose={handleCloseClientModal}
+      />
+      <CompanyModal
+        isOpen={isOpenModalCompany}
+        onClose={handleCloseCompanyModal}
+      />
       <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
 
       <DropdownMenu.Root>

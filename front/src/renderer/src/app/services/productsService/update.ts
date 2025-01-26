@@ -35,7 +35,7 @@ export async function update({
   formData.append('name', name);
   formData.append('price', price);
   formData.append('categoryId', categoryId);
-  ingredientsIds.forEach(id => formData.append('ingredientsIds[]', id));
+  ingredientsIds.forEach((id) => formData.append('ingredientsIds[]', id));
 
   const { data } = await httpClient.put<Product>(
     `/products/${id}?removeImage=${removeImage}`,

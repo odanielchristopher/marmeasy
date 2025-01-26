@@ -22,15 +22,26 @@ interface IngredientsModalProps {
   selectedIngredientsIds: string[];
 }
 
-export default function IngredientsModal({ open, answer, onClose, product, title, onSelected }: IngredientsModalProps) {
-  const [selectedIngredients, setSelectedIngredients] = useState<{ [key: string]: boolean }>({});
+export default function IngredientsModal({
+  open,
+  answer,
+  onClose,
+  product,
+  title,
+  onSelected,
+}: IngredientsModalProps) {
+  const [selectedIngredients, setSelectedIngredients] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   const handleCheckboxChange = (ingredientId: string) => {
     setSelectedIngredients((prev) => ({
       ...prev,
       [ingredientId]: !prev[ingredientId],
     }));
-    onSelected(product.ingredients.find(ingredient => ingredient.id === ingredientId)!);
+    onSelected(
+      product.ingredients.find((ingredient) => ingredient.id === ingredientId)!,
+    );
   };
 
   return (
@@ -43,8 +54,15 @@ export default function IngredientsModal({ open, answer, onClose, product, title
               const isChecked = selectedIngredients[ingredient.id] || false;
 
               return (
-                <label className="ingredientLabel" htmlFor={ingredient.id} key={ingredient.id}>
-                  <span> {ingredient.icon} {capitalizeFirstLetter(ingredient.name)} </span>
+                <label
+                  className="ingredientLabel"
+                  htmlFor={ingredient.id}
+                  key={ingredient.id}
+                >
+                  <span>
+                    {' '}
+                    {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}{' '}
+                  </span>
                   <CheckBoxStyle
                     id={ingredient.id}
                     onCheckedChange={() => handleCheckboxChange(ingredient.id)}
@@ -59,14 +77,12 @@ export default function IngredientsModal({ open, answer, onClose, product, title
             })}
           </div>
         </div>
-        <div className='quantity-box'>
+        <div className="quantity-box">
           <p>Quantidade*:</p>
           <Input type="number" name={'quantity'} />
         </div>
 
-        <Button>
-          Adicionar
-        </Button>
+        <Button>Adicionar</Button>
       </Container>
     </Modal>
   );
