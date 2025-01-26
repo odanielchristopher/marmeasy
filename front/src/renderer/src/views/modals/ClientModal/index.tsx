@@ -9,18 +9,15 @@ interface ClientModalProps {
 }
 
 export default function ClientModal({ isOpen, onClose }: ClientModalProps) {
-  const { handleSubmit, isLoading } = useClientModal(
-    isOpen,
-    onClose,
-  );
+  const { handleSubmit, isLoading } = useClientModal(onClose);
 
   return (
     <Modal open={isOpen} title="Novo cliente" onClose={onClose}>
       <ClientForm
-        clientType='FISICO'
+        clientType="FISICO"
         onSubmit={handleSubmit}
         isLoading={isLoading}
-        buttonLabel='Adicionar cliente'
+        buttonLabel="Adicionar cliente"
       />
     </Modal>
   );

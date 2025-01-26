@@ -6,12 +6,8 @@ import toast from '@renderer/app/utils/toast';
 import { ClientFormData } from '@renderer/views/pages/Clients/components/ClientForm/useClientForm';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
 
-export default function useClientModal(
-  isOpen: boolean,
-  closeModal: () => void,
-) {
+export default function useClientModal(closeModal: () => void) {
   const { mutateAsync: createClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateClientParams) =>
       clientsService.create({
@@ -25,9 +21,6 @@ export default function useClientModal(
     },
   });
 
-  useEffect(() => {
-  }, [isOpen]);
-
   async function handleSubmit(data: ClientFormData) {
     const { name, balance, address, cpf, phone } = data;
 
@@ -38,7 +31,7 @@ export default function useClientModal(
         phone: phone || undefined,
         type: 'FISICO',
         document: cpf || undefined,
-        initalBalance: Number(balance),
+        initialBalance: balance || 0,
       });
 
       toast({

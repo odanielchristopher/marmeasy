@@ -1,58 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { queryClient } from '@renderer/App';
 import { Client } from '@renderer/app/entities/Client';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { CreateClientParams } from '@renderer/app/services/clientsService/create';
-import { isCNPJValid } from '@renderer/app/utils/isCNPJValid';
 import toast from '@renderer/app/utils/toast';
+import { ClientFormData } from '@renderer/views/pages/Clients/components/ClientForm/useClientForm';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
-const clientFormSchema = z.object({
-  name: z.string().min(2, 'O nome do cliente é um campo obrigatório'),
-  phone: z
-    .string()
-    .optional()
-    .refine((value) => !value || value.length === 11, {
-      message: 'O telefone precisa ter 11 digitos ou estar vazio',
-    }),
-  address: z.string().optional(),
-  cnpj: z
-    .string()
-    .optional()
-    .refine((value) => !value || isCNPJValid(value), {
-      message: 'O CNPJ precisa ser válido ou estar vazio',
-    }),
-  initialBalance: z
-    .string({ required_error: 'Saldo é obrigatório' })
-    .min(1, 'Saldo é obrigatório'),
-});
-
-type FormData = z.infer<typeof clientFormSchema>;
-
-export default function useCompanyModal(
-  isOpen: boolean,
-  closeModal: () => void,
-) {
-  const {
-    register,
-    handleSubmit: hookFormHandleSubmit,
-    formState: { errors },
-    reset,
-    control,
-  } = useForm<FormData>({
-    resolver: zodResolver(clientFormSchema),
-  });
-
-  useEffect(() => {
-    return () => {
-      reset();
-    };
-  }, [isOpen]);
-
+export default function useCompanyModal(closeModal: () => void) {
   const { mutateAsync: createCompany, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateClientParams) =>
       clientsService.create({
@@ -66,12 +21,17 @@ export default function useCompanyModal(
     },
   });
 
-  const handleSubmit = hookFormHandleSubmit(async (data) => {
+  async function handleSubmit(data: ClientFormData) {
+    const { name, address, balance, cnpj, phone } = data;
+
     try {
       await createCompany({
-        ...data,
+        name,
         type: 'JURIDICO',
-        document: data.cnpj,
+        address: address || undefined,
+        document: cnpj || undefined,
+        phone: phone || undefined,
+        initialBalance: balance || 0,
       });
 
       toast({
@@ -94,12 +54,9 @@ export default function useCompanyModal(
         text: 'Ocorreu um erro cadastrar o cliente!',
       });
     }
-  });
+  }
 
   return {
-    errors,
-    control,
-    register,
     isLoading,
     handleSubmit,
   };

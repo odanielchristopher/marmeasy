@@ -3,6 +3,8 @@ import useAside from '@renderer/app/hooks/useAside';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import formatPhone from '@renderer/app/utils/formatPhone';
 import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
+import EditClientModal from '@renderer/views/modals/EditClientModal';
+import { useState } from 'react';
 import { Container, Content, Footer, Header, Main } from './styles';
 
 interface CardListProps {
@@ -13,8 +15,25 @@ interface CardListProps {
 export default function ClientList({ clients, onDeleteClient }: CardListProps) {
   const { handleShowClientData, handleHiddenClientData } = useAside();
 
+  const [isOpenEditClientModal, setIsOpenEditClientModal]= useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
+  function handleOpenEditClientModal(client: Client) {
+    setSelectedClient(client);
+    setIsOpenEditClientModal(true);
+  }
+  function handleCloseEditClientModal() {
+    setSelectedClient(null);
+    setIsOpenEditClientModal(false);
+  }
+
   return (
     <>
+      <EditClientModal
+        isOpen={isOpenEditClientModal}
+        client={selectedClient}
+        onClose={handleCloseEditClientModal}
+      />
       {clients.map((client) => (
         <Container key={client.id}>
           <button
@@ -26,6 +45,8 @@ export default function ClientList({ clients, onDeleteClient }: CardListProps) {
           >
             <DeleteIcon />
           </button>
+
+          <button type="button" onClick={() => handleOpenEditClientModal(client)}>editar</button>
           <Content onClick={() => handleShowClientData(client)}>
             <Header>
               <div className="infos">

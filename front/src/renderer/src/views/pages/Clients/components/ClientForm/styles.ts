@@ -45,26 +45,49 @@ export const Form = styled.form`
 
 export const BalanceContainer = styled.div`
   margin-bottom: 1.2rem;
+  margin-inline: auto;
 
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  align-items: center;
+  gap: 0.8rem;
 
   .label {
     color: ${({ theme }) => theme.colors.gray.main};
   }
 
-  .input {
-    display: flex;
+  .input-container {
     align-items: center;
-    gap: 0.8rem;
+    border-bottom: .1rem solid #CCC;
+    display: flex;
+    gap: 2.4rem;
+    justify-content: space-between;
+    width: 100%;
 
-    width: 18rem;
+    .input {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      max-width: 15rem;
 
-    span {
-      color: ${({ theme }) => theme.colors.gray.main};
-      letter-spacing: -0.5px;
+      span {
+        color: ${({ theme }) => theme.colors.gray.main};
+        letter-spacing: -0.5px;
+      }
+    }
+
+    .label-btn {
+      align-items: center;
+      border-radius: 0.8rem;
+      border: none;
+      color: #f2f2f2;
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: flex;
+      gap: 0.6rem;
+      height: 3rem;
+      padding: 0.6rem 1.2rem;
+      width: fit-content;
+      margin: 0;
     }
   }
 `;

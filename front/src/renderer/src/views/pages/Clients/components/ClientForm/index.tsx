@@ -4,6 +4,7 @@ import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import { Controller } from 'react-hook-form';
+import { LuPencil } from 'react-icons/lu';
 import { BalanceContainer, Form } from './styles';
 import useClientForm, { ClientFormData } from './useClientForm';
 
@@ -15,13 +16,18 @@ interface ClientFormProps {
   onSubmit(data: ClientFormData): Promise<void>;
 }
 
-export default function ClientForm({ client, clientType, buttonLabel, isLoading, onSubmit }: ClientFormProps) {
-  const { errors, control, handleSubmit, register, setFocus } =
-    useClientForm({
-      client,
-      clientType,
-      onSubmit,
-    });
+export default function ClientForm({
+  client,
+  clientType,
+  buttonLabel,
+  isLoading,
+  onSubmit,
+}: ClientFormProps) {
+  const { errors, control, handleSubmit, register, setFocus } = useClientForm({
+    client,
+    clientType,
+    onSubmit,
+  });
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -31,29 +37,39 @@ export default function ClientForm({ client, clientType, buttonLabel, isLoading,
       </p>
 
       <BalanceContainer>
-        <span className="label">Saldo</span>
-        <div className="input">
-          <span>R$</span>
-          <Controller
-            control={control}
-            name="balance"
-            render={({ field: { onChange, value, ref } }) => (
-              <CurrencyInput
-                ref={ref}
-                value={value}
-                onChange={onChange}
-                $error={errors.balance?.message}
-              />
-            )}
-          />
+        <span className="label">Saldo*</span>
 
-          <button type="button" onClick={() => setFocus('balance')}>editar saldo</button>
+        <div className="input-container">
+          <div className="input">
+            <span>R$</span>
+            <Controller
+              control={control}
+              name="balance"
+              render={({ field: { onChange, value, ref } }) => (
+                <CurrencyInput
+                  ref={ref}
+                  value={value}
+                  onChange={onChange}
+                  $error={errors.balance?.message}
+                />
+              )}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="label-btn"
+            onClick={() => setFocus('balance')}
+          >
+            <LuPencil size={18} />
+            Editar saldo
+          </button>
         </div>
       </BalanceContainer>
 
       <Input
         type="text"
-        placeholder={`Nome ${clientType === 'FISICO' ? 'do cliente' : 'da empresa'}`}
+        placeholder={`Nome ${clientType === 'FISICO' ? 'do cliente' : 'da empresa'}*`}
         $error={errors.name?.message}
         maxLength={15}
         {...register('name')}
