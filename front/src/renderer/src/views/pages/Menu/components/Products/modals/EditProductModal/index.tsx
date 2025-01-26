@@ -44,7 +44,7 @@ export default function EditProductModal({
           onOpenIngredientModal={handleOpenNewIngredientModal}
           onSubmit={handleSubmit}
           isLoading={isLoading}
-          buttonLabel='Salvar alterações'
+          buttonLabel="Salvar alterações"
         />
       </Container>
     </Modal>

@@ -25,7 +25,7 @@ export default function EditCategoryModal({
           isLoading={isLoading}
           category={category}
           onCancel={onClose}
-          buttonLabel='Salvar alterações'
+          buttonLabel="Salvar alterações"
         />
       </Container>
     </Modal>

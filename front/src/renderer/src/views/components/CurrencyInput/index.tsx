@@ -11,7 +11,6 @@ interface InputCurrencyProps {
 
 export const CurrencyInput = forwardRef<HTMLInputElement, InputCurrencyProps>(
   ({ $error, onChange, value, maxLength }, ref) => {
-
     return (
       <Container>
         <StyledInput

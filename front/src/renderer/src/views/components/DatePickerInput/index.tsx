@@ -25,7 +25,7 @@ export default function DatePickerInput({
     onChange?.(date);
   }
 
-return (
+  return (
     <Container>
       <Popover.Root>
         <Popover.Trigger>
@@ -47,6 +47,4 @@ return (
       )}
     </Container>
   );
-
-
 }

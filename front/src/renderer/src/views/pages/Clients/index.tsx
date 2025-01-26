@@ -44,11 +44,7 @@ export default function Clients() {
 
       {!isLoading && (
         <Content>
-          {hasClient && (
-            <ClientList
-              clients={filteredClients}
-            />
-          )}
+          {hasClient && <ClientList clients={filteredClients} />}
 
           {isSearchEmpty && (
             <NotFoundContainer>

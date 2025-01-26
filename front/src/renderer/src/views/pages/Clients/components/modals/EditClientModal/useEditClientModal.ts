@@ -16,7 +16,6 @@ export default function useEditClientModal({
   onSuccess,
   client,
 }: UseEditClientModalProps) {
-
   const { mutateAsync: updateClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: UpdateClientParams) => clientsService.update(data),
     onSuccess: (updatedClient) => {
@@ -39,9 +38,7 @@ export default function useEditClientModal({
         address: address || undefined,
         phone: phone || undefined,
         document:
-          client!.type === 'FISICO'
-            ? cpf || undefined
-            : cnpj || undefined,
+          client!.type === 'FISICO' ? cpf || undefined : cnpj || undefined,
         balance,
       });
 

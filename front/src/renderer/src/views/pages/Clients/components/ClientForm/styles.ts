@@ -57,7 +57,7 @@ export const BalanceContainer = styled.div`
 
   .input-container {
     align-items: center;
-    border-bottom: .1rem solid #CCC;
+    border-bottom: 0.1rem solid #ccc;
     display: flex;
     gap: 2.4rem;
     justify-content: space-between;

@@ -29,7 +29,7 @@ export const EditButton = styled.button`
   border-radius: 50%;
   height: 3.2rem;
   width: 3.2rem;
-  color: ${({ theme }) => theme.colors.orange.light };
+  color: ${({ theme }) => theme.colors.orange.light};
 
   position: absolute;
   right: 1.6rem;

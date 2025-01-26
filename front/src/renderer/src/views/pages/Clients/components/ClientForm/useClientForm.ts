@@ -29,7 +29,9 @@ const clientFormSchema = z.object({
       message: 'O CNPJ precisa ser válido ou estar vazio',
     }),
   balance: z
-    .string({ required_error: 'Saldo é obrigatório' }).or(z.number({ message: 'Saldo é obrigatório.' })).optional(),
+    .string({ required_error: 'Saldo é obrigatório' })
+    .or(z.number({ message: 'Saldo é obrigatório.' }))
+    .optional(),
 });
 
 export type ClientFormData = z.infer<typeof clientFormSchema>;

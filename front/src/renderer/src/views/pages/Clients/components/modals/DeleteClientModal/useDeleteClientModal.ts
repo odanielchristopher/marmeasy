@@ -22,7 +22,9 @@ export default function useDeleteClientModal({
       queryClient.setQueryData(
         ['clients', 'getAll'],
         (oldClients: Client[]) => {
-          return oldClients.filter((client) => client.id !== clientBeingDeleted!.id);
+          return oldClients.filter(
+            (client) => client.id !== clientBeingDeleted!.id,
+          );
         },
       );
     },

@@ -17,7 +17,11 @@ export default function NewCategoryModal({
   return (
     <Modal title="Nova categoria" open={open} onClose={onClose}>
       <Container>
-        <ProductCategoryForm onSubmit={handleSubmit} isLoading={isLoading} buttonLabel='Criar categoria' />
+        <ProductCategoryForm
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          buttonLabel="Criar categoria"
+        />
       </Container>
     </Modal>
   );

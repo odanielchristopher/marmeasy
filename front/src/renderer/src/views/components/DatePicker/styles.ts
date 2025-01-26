@@ -37,19 +37,19 @@ export const StyledDayPickerWrapper = styled.div`
   }
 
   .rdp-day_button {
-  background: transparent;
-  margin: 0.5rem;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  padding: 6px;
-  width: 40px;
+    background: transparent;
+    margin: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 6px;
+    width: 40px;
 
-  border: var(--rdp-day_button-border);
-
+    border: var(--rdp-day_button-border);
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.orange.main}; /* Cor ao passar o mouse */
+      background-color: ${({ theme }) =>
+        theme.colors.orange.main}; /* Cor ao passar o mouse */
       border-radius: 4px;
     }
   }
@@ -69,10 +69,9 @@ export const StyledDayPickerWrapper = styled.div`
     cursor: pointer;
   }
 
-
   .rdp-weekday {
-  padding: 0.75rem 1rem; /* Aumenta o espaçamento interno dos dias da semana */
-  text-align: center;
-  font-size: 1.5rem;
+    padding: 0.75rem 1rem; /* Aumenta o espaçamento interno dos dias da semana */
+    text-align: center;
+    font-size: 1.5rem;
   }
 `;

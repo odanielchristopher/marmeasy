@@ -42,7 +42,7 @@ export default function ClientList({ clients }: ClientListProps) {
               handleOpenEditClientModal(client);
             }}
           >
-            <HiOutlinePencilAlt size={24}/>
+            <HiOutlinePencilAlt size={24} />
           </EditButton>
           <Content onClick={() => handleShowClientData(client)}>
             <Header>

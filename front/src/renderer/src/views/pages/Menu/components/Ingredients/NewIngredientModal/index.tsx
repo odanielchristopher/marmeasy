@@ -17,7 +17,11 @@ export default function NewIngredientModal({
   return (
     <Modal title="Novo Ingrediente" open={open} onClose={onClose}>
       <Container>
-        <IngredientForm onSubmit={handleSubmit} isLoading={isLoading} buttonLabel='Criar ingrediente' />
+        <IngredientForm
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          buttonLabel="Criar ingrediente"
+        />
       </Container>
     </Modal>
   );
