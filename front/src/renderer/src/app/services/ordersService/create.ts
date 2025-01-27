@@ -1,22 +1,22 @@
 import { Order } from '@renderer/app/entities/Order';
 import { httpClient } from '../httpClient';
 
-export type createItem = {
+export type CreateItem = {
   name: string;
+  ingredients: string[];
   unitPrice: number;
   quantity: number;
   total: number;
 };
-
 export interface CreateOrderParams {
   clientId: string;
   date: Date;
-  items: createItem[];
+  items: CreateItem[];
   discount: number;
-  totalValue: number;
+  totalValue?: number;
 }
 
-export async function createByClientId(params: CreateOrderParams) {
+export async function create(params: CreateOrderParams) {
   const { data } = await httpClient.post<Order>('/products', params);
 
   return data;

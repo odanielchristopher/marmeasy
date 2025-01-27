@@ -4,6 +4,6 @@ export interface RemoveOrderParams {
   id: string;
 }
 
-export async function removeByClientId(params: RemoveOrderParams) {
+export async function remove(params: RemoveOrderParams) {
   await httpClient.delete(`/orders/${params.id}`);
 }
