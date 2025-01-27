@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Actions,
-  ActionsButton,
   Container,
   Empty,
   Header,
@@ -15,29 +14,25 @@ import clipboard from '@renderer/assets/Images/Clipboard.svg';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
+import Payments from './Payments';
 
 interface AsideProps {
   area: string;
 }
 
 export default function Aside({ area }: AsideProps) {
-  const [showDetails, setShowDetails] = useState(true);
-
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
-
-  function handleShowDetails() {
-    setShowDetails(true);
-  }
+  const { pathname } = useLocation();
 
   useEffect(() => {
     return () => {
       handleHiddenClientData();
     };
-  }, []);
+  }, [pathname]);
 
-  const location = useLocation();
 
-  const hasOrders = ['/orders'].includes(location.pathname);
+  const showOrders = ['/orders'].includes(pathname);
+  const showPayments = ['/'].includes(pathname);
 
   return (
     <Container $area={area}>
@@ -46,9 +41,6 @@ export default function Aside({ area }: AsideProps) {
       </Header>
 
       <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>
-          Mostrar detalhes
-        </ActionsButton>
       </Actions>
 
       {!showClientData && (
@@ -63,12 +55,12 @@ export default function Aside({ area }: AsideProps) {
           </Empty>
         </Main>
       )}
-      {showClientData &&
-        showDetails && [
-          hasOrders && (
-            <DetailsOrder key="detailsOrder" client={seletedClient} />
-          ),
-        ]}
+
+      {showClientData && [
+        showOrders && <DetailsOrder key="detailsOrder" client={seletedClient} />,
+      ]}
+
+      {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
   );
 }

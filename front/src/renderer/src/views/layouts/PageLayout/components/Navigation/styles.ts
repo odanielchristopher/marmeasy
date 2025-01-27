@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
 interface ILinkNavigation {
-  active?: boolean;
+  $active?: boolean;
 }
 
 interface IContainer {
@@ -74,8 +74,8 @@ export const LinkNavigation = styled.button<ILinkNavigation>`
     }
   }
 
-  ${({ active }) =>
-    active &&
+  ${({ $active }) =>
+    $active &&
     css`
       color: #fff;
 
@@ -113,8 +113,8 @@ export const StyledLink = styled(Link)<ILinkNavigation>`
     }
   }
 
-  ${({ active }) =>
-    active &&
+  ${({ $active }) =>
+    $active &&
     css`
       color: #fff;
 
