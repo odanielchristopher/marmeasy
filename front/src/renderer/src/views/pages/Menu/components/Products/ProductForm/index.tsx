@@ -14,6 +14,7 @@ import { Content, Footer, ImageSection, InputsContainer } from './styles';
 interface EditProductModalProps {
   product?: Product | null;
   isLoading: boolean;
+  buttonLabel: string;
   onSubmit(data: ProductFormData): Promise<void>;
   onSuccess?(): void;
   onOpenIngredientModal(): void;
@@ -22,6 +23,7 @@ interface EditProductModalProps {
 export default function ProductForm({
   product,
   isLoading,
+  buttonLabel,
   onSubmit,
   onSuccess,
   onOpenIngredientModal,
@@ -106,7 +108,7 @@ export default function ProductForm({
 
       <Footer>
         <Button onClick={handleSubmit} isLoading={isLoading}>
-          Salvar alterações
+          {buttonLabel}
         </Button>
       </Footer>
     </>

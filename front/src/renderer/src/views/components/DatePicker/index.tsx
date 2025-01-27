@@ -1,4 +1,3 @@
-//import React from 'react';
 import { ptBR } from 'date-fns/locale';
 import { DayPicker } from 'react-day-picker';
 import { StyledDayPickerWrapper } from './styles'; // Corrigido o caminho do módulo
@@ -16,7 +15,7 @@ export function StyledDatePicker({ value, onChange }: DatePickerProps) {
         selected={value}
         mode="single"
         onSelect={(date) => onChange?.(date ?? new Date())}
-        className='rdp-root'
+        className="rdp-root"
         classNames={{
           caption: 'rdp-caption', // Estilização do cabeçalho
           nav: 'rdp-nav', // Botões de navegação

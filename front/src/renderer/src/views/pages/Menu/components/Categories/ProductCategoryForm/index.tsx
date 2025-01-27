@@ -9,6 +9,7 @@ import useProductCategoryForm, {
 interface ProductCategoryFormProps {
   category?: ProductCategory | null;
   isLoading?: boolean;
+  buttonLabel: string;
   onCancel?(): void;
   onSubmit(data: ProductCategoryFormData): Promise<void>;
 }
@@ -18,6 +19,7 @@ export default function ProductCategoryForm({
   category,
   onCancel,
   onSubmit,
+  buttonLabel,
 }: ProductCategoryFormProps) {
   const { errors, register, handleSubmit } = useProductCategoryForm({
     onSubmit,
@@ -50,7 +52,7 @@ export default function ProductCategoryForm({
         )}
 
         <Button type="submit" isLoading={isLoading}>
-          Salvar alterações
+          {buttonLabel}
         </Button>
       </Footer>
     </Form>

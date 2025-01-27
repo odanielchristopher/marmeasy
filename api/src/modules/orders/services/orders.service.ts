@@ -71,16 +71,10 @@ export class OrdersService implements IOrdersService {
     orderId: string,
     updateOrderDto: UpdateOrderDto,
   ) {
-    await this.validateOrderOwnershipService.validate(userId, orderId);
-
-    const existingOrder = await this.ordersRepository.findUniqueByUserId({
-      id: orderId,
+    const existingOrder = await this.validateOrderOwnershipService.validate(
       userId,
-    });
-
-    if (!existingOrder) {
-      throw new NotFoundException('Pedido não encontrado.');
-    }
+      orderId,
+    );
 
     const { discount, items, date, clientId } = updateOrderDto;
 

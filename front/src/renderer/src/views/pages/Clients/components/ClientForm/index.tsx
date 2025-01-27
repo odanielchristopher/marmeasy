@@ -1,49 +1,75 @@
 import { Client } from '@renderer/app/entities/Client';
 import Button from '@renderer/views/components/Button';
-import CurrencyInput from '@renderer/views/components/CurrencyInput';
+import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import { Input } from '@renderer/views/components/Input';
 import InputMask from '@renderer/views/components/InputMask';
 import { Controller } from 'react-hook-form';
+import { LuPencil } from 'react-icons/lu';
 import { BalanceContainer, Form } from './styles';
-import useUpdateClientForm from './useUpdateClientForm';
+import useClientForm, { ClientFormData } from './useClientForm';
 
 interface ClientFormProps {
-  $isShow: boolean;
-  client: Client | null;
+  isLoading: boolean;
+  buttonLabel: string;
+  client?: Client | null;
+  clientType: 'FISICO' | 'JURIDICO';
+  onSubmit(data: ClientFormData): Promise<void>;
 }
 
-export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
-  const { errors, handleSubmit, isLoading, register, control } =
-    useUpdateClientForm($isShow, client);
+export default function ClientForm({
+  client,
+  clientType,
+  buttonLabel,
+  isLoading,
+  onSubmit,
+}: ClientFormProps) {
+  const { errors, control, handleSubmit, register, setFocus } = useClientForm({
+    client,
+    clientType,
+    onSubmit,
+  });
 
   return (
     <Form onSubmit={handleSubmit}>
       <p>
         Abaixo estão os dados{' '}
-        {client?.type === 'FISICO' ? 'do seu cliente' : 'da sua empresa'}.
+        {clientType === 'FISICO' ? 'do seu cliente' : 'da sua empresa'}.
       </p>
 
       <BalanceContainer>
-        <span className="label">Saldo</span>
-        <div className="input">
-          <span>R$</span>
-          <Controller
-            control={control}
-            name="balance"
-            render={({ field: { onChange, value } }) => (
-              <CurrencyInput
-                value={value}
-                onChange={onChange}
-                $error={errors.balance?.message}
-              />
-            )}
-          />
+        <span className="label">Saldo*</span>
+
+        <div className="input-container">
+          <div className="input">
+            <span>R$</span>
+            <Controller
+              control={control}
+              name="balance"
+              render={({ field: { onChange, value, ref } }) => (
+                <CurrencyInput
+                  ref={ref}
+                  value={value}
+                  onChange={onChange}
+                  $error={errors.balance?.message}
+                />
+              )}
+            />
+          </div>
+
+          <button
+            type="button"
+            className="label-btn"
+            onClick={() => setFocus('balance')}
+          >
+            <LuPencil size={18} />
+            Editar saldo
+          </button>
         </div>
       </BalanceContainer>
 
       <Input
         type="text"
-        placeholder={`Nome ${client?.type === 'FISICO' ? 'do cliente' : 'da empresa'}`}
+        placeholder={`Nome ${clientType === 'FISICO' ? 'do cliente' : 'da empresa'}*`}
         $error={errors.name?.message}
         maxLength={15}
         {...register('name')}
@@ -56,7 +82,7 @@ export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
           <InputMask
             name={name}
             type="text"
-            placeholder={`Telefone ${client?.type === 'FISICO' ? 'do cliente' : 'da empresa'}`}
+            placeholder={`Telefone ${clientType === 'FISICO' ? 'do cliente' : 'da empresa'}`}
             format="(##) #####-####"
             $error={errors.phone?.message}
             onChangeValue={onChange}
@@ -67,11 +93,11 @@ export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
 
       <Input
         type="text"
-        placeholder={`Endereço ${client?.type === 'FISICO' ? 'do cliente' : 'da empresa'}`}
+        placeholder={`Endereço ${clientType === 'FISICO' ? 'do cliente' : 'da empresa'}`}
         {...register('address')}
       />
 
-      {client?.type === 'FISICO' && (
+      {clientType === 'FISICO' && (
         <Controller
           control={control}
           name="cpf"
@@ -89,7 +115,7 @@ export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
         />
       )}
 
-      {client?.type === 'JURIDICO' && (
+      {clientType === 'JURIDICO' && (
         <Controller
           control={control}
           name="cnpj"
@@ -109,7 +135,7 @@ export default function UpdateClientForm({ $isShow, client }: ClientFormProps) {
       )}
 
       <Button type="submit" isLoading={isLoading} onClick={handleSubmit}>
-        Salvar alterações
+        {buttonLabel}
       </Button>
     </Form>
   );

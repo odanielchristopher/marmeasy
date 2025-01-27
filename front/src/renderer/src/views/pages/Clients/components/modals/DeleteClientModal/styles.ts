@@ -1,12 +1,10 @@
 import styled from 'styled-components';
 
-export const Form = styled.form`
-  margin-top: 4rem;
-
+export const FormModal = styled.form`
   p {
-    color: ${({ theme }) => theme.colors.black.main};
+    color: ${({ theme }) => theme.colors.gray.main};
     font-size: 1.4rem;
-    margin-bottom: 1.6rem;
+    margin-bottom: 1.2rem;
   }
 
   .dividerInput {
@@ -34,12 +32,6 @@ export const Form = styled.form`
     margin-top: 2rem;
     width: 100%;
     height: 4.8rem;
-
-    background: ${({ theme }) => theme.colors.orange.light};
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.orange.main};
-    }
   }
 `;
 

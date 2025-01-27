@@ -2,30 +2,48 @@ import { Client } from '@renderer/app/entities/Client';
 import useAside from '@renderer/app/hooks/useAside';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import formatPhone from '@renderer/app/utils/formatPhone';
-import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
-import { Container, Content, Footer, Header, Main } from './styles';
+import { useState } from 'react';
+import { HiOutlinePencilAlt } from 'react-icons/hi';
+import EditClientModal from '../modals/EditClientModal';
+import { Container, Content, EditButton, Footer, Header, Main } from './styles';
 
-interface CardListProps {
+interface ClientListProps {
   clients: Client[];
-  onDeleteClient(client: Client): void;
 }
 
-export default function ClientList({ clients, onDeleteClient }: CardListProps) {
+export default function ClientList({ clients }: ClientListProps) {
   const { handleShowClientData, handleHiddenClientData } = useAside();
+
+  const [isOpenEditClientModal, setIsOpenEditClientModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
+
+  function handleOpenEditClientModal(client: Client) {
+    setSelectedClient(client);
+    setIsOpenEditClientModal(true);
+  }
+  function handleCloseEditClientModal() {
+    setSelectedClient(null);
+    setIsOpenEditClientModal(false);
+  }
 
   return (
     <>
+      <EditClientModal
+        isOpen={isOpenEditClientModal}
+        client={selectedClient}
+        onClose={handleCloseEditClientModal}
+      />
       {clients.map((client) => (
         <Container key={client.id}>
-          <button
+          <EditButton
+            type="button"
             onClick={() => {
-              onDeleteClient(client);
               handleHiddenClientData();
+              handleOpenEditClientModal(client);
             }}
-            className="deleteButton"
           >
-            <DeleteIcon />
-          </button>
+            <HiOutlinePencilAlt size={24} />
+          </EditButton>
           <Content onClick={() => handleShowClientData(client)}>
             <Header>
               <div className="infos">

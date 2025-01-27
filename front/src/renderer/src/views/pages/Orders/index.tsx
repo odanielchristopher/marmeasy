@@ -5,7 +5,6 @@ import Select from '@renderer/views/components/Select';
 
 import DatePickerInput from '@renderer/views/components/DatePickerInput';
 
-
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
 import ClientList from './components/OrdersList';

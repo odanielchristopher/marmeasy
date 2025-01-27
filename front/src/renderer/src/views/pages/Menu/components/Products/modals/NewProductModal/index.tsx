@@ -41,6 +41,7 @@ export default function NewProductModal({
           onSubmit={handleSubmit}
           onOpenIngredientModal={handleOpenNewIngredientModal}
           isLoading={isLoading}
+          buttonLabel="Criar produto"
         />
       </Container>
     </Modal>

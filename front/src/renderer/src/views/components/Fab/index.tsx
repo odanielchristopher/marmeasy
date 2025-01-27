@@ -8,9 +8,9 @@ import { Refeicao } from '@renderer/assets/Icons/Refeicao';
 
 import { Container, StyledButton, StyledItem } from './styles';
 
-import ClientModal from '@renderer/views/modals/ClientModal';
-import CompanyModal from '@renderer/views/modals/CompanyModal';
 import OrderModal from '@renderer/views/modals/OrderModal';
+import ClientModal from '@renderer/views/pages/Clients/components/modals/ClientModal';
+import CompanyModal from '@renderer/views/pages/Clients/components/modals/CompanyModal';
 import { useFab } from './useFab';
 
 export default function Fab() {
