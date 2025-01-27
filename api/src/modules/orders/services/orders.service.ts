@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IOrderItemsService } from 'src/modules/order-items/interfaces/order-items-service.interface';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
@@ -26,19 +26,6 @@ export class OrdersService implements IOrdersService {
       userId,
       order: 'desc',
     });
-  }
-
-  async findOneById(userId: string, orderId: string) {
-    const order = await this.ordersRepository.findUniqueByUserId({
-      userId,
-      id: orderId,
-    });
-
-    if (!order) {
-      throw new NotFoundException('Pedido não encontrado.');
-    }
-
-    return order;
   }
 
   async create(userId: string, createOrderDto: CreateOrderDto) {

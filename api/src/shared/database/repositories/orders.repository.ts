@@ -114,7 +114,7 @@ export class OrdersRepository implements IOrdersRepository {
         clientId,
         userId,
         items: {
-          set: [],
+          deleteMany: {},
           createMany: {
             data: items.map((item) => ({ ...item, userId })),
           },

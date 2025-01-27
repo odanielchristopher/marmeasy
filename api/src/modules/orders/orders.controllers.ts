@@ -28,14 +28,6 @@ export class OrdersController {
     return this.ordersService.findAllByClientId(userId, clientId);
   }
 
-  @Get(':orderId')
-  findOne(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-  ) {
-    return this.ordersService.findOneById(userId, orderId);
-  }
-
   @Post()
   create(
     @ActiveUserId() userId: string,

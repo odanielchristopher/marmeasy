@@ -7,8 +7,6 @@ export const IOrdersService = Symbol('IOrdersService');
 export interface IOrdersService {
   findAllByClientId(userId: string, clientId: string): Promise<Order[]>;
 
-  findOneById(userId: string, orderId: string): Promise<Order>;
-
   create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
 
   update(

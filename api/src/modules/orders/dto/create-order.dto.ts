@@ -31,13 +31,11 @@ export class CreateOrderDto {
       'Lista de itens do pedido. Cada item inclui detalhes como nome, quantidade e preço.',
     example: [
       {
-        id: '123e4567-e89b-12d3-a456-426614174000',
         name: 'Marmita de Frango',
         ingredients: ['Frango', 'Arroz', 'Feijão'],
         unitPrice: 12.5,
         total: 25.0,
         quantity: 2,
-        orderId: '987e6543-b21c-34d5-a789-123456789abc',
       },
     ],
   })

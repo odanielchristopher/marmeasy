@@ -9,14 +9,6 @@ import {
   IsString,
 } from 'class-validator';
 
-interface ICreateOrderItemInput {
-  name: string;
-  ingredients: string[];
-  unitPrice: number;
-  quantity: number;
-  total: number;
-}
-
 export class CreateOrderItemDto {
   @IsString()
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
