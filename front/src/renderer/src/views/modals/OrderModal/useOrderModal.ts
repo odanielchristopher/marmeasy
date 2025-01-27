@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
-import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
-import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { Product } from '@renderer/app/entities/Product';
-import { useForm } from 'react-hook-form';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
-import { useMutation } from '@tanstack/react-query';
+import { Order } from '@renderer/app/entities/Order';
+import { Product } from '@renderer/app/entities/Product';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
+import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
+import { ordersService } from '@renderer/app/services/ordersService';
+import toast from '@renderer/app/utils/toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface OrderDetail {
   selectedIngredients: Ingredient[];
@@ -14,16 +17,18 @@ interface OrderDetail {
   productImage: string;
   productPrice: number;
   totalPrice: number;
+  categoryId: string;
 }
 
-export default function useOrderModal(isOpen) {
-  const { watch, setValue } = useForm();
+export default function useOrderModal(isOpen: boolean, clientId: string | null, onSuccess: () => void) {
+  const { watch, setValue, handleSubmit:hookFormHandleSubmit } = useForm();
+  const queryClient = useQueryClient();
 
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
   const { products, isLoading: isLoadingProducts } = useProductsQuery();
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
-  const [orderDate, setOrderDate] = useState('');
+  const [orderDate, setOrderDate] = useState<string>('');
   const [openModalIngredients, setOpenModalIngredients] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
@@ -75,25 +80,39 @@ export default function useOrderModal(isOpen) {
     handleCloseIngredientModal();
   };
 
-  const mutation = useMutation((newOrder) => {
-    // Replace with your API call
-    return fetch('/api/orders', {
-      method: 'POST',
-      body: JSON.stringify(newOrder),
-    });
+  const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
+    mutationFn: async (data: Order) =>
+      ordersService.createByClientId(data),
+    onSuccess: (newOrder: Order) => {
+      queryClient.setQueryData(
+        ['orders', 'getAll'],
+        (orders: Order[]) => [...orders, newOrder],
+      );
+    },
   });
 
-  const handleOrderSubmit = () => {
-    if (orderDetails.length > 0) {
-      mutation.mutate(orderDetails);
+  const handleOrderSubmit = hookFormHandleSubmit(async (data) => {
+    try {
+      await createOrder(data);
+      toast({
+        type: 'success',
+        text: 'Pedido criado com sucesso.',
+      });
+      onSuccess();
+    } catch {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao tentar criar pedido.',
+      });
     }
-  };
+  });
 
   return {
     categories,
     products,
     isLoadingCategories,
     isLoadingProducts,
+    isLoading,
     isOrderModalOpen,
     selectedCategory,
     selectedIngredientsIds,
