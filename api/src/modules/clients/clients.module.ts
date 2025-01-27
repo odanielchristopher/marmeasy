@@ -19,5 +19,11 @@ import { ValidateClientOwnershipService } from './services/validate-client-owner
       useClass: ValidateClientOwnershipService,
     },
   ],
+  exports: [
+    {
+      provide: IValidateClientOwnershipService,
+      useClass: ValidateClientOwnershipService,
+    },
+  ],
 })
 export class ClientsModule {}

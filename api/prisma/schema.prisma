@@ -17,9 +17,9 @@ model User {
   products          Product[]
   productCategories ProductCategory[]
   ingredients       Ingredient[]
-  Order             Order[]
-  OrderItem         OrderItem[]
-  Payment           Payment[]
+  orders            Order[]
+  orderItems        OrderItem[]
+  payments          Payment[]
 
   @@map("users")
 }
@@ -35,8 +35,8 @@ model Client {
   balance  Float      @default(0)
   payments Payment[]
 
-  user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Order Order[]
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
 
   @@unique([userId, document])
   @@map("clients")
