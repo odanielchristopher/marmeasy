@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Actions, Container, Empty, Header, Main } from './styles';
+import { Actions, Container, Header } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
-import clipboard from '@renderer/assets/Images/Clipboard.svg';
 
+import { clients } from '@renderer/app/mocks/client';
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
 import Payments from './Payments';
@@ -18,7 +18,7 @@ export default function Aside({ area }: AsideProps) {
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
   const { pathname } = useLocation();
   const [showOrders, setShowOrders] = useState(false);
-  const [showPayments, setShowPayments] = useState(false);
+  const [showPayments, setShowPayments] = useState(true);
 
   useEffect(() => {
     function handleAsideData(pathname: string) {
@@ -47,7 +47,7 @@ export default function Aside({ area }: AsideProps) {
 
       <Actions></Actions>
 
-      {!showClientData && (
+      {/* {!showClientData && (
         <Main>
           <Empty>
             <img src={clipboard} alt="Empty" />
@@ -58,11 +58,11 @@ export default function Aside({ area }: AsideProps) {
             </p>
           </Empty>
         </Main>
-      )}
+      )} */}
 
       {showClientData && showOrders && <DetailsOrder client={seletedClient} />}
 
-      {showClientData && showPayments && <Payments client={seletedClient} />}
+      {showPayments && <Payments client={clients[0]} />}
     </Container>
   );
 }
