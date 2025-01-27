@@ -1,11 +1,5 @@
-import { useEffect } from 'react';
-import {
-  Actions,
-  Container,
-  Empty,
-  Header,
-  Main,
-} from './styles';
+import { useEffect, useState } from 'react';
+import { Actions, Container, Empty, Header, Main } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
@@ -23,16 +17,27 @@ interface AsideProps {
 export default function Aside({ area }: AsideProps) {
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
   const { pathname } = useLocation();
+  const [showOrders, setShowOrders] = useState(false);
+  const [showPayments, setShowPayments] = useState(false);
 
   useEffect(() => {
+    function handleAsideData(pathname: string) {
+      if (pathname == '/orders') {
+        setShowOrders(true);
+        setShowPayments(false);
+        return;
+      }
+
+      setShowOrders(false);
+      setShowPayments(true);
+    }
+
+    handleAsideData(pathname);
+
     return () => {
       handleHiddenClientData();
     };
   }, [pathname]);
-
-
-  const showOrders = ['/orders'].includes(pathname);
-  const showPayments = ['/'].includes(pathname);
 
   return (
     <Container $area={area}>
@@ -40,8 +45,7 @@ export default function Aside({ area }: AsideProps) {
         <img src={fraseSvg} alt="Marmeasy" />
       </Header>
 
-      <Actions>
-      </Actions>
+      <Actions></Actions>
 
       {!showClientData && (
         <Main>
@@ -56,9 +60,7 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showClientData && [
-        showOrders && <DetailsOrder key="detailsOrder" client={seletedClient} />,
-      ]}
+      {showClientData && showOrders && <DetailsOrder client={seletedClient} />}
 
       {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
