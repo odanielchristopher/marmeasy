@@ -33,15 +33,11 @@ export class UsersRepository implements IUsersRepository {
   ): Promise<User | null> {
     const { email } = findUniqueByEmail;
 
-    const findedUser = await this.prismaService.user.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true,
-      },
-    });
+    const [findedUser] = await this.prismaService.$queryRaw<User[]>`
+    SELECT id, name, email, passoword
+    FROM users
+    WHERE email = ${email}
+    `;
 
     return findedUser;
   }
