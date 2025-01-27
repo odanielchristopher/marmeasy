@@ -1,32 +1,137 @@
 import { Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { Order } from 'src/modules/orders/entities/order.entity';
+import {
+  CreateOrderParams,
+  DeleteOrderItemDto,
+  FindFirstOrderByClientIdDto,
+  FindManyByClientIdDto,
+  FindUniqueOrderByIdDto,
+  IOrdersRepository,
+  UpdateOrderParams,
+} from '../interfaces/orders-repository.interface';
 import { PrismaService } from '../prisma.service';
 
+const prismaResponse = {
+  id: true,
+  userId: true,
+  clientId: true,
+  date: true,
+  discount: true,
+  status: true,
+  totalValue: true,
+  items: {
+    select: {
+      id: true,
+      orderId: true,
+      name: true,
+      ingredients: true,
+      unitPrice: true,
+      quantity: true,
+      total: true,
+    },
+  },
+};
+
 @Injectable()
-export class OrdersRespository {
+export class OrdersRepository implements IOrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(createDto: Prisma.OrderCreateArgs) {
-    return this.prismaService.order.create(createDto);
+  async findManyByClientId(
+    findManyByClientIdDto: FindManyByClientIdDto,
+  ): Promise<Order[]> {
+    const { order, userId, clientId } = findManyByClientIdDto;
+
+    const findendOrders = await this.prismaService.order.findMany({
+      where: { userId, clientId },
+      orderBy: { date: order },
+      select: prismaResponse,
+    });
+
+    return findendOrders.map(Order.parse);
   }
 
-  findMany(findManyDto: Prisma.OrderFindManyArgs) {
-    return this.prismaService.order.findMany(findManyDto);
+  async findFirstByClientId(
+    findFirstByClientIdDto: FindFirstOrderByClientIdDto,
+  ): Promise<Order> {
+    const { id, userId, clientId } = findFirstByClientIdDto;
+
+    const findedOrder = await this.prismaService.order.findFirst({
+      where: { id, userId, clientId },
+      select: prismaResponse,
+    });
+
+    return Order.parse(findedOrder);
   }
 
-  findFirst(findFirstDto: Prisma.OrderFindFirstArgs) {
-    return this.prismaService.order.findFirst(findFirstDto);
+  async findUniqueByUserId(
+    findUniqueDto: FindUniqueOrderByIdDto,
+  ): Promise<Order> {
+    const { id, userId } = findUniqueDto;
+
+    const findedOrder = await this.prismaService.order.findUnique({
+      where: { id, userId },
+      select: prismaResponse,
+    });
+
+    return Order.parse(findedOrder);
   }
 
-  findUnique(findFirstDto: Prisma.OrderFindUniqueArgs) {
-    return this.prismaService.order.findFirst(findFirstDto);
+  async create(createDto: CreateOrderParams): Promise<Order> {
+    const { data, userId } = createDto;
+
+    const { items, date, discount, total, clientId } = data;
+
+    const createdOrder = await this.prismaService.order.create({
+      data: {
+        date,
+        discount,
+        totalValue: total,
+        clientId,
+        userId,
+        items: {
+          createMany: {
+            data: items.map((item) => ({ ...item, userId })),
+          },
+        },
+      },
+      select: prismaResponse,
+    });
+
+    return Order.parse(createdOrder);
   }
 
-  update(updateDto: Prisma.OrderUpdateArgs) {
-    return this.prismaService.order.update(updateDto);
+  async update(updateDto: UpdateOrderParams): Promise<Order> {
+    const { data, userId, id } = updateDto;
+
+    const { items, date, discount, total, clientId } = data;
+
+    const updatedOrder = await this.prismaService.order.update({
+      where: { userId, id },
+      data: {
+        date,
+        discount,
+        totalValue: total,
+        clientId,
+        userId,
+        items: {
+          deleteMany: {},
+          createMany: {
+            data: items.map((item) => ({ ...item, userId })),
+          },
+        },
+      },
+      select: prismaResponse,
+    });
+
+    return Order.parse(updatedOrder);
   }
 
-  delete(deleteDto: Prisma.OrderDeleteArgs) {
-    return this.prismaService.order.delete(deleteDto);
+  async delete(deleteDto: DeleteOrderItemDto): Promise<Order | void> {
+    const { id, userId } = deleteDto;
+
+    await this.prismaService.order.delete({
+      where: { id, userId },
+      include: { items: true },
+    });
   }
 }

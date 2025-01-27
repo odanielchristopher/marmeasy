@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Order } from '@renderer/app/entities/Order';
 import { Product } from '@renderer/app/entities/Product';
@@ -5,10 +6,12 @@ import { ProductCategory } from '@renderer/app/entities/ProductCategory';
 import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
 import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
 import { ordersService } from '@renderer/app/services/ordersService';
+import { CreateOrderParams } from '@renderer/app/services/ordersService/create';
 import toast from '@renderer/app/utils/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 interface OrderDetail {
   selectedIngredients: Ingredient[];
@@ -20,8 +23,27 @@ interface OrderDetail {
   categoryId: string;
 }
 
+export const orderFormSchema = z.object({
+  date: z.date(),
+  discount: z.number(),
+  items: z.array(
+    z.object({
+      name: z.string(),
+      ingredients: z.array(z.string()),
+      unitPrice: z.number(),
+      quantity: z.number(),
+      total: z.number(),
+    }),
+  ),
+  totalValue: z.number(),
+});
+
+export type OrderFormSchema = z.infer<typeof orderFormSchema>;
+
 export default function useOrderModal(isOpen: boolean, clientId: string | null, onSuccess: () => void) {
-  const { watch, setValue, handleSubmit:hookFormHandleSubmit } = useForm();
+  const { setValue, handleSubmit:hookFormHandleSubmit } = useForm<OrderFormSchema>({
+    resolver: zodResolver(orderFormSchema),
+  });
   const queryClient = useQueryClient();
 
   const { categories, isLoading: isLoadingCategories } =
@@ -33,8 +55,6 @@ export default function useOrderModal(isOpen: boolean, clientId: string | null, 
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
   const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
-
-  const selectedIngredientsIds = watch('ingredientsIds');
 
   function handleCategorySelect(category: ProductCategory) {
     setSelectedCategory(category);
@@ -55,10 +75,7 @@ export default function useOrderModal(isOpen: boolean, clientId: string | null, 
   }
 
   function handleSelectedIngredients(ingredient: Ingredient) {
-    const currentIngredients = selectedIngredientsIds || [];
-    setValue('ingredientsIds', [...currentIngredients, ingredient.id], {
-      shouldValidate: true,
-    });
+    const currentIngredients =  selectedProduct?.ingredients || [];
   }
 
   useEffect(() => {
@@ -75,14 +92,23 @@ export default function useOrderModal(isOpen: boolean, clientId: string | null, 
     setIsOrderModalOpen(true);
   };
 
-  const handleIngredientsSubmit = (data: OrderDetail) => {
-    setOrderDetails((prevOrderDetails) => [...prevOrderDetails, data]);
-    handleCloseIngredientModal();
-  };
+  // const handleIngredientsSubmit = (data: CreateOrderParams) => {
+  //   const orderDetail: OrderDetail = {
+  //     selectedIngredients: [],
+  //     quantity: data.items.length,
+  //     productName: data.items.,
+  //     productImage: '',
+  //     productPrice: data.
+  //     totalPrice: data.items.,
+  //     categoryId: '',
+  //   };
+  //   setOrderDetails((prevOrderDetails) => [...prevOrderDetails, orderDetail]);
+  //   handleCloseIngredientModal();
+  // };
 
   const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
-    mutationFn: async (data: Order) =>
-      ordersService.createByClientId(data),
+    mutationFn: async (data: CreateOrderParams) =>
+      ordersService.create(data),
     onSuccess: (newOrder: Order) => {
       queryClient.setQueryData(
         ['orders', 'getAll'],
@@ -115,7 +141,6 @@ export default function useOrderModal(isOpen: boolean, clientId: string | null, 
     isLoading,
     isOrderModalOpen,
     selectedCategory,
-    selectedIngredientsIds,
     orderDate,
     orderDetails,
     openModalIngredients,

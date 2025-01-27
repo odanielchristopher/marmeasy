@@ -13,7 +13,7 @@ import {
 } from './styles';
 import useDeleteCategoryModal from './useDeleteCategoryModal';
 
-interface DeleteProductModalProps {
+interface DeleteCategoryModalProps {
   open: boolean;
   onClose(): void;
   category: ProductCategory | null;
@@ -23,7 +23,7 @@ export default function DeleteCategoryModal({
   open,
   onClose,
   category,
-}: DeleteProductModalProps) {
+}: DeleteCategoryModalProps) {
   const { handleConfirm, isloading } = useDeleteCategoryModal(
     category,
     onClose,

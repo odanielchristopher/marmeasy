@@ -21,6 +21,11 @@ export default function useDeleteCategoryModal(
           );
         },
       );
+
+      queryClient.refetchQueries({
+        queryKey: ['products', 'getAll'],
+        exact: true,
+      });
     },
   });
 

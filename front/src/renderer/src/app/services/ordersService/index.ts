@@ -1,11 +1,11 @@
-import { createByClientId } from './createByClientId';
-import { getAllByClientId } from './getAllByClientId';
-import { removeByClientId } from './removeByClientId';
-import { updateByClientId } from './updateByClientId';
+import { create } from './create';
+import { getAll } from './getAll';
+import { remove } from './remove';
+import { update } from './update';
 
 export const ordersService = {
-  getAllByClientId,
-  createByClientId,
-  removeByClientId,
-  updateByClientId,
+  getAll,
+  create,
+  update,
+  remove,
 };

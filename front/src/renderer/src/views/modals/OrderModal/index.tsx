@@ -1,13 +1,13 @@
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+import Edit from '@renderer/assets/Images/Edit.svg';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
-import Edit from '@renderer/assets/Images/Edit.svg';
 import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 import IngredientModal from '@renderer/views/modals/IngredientsModal';
-import { BoxCategories, Container, IconCategory, ProductList, Line, OrderItemsList } from './styles';
+import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 import useOrderModal from './useOrderModal';
 
 interface OrderModalProps {
@@ -21,7 +21,6 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     products,
     isOrderModalOpen,
     selectedCategory,
-    selectedIngredientsIds,
     orderDetails,
     openModalIngredients,
     selectedProduct,
@@ -45,6 +44,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               name='clientName'
             />
 
+            {/* <DatePickerInput/> */}
+
             <BoxCategories>
               {categories.map((category) => (
                 <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
@@ -57,7 +58,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             </BoxCategories>
 
             <ul className='productsOptions'>
-              {selectedCategory && products.filter((product) => product.category.id === selectedCategory.id).map((product) => {
+              {selectedCategory && products.filter((product) => product.category?.id === selectedCategory.id).map((product) => {
                 const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
 
                 return (
@@ -116,12 +117,19 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
       {openModalIngredients && selectedProduct && (
         <IngredientModal
           onSelected={handleSelectedIngredients}
-          selectedIngredientsIds={selectedIngredientsIds}
           open={openModalIngredients}
           onClose={handleCloseIngredientModal}
           product={selectedProduct}
-          title={selectedProduct.ingredients.length > 0 ? 'Ingredientes e Quantidade' : 'Quantidade'}
-          answer={selectedProduct.ingredients.length > 0 ? 'Selecione os ingredientes desejados' : 'Deseja adicionar este produto ao pedido?'}
+          title={
+            selectedProduct.ingredients.length > 0
+              ? 'Ingredientes e Quantidade'
+              : 'Quantidade'
+          }
+          answer={
+            selectedProduct.ingredients.length > 0
+              ? 'Selecione os ingredientes desejados'
+              : 'Deseja adicionar este produto ao pedido?'
+          }
           onConfirm={() => {
             handleCloseIngredientModal();
           }}

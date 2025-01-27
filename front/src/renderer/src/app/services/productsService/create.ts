@@ -6,7 +6,7 @@ export interface CreateProductParams {
   name: string;
   description?: string;
   price: string;
-  categoryId: string;
+  categoryId?: string;
   ingredientsIds: string[];
 }
 
@@ -28,10 +28,13 @@ export async function create({
     formData.append('description', description);
   }
 
+  if (categoryId) {
+    formData.append('categoryId', categoryId);
+  }
+
   formData.append('name', name);
   formData.append('price', price);
-  formData.append('categoryId', categoryId);
-  ingredientsIds.forEach((id) => formData.append('ingredientsIds[]', id));
+  formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
 
   const { data } = await httpClient.post<Product>('/products', formData);
 

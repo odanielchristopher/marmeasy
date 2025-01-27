@@ -12,8 +12,6 @@ import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 import clipboard from '@renderer/assets/Images/Clipboard.svg';
-import UpdateClientForm from './UpdateClientForm';
-// import AddOrder from './AddOrder';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
@@ -39,7 +37,7 @@ export default function Aside({ area }: AsideProps) {
 
   const location = useLocation();
 
-  const hasOrders = ['/orders'].includes(location.pathname);
+  const showOrders = ['/orders'].includes(location.pathname);
 
   return (
     <Container $area={area}>
@@ -65,17 +63,10 @@ export default function Aside({ area }: AsideProps) {
           </Empty>
         </Main>
       )}
-
       {showClientData &&
         showDetails && [
-          hasOrders ? (
+          showOrders && (
             <DetailsOrder key="detailsOrder" client={seletedClient} />
-          ) : (
-            <UpdateClientForm
-              key="updateClientForm"
-              client={seletedClient}
-              $isShow={showClientData}
-            />
           ),
         ]}
     </Container>

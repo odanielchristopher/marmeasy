@@ -46,8 +46,10 @@ export default function DeleteProductModal({
           <img src={imagePath || noImage} alt={product?.description} />
           <Infos>
             <div className="category">
-              <span>{product?.category.icon}</span>
-              <span>{capitalizeFirstLetter(product?.category.name || '')}</span>
+              <span>{product?.category?.icon}</span>
+              <span>
+                {capitalizeFirstLetter(product?.category?.name || '')}
+              </span>
             </div>
 
             <p className="name">{capitalizeFirstLetter(product?.name || '')}</p>

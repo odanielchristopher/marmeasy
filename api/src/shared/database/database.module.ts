@@ -1,33 +1,94 @@
 import { Global, Module } from '@nestjs/common';
+
+import { IClientsRepository } from './interfaces/clients-repository.interface';
+import { IIngredientsRepository } from './interfaces/ingredients-repository.interface';
+import { IOrderItemsRepository } from './interfaces/orders-item-repository.interface';
+import { IProductCategoriesRepository } from './interfaces/product-categories-repository.interface';
+import { IProductsRepository } from './interfaces/products-repository.interface';
+import { IUsersRepository } from './interfaces/users-repository.interface';
+
+import { IOrdersRepository } from './interfaces/orders-repository.interface';
+import { IPaymentsRepository } from './interfaces/payments-repository.interface';
 import { PrismaService } from './prisma.service';
-import { ClientsRespository } from './repositories/clients.repository';
-import { IngredientsRespository } from './repositories/ingredients.repository';
-import { ProductCategoriesRespository } from './repositories/product-categories.repository';
-import { ProductsRespository } from './repositories/products.repository';
-import { UsersRespository } from './repositories/users.repository';
+import { ClientsRepository } from './repositories/clients.repository';
+import { IngredientsRepository } from './repositories/ingredients.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
-import { OrdersRespository } from './repositories/orders.repository';
+import { OrdersRepository } from './repositories/orders.repository';
+import { PaymentsRepository } from './repositories/payments.repository';
+import { ProductCategoriesRepository } from './repositories/product-categories.repository';
+import { ProductsRepository } from './repositories/products.repository';
+import { UsersRepository } from './repositories/users.repository';
 
 @Global()
 @Module({
   providers: [
     PrismaService,
-    UsersRespository,
-    ClientsRespository,
-    ProductCategoriesRespository,
-    IngredientsRespository,
-    ProductsRespository,
-    OrdersRespository,
-    OrderItemsRepository,
+    {
+      provide: IProductsRepository,
+      useClass: ProductsRepository,
+    },
+    {
+      provide: IUsersRepository,
+      useClass: UsersRepository,
+    },
+    {
+      provide: IProductCategoriesRepository,
+      useClass: ProductCategoriesRepository,
+    },
+    {
+      provide: IIngredientsRepository,
+      useClass: IngredientsRepository,
+    },
+    {
+      provide: IClientsRepository,
+      useClass: ClientsRepository,
+    },
+    {
+      provide: IOrderItemsRepository,
+      useClass: OrderItemsRepository,
+    },
+    {
+      provide: IOrdersRepository,
+      useClass: OrdersRepository,
+    },
+    {
+      provide: IPaymentsRepository,
+      useClass: PaymentsRepository,
+    },
   ],
   exports: [
-    UsersRespository,
-    ClientsRespository,
-    ProductCategoriesRespository,
-    IngredientsRespository,
-    ProductsRespository,
-    OrdersRespository,
-    OrderItemsRepository,
+    {
+      provide: IUsersRepository,
+      useClass: UsersRepository,
+    },
+    {
+      provide: IProductCategoriesRepository,
+      useClass: ProductCategoriesRepository,
+    },
+    {
+      provide: IIngredientsRepository,
+      useClass: IngredientsRepository,
+    },
+    {
+      provide: IClientsRepository,
+      useClass: ClientsRepository,
+    },
+    {
+      provide: IProductsRepository,
+      useClass: ProductsRepository,
+    },
+    {
+      provide: IOrderItemsRepository,
+      useClass: OrderItemsRepository,
+    },
+    {
+      provide: IOrdersRepository,
+      useClass: OrdersRepository,
+    },
+    {
+      provide: IPaymentsRepository,
+      useClass: PaymentsRepository,
+    },
   ],
 })
 export class DatabaseModule {}

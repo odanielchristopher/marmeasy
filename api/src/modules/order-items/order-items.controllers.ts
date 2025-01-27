@@ -1,23 +1,27 @@
-import { Controller, Delete, Get, Param, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
-import { OrderItemsService } from './services/order-items.service';
+import { IOrderItemsService } from './interfaces/order-items-service.interface';
 
 @Controller('items')
 export class OrderItemsController {
-  constructor(private readonly orderItemsService: OrderItemsService) {}
+  constructor(
+    @Inject(IOrderItemsService)
+    private readonly orderItemsService: IOrderItemsService,
+  ) {}
 
-  // @Post(':orderId')
-  // create(
-  //   @ActiveUserId() userId: string,
-  //   @Param('orderId', ParseUUIDPipe) orderId: string,
-  //   @Body() createOrderItemsDto: CreateOrderItemDto,
-  // ) {
-  //   return this.orderItemsService.create(userId, orderId, createOrderItemsDto);
-  // }
-
-  @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.orderItemsService.findAll(userId);
+  @Get(':orderId')
+  findAll(
+    @ActiveUserId() userId: string,
+    @Param('orderId', ParseUUIDPipe) orderId: string,
+  ) {
+    return this.orderItemsService.findAllByOrder(userId, orderId);
   }
 
   @Get('/:orderItemId')

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
@@ -11,24 +12,20 @@ import {
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
-import { OrdersService } from './services/orders.service';
+import { IOrdersService } from './interfaces/orders-service.interface';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    @Inject(IOrdersService) private readonly ordersService: IOrdersService,
+  ) {}
 
-  @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.ordersService.findAllByUserId(userId);
-  }
-
-  @Get(':orderId')
-  findOne(
+  @Get(':clientId')
+  findAll(
     @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
+    @Param('clientId', ParseUUIDPipe) clientId: string,
   ) {
-    return this.ordersService.findOneById(userId, orderId);
+    return this.ordersService.findAllByClientId(userId, clientId);
   }
 
   @Post()
@@ -48,33 +45,11 @@ export class OrdersController {
     return this.ordersService.update(userId, orderId, updateOrderDto);
   }
 
-  @Put('/status/:orderId')
-  updateStatus(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Body() updateStatusOrderDto: UpdateStatusOrderDto,
-  ) {
-    return this.ordersService.updateStatus(
-      userId,
-      orderId,
-      updateStatusOrderDto,
-    );
-  }
-
   @Delete(':orderId')
   delete(
     @ActiveUserId() userId: string,
     @Param('orderId', ParseUUIDPipe) orderId: string,
   ) {
     return this.ordersService.delete(userId, orderId);
-  }
-
-  @Delete(':orderId/items/:orderItemId')
-  deleteItem(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Param('orderItemId', ParseUUIDPipe) orderItemId: string,
-  ) {
-    return this.ordersService.deleteItem(userId, orderId, orderItemId);
   }
 }

@@ -6,9 +6,10 @@ import {
 import * as fs from 'fs/promises';
 import { randomUUID } from 'node:crypto';
 import * as path from 'path';
+import { IProducImagesService } from '../interfaces/product-images-service.interface';
 
 @Injectable()
-export class ProducImagesService {
+export class ProducImagesService implements IProducImagesService {
   private readonly uploadDirectory = path.resolve(process.cwd(), 'uploads');
 
   async upload(image: Express.Multer.File) {
@@ -60,14 +61,6 @@ export class ProducImagesService {
   async remove(imagePath: string) {
     const fullImagePath = path.resolve(process.cwd(), imagePath);
 
-    try {
-      // Verificar se o arquivo existe
-      await fs.access(fullImagePath);
-    } catch {
-      throw new NotFoundException('Imagem não encontrada.');
-    }
-
-    // Remover o arquivo
     await fs.unlink(fullImagePath);
 
     return { message: 'Imagem removida com sucesso.' };

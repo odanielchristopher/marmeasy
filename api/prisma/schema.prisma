@@ -17,8 +17,9 @@ model User {
   products          Product[]
   productCategories ProductCategory[]
   ingredients       Ingredient[]
-  Order             Order[]
-  OrderItem         OrderItem[]
+  orders            Order[]
+  orderItems        OrderItem[]
+  payments          Payment[]
 
   @@map("users")
 }
@@ -30,12 +31,14 @@ model Client {
   phone    String?
   address  String?
   type     ClientType
-  document String?    @unique
+  document String?
   balance  Float      @default(0)
+  payments Payment[]
 
-  user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Order Order[]
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
 
+  @@unique([userId, document])
   @@map("clients")
 }
 
@@ -45,18 +48,17 @@ enum ClientType {
 }
 
 model Product {
-  id          String          @id @default(uuid()) @db.Uuid
-  userId      String          @map("user_id") @db.Uuid
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String       @map("user_id") @db.Uuid
   name        String
   description String?
   imagePath   String?
   price       Float
-  category    ProductCategory @relation(fields: [categoryId], references: [id])
-  ingredients Ingredient[]    @relation("product_ingredient")
+  categoryId  String?      @map("product_category_id") @db.Uuid
+  ingredients Ingredient[] @relation("product_ingredient")
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId   String  @map("product_category_id") @db.Uuid
-  ingredientId String? @db.Uuid
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("products")
 }
@@ -121,4 +123,24 @@ model OrderItem {
 enum OrderStatus {
   PENDING
   PAID
+}
+
+model Payment {
+  id       String      @id @default(uuid()) @db.Uuid
+  userId   String      @map("user_id") @db.Uuid
+  clientId String      @map("client_id") @db.Uuid
+  type     PaymentType
+  date     DateTime    @default(now())
+  value    Float
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  DEBIT_CARD
+  CASH
 }
