@@ -29,7 +29,7 @@ export default function useNewProductModal(onSuccess: () => void) {
     onSuccess: (newProduct: Product) => {
       queryClient.setQueryData(
         ['products', 'getAll'],
-        (categories: Product[]) => [...categories, newProduct],
+        (products: Product[]) => [...products, newProduct],
       );
     },
   });

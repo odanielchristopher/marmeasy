@@ -17,7 +17,7 @@ export interface CreateOrderParams {
 }
 
 export async function create(params: CreateOrderParams) {
-  const { data } = await httpClient.post<Order>('/products', params);
+  const { data } = await httpClient.post<Order>('/orders', params);
 
   return data;
 }
