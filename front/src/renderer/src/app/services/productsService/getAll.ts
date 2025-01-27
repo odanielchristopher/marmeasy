@@ -7,12 +7,10 @@ export interface GetAllParams {
   category?: string;
 }
 
-export async function getAll(params?: GetAllParams) {
-  const url = params?.category
-    ? `/products?category=${params.category}`
-    : '/products';
-
-  const { data } = await httpClient.get<GetAllResponse>(url);
+export async function getAll({ category }: GetAllParams = {}) {
+  const { data } = await httpClient.get<GetAllResponse>('/products', {
+    params: { category },
+  });
 
   return data;
 }

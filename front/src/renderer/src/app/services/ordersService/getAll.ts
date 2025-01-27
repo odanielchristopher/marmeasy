@@ -5,7 +5,7 @@ export interface GetAllOrdersParams {
   clientId: string;
 }
 
-export async function getAllByClientId({ clientId }: GetAllOrdersParams) {
+export async function getAll({ clientId }: GetAllOrdersParams) {
   const { data } = await httpClient.get<Order[]>('/orders', {
     params: { clientId },
   });

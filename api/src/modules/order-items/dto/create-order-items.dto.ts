@@ -9,14 +9,6 @@ import {
   IsString,
 } from 'class-validator';
 
-interface ICreateOrderItemInput {
-  name: string;
-  ingredients: string[];
-  unitPrice: number;
-  quantity: number;
-  total: number;
-}
-
 export class CreateOrderItemDto {
   @IsString()
   @IsNotEmpty({ message: 'O nome é obrigatório.' })
@@ -82,18 +74,4 @@ export class CreateOrderItemDto {
     description: 'Quantidade do item no pedido.',
   })
   quantity: number;
-
-  constructor({
-    name,
-    ingredients,
-    quantity,
-    total,
-    unitPrice,
-  }: ICreateOrderItemInput) {
-    this.name = name;
-    this.ingredients = ingredients;
-    this.quantity = quantity;
-    this.total = total;
-    this.unitPrice = unitPrice;
-  }
 }

@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Order } from 'src/modules/orders/entities/order.entity';
 import {
-  CreateOrderDto,
+  CreateOrderParams,
   DeleteOrderItemDto,
   FindFirstOrderByClientIdDto,
   FindManyByClientIdDto,
   FindUniqueOrderByIdDto,
   IOrdersRepository,
-  UpdateOrderDto,
+  UpdateOrderParams,
 } from '../interfaces/orders-repository.interface';
 import { PrismaService } from '../prisma.service';
 
@@ -35,6 +35,7 @@ const prismaResponse = {
 @Injectable()
 export class OrdersRepository implements IOrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
   async findManyByClientId(
     findManyByClientIdDto: FindManyByClientIdDto,
   ): Promise<Order[]> {
@@ -75,17 +76,16 @@ export class OrdersRepository implements IOrdersRepository {
     return Order.parse(findedOrder);
   }
 
-  async create(createDto: CreateOrderDto): Promise<Order> {
+  async create(createDto: CreateOrderParams): Promise<Order> {
     const { data, userId } = createDto;
 
-    const { items, date, discount, status, totalValue, clientId } = data;
+    const { items, date, discount, total, clientId } = data;
 
     const createdOrder = await this.prismaService.order.create({
       data: {
         date,
         discount,
-        status,
-        totalValue,
+        totalValue: total,
         clientId,
         userId,
         items: {
@@ -100,21 +100,21 @@ export class OrdersRepository implements IOrdersRepository {
     return Order.parse(createdOrder);
   }
 
-  async update(updateDto: UpdateOrderDto): Promise<Order> {
-    const { data, userId } = updateDto;
+  async update(updateDto: UpdateOrderParams): Promise<Order> {
+    const { data, userId, id } = updateDto;
 
-    const { items, date, discount, status, totalValue, clientId } = data;
+    const { items, date, discount, total, clientId } = data;
 
     const updatedOrder = await this.prismaService.order.update({
-      where: { userId, id: data.id },
+      where: { userId, id },
       data: {
         date,
         discount,
-        status,
-        totalValue,
+        totalValue: total,
         clientId,
         userId,
         items: {
+          deleteMany: {},
           createMany: {
             data: items.map((item) => ({ ...item, userId })),
           },

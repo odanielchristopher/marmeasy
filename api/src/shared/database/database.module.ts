@@ -8,11 +8,13 @@ import { IProductsRepository } from './interfaces/products-repository.interface'
 import { IUsersRepository } from './interfaces/users-repository.interface';
 
 import { IOrdersRepository } from './interfaces/orders-repository.interface';
+import { IPaymentsRepository } from './interfaces/payments-repository.interface';
 import { PrismaService } from './prisma.service';
 import { ClientsRepository } from './repositories/clients.repository';
 import { IngredientsRepository } from './repositories/ingredients.repository';
 import { OrderItemsRepository } from './repositories/order-items.repository';
 import { OrdersRepository } from './repositories/orders.repository';
+import { PaymentsRepository } from './repositories/payments.repository';
 import { ProductCategoriesRepository } from './repositories/product-categories.repository';
 import { ProductsRepository } from './repositories/products.repository';
 import { UsersRepository } from './repositories/users.repository';
@@ -49,6 +51,10 @@ import { UsersRepository } from './repositories/users.repository';
       provide: IOrdersRepository,
       useClass: OrdersRepository,
     },
+    {
+      provide: IPaymentsRepository,
+      useClass: PaymentsRepository,
+    },
   ],
   exports: [
     {
@@ -78,6 +84,10 @@ import { UsersRepository } from './repositories/users.repository';
     {
       provide: IOrdersRepository,
       useClass: OrdersRepository,
+    },
+    {
+      provide: IPaymentsRepository,
+      useClass: PaymentsRepository,
     },
   ],
 })

@@ -11,6 +11,7 @@ import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
 import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     IngredientsModule,
     OrderItemsModule,
     OrdersModule,
+    PaymentsModule,
   ],
   controllers: [],
   providers: [
