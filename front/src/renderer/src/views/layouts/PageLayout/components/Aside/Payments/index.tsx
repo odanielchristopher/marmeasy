@@ -1,5 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
 import { IoIosAdd } from 'react-icons/io';
+import NewPaymentModal from './modals/NewPaymentModal';
 import PaymentList from './PaymentList';
 import { AddButton, Container, Header } from './styles';
 
@@ -11,7 +12,9 @@ export default function Payments({ client }: PaymentsProps) {
   const payments = client?.payments;
 
   return (
-    <Container>
+    <>
+      <NewPaymentModal />
+      <Container>
       <Header>
         <h3>Histórico de pagamentos</h3>
 
@@ -22,5 +25,6 @@ export default function Payments({ client }: PaymentsProps) {
 
       {payments && <PaymentList payments={payments} />}
     </Container>
+    </>
   );
 }
