@@ -7,7 +7,7 @@ export interface InputProps extends ComponentProps<'input'> {
   name: string;
   isLoading?: boolean;
   $error?: string;
-  onInputChange?(value?: string): void;
+  onInputChange?(value?: number): void;
 }
 
 export const TimesNumericInput = forwardRef<HTMLInputElement, InputProps>(
@@ -28,7 +28,7 @@ export const TimesNumericInput = forwardRef<HTMLInputElement, InputProps>(
           suffix="x"
           $error={$error}
           disabled={isLoading}
-          onValueChange={({ value }) => onInputChange?.(value)}
+          onValueChange={({ value }) => onInputChange?.(Number(value))}
           fixedDecimalScale
           {...props}
         />
