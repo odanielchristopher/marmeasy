@@ -1,4 +1,3 @@
-import { HiOutlinePencilAlt } from 'react-icons/hi';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -17,6 +16,18 @@ export const Header = styled.header`
   }
 `;
 
-export const EditIcon = styled(HiOutlinePencilAlt)`
+export const AddButton = styled.button`
+  align-items: center;
+  background: transparent;
+  border: 2px solid ${({ theme }) => theme.colors.orange.light};
+  border-radius: .6rem;
   color: ${({ theme }) => theme.colors.orange.light};
+  display: flex;
+  justify-content: center;
+  transition: all ease-in 100ms;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.orange.light};
+    color: #FFF;
+  }
 `;

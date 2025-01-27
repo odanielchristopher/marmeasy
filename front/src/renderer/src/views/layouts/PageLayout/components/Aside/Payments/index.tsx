@@ -1,14 +1,13 @@
 import { Client } from '@renderer/app/entities/Client';
+import { IoIosAdd } from 'react-icons/io';
 import PaymentList from './PaymentList';
-import { Container, EditIcon, Header } from './styles';
+import { AddButton, Container, Header } from './styles';
 
 interface PaymentsProps {
   client: Client | null;
 }
 
 export default function Payments({ client }: PaymentsProps) {
-  console.log({ client });
-
   const payments = client?.payments;
 
   return (
@@ -16,7 +15,9 @@ export default function Payments({ client }: PaymentsProps) {
       <Header>
         <h3>Histórico de pagamentos</h3>
 
-        <EditIcon size={28} />
+        <AddButton type="button">
+          <IoIosAdd size={32}/>
+        </AddButton>
       </Header>
 
       {payments && <PaymentList payments={payments} />}

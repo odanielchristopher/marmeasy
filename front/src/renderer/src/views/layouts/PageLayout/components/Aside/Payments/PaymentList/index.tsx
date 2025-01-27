@@ -30,13 +30,13 @@ export default function PaymentList({ payments }: PaymentListProps) {
           <PaymentIcon type={paymentsTypeMapToIcon[payment.type]} />
 
           <PaymentInfosContainer>
-            <div>
+            <div className='left'>
               <strong>{paymentsTypeMapToView[payment.type]}</strong>
 
               <span>{formatDate(new Date(payment.date))}</span>
             </div>
 
-            <strong>R$ {formatCurrency(payment.value)}</strong>
+            <strong className='value'>R$ {formatCurrency(payment.value)}</strong>
           </PaymentInfosContainer>
         </PaymentContainer>
       ))}
