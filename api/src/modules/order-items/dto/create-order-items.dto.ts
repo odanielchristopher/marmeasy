@@ -82,18 +82,4 @@ export class CreateOrderItemDto {
     description: 'Quantidade do item no pedido.',
   })
   quantity: number;
-
-  constructor({
-    name,
-    ingredients,
-    quantity,
-    total,
-    unitPrice,
-  }: ICreateOrderItemInput) {
-    this.name = name;
-    this.ingredients = ingredients;
-    this.quantity = quantity;
-    this.total = total;
-    this.unitPrice = unitPrice;
-  }
 }

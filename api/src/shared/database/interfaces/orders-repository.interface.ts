@@ -1,3 +1,5 @@
+import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
+import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
 import { Order } from 'src/modules/orders/entities/order.entity';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
@@ -13,9 +15,9 @@ export interface IOrdersRepository {
 
   findUniqueByUserId(findUniqueDto: FindUniqueOrderByIdDto): Promise<Order>;
 
-  create(createDto: CreateOrderDto): Promise<Order>;
+  create(createDto: CreateOrderParams): Promise<Order>;
 
-  update(updateDto: UpdateOrderDto): Promise<Order>;
+  update(updateDto: UpdateOrderParams): Promise<Order>;
 
   delete(deleteDto: DeleteOrderItemDto): Promise<Order | void>;
 }
@@ -37,14 +39,15 @@ export type FindFirstOrderByClientIdDto = {
   id: string;
 };
 
-export type CreateOrderDto = {
-  data: Order | Omit<Order, 'id'>;
+export type CreateOrderParams = {
+  data: CreateOrderDto;
   userId: string;
 };
 
-export type UpdateOrderDto = {
+export type UpdateOrderParams = {
   userId: string;
-  data: Order | Omit<Order, 'orderId'>;
+  id: string;
+  data: UpdateOrderDto;
 };
 
 export type DeleteOrderItemDto = {

@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
   IsArray,
-  IsDate,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -10,7 +9,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { OrderItem } from 'src/modules/order-items/entities/order-item.entity';
+import { CreateOrderItemDto } from 'src/modules/order-items/dto/create-order-items.dto';
 
 export class CreateOrderDto {
   @IsNotEmpty({ message: 'O id do cliente é obrigatório.' })
@@ -25,9 +24,9 @@ export class CreateOrderDto {
   @IsNotEmpty({ message: 'Os items não podem ser vazios.' })
   @IsArray({ message: 'Os items devem ser um array.' })
   @ValidateNested({ each: true })
-  @Type(() => OrderItem)
+  @Type(() => CreateOrderItemDto)
   @ApiProperty({
-    type: [OrderItem],
+    type: [CreateOrderItemDto],
     description:
       'Lista de itens do pedido. Cada item inclui detalhes como nome, quantidade e preço.',
     example: [
@@ -42,16 +41,20 @@ export class CreateOrderDto {
       },
     ],
   })
-  items: OrderItem[];
+  items: CreateOrderItemDto[];
 
-  @IsDate({ message: 'Precisa ser no formato válido.' })
+  @IsString()
   @IsOptional()
   @ApiProperty({
     example: '2025-01-26T14:00:00.000Z',
     description:
       'Data do pedido (opcional). Se não informada, a data atual será utilizada.',
   })
-  date?: Date;
+  date?: string;
+
+  @IsNumber({}, { message: 'O valor precisa ser um valor válido.' })
+  @IsOptional()
+  total?: number;
 
   @Transform(({ value }) => Number(value))
   @IsOptional()
