@@ -1,4 +1,5 @@
 import { Client } from '@renderer/app/entities/Client';
+import { PaymentIcon } from '@renderer/assets/Icons/payments/PaymentIcon';
 import { Container, EditIcon, Header, PaymentContainer, PaymentList } from './styles';
 
 interface PaymentsProps {
@@ -18,7 +19,7 @@ export default function Payments({ client }: PaymentsProps) {
 
       <PaymentList>
         <PaymentContainer>
-
+          <PaymentIcon type='cash' />
         </PaymentContainer>
       </PaymentList>
     </Container>
