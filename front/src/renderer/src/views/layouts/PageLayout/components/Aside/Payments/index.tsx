@@ -1,6 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
-import { PaymentIcon } from '@renderer/assets/Icons/payments/PaymentIcon';
-import { Container, EditIcon, Header, PaymentContainer, PaymentList } from './styles';
+import PaymentList from './PaymentList';
+import { Container, EditIcon, Header } from './styles';
 
 interface PaymentsProps {
   client: Client | null;
@@ -8,6 +8,8 @@ interface PaymentsProps {
 
 export default function Payments({ client }: PaymentsProps) {
   console.log({ client });
+
+  const payments = client?.payments;
 
   return (
     <Container>
@@ -17,11 +19,7 @@ export default function Payments({ client }: PaymentsProps) {
         <EditIcon size={28} />
       </Header>
 
-      <PaymentList>
-        <PaymentContainer>
-          <PaymentIcon type='cash' />
-        </PaymentContainer>
-      </PaymentList>
+      {payments && <PaymentList payments={payments} />}
     </Container>
   );
 }

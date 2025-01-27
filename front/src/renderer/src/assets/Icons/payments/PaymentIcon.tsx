@@ -1,10 +1,12 @@
 import { iconsMap } from './iconsMap';
 
-interface CategoryIconProps {
-  type: 'cash' | 'debitCard' | 'creditCard';
+interface PaymentIconProps {
+  type: PaymentIconType;
 }
 
-export function PaymentIcon({ type }: CategoryIconProps) {
+export type PaymentIconType = 'cash' | 'debitCard' | 'creditCard';
+
+export function PaymentIcon({ type }: PaymentIconProps) {
   const Icon = iconsMap[type] ?? iconsMap['cash'];
 
   return <Icon />;

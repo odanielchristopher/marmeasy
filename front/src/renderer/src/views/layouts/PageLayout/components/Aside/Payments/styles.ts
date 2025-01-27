@@ -20,9 +20,3 @@ export const Header = styled.header`
 export const EditIcon = styled(HiOutlinePencilAlt)`
   color: ${({ theme }) => theme.colors.orange.light};
 `;
-
-export const PaymentList = styled.ul``;
-
-export const PaymentContainer = styled.div``;
-
-
