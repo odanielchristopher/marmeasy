@@ -1,4 +1,3 @@
-import { Product, Ingredient } from '@renderer/app/entities/Product';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
@@ -8,74 +7,31 @@ import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 import IngredientModal from '@renderer/views/modals/IngredientsModal';
-import { useEffect, useState } from 'react';
 import { BoxCategories, Container, IconCategory, ProductList, Line, OrderItemsList } from './styles';
 import useOrderModal from './useOrderModal';
-import { useMutation } from '@tanstack/react-query';
 
 interface OrderModalProps {
   isOpen: boolean;
   onClose(): void;
 }
 
-interface OrderDetail {
-  selectedIngredients: Ingredient[];
-  quantity: number;
-  productName: string;
-  productImage: string;
-  productPrice: number;
-  totalPrice: number;
-}
-
 export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
-    selectedCategory,
     products,
-    selectedProduct,
+    isOrderModalOpen,
+    selectedCategory,
     selectedIngredientsIds,
+    orderDetails,
     openModalIngredients,
+    selectedProduct,
     handleCategorySelect,
-    handleOpenModalIngredients,
-    handleCloseModalIngredients,
     handleSelectedIngredients,
-  } = useOrderModal();
-
-  const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
-  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
-
-  useEffect(() => {
-    setIsOrderModalOpen(isOpen);
-  }, [isOpen]);
-
-  const handleOpenIngredientModal = (product: Product) => {
-    handleOpenModalIngredients(product);
-    setIsOrderModalOpen(false);
-  };
-
-  const handleCloseIngredientModal = () => {
-    handleCloseModalIngredients();
-    setIsOrderModalOpen(true);
-  };
-
-  const handleIngredientsSubmit = (data: OrderDetail) => {
-    setOrderDetails((prevOrderDetails) => [...prevOrderDetails, data]);
-    handleCloseIngredientModal();
-  };
-
-  const mutation = useMutation((newOrder) => {
-    // Replace with your API call
-    return fetch('/api/orders', {
-      method: 'POST',
-      body: JSON.stringify(newOrder),
-    });
-  });
-
-  const handleOrderSubmit = () => {
-    if (orderDetails.length > 0) {
-      mutation.mutate(orderDetails);
-    }
-  };
+    handleOpenIngredientModal,
+    handleCloseIngredientModal,
+    handleIngredientsSubmit,
+    handleOrderSubmit,
+  } = useOrderModal(isOpen);
 
   return (
     <>
