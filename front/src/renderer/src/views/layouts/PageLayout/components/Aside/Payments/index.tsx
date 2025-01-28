@@ -3,6 +3,7 @@ import { IoIosAdd } from 'react-icons/io';
 import NewPaymentModal from './modals/NewPaymentModal';
 import PaymentList from './PaymentList';
 import { AddButton, Container, Header } from './styles';
+import usePayments from './usePayments';
 
 interface PaymentsProps {
   client: Client | null;
@@ -10,15 +11,21 @@ interface PaymentsProps {
 
 export default function Payments({ client }: PaymentsProps) {
   const payments = client?.payments;
+  const {
+    isOpenNewPaymentModal,
+    handleOpenNewPaymentModal,
+    handleCloseNewPaymentModal,
+  } = usePayments();
 
   return (
     <>
-      <NewPaymentModal />
+      {isOpenNewPaymentModal && <NewPaymentModal open onClose={handleCloseNewPaymentModal}/>}
+
       <Container>
       <Header>
         <h3>Histórico de pagamentos</h3>
 
-        <AddButton type="button">
+        <AddButton type="button" onClick={handleOpenNewPaymentModal}>
           <IoIosAdd size={32}/>
         </AddButton>
       </Header>
