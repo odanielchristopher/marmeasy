@@ -50,6 +50,25 @@ export class OrdersRepository implements IOrdersRepository {
     return findendOrders.map(Order.parse);
   }
 
+  async findAllByDateRange(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Order[]> {
+    const findedOrders = await this.prismaService.order.findMany({
+      where: {
+        userId,
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      select: prismaResponse,
+    });
+
+    return findedOrders.map(Order.parse);
+  }
+
   async findFirstByClientId(
     findFirstByClientIdDto: FindFirstOrderByClientIdDto,
   ): Promise<Order> {

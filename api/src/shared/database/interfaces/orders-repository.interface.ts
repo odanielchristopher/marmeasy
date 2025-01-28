@@ -9,6 +9,12 @@ export interface IOrdersRepository {
     findManyByClientIdDto: FindManyByClientIdDto,
   ): Promise<Order[]>;
 
+  findAllByDateRange(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+  ): Promise<Order[]>;
+
   findFirstByClientId(
     findFirstByClientIdDto: FindFirstOrderByClientIdDto,
   ): Promise<Order>;
