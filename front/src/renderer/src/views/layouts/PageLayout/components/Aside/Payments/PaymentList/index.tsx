@@ -20,10 +20,7 @@ export default function PaymentList({ payments, onSelect }: PaymentListProps) {
     <>
       <Container>
         {payments.map((payment) => (
-          <PaymentContainer
-            key={payment.id}
-            onClick={() => onSelect(payment)}
-          >
+          <PaymentContainer key={payment.id} onClick={() => onSelect(payment)}>
             <PaymentIcon type={paymentsTypeMapToIcon[payment.type]} />
 
             <PaymentInfosContainer>

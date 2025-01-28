@@ -10,26 +10,24 @@ export const PaymentContainer = styled.button`
   background: transparent;
   display: flex;
   gap: 1.2rem;
-  padding: 1.0rem;
+  padding: 1rem;
   width: 100%;
   transition: scale ease-in 100ms;
 
   & + & {
-    border-top: 1.25px solid #CCC;
+    border-top: 1.25px solid #ccc;
   }
 
   &:focus {
-    border-radius: 1.0rem;
+    border-radius: 1rem;
     border: 1.5px solid ${({ theme }) => theme.colors.orange.light};
   }
 
   &:hover {
     scale: calc(102%);
-    border-radius: 1.0rem;
+    border-radius: 1rem;
     border: 1.5px solid ${({ theme }) => theme.colors.orange.light};
   }
-
-
 `;
 
 export const PaymentInfosContainer = styled.div`
@@ -65,4 +63,3 @@ export const PaymentInfosContainer = styled.div`
     letter-spacing: -0.05rem;
   }
 `;
-

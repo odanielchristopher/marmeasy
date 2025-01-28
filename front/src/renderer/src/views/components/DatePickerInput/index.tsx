@@ -11,7 +11,12 @@ interface DatePickerInputProps {
   onChange(date: Date): void;
 }
 
-export default function DatePickerInput({ $error, placeholder, onChange, value }: DatePickerInputProps) {
+export default function DatePickerInput({
+  $error,
+  placeholder,
+  onChange,
+  value,
+}: DatePickerInputProps) {
   return (
     <Container>
       <Popover.Root>
@@ -24,10 +29,7 @@ export default function DatePickerInput({ $error, placeholder, onChange, value }
         </Popover.Trigger>
 
         <Popover.Content>
-          <DatePicker
-            value={value}
-            onChange={onChange}
-          />
+          <DatePicker value={value} onChange={onChange} />
         </Popover.Content>
       </Popover.Root>
 

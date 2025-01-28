@@ -25,7 +25,9 @@ export default function useDeletePaymentModal({
       queryClient.setQueryData(
         ['payments', 'getAll'],
         (payments: Payment[]) => {
-          return payments.filter((payment) => payment.id !== paymentShouldDeleted?.id);
+          return payments.filter(
+            (payment) => payment.id !== paymentShouldDeleted?.id,
+          );
         },
       );
 

@@ -67,7 +67,9 @@ export default function Payments({ client }: PaymentsProps) {
           </EmptyContainer>
         )}
 
-        {payments && <PaymentList payments={payments} onSelect={handleSelectedPayment}/>}
+        {payments && (
+          <PaymentList payments={payments} onSelect={handleSelectedPayment} />
+        )}
       </Container>
     </>
   );

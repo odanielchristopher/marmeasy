@@ -8,7 +8,9 @@ export interface GetAllPaymentsParams {
 }
 
 export async function getAll({ clientId }: GetAllPaymentsParams) {
-  const { data } = await httpClient.get<GetAllResponse>(`/payments/${clientId}`);
+  const { data } = await httpClient.get<GetAllResponse>(
+    `/payments/${clientId}`,
+  );
 
   return data;
 }

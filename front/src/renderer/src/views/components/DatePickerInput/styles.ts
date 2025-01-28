@@ -35,7 +35,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   color: ${({ theme }) => theme.colors.black.main};
   text-align: left;
   padding-left: 1.2rem;
-  padding-top: 2.0rem;
+  padding-top: 2rem;
   position: relative;
 
   span {

@@ -54,7 +54,7 @@ export const StyledDayPicker = styled(DayPicker)`
 
   .day_today {
     background: ${({ theme }) => theme.colors.gray.lighter} !important;
-    color: ${({ theme }) => theme.colors.black.light};;
+    color: ${({ theme }) => theme.colors.black.light};
     font-weight: 700;
   }
 
@@ -64,4 +64,3 @@ export const StyledDayPicker = styled(DayPicker)`
     font-weight: 600;
   }
 `;
-

@@ -23,21 +23,21 @@ export default function usePaymentFormModal({
   onSuccess,
 }: UsePaymentFormModalProps) {
   const {
-      register,
-      handleSubmit: hookFormHandleSubmit,
-      formState: { errors },
-      control,
-      setFocus,
-      watch,
-      setValue,
-    } = useForm<PaymentFormSchema>({
-      resolver: zodResolver(paymentFormSchema),
-      defaultValues: {
-        type: payment?.type || 'DEBIT_CARD',
-        date: payment?.date ? new Date(payment.date) : new Date(),
-        value: payment?.value || undefined,
-      },
-    });
+    register,
+    handleSubmit: hookFormHandleSubmit,
+    formState: { errors },
+    control,
+    setFocus,
+    watch,
+    setValue,
+  } = useForm<PaymentFormSchema>({
+    resolver: zodResolver(paymentFormSchema),
+    defaultValues: {
+      type: payment?.type || 'DEBIT_CARD',
+      date: payment?.date ? new Date(payment.date) : new Date(),
+      value: payment?.value || undefined,
+    },
+  });
 
   const selectedType = watch('type');
 

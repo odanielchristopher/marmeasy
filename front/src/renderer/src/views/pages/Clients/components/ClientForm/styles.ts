@@ -80,7 +80,7 @@ export const BalanceContainer = styled.div`
       background: ${({ theme }) => theme.colors.orange.light};
       border-radius: 0.8rem;
       border: none;
-      color: #FFF;
+      color: #fff;
       font-size: 1.4rem;
       font-weight: 600;
       display: flex;

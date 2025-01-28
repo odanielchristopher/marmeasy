@@ -2,8 +2,7 @@ import Button from '@renderer/views/components/Button';
 import { ButtonProps } from 'react-day-picker';
 import styled from 'styled-components';
 
-export const Form = styled.form`
-`;
+export const Form = styled.form``;
 
 export const ValueContainer = styled.div`
   margin-bottom: 1.2rem;
@@ -67,7 +66,7 @@ export const ValueContainer = styled.div`
 export const SelectContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: .4rem;
+  gap: 0.4rem;
 
   .label {
     color: ${({ theme }) => theme.colors.gray.main};

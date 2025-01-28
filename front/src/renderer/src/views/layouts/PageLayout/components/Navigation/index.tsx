@@ -35,7 +35,11 @@ export default function Navigation({ $area }: NavigationProps) {
           <span>Clientes</span>
         </StyledLink>
 
-        <StyledLink type="button" to={'/orders'} $active={pathname == '/orders'}>
+        <StyledLink
+          type="button"
+          to={'/orders'}
+          $active={pathname == '/orders'}
+        >
           <OrdersIcon />
           <span>Pedidos</span>
         </StyledLink>

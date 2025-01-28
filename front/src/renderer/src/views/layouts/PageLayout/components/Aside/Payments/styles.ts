@@ -4,7 +4,7 @@ export const Container = styled.div`
   margin-top: 1.6rem;
 
   .payments-loader {
-    margin-top: 2.0rem;
+    margin-top: 2rem;
     height: 70vh;
     width: 100%;
   }
@@ -43,7 +43,7 @@ export const AddButton = styled.button`
   align-items: center;
   background: transparent;
   border: 2px solid ${({ theme }) => theme.colors.orange.light};
-  border-radius: .6rem;
+  border-radius: 0.6rem;
   color: ${({ theme }) => theme.colors.orange.light};
   display: flex;
   justify-content: center;
@@ -51,6 +51,6 @@ export const AddButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.orange.light};
-    color: #FFF;
+    color: #fff;
   }
 `;

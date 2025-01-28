@@ -3,16 +3,16 @@ import styled, { css } from 'styled-components';
 
 export const TriggerButton = styled.button`
   align-items: center;
-  background: #FFF;
-  border: .1rem solid #CCC;
+  background: #fff;
+  border: 0.1rem solid #ccc;
   border-radius: 10px;
   display: flex;
   width: 100%;
-  gap: .8rem;
-  padding: .4rem 1.2rem;
+  gap: 0.8rem;
+  padding: 0.4rem 1.2rem;
   position: relative;
 
-  &[data-state="open"] {
+  &[data-state='open'] {
     border-color: ${({ theme }) => theme.colors.orange.light};
   }
 
@@ -49,7 +49,9 @@ export const StyledItem = styled.button<StyledItemProps>`
     transition: background 0.3s;
   }
 
-  ${({ $selected }) => $selected && css`
-    font-weight: 600;
-  `}
+  ${({ $selected }) =>
+    $selected &&
+    css`
+      font-weight: 600;
+    `}
 `;

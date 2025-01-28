@@ -27,7 +27,7 @@ export const Header = styled.header`
 `;
 
 export const Actions = styled.div`
-  margin-top: .4rem;
+  margin-top: 0.4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;

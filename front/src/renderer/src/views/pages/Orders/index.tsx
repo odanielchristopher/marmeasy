@@ -3,7 +3,6 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import Select from '@renderer/views/components/Select';
 
-
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
 import ClientList from './components/OrdersList';

@@ -90,7 +90,9 @@ export default function PaymentForm({
         )}
       />
 
-      <SubmitButton type="submit" isLoading={isLoading}>{buttonLabel}</SubmitButton>
+      <SubmitButton type="submit" isLoading={isLoading}>
+        {buttonLabel}
+      </SubmitButton>
     </Form>
   );
 }
