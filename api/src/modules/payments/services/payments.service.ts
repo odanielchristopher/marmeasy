@@ -127,8 +127,6 @@ export class PaymentsService implements IPaymentsService {
   }): Promise<Client> {
     const newBalance = client.balance - (previousValue || 0) + newValue;
 
-    console.log({ newBalance });
-
     return this.updateClientBalanceService.update({
       userId,
       clientId: client.id,

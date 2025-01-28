@@ -30,13 +30,14 @@ export default function EditPaymentModal({
   } = useEditPaymentModal({
     onSuccess: onClose,
     client,
-    paymentId: payment!.id,
+    payment: payment,
   });
 
   if (isOpenDeletePaymentModal) {
     return (
       <DeletePaymentModal
-        paymentId={payment!.id}
+        payment={payment}
+        client={client}
         onClose={handleCloseDeletePaymentModal}
         onConfirm={onClose}
       />

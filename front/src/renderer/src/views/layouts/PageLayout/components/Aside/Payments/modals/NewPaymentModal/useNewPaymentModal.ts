@@ -3,6 +3,7 @@ import { Client } from '@renderer/app/entities/Client';
 import { Payment } from '@renderer/app/entities/Payment';
 import { paymentsService } from '@renderer/app/services/paymentsService';
 import { CreatePaymentParams } from '@renderer/app/services/paymentsService/create';
+import { calculateNewBalance } from '@renderer/app/utils/calculateNewBalance';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 import { PaymentFormSchema } from '../../PaymentForm/usePaymentFormModal';
@@ -24,6 +25,24 @@ export default function useNewPaymentModal({
         ['payments', 'getAll'],
         (payments: Payment[]) => [...payments, newPayment],
       );
+
+      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => {
+        const updatedClients = clients.map((oldClient) => {
+          if (oldClient.id === client?.id) {
+            return {
+              ...oldClient,
+              balance: calculateNewBalance({
+                currentBalance: Number(oldClient.balance),
+                newValue: newPayment.value,
+              }),
+            };
+          }
+
+          return oldClient;
+        });
+
+        return updatedClients;
+      });
     },
   });
 
