@@ -1,6 +1,5 @@
 import Modal from '@renderer/views/components/Modal';
 import PaymentForm from '../../PaymentForm';
-import { Container } from './styles';
 
 import { Client } from '@renderer/app/entities/Client';
 import useNewPaymentModal from './useNewPaymentModal';
@@ -23,13 +22,13 @@ export default function NewPaymentModal({
 
   return (
     <Modal open={open} onClose={onClose} title="Novo pagamento">
-      <Container>
+      <div>
         <PaymentForm
           buttonLabel="Criar pagamento"
           onSubmit={handleSubmit}
           isLoading={isLoading}
         />
-      </Container>
+      </div>
     </Modal>
   );
 }

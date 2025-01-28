@@ -7,6 +7,7 @@ import { AddButton, Container, EmptyContainer, Header } from './styles';
 import usePayments from './usePayments';
 
 import addNotes from '@renderer/assets/Images/add-notes.svg';
+import EditPaymentModal from './modals/EditPaymentModal';
 
 interface PaymentsProps {
   client: Client | null;
@@ -17,15 +18,31 @@ export default function Payments({ client }: PaymentsProps) {
     payments,
     hasPayments,
     isLoading,
+    selectedPayment,
+    handleSelectedPayment,
     isOpenNewPaymentModal,
+    isOpenEditPaymentModal,
     handleOpenNewPaymentModal,
     handleCloseNewPaymentModal,
+    handleCloseEditPaymentModal,
   } = usePayments(client);
 
   return (
     <>
       {isOpenNewPaymentModal && (
-        <NewPaymentModal open onClose={handleCloseNewPaymentModal} client={client} />
+        <NewPaymentModal
+          open={isOpenNewPaymentModal}
+          onClose={handleCloseNewPaymentModal}
+          client={client}
+        />
+      )}
+      {isOpenEditPaymentModal && (
+        <EditPaymentModal
+          open={isOpenEditPaymentModal}
+          onClose={handleCloseEditPaymentModal}
+          payment={selectedPayment}
+          client={client}
+        />
       )}
 
       <Container>
@@ -50,7 +67,7 @@ export default function Payments({ client }: PaymentsProps) {
           </EmptyContainer>
         )}
 
-        {payments && <PaymentList payments={payments} />}
+        {payments && <PaymentList payments={payments} onSelect={handleSelectedPayment}/>}
       </Container>
     </>
   );
