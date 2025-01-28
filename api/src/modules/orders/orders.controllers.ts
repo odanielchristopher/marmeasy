@@ -14,6 +14,7 @@ import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { IOrdersService } from './interfaces/orders-service.interface';
+import { DateRangeDto } from './dto/date-range-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -29,16 +30,13 @@ export class OrdersController {
     return this.ordersService.findAllByClientId(userId, clientId);
   }
 
-  @Get(':clientId/date')
+  @Get('/date')
   findAllByDate(
     @ActiveUserId() userId: string,
-    @Param('clientId', ParseUUIDPipe) clientId: string,
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
+    @Query() dateRangeDto: DateRangeDto,
   ) {
     return this.ordersService.findAllByDateRange(
       userId,
-      clientId,
       new Date(startDate),
       new Date(endDate),
     );
