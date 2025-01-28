@@ -64,10 +64,7 @@ export default function Clients() {
           ]}
         />
         <div className="date-container">
-          <p>Escolha um período</p>
-        </div>
-        <div>
-          <DatePickerInput />
+          <DatePickerInput placeholder='Escolha um período'/>
         </div>
       </div>
 

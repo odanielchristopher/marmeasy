@@ -1,49 +1,42 @@
-import { CrossCircledIcon } from '@radix-ui/react-icons';
+import { formatDate } from '@renderer/app/utils/formatDate';
 import { useState } from 'react';
-import { formatDate } from '../../../app/utils/formatDate';
-import { StyledDatePicker } from '../DatePicker';
+import { CgCloseO } from 'react-icons/cg';
+import DatePicker from '../DatePicker';
 import { Popover } from '../Popover';
-import { Button, Container, ErrorContainer, ErrorMessage } from './styles';
+import { Container, StyledButton, StyledDate } from './styles';
 
 interface DatePickerInputProps {
-  error?: string;
-  className?: string;
-  value?: Date;
-  onChange?(date: Date): void;
+  $error?: string;
+  placeholder?: string;
 }
 
-export default function DatePickerInput({
-  className,
-  value,
-  onChange,
-  error,
-}: DatePickerInputProps) {
-  const [selectedDate, setSelectedDate] = useState(value ?? new Date());
-
-  function handleChangeDate(date: Date) {
-    setSelectedDate(date);
-    onChange?.(date);
-  }
+export default function DatePickerInput({ $error, placeholder }: DatePickerInputProps) {
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   return (
     <Container>
       <Popover.Root>
-        <Popover.Trigger>
-          <Button type="button" $error={!!error} className={className}>
-            <span>{formatDate(selectedDate)}</span>
-          </Button>
+        <Popover.Trigger asChild>
+          <StyledButton type="button" $error={$error}>
+            <span>{placeholder ?? 'Data'}</span>
+
+            <StyledDate>{formatDate(selectedDate)}</StyledDate>
+          </StyledButton>
         </Popover.Trigger>
 
         <Popover.Content>
-          <StyledDatePicker value={selectedDate} onChange={handleChangeDate} />
+          <DatePicker
+            value={selectedDate}
+            onChange={(date) => setSelectedDate(date)}
+          />
         </Popover.Content>
       </Popover.Root>
 
-      {error && (
-        <ErrorContainer>
-          <CrossCircledIcon />
-          <ErrorMessage>{error}</ErrorMessage>
-        </ErrorContainer>
+      {$error && (
+        <div className="error">
+          <CgCloseO color="#F63131" />
+          <span>{$error}</span>
+        </div>
       )}
     </Container>
   );

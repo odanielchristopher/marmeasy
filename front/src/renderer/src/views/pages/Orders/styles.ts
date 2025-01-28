@@ -18,6 +18,7 @@ export const Container = styled.div`
   .date-container {
     display: flex;
     align-items: center;
+    width: 30.0rem;
     gap: 0.8rem; /* Espaço entre o texto e o botão */
   }
 
