@@ -12,6 +12,10 @@ export const TriggerButton = styled.button`
   padding: .4rem 1.2rem;
   position: relative;
 
+  &[data-state="open"] {
+    border-color: ${({ theme }) => theme.colors.orange.light};
+  }
+
   span {
     font-size: 1.6rem;
     font-weight: 500;

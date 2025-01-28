@@ -7,7 +7,7 @@ export interface StyledButtonProps extends ComponentProps<'button'> {
 
 export const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background: ${({ theme }) => theme.colors.orange.main};
+  background: ${({ theme }) => theme.colors.orange.light};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0rem 0.4rem 1rem 0rem #0000000a;
@@ -21,7 +21,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
   transition: background 0.2s ease-in;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.orange.light};
+    background: ${({ theme }) => theme.colors.orange.main};
   }
 
   &:focus {

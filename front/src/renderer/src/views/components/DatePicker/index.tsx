@@ -8,6 +8,7 @@ interface DatePickerProps {
 }
 
 export function StyledDatePicker({ value, onChange }: DatePickerProps) {
+
   return (
     <StyledDayPickerWrapper>
       <DayPicker

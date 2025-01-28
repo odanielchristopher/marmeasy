@@ -1,8 +1,11 @@
+import Button from '@renderer/views/components/Button';
+import { ButtonProps } from 'react-day-picker';
 import styled from 'styled-components';
 
 export const Container = styled.div``;
 
-export const Form = styled.form``;
+export const Form = styled.form`
+`;
 
 export const ValueContainer = styled.div`
   margin-bottom: 1.2rem;
@@ -71,4 +74,10 @@ export const SelectContainer = styled.div`
   .label {
     color: ${({ theme }) => theme.colors.gray.main};
   }
+`;
+
+export const SubmitButton = styled(Button)<ButtonProps>`
+  height: 4.8rem;
+  margin-top: 2.4rem;
+  width: 100%;
 `;

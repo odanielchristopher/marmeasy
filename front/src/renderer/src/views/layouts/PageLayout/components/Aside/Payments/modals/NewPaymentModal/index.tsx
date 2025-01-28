@@ -2,17 +2,25 @@ import { CurrencyInput } from '@renderer/views/components/CurrencyInput';
 import Modal from '@renderer/views/components/Modal';
 import { Controller } from 'react-hook-form';
 import { LuPencil } from 'react-icons/lu';
+import DatePickerInput from '../../DatePickerInput';
 import PaymentTypeDropdown from '../../PaymentTypeDropdown';
-import { Container, Form, SelectContainer, ValueContainer } from './styles';
+import { Container, Form, SelectContainer, SubmitButton, ValueContainer } from './styles';
 import useNewPaymentModal from './useNewPaymentModal';
 
 export default function NewPaymentModal() {
-  const { errors, control, setFocus, selectedType, handleSelectedType } = useNewPaymentModal();
+  const {
+    errors,
+    control,
+    setFocus,
+    selectedType,
+    handleSelectedType,
+    handleSubmit,
+  } = useNewPaymentModal();
 
   return (
     <Modal open={true} title="Novo pagamento">
       <Container>
-        <Form>
+        <Form noValidate>
           <ValueContainer>
             <span className="label">Valor*</span>
 
@@ -52,10 +60,11 @@ export default function NewPaymentModal() {
             />
           </SelectContainer>
 
-          <SelectContainer>
+          <DatePickerInput
+            $error={errors.date?.message}
+          />
 
-          </SelectContainer>
-
+          <SubmitButton type="submit" onClick={handleSubmit}>Criar pagamento</SubmitButton>
         </Form>
       </Container>
     </Modal>
