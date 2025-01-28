@@ -25,10 +25,17 @@ export class UpdateClientBalance implements IUpdateClientBalanceService {
       clientId,
     );
 
+    const { id, name, type, address, document, phone } = findedClient;
+
     return this.clientsRepository.update({
       userId,
       data: {
-        ...findedClient,
+        id,
+        name,
+        type,
+        address,
+        document,
+        phone,
         balance: newBalance,
       },
     });
