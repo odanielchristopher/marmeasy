@@ -35,6 +35,8 @@ export class OrdersController {
     @ActiveUserId() userId: string,
     @Query() dateRangeDto: DateRangeDto,
   ) {
+    const { startDate, endDate } = dateRangeDto;
+
     return this.ordersService.findAllByDateRange(
       userId,
       new Date(startDate),
