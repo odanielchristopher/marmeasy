@@ -19,7 +19,7 @@ export class ClientsRepository implements IClientsRepository {
     const { userId, order } = findManyDto;
 
     const clients = await this.prismaService.client.findMany({
-      where: { userId },
+      where: { userId, active: true },
       orderBy: { name: order },
     });
 
@@ -68,7 +68,10 @@ export class ClientsRepository implements IClientsRepository {
 
     const updatedClient = await this.prismaService.client.update({
       where: { id: data.id, userId },
-      data,
+      data: {
+        ...data,
+        active: true,
+      },
     });
 
     return Client.parse(updatedClient);
@@ -77,8 +80,11 @@ export class ClientsRepository implements IClientsRepository {
   async delete(deleteDto: DeleteClientDto): Promise<void> {
     const { userId, id } = deleteDto;
 
-    await this.prismaService.client.delete({
-      where: { id, userId },
+    await this.prismaService.client.update({
+      where: { userId, id },
+      data: {
+        active: false,
+      },
     });
   }
 }

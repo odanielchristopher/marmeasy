@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IClientsRepository } from 'src/shared/database/interfaces/clients-repository.interface';
 import { CreateClientDto } from '../dto/create-client.dto';
@@ -41,14 +46,29 @@ export class ClientsService implements IClientsService {
       createClientDto;
 
     if (document) {
-      const documentAlreadyExists =
+      const clientAlreadyExists =
         await this.clientsRepository.findFirstByDocument({ userId, document });
 
       const errorMessage =
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
-      if (documentAlreadyExists) {
+      if (clientAlreadyExists && clientAlreadyExists.active) {
         throw new BadRequestException(errorMessage);
+      }
+
+      if (clientAlreadyExists && !clientAlreadyExists.active) {
+        return this.clientsRepository.update({
+          userId,
+          data: {
+            id: clientAlreadyExists.id,
+            name,
+            phone,
+            address,
+            document,
+            type,
+            balance: initialBalance,
+          },
+        });
       }
     }
 
@@ -84,7 +104,7 @@ export class ClientsService implements IClientsService {
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
       if (client && client.id !== clientId) {
-        throw new BadRequestException(errorMessage);
+        throw new ConflictException(errorMessage);
       }
     }
 

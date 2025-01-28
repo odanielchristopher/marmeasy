@@ -57,6 +57,8 @@ export class Client {
   @IsNotEmpty({ message: 'O saldo inicial é obrigatório.' })
   balance: number;
 
+  active?: boolean;
+
   static parse(persistenteEntity: PrismaClient | null): Client {
     if (!persistenteEntity) {
       return null;
