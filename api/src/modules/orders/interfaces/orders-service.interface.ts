@@ -1,4 +1,5 @@
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { DateRangeDto } from '../dto/date-range-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { Order } from '../entities/order.entity';
 
@@ -6,6 +7,11 @@ export const IOrdersService = Symbol('IOrdersService');
 
 export interface IOrdersService {
   findAllByClientId(userId: string, clientId: string): Promise<Order[]>;
+
+  findAllByDateRange(
+    userId: string,
+    dateRangeDto: DateRangeDto,
+  ): Promise<Order[]>;
 
   create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
 
