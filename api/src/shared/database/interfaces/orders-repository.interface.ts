@@ -39,6 +39,12 @@ export type FindUniqueOrderByIdDto = {
   id: string;
 };
 
+export type findAllByDateRangeDto = {
+  userId: string;
+  startDate: Date;
+  endDate: Date;
+};
+
 export type FindFirstOrderByClientIdDto = {
   userId: string;
   clientId: string;
