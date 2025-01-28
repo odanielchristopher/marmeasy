@@ -6,7 +6,7 @@ import { z } from 'zod';
 export const paymentFormSchema = z.object({
   type: z.enum(['CREDIT_CARD', 'DEBIT_CARD', 'CASH']),
   date: z.date(),
-  value: z.number(),
+  value: z.number({ required_error: 'O valor é obrigatório.' }),
 });
 
 export type PaymentFormSchema = z.infer<typeof paymentFormSchema>;
@@ -24,6 +24,7 @@ export default function useNewPaymentModal() {
       resolver: zodResolver(paymentFormSchema),
       defaultValues: {
         type: 'DEBIT_CARD',
+        date: new Date(),
       },
     });
 

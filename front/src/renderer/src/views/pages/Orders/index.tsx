@@ -3,7 +3,6 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import Select from '@renderer/views/components/Select';
 
-import DatePickerInput from '@renderer/views/components/DatePickerInput';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
@@ -64,7 +63,7 @@ export default function Clients() {
           ]}
         />
         <div className="date-container">
-          <DatePickerInput placeholder='Escolha um período'/>
+          {/* <DatePickerInput placeholder='Escolha um período'/> */}
         </div>
       </div>
 
