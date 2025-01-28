@@ -5,5 +5,5 @@ export const IValidateClientOwnershipService = Symbol(
 );
 
 export interface IValidateClientOwnershipService {
-  validate(userId: string, clientId: string): Promise<Client | void>;
+  validate(userId: string, clientId: string): Promise<Client>;
 }
