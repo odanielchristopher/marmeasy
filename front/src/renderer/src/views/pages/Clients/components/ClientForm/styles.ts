@@ -77,9 +77,10 @@ export const BalanceContainer = styled.div`
 
     .label-btn {
       align-items: center;
+      background: ${({ theme }) => theme.colors.orange.light};
       border-radius: 0.8rem;
       border: none;
-      color: #f2f2f2;
+      color: #FFF;
       font-size: 1.4rem;
       font-weight: 600;
       display: flex;
@@ -88,6 +89,15 @@ export const BalanceContainer = styled.div`
       padding: 0.6rem 1.2rem;
       width: fit-content;
       margin: 0;
+      transition: all ease-in 100ms;
+
+      &:hover {
+        background: ${({ theme }) => theme.colors.orange.lighter};
+      }
+
+      &:active {
+        background: ${({ theme }) => theme.colors.orange.main};
+      }
     }
   }
 `;

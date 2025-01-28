@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { PaymentType } from '@renderer/app/entities/Payment';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -16,9 +17,21 @@ export default function useNewPaymentModal() {
       handleSubmit: hookFormHandleSubmit,
       formState: { errors },
       control,
+      setFocus,
+      watch,
+      setValue,
     } = useForm<PaymentFormSchema>({
       resolver: zodResolver(paymentFormSchema),
+      defaultValues: {
+        type: 'DEBIT_CARD',
+      },
     });
+
+  const selectedType = watch('type');
+
+  function handleSelectedType(type: PaymentType) {
+    setValue('type', type, { shouldValidate: true });
+  }
 
   const handleSubmit = hookFormHandleSubmit((data) => {
     console.log({ data });
@@ -27,7 +40,10 @@ export default function useNewPaymentModal() {
   return {
     errors,
     control,
+    selectedType,
     register,
+    setFocus,
+    handleSelectedType,
     handleSubmit,
   };
 }
