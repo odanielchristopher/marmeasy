@@ -6,6 +6,7 @@ import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { IOrdersService } from '../interfaces/orders-service.interface';
 import { IValidateOrderOwnershipService } from '../interfaces/validate-order-ownership-service.interface';
+import { DateRangeDto } from '../dto/date-range-order.dto';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -26,6 +27,17 @@ export class OrdersService implements IOrdersService {
       userId,
       order: 'desc',
     });
+  }
+
+  async findAllByDateRange(userId: string, dateRangeDto: DateRangeDto) {
+    await this.validateUserOwnershipService.validate(userId);
+
+    const { startDate, endDate } = dateRangeDto;
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return this.ordersRepository.findAllByDateRange(userId, start, end);
   }
 
   async create(userId: string, createOrderDto: CreateOrderDto) {
