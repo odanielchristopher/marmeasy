@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Actions, Container, Header } from './styles';
+import { Actions, Container, Empty, Header, Main } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
 
-import { clients } from '@renderer/app/mocks/client';
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
 import Payments from './Payments';
+
+import clipboard from '@renderer/assets/Images/Clipboard.svg';
 
 interface AsideProps {
   area: string;
@@ -47,7 +48,7 @@ export default function Aside({ area }: AsideProps) {
 
       <Actions></Actions>
 
-      {/* {!showClientData && (
+      {!showClientData && (
         <Main>
           <Empty>
             <img src={clipboard} alt="Empty" />
@@ -58,11 +59,11 @@ export default function Aside({ area }: AsideProps) {
             </p>
           </Empty>
         </Main>
-      )} */}
+      )}
 
       {showClientData && showOrders && <DetailsOrder client={seletedClient} />}
 
-      {showPayments && <Payments client={clients[0]} />}
+      {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
   );
 }
