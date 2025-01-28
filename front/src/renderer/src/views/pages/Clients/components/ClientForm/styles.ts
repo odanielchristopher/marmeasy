@@ -67,7 +67,7 @@ export const BalanceContainer = styled.div`
       display: flex;
       align-items: center;
       gap: 1.2rem;
-      max-width: 15rem;
+      max-width: 60%;
 
       span {
         color: ${({ theme }) => theme.colors.gray.main};

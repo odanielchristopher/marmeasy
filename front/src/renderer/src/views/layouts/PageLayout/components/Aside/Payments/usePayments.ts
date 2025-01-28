@@ -33,8 +33,10 @@ export default function usePayments(client: Client | null) {
 
   const hasPayments = payments.length > 0;
 
+  const sortedPayments = payments.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return {
-    payments,
+    payments: sortedPayments,
     isLoading,
     hasPayments,
     selectedPayment,
