@@ -3,13 +3,15 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import { Container, Content, NotFoundContainer } from './styles';
+import { Container, Content, NotFoundContainer, StyledDateRangePickerInput } from './styles';
 
 import ClientList from './components/ClientList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
 import { SectionHeader } from '@renderer/views/components/SectionHeader';
+import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import useClients from './useClients';
 
 export default function Clients() {
@@ -21,6 +23,8 @@ export default function Clients() {
     searchTerm,
     filteredClients,
   } = useClients();
+
+  const [selectedDate, setSelectedDate] = useState<DateRange>({ from: new Date() });
 
   return (
     <Container>
@@ -34,11 +38,15 @@ export default function Clients() {
         <p>Gerencie os clientes do seu estabelecimento</p>
       </SectionHeader>
 
-      <SearchInput
-        placeholder="Pesquisa por nome..."
-        value={searchTerm}
-        onValueChange={handleChangeSearchTerm}
-      />
+      <div className="filtros">
+        <SearchInput
+          placeholder="Pesquisa por nome..."
+          value={searchTerm}
+          onValueChange={handleChangeSearchTerm}
+        />
+
+        <StyledDateRangePickerInput value={selectedDate} onChange={(date) => setSelectedDate(date)}/>
+      </div>
 
       {isLoading && <Loader $isLoading size={50} />}
 

@@ -6,46 +6,29 @@ interface StyledButtonProps {
 
 export const Container = styled.div`
   position: relative;
-  width: 100%;
+  width: 27.2rem;
 
   & + & {
     margin-top: 1.2rem;
   }
-
-  .error {
-    align-items: center;
-    color: ${({ theme }) => theme.colors.red.dark};
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.2rem;
-
-    span {
-      font-size: 1.2rem;
-    }
-  }
 `;
 
 export const StyledButton = styled.button<StyledButtonProps>`
-  margin-top: 1.2rem;
   background: #fff;
   width: 100%;
   border-radius: 1rem;
-  border: 1px solid #ccc;
-  height: 5.2rem;
   color: ${({ theme }) => theme.colors.black.main};
   text-align: left;
+  height: 5.2rem;
   padding-left: 1.2rem;
-  padding-top: 2rem;
-  position: relative;
+  border: 0.2rem solid transparent;
+  font-size: 1.6rem;
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.08);
 
-  span {
-    font-size: 1.2rem;
-    color: ${({ theme }) => theme.colors.gray.light};
-    left: 1.3rem;
-    position: absolute;
-    pointer-events: none;
-    top: 0.4rem;
-  }
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  padding: 1.2rem;
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.orange.light};

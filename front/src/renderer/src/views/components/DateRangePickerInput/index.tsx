@@ -1,6 +1,6 @@
 import { formatDateRange } from '@renderer/app/utils/formatDateRange';
 import { DateRange } from 'react-day-picker';
-import { CgCloseO } from 'react-icons/cg';
+import { LuCalendar } from 'react-icons/lu';
 import DateRangePicker from '../DateRangePicker';
 import { Popover } from '../Popover';
 import { Container, StyledButton, StyledDate } from './styles';
@@ -15,7 +15,6 @@ export interface DateRangePickerInputProps {
 export default function DateRangePickerInput({
   value,
   $error,
-  placeholder,
   onChange,
 }: DateRangePickerInputProps) {
   return (
@@ -23,7 +22,7 @@ export default function DateRangePickerInput({
       <Popover.Root>
         <Popover.Trigger asChild>
           <StyledButton type="button" $error={$error}>
-            <span>{placeholder || 'Datas'}</span>
+          <LuCalendar size={20}/>
 
             <StyledDate>
               {formatDateRange({
@@ -41,13 +40,6 @@ export default function DateRangePickerInput({
           />
         </Popover.Content>
       </Popover.Root>
-
-      {$error && (
-        <div className="error">
-          <CgCloseO color="#F63131" />
-          <span>{$error}</span>
-        </div>
-      )}
     </Container>
   );
 }
