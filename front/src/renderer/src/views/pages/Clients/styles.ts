@@ -1,4 +1,3 @@
-import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
 import styled from 'styled-components';
 
 export const Container = styled.div`
@@ -10,12 +9,7 @@ export const Container = styled.div`
   .filtros {
     display: flex;
     align-items: center;
-
   }
-`;
-
-export const StyledDateRangePickerInput = styled(DateRangePickerInput)`
-  width: 200px !important;
 `;
 
 export const Content = styled.div`

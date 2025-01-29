@@ -1,6 +1,12 @@
-export function formatDateRange(date: { from: Date; to: Date }) {
-  const dateFrom = new Date(date.from);
-  const dateTo = new Date(date.to);
+import { DateRange } from 'react-day-picker';
+
+export function formatDateRange(date: DateRange) {
+  if (!date.from && !date.to) {
+    return '';
+  }
+
+  const dateFrom = date.from && new Date(date.from);
+  const dateTo = date.to && new Date(date.to);
 
   const formatter = new Intl.DateTimeFormat('en-US', {
     month: 'short',
@@ -11,7 +17,7 @@ export function formatDateRange(date: { from: Date; to: Date }) {
   const formattedDateFrom = formatter.format(dateFrom);
   const formattedDateTo = formatter.format(dateTo);
 
-  if (formattedDateFrom === formattedDateTo) {
+  if (formattedDateTo === formattedDateFrom || !date.to) {
     return formattedDateFrom;
   }
 

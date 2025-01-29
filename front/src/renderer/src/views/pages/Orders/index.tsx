@@ -1,48 +1,32 @@
 import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
-import Select from '@renderer/views/components/Select';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
 import ClientList from './components/OrdersList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
+import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
 import Loader from '@renderer/views/components/Loader';
-import DeleteModal from '@renderer/views/modals/DeleteModal';
+import SearchInput from '@renderer/views/components/SearchInput';
 import useClients from './useClients';
 
 export default function Clients() {
   const {
-    handleOnConfirmDeleteClient,
-    handleCloseDeleteClientModal,
     handleDeleteClient,
     hasClient,
-    isDeleteClientModalVisible,
-    clientBeingDeleted,
+    selectedDateRange,
+    handleSelectedDateRange,
     isLoading,
     isSearchEmpty,
     filteredClients,
+    handleChangeSearchTerm,
+    searchTerm,
   } = useClients();
 
   return (
     <Container>
-      <DeleteModal
-        onConfirm={handleOnConfirmDeleteClient}
-        open={isDeleteClientModalVisible}
-        onClose={handleCloseDeleteClientModal}
-        answer={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Tem certeza que deseja excluir esse cliente?'
-            : 'Tem certeza que deseja excluir essa empresa?'
-        }
-        description={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Todos os dados relacionados a esse cliente serão apagados e não poderão ser recuperados.'
-            : 'Todos os dados relacionados a essa empresa serão apagados e não poderão ser recuperados.'
-        }
-      />
-
       <Fab />
 
       <Header>
@@ -53,17 +37,17 @@ export default function Clients() {
         <p>Gerencie os pedidos feitos pelos seus clientes</p>
       </Header>
 
-      <div className="align-container">
-        <Select
-          placeholder="Escolha o cliente"
-          options={[
-            { value: 'FISICO', label: 'Cliente' },
-            { value: 'JURIDICO', label: 'Empresa' },
-          ]}
+      <div className="filters">
+        <SearchInput
+          placeholder="Pesquisa por nome..."
+          value={searchTerm}
+          onValueChange={handleChangeSearchTerm}
         />
-        <div className="date-container">
-          {/* <DatePickerInput placeholder='Escolha um período'/> */}
-        </div>
+
+        <DateRangePickerInput
+          value={selectedDateRange}
+          onChange={handleSelectedDateRange}
+        />
       </div>
 
       {isLoading && <Loader $isLoading size={50} />}

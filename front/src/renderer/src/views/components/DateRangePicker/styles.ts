@@ -47,25 +47,27 @@ export const StyledDayPicker = styled(DayPicker)`
     border-radius: 50%;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.orange.lighter};
+      background-color: ${({ theme }) => theme.colors.green.main};
       color: #fff;
     }
   }
 
   .day_today {
-    background: ${({ theme }) => theme.colors.gray.lighter} !important;
-    color: ${({ theme }) => theme.colors.black.light};
-    font-weight: 600;
-  }
-
-  .day_selected {
     background: ${({ theme }) => theme.colors.orange.light} !important;
     color: #fff !important;
     font-weight: 600;
   }
 
+  .day_selected {
+    background: ${({ theme }) => theme.colors.green.main} !important;
+    color: #FFF;
+    font-weight: 600;
+  }
+
   .day_range_middle {
-    background: ${({ theme }) => theme.colors.orange.lighter} !important;
+    /* background:#f7ae27 !important; */
+
+    background-color:rgba(8, 159, 104, 0.56);
     color: #FFF;
   }
 `;

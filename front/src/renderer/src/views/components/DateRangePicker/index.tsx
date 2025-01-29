@@ -15,7 +15,7 @@ export default function DateRangePicker({ value, onChange }: DateRangePickerProp
       locale={ptBR}
       selected={value}
       mode="range"
-      onSelect={(date) => onChange?.(date || { from: new Date() })}
+      onSelect={(date) => onChange?.(date || { from: undefined })}
       classNames={{
         caption: 'caption',
         nav: 'nav',

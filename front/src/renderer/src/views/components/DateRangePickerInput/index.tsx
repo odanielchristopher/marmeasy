@@ -26,9 +26,9 @@ export default function DateRangePickerInput({
 
             <StyledDate>
               {formatDateRange({
-                from: value.from || new Date(),
-                to: value.to || new Date(),
-              })}
+                from: value.from,
+                to: value.to,
+              }) || 'Escolha uma data'}
             </StyledDate>
           </StyledButton>
         </Popover.Trigger>

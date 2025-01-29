@@ -6,7 +6,7 @@ interface StyledButtonProps {
 
 export const Container = styled.div`
   position: relative;
-  width: 27.2rem;
+  width: 30rem;
 
   & + & {
     margin-top: 1.2rem;
@@ -27,7 +27,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
 
   display: flex;
   align-items: center;
-  gap: .8rem;
+  gap: 0.8rem;
   padding: 1.2rem;
 
   &:focus {
