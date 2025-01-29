@@ -49,7 +49,10 @@ export default function Clients() {
           {hasClient && (
             <>
               <ClientList clients={filteredClients} />
-              <LoaderContainer ref={finalPageLoaderRef} $isFetchingNextPage={isFetchingNextPage}>
+              <LoaderContainer
+                ref={finalPageLoaderRef}
+                $isFetchingNextPage={isFetchingNextPage}
+              >
                 <Loader $isLoading size={32} />
               </LoaderContainer>
             </>

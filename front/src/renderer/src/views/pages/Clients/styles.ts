@@ -22,12 +22,14 @@ export const LoaderContainer = styled.div<LoaderContainerProps>`
   height: 70px;
   width: 100%;
 
-  ${({ $isFetchingNextPage }) => !$isFetchingNextPage && css`
-    width: 0;
-    height: 0;
-    margin: 0;
-    padding: 0;
-  `}
+  ${({ $isFetchingNextPage }) =>
+    !$isFetchingNextPage &&
+    css`
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    `}
 `;
 
 export const NotFoundContainer = styled.div`

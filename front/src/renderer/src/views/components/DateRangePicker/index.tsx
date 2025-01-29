@@ -9,7 +9,10 @@ export interface DateRangePickerProps {
   onChange?(date: DateRange): void;
 }
 
-export default function DateRangePicker({ value, onChange }: DateRangePickerProps) {
+export default function DateRangePicker({
+  value,
+  onChange,
+}: DateRangePickerProps) {
   return (
     <StyledDayPicker
       locale={ptBR}

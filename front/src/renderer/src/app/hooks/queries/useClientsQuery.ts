@@ -2,28 +2,27 @@ import { clientsService } from '@renderer/app/services/clientsService';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 export function useClientsQuery(perPage = 10) {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ['clients'],
-    initialPageParam: 1,
-    queryFn: async ({ pageParam }) => clientsService.getAll(pageParam, perPage),
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['clients'],
+      initialPageParam: 1,
+      queryFn: async ({ pageParam }) =>
+        clientsService.getAll(pageParam, perPage),
+      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+        const totalPages = Math.ceil(lastPage.items / perPage);
 
-      const totalPages = Math.ceil(lastPage.items / perPage);
+        const isLastPage = allPages.length >= totalPages;
 
-      const isLastPage = allPages.length >= totalPages;
+        if (isLastPage) {
+          return null;
+        }
 
-      if (isLastPage) {
-        return null;
-      }
-
-      return lastPageParam + 1;
-    },
-    staleTime: 60000 * 2,
-  });
+        return lastPageParam + 1;
+      },
+      staleTime: 60000 * 2,
+    });
 
   const clients = data?.pages.flatMap((page) => page.data);
-
-
 
   return {
     clients: clients ?? [],

@@ -5,7 +5,15 @@ import formatPhone from '@renderer/app/utils/formatPhone';
 import { useState } from 'react';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import EditClientModal from '../modals/EditClientModal';
-import { Container, Content, EditButton, Footer, Header, ListContainer, Main } from './styles';
+import {
+  Container,
+  Content,
+  EditButton,
+  Footer,
+  Header,
+  ListContainer,
+  Main,
+} from './styles';
 
 interface ClientListProps {
   clients: Client[];
