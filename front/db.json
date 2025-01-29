@@ -1,0 +1,1202 @@
+{
+  "clients": [
+    {
+      "id": "1",
+      "name": "Jo\u00e3o Silva",
+      "type": "FISICO",
+      "phone": "11987654321",
+      "address": "Rua das Flores, 123",
+      "document": "123.456.789-00",
+      "balance": 250.75,
+      "payments": [
+        {
+          "id": "101",
+          "amount": 100,
+          "date": "2025-01-01",
+          "method": "PIX"
+        },
+        {
+          "id": "102",
+          "amount": 50.75,
+          "date": "2025-01-10",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Empresa XYZ",
+      "type": "JURIDICO",
+      "phone": "1123456789",
+      "address": "Av. Empresarial, 456",
+      "document": "12.345.678/0001-99",
+      "balance": "5000.00",
+      "payments": [
+        {
+          "id": "201",
+          "amount": 2500,
+          "date": "2025-01-05",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Maria Oliveira",
+      "type": "FISICO",
+      "phone": "21987654321",
+      "address": "Rua da Praia, 78",
+      "document": "987.654.321-00",
+      "balance": 0,
+      "payments": []
+    },
+    {
+      "id": "4",
+      "name": "Ana Pereira",
+      "type": "JURIDICO",
+      "phone": "11995872926",
+      "address": "Rua Flores, 779",
+      "document": "96.769.219/0001-20",
+      "balance": 2523.13,
+      "payments": []
+    },
+    {
+      "id": "5",
+      "name": "Cl\u00e1udia Costa",
+      "type": "FISICO",
+      "phone": "11953540622",
+      "address": "Rua Mar, 628",
+      "document": "949.570.459-93",
+      "balance": 4434.64,
+      "payments": [
+        {
+          "id": "5269",
+          "amount": 1521.44,
+          "date": "2024-12-04",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "name": "Daniel Oliveira",
+      "type": "FISICO",
+      "phone": "11954800561",
+      "address": "Rua Jardins, 520",
+      "document": "547.394.597-21",
+      "balance": 4646.84,
+      "payments": []
+    },
+    {
+      "id": "7",
+      "name": "F\u00e1bio Nogueira",
+      "type": "JURIDICO",
+      "phone": "11903056185",
+      "address": "Rua Pedras, 767",
+      "document": "21.725.396/0001-69",
+      "balance": 2137.98,
+      "payments": [
+        {
+          "id": "9761",
+          "amount": 2943.81,
+          "date": "2024-07-30",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "8",
+      "name": "Gustavo Rocha",
+      "type": "JURIDICO",
+      "phone": "11919177493",
+      "address": "Rua Pedras, 182",
+      "document": "57.838.132/0001-67",
+      "balance": 6374.92,
+      "payments": []
+    },
+    {
+      "id": "9",
+      "name": "Juliana Barros",
+      "type": "FISICO",
+      "phone": "11991442698",
+      "address": "Rua Lagoa, 422",
+      "document": "970.578.602-55",
+      "balance": 6573.97,
+      "payments": [
+        {
+          "id": "4237",
+          "amount": 2645.33,
+          "date": "2024-10-17",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "6151",
+          "amount": 3065.66,
+          "date": "2024-09-03",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "name": "Andr\u00e9 Santos",
+      "type": "FISICO",
+      "phone": "11999039610",
+      "address": "Rua Pedras, 455",
+      "document": "589.630.526-78",
+      "balance": 825.87,
+      "payments": []
+    },
+    {
+      "id": "11",
+      "name": "Hugo Moreira",
+      "type": "FISICO",
+      "phone": "11902373106",
+      "address": "Rua Lagoa, 362",
+      "document": "218.509.274-46",
+      "balance": 5598.25,
+      "payments": []
+    },
+    {
+      "id": "12",
+      "name": "Cl\u00e1udia Costa",
+      "type": "JURIDICO",
+      "phone": "11901929581",
+      "address": "Rua Lagoa, 664",
+      "document": "86.236.898/0001-26",
+      "balance": 1342.43,
+      "payments": []
+    },
+    {
+      "id": "13",
+      "name": "Mariana Ribeiro",
+      "type": "JURIDICO",
+      "phone": "11913611521",
+      "address": "Rua Flores, 80",
+      "document": "70.632.187/0001-75",
+      "balance": 6842.15,
+      "payments": [
+        {
+          "id": "6961",
+          "amount": 410.59,
+          "date": "2024-05-19",
+          "method": "TED"
+        },
+        {
+          "id": "5140",
+          "amount": 3700.1,
+          "date": "2024-06-02",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "14",
+      "name": "Amanda Duarte",
+      "type": "FISICO",
+      "phone": "11927546367",
+      "address": "Rua Lagoa, 963",
+      "document": "157.812.790-60",
+      "balance": 1242.75,
+      "payments": [
+        {
+          "id": "9073",
+          "amount": 463.69,
+          "date": "2024-02-03",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "15",
+      "name": "Fernanda Alves",
+      "type": "FISICO",
+      "phone": "11993785601",
+      "address": "Rua Lagoa, 664",
+      "document": "859.310.997-93",
+      "balance": 9452.91,
+      "payments": []
+    },
+    {
+      "id": "16",
+      "name": "Bruno Lima",
+      "type": "FISICO",
+      "phone": "11956834057",
+      "address": "Rua Pedras, 457",
+      "document": "126.451.632-61",
+      "balance": 5265.3,
+      "payments": [
+        {
+          "id": "2271",
+          "amount": 3374.45,
+          "date": "2024-02-07",
+          "method": "BOLETO"
+        },
+        {
+          "id": "3762",
+          "amount": 441.27,
+          "date": "2025-01-28",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "17",
+      "name": "Leonardo Farias",
+      "type": "JURIDICO",
+      "phone": "11993964214",
+      "address": "Rua Jardins, 916",
+      "document": "43.148.426/0001-49",
+      "balance": 5951.63,
+      "payments": [
+        {
+          "id": "4896",
+          "amount": 2162.11,
+          "date": "2024-04-11",
+          "method": "TED"
+        },
+        {
+          "id": "7730",
+          "amount": 3298.46,
+          "date": "2024-07-29",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "18",
+      "name": "Daniel Oliveira",
+      "type": "JURIDICO",
+      "phone": "11962614316",
+      "address": "Rua Pedras, 292",
+      "document": "10.938.214/0001-72",
+      "balance": 7971.6,
+      "payments": []
+    },
+    {
+      "id": "19",
+      "name": "Mariana Ribeiro",
+      "type": "JURIDICO",
+      "phone": "11938567694",
+      "address": "Rua Flores, 613",
+      "document": "39.900.982/0001-38",
+      "balance": 9365.3,
+      "payments": []
+    },
+    {
+      "id": "20",
+      "name": "Leonardo Farias",
+      "type": "FISICO",
+      "phone": "11944877366",
+      "address": "Rua Pedras, 468",
+      "document": "817.141.740-38",
+      "balance": 128.17,
+      "payments": [
+        {
+          "id": "2802",
+          "amount": 4209.01,
+          "date": "2024-07-30",
+          "method": "PIX"
+        },
+        {
+          "id": "4205",
+          "amount": 2493.96,
+          "date": "2024-08-17",
+          "method": "TED"
+        },
+        {
+          "id": "9855",
+          "amount": 3600.29,
+          "date": "2024-10-15",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "21",
+      "name": "Ricardo Castro",
+      "type": "JURIDICO",
+      "phone": "11929919474",
+      "address": "Rua Mar, 124",
+      "document": "50.104.528/0001-83",
+      "balance": 6159.12,
+      "payments": []
+    },
+    {
+      "id": "22",
+      "name": "Fernanda Alves",
+      "type": "JURIDICO",
+      "phone": "11965057513",
+      "address": "Rua Flores, 366",
+      "document": "58.750.857/0001-19",
+      "balance": 1738.03,
+      "payments": [
+        {
+          "id": "6890",
+          "amount": 3398.19,
+          "date": "2024-02-13",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "23",
+      "name": "Fernanda Alves",
+      "type": "FISICO",
+      "phone": "11978050021",
+      "address": "Rua Flores, 283",
+      "document": "177.438.663-63",
+      "balance": 1121.45,
+      "payments": [
+        {
+          "id": "8849",
+          "amount": 63.93,
+          "date": "2024-08-10",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "1996",
+          "amount": 3458.44,
+          "date": "2024-02-24",
+          "method": "BOLETO"
+        },
+        {
+          "id": "8454",
+          "amount": 4230.6,
+          "date": "2024-08-30",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "24",
+      "name": "Cl\u00e1udia Costa",
+      "type": "JURIDICO",
+      "phone": "11962989658",
+      "address": "Rua Jardins, 380",
+      "document": "75.864.604/0001-85",
+      "balance": 1457.18,
+      "payments": [
+        {
+          "id": "4582",
+          "amount": 2880.6,
+          "date": "2024-06-03",
+          "method": "PIX"
+        },
+        {
+          "id": "5045",
+          "amount": 811.11,
+          "date": "2024-09-22",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "25",
+      "name": "Amanda Duarte",
+      "type": "JURIDICO",
+      "phone": "11935178388",
+      "address": "Rua Pedras, 794",
+      "document": "81.859.565/0001-81",
+      "balance": 7157.95,
+      "payments": [
+        {
+          "id": "2739",
+          "amount": 858.39,
+          "date": "2024-11-10",
+          "method": "BOLETO"
+        },
+        {
+          "id": "9282",
+          "amount": 3243.67,
+          "date": "2024-09-12",
+          "method": "TED"
+        },
+        {
+          "id": "2090",
+          "amount": 3961.19,
+          "date": "2025-01-05",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "26",
+      "name": "S\u00e9rgio Freitas",
+      "type": "JURIDICO",
+      "phone": "11913792213",
+      "address": "Rua Jardins, 148",
+      "document": "10.486.359/0001-97",
+      "balance": 8987.87,
+      "payments": [
+        {
+          "id": "7690",
+          "amount": 1573.11,
+          "date": "2024-07-01",
+          "method": "TED"
+        },
+        {
+          "id": "1314",
+          "amount": 261.27,
+          "date": "2025-01-09",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "27",
+      "name": "Thiago Vieira",
+      "type": "JURIDICO",
+      "phone": "11929910247",
+      "address": "Rua Flores, 229",
+      "document": "10.379.202/0001-23",
+      "balance": 4562.49,
+      "payments": [
+        {
+          "id": "7656",
+          "amount": 701.76,
+          "date": "2024-12-02",
+          "method": "TED"
+        },
+        {
+          "id": "2646",
+          "amount": 1244.93,
+          "date": "2024-03-18",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "2450",
+          "amount": 1085.91,
+          "date": "2024-03-02",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "28",
+      "name": "Andr\u00e9 Santos",
+      "type": "JURIDICO",
+      "phone": "11919168634",
+      "address": "Rua Mar, 298",
+      "document": "58.855.930/0001-50",
+      "balance": 1384.87,
+      "payments": [
+        {
+          "id": "3095",
+          "amount": 3704.38,
+          "date": "2024-04-19",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "3475",
+          "amount": 1616.24,
+          "date": "2024-11-26",
+          "method": "BOLETO"
+        },
+        {
+          "id": "6372",
+          "amount": 4645.81,
+          "date": "2024-11-28",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "29",
+      "name": "Alexandre Maciel",
+      "type": "FISICO",
+      "phone": "11932200051",
+      "address": "Rua Lagoa, 640",
+      "document": "734.495.884-19",
+      "balance": 9524.13,
+      "payments": [
+        {
+          "id": "8525",
+          "amount": 966.14,
+          "date": "2024-05-19",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "2408",
+          "amount": 3084.78,
+          "date": "2025-01-06",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "30",
+      "name": "Bruno Lima",
+      "type": "FISICO",
+      "phone": "11928955676",
+      "address": "Rua Pedras, 454",
+      "document": "931.885.524-16",
+      "balance": 1931.6,
+      "payments": [
+        {
+          "id": "1346",
+          "amount": 139.76,
+          "date": "2024-09-13",
+          "method": "TED"
+        },
+        {
+          "id": "9326",
+          "amount": 534.48,
+          "date": "2024-05-19",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "31",
+      "name": "Beatriz Fernandes",
+      "type": "FISICO",
+      "phone": "11927269131",
+      "address": "Rua Lagoa, 359",
+      "document": "245.178.939-53",
+      "balance": 4712.73,
+      "payments": [
+        {
+          "id": "6418",
+          "amount": 1059.24,
+          "date": "2024-07-28",
+          "method": "BOLETO"
+        },
+        {
+          "id": "1672",
+          "amount": 1308.2,
+          "date": "2024-07-09",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "4999",
+          "amount": 2529.14,
+          "date": "2024-12-15",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "32",
+      "name": "Juliana Barros",
+      "type": "FISICO",
+      "phone": "11936273131",
+      "address": "Rua Jardins, 314",
+      "document": "998.498.486-88",
+      "balance": 5917.17,
+      "payments": [
+        {
+          "id": "4644",
+          "amount": 3054.7,
+          "date": "2024-03-03",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "1480",
+          "amount": 570.38,
+          "date": "2024-10-25",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "33",
+      "name": "Thiago Vieira",
+      "type": "JURIDICO",
+      "phone": "11948688396",
+      "address": "Rua Lagoa, 820",
+      "document": "89.516.560/0001-75",
+      "balance": 2066.76,
+      "payments": [
+        {
+          "id": "1915",
+          "amount": 4870.13,
+          "date": "2024-03-08",
+          "method": "PIX"
+        },
+        {
+          "id": "1174",
+          "amount": 935.13,
+          "date": "2024-03-26",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "34",
+      "name": "F\u00e1bio Nogueira",
+      "type": "JURIDICO",
+      "phone": "11964100068",
+      "address": "Rua Mar, 128",
+      "document": "47.680.745/0001-70",
+      "balance": 5001.78,
+      "payments": []
+    },
+    {
+      "id": "35",
+      "name": "Eduardo Silveira",
+      "type": "FISICO",
+      "phone": "11963812075",
+      "address": "Rua Mar, 303",
+      "document": "634.601.254-41",
+      "balance": 4913.24,
+      "payments": [
+        {
+          "id": "8036",
+          "amount": 4720.51,
+          "date": "2024-04-10",
+          "method": "TED"
+        },
+        {
+          "id": "2773",
+          "amount": 4003.96,
+          "date": "2024-05-13",
+          "method": "PIX"
+        },
+        {
+          "id": "6072",
+          "amount": 1649.61,
+          "date": "2024-12-25",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "36",
+      "name": "Roberto Martins",
+      "type": "FISICO",
+      "phone": "11936219891",
+      "address": "Rua Pedras, 638",
+      "document": "393.201.858-15",
+      "balance": 5825.74,
+      "payments": []
+    },
+    {
+      "id": "37",
+      "name": "Ana Pereira",
+      "type": "FISICO",
+      "phone": "11923047645",
+      "address": "Rua Flores, 257",
+      "document": "685.821.937-85",
+      "balance": 968.07,
+      "payments": [
+        {
+          "id": "7550",
+          "amount": 135.65,
+          "date": "2024-10-20",
+          "method": "PIX"
+        },
+        {
+          "id": "2081",
+          "amount": 2833.26,
+          "date": "2024-11-25",
+          "method": "PIX"
+        },
+        {
+          "id": "5934",
+          "amount": 450.87,
+          "date": "2024-03-25",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "38",
+      "name": "Carla Teixeira",
+      "type": "JURIDICO",
+      "phone": "11919115997",
+      "address": "Rua Pedras, 394",
+      "document": "61.518.424/0001-70",
+      "balance": 512.87,
+      "payments": [
+        {
+          "id": "6567",
+          "amount": 2124.36,
+          "date": "2024-06-26",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "39",
+      "name": "Mariana Ribeiro",
+      "type": "FISICO",
+      "phone": "11932278846",
+      "address": "Rua Pedras, 556",
+      "document": "516.951.214-91",
+      "balance": 6359.8,
+      "payments": [
+        {
+          "id": "3090",
+          "amount": 1848.93,
+          "date": "2024-03-24",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "40",
+      "name": "Mariana Ribeiro",
+      "type": "FISICO",
+      "phone": "11968968210",
+      "address": "Rua Pedras, 347",
+      "document": "847.891.260-67",
+      "balance": 3406.31,
+      "payments": [
+        {
+          "id": "9418",
+          "amount": 1270.12,
+          "date": "2025-01-26",
+          "method": "PIX"
+        },
+        {
+          "id": "5569",
+          "amount": 487.44,
+          "date": "2024-07-01",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "41",
+      "name": "Leonardo Farias",
+      "type": "FISICO",
+      "phone": "11914627541",
+      "address": "Rua Flores, 118",
+      "document": "243.636.177-21",
+      "balance": 1986.51,
+      "payments": [
+        {
+          "id": "2894",
+          "amount": 1335.24,
+          "date": "2024-03-23",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "2921",
+          "amount": 3743.06,
+          "date": "2024-11-15",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "3190",
+          "amount": 3352.36,
+          "date": "2024-11-05",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "42",
+      "name": "Hugo Moreira",
+      "type": "FISICO",
+      "phone": "11950531130",
+      "address": "Rua Jardins, 958",
+      "document": "626.183.487-22",
+      "balance": 1904.48,
+      "payments": [
+        {
+          "id": "5967",
+          "amount": 2392.86,
+          "date": "2024-02-22",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "43",
+      "name": "Carla Teixeira",
+      "type": "FISICO",
+      "phone": "11944603590",
+      "address": "Rua Mar, 757",
+      "document": "498.956.608-52",
+      "balance": 3686.4,
+      "payments": [
+        {
+          "id": "3282",
+          "amount": 884.33,
+          "date": "2024-02-02",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "6758",
+          "amount": 2629.64,
+          "date": "2024-07-30",
+          "method": "PIX"
+        },
+        {
+          "id": "2318",
+          "amount": 4627.47,
+          "date": "2024-09-11",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "44",
+      "name": "Amanda Duarte",
+      "type": "JURIDICO",
+      "phone": "11960573757",
+      "address": "Rua Pedras, 769",
+      "document": "72.905.121/0001-68",
+      "balance": 7104.8,
+      "payments": [
+        {
+          "id": "6427",
+          "amount": 1125.18,
+          "date": "2024-07-06",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "45",
+      "name": "Juliana Barros",
+      "type": "FISICO",
+      "phone": "11912408633",
+      "address": "Rua Jardins, 623",
+      "document": "846.867.297-43",
+      "balance": 8488.43,
+      "payments": [
+        {
+          "id": "6598",
+          "amount": 1814.01,
+          "date": "2024-09-19",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "46",
+      "name": "Alexandre Maciel",
+      "type": "FISICO",
+      "phone": "11936911390",
+      "address": "Rua Jardins, 222",
+      "document": "895.698.310-19",
+      "balance": 3373.21,
+      "payments": []
+    },
+    {
+      "id": "47",
+      "name": "J\u00e9ssica Moura",
+      "type": "FISICO",
+      "phone": "11997724774",
+      "address": "Rua Flores, 12",
+      "document": "149.493.826-62",
+      "balance": 1216.08,
+      "payments": [
+        {
+          "id": "5735",
+          "amount": 4326.26,
+          "date": "2024-10-05",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "48",
+      "name": "Hugo Moreira",
+      "type": "FISICO",
+      "phone": "11994002591",
+      "address": "Rua Mar, 992",
+      "document": "197.626.497-14",
+      "balance": 8707.31,
+      "payments": [
+        {
+          "id": "1530",
+          "amount": 785.44,
+          "date": "2024-12-02",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "8219",
+          "amount": 3467.46,
+          "date": "2024-04-27",
+          "method": "TED"
+        },
+        {
+          "id": "4218",
+          "amount": 730.61,
+          "date": "2024-02-19",
+          "method": "TED"
+        }
+      ]
+    },
+    {
+      "id": "49",
+      "name": "Carla Teixeira",
+      "type": "FISICO",
+      "phone": "11999897540",
+      "address": "Rua Lagoa, 316",
+      "document": "984.117.285-97",
+      "balance": 5526.88,
+      "payments": [
+        {
+          "id": "7034",
+          "amount": 4214.33,
+          "date": "2025-01-09",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "50",
+      "name": "Beatriz Fernandes",
+      "type": "FISICO",
+      "phone": "11941311596",
+      "address": "Rua Flores, 403",
+      "document": "738.920.200-43",
+      "balance": 1092.33,
+      "payments": [
+        {
+          "id": "4730",
+          "amount": 4549.76,
+          "date": "2024-04-05",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "7300",
+          "amount": 4372.42,
+          "date": "2024-03-30",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "51",
+      "name": "Bruno Lima",
+      "type": "JURIDICO",
+      "phone": "11964317151",
+      "address": "Rua Jardins, 431",
+      "document": "79.626.120/0001-21",
+      "balance": 3812.58,
+      "payments": [
+        {
+          "id": "3344",
+          "amount": 360.41,
+          "date": "2024-06-01",
+          "method": "CART\u00c3O"
+        },
+        {
+          "id": "8579",
+          "amount": 578.31,
+          "date": "2024-03-07",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "52",
+      "name": "Lorena Batista",
+      "type": "JURIDICO",
+      "phone": "11987140463",
+      "address": "Rua Flores, 848",
+      "document": "38.833.120/0001-95",
+      "balance": 5994.34,
+      "payments": [
+        {
+          "id": "1979",
+          "amount": 1502.69,
+          "date": "2024-05-16",
+          "method": "PIX"
+        },
+        {
+          "id": "1075",
+          "amount": 2067.43,
+          "date": "2024-02-26",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "53",
+      "name": "Fernanda Alves",
+      "type": "FISICO",
+      "phone": "11912071028",
+      "address": "Rua Flores, 41",
+      "document": "437.529.275-36",
+      "balance": 6191.58,
+      "payments": [
+        {
+          "id": "1794",
+          "amount": 1879.02,
+          "date": "2024-11-02",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "54",
+      "name": "Bruno Lima",
+      "type": "FISICO",
+      "phone": "11956204377",
+      "address": "Rua Pedras, 802",
+      "document": "802.575.819-74",
+      "balance": 2011.89,
+      "payments": [
+        {
+          "id": "4103",
+          "amount": 781.45,
+          "date": "2024-11-10",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "55",
+      "name": "Lorena Batista",
+      "type": "JURIDICO",
+      "phone": "11922424657",
+      "address": "Rua Flores, 527",
+      "document": "55.341.974/0001-48",
+      "balance": 1351.63,
+      "payments": [
+        {
+          "id": "5531",
+          "amount": 533.14,
+          "date": "2024-03-06",
+          "method": "PIX"
+        },
+        {
+          "id": "4725",
+          "amount": 1700.53,
+          "date": "2024-03-26",
+          "method": "CART\u00c3O"
+        }
+      ]
+    },
+    {
+      "id": "56",
+      "name": "Hugo Moreira",
+      "type": "JURIDICO",
+      "phone": "11922937340",
+      "address": "Rua Pedras, 506",
+      "document": "28.749.959/0001-81",
+      "balance": 382.35,
+      "payments": [
+        {
+          "id": "7914",
+          "amount": 3868.27,
+          "date": "2024-09-22",
+          "method": "TED"
+        },
+        {
+          "id": "8211",
+          "amount": 851.49,
+          "date": "2024-06-21",
+          "method": "BOLETO"
+        },
+        {
+          "id": "4884",
+          "amount": 4522.15,
+          "date": "2024-02-12",
+          "method": "BOLETO"
+        }
+      ]
+    },
+    {
+      "id": "57",
+      "name": "Roberto Martins",
+      "type": "FISICO",
+      "phone": "11916639660",
+      "address": "Rua Mar, 356",
+      "document": "577.481.881-66",
+      "balance": 2434.2,
+      "payments": [
+        {
+          "id": "3716",
+          "amount": 4573.08,
+          "date": "2024-03-26",
+          "method": "BOLETO"
+        },
+        {
+          "id": "3665",
+          "amount": 1278.58,
+          "date": "2024-09-17",
+          "method": "BOLETO"
+        },
+        {
+          "id": "9100",
+          "amount": 3279.04,
+          "date": "2024-12-02",
+          "method": "DINHEIRO"
+        }
+      ]
+    },
+    {
+      "id": "58",
+      "name": "Beatriz Fernandes",
+      "type": "FISICO",
+      "phone": "11931061263",
+      "address": "Rua Flores, 53",
+      "document": "901.489.176-64",
+      "balance": 5908.69,
+      "payments": [
+        {
+          "id": "5453",
+          "amount": 1542.81,
+          "date": "2024-12-20",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "59",
+      "name": "Ricardo Castro",
+      "type": "JURIDICO",
+      "phone": "11902421559",
+      "address": "Rua Pedras, 442",
+      "document": "62.883.294/0001-86",
+      "balance": 5476.99,
+      "payments": [
+        {
+          "id": "4549",
+          "amount": 1721.08,
+          "date": "2024-03-18",
+          "method": "TED"
+        },
+        {
+          "id": "4787",
+          "amount": 292.45,
+          "date": "2024-11-28",
+          "method": "BOLETO"
+        },
+        {
+          "id": "5961",
+          "amount": 279.8,
+          "date": "2024-05-15",
+          "method": "PIX"
+        }
+      ]
+    },
+    {
+      "id": "60",
+      "name": "Lorena Batista",
+      "type": "FISICO",
+      "phone": "11945816795",
+      "address": "Rua Pedras, 752",
+      "document": "150.215.783-23",
+      "balance": 2943.91,
+      "payments": [
+        {
+          "id": "2886",
+          "amount": 986.68,
+          "date": "2024-09-09",
+          "method": "DINHEIRO"
+        },
+        {
+          "id": "6902",
+          "amount": 2306.43,
+          "date": "2024-08-15",
+          "method": "TED"
+        },
+        {
+          "id": "1577",
+          "amount": 3121.9,
+          "date": "2024-10-07",
+          "method": "PIX"
+        }
+      ]
+    }
+  ]
+}
