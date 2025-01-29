@@ -8,7 +8,7 @@ export const ListContainer = styled.div`
   display: flex;
   gap: 1.6rem;
   flex-wrap: wrap;
-  margin-top: 2.4rem;
+  padding-top: 2.4rem;
 `;
 
 export const Container = styled.div`

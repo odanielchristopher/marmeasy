@@ -10,6 +10,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateClientDto } from './dto/create-client.dto';
@@ -23,8 +24,12 @@ export class ClientsController {
   ) {}
 
   @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.clientsService.findAllByUserId(userId);
+  findAll(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+  ) {
+    return this.clientsService.findAllByUserId(userId, page, perPage);
   }
 
   @Get(':clientId')

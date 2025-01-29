@@ -22,17 +22,22 @@ export class ClientsService implements IClientsService {
     private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
-  async findAllByUserId(userId: string) {
-    const clients = await this.clientsRepository.findManyByUserId({
+  async findAllByUserId(userId: string, page: number, perPage: number) {
+    const { data, items } = await this.clientsRepository.findManyByUserId({
       userId,
       order: 'asc',
+      page,
+      perPage,
     });
 
-    const sortedClients = clients.sort((a, b) =>
+    const sortedData = data.sort((a, b) =>
       a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
     );
 
-    return sortedClients;
+    return {
+      data: sortedData,
+      items,
+    };
   }
 
   async findOneByUserId(userId: string, clientId: string) {

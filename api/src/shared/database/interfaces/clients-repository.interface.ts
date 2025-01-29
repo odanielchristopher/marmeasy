@@ -1,9 +1,12 @@
 import { Client } from 'src/modules/clients/entities/client.entity';
+import { IPaginatedResponse } from 'src/shared/types';
 
 export const IClientsRepository = Symbol('IClientsRepository');
 
 export interface IClientsRepository {
-  findManyByUserId(findManyDto: FindManyByUserIdDto): Promise<Client[]>;
+  findManyByUserId(
+    findManyDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Client[]>>;
 
   findFirstById(findFirstByIdDto: FindFirstClientByIdDto): Promise<Client>;
 
@@ -21,6 +24,8 @@ export interface IClientsRepository {
 export type FindManyByUserIdDto = {
   userId: string;
   order: 'asc' | 'desc';
+  page?: number;
+  perPage?: number;
 };
 
 export type FindFirstClientByIdDto = {

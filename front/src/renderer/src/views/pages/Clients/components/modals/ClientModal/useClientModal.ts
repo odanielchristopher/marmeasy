@@ -9,14 +9,11 @@ import { AxiosError } from 'axios';
 
 export default function useClientModal(closeModal: () => void) {
   const { mutateAsync: createClient, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateClientParams) =>
-      clientsService.create({
-        ...data,
-      }),
-    onSuccess: (newData) => {
+    mutationFn: async (data: CreateClientParams) => clientsService.create(data),
+    onSuccess: (newClient) => {
       queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => [
         ...oldData,
-        newData,
+        newClient,
       ]);
     },
   });

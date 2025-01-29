@@ -1,17 +1,6 @@
 import { Client } from '@renderer/app/entities/Client';
-import delay from '@renderer/app/utils/delay';
-import axios from 'axios';
+import { httpClient } from '../httpClient';
 import { PaginatedResponse } from '../types';
-
-const httpClient = axios.create({
-  baseURL: 'http://localhost:3001',
-});
-
-httpClient.interceptors.response.use(async (data) => {
-  await delay(500);
-
-  return data;
-});
 
 export async function getAll(page = 1, perPage = 5) {
   const { data } = await httpClient.get<PaginatedResponse<Client[]>>('/clients', {
