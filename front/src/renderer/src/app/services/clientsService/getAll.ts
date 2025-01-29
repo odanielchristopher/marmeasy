@@ -8,7 +8,7 @@ const httpClient = axios.create({
 });
 
 httpClient.interceptors.response.use(async (data) => {
-  await delay(1500);
+  await delay(500);
 
   return data;
 });
