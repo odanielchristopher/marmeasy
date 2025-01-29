@@ -11,7 +11,7 @@ import { DateRange } from 'react-day-picker';
 export default function useClient() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
-    from: new Date(),
+    from: undefined,
   });
 
   const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] =

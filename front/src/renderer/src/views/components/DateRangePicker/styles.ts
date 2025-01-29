@@ -47,7 +47,7 @@ export const StyledDayPicker = styled(DayPicker)`
     border-radius: 50%;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.green.main};
+      background-color: rgba(8, 159, 104, 0.56);
       color: #fff;
     }
   }

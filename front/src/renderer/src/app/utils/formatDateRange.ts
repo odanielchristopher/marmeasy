@@ -17,7 +17,7 @@ export function formatDateRange(date: DateRange) {
   const formattedDateFrom = formatter.format(dateFrom);
   const formattedDateTo = formatter.format(dateTo);
 
-  if (formattedDateTo === formattedDateFrom || !date.to) {
+  if (!date.to) {
     return formattedDateFrom;
   }
 
