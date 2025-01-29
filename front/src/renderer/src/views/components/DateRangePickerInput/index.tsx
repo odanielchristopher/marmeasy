@@ -22,7 +22,7 @@ export default function DateRangePickerInput({
       <Popover.Root>
         <Popover.Trigger asChild>
           <StyledButton type="button" $error={$error}>
-          <LuCalendar size={20}/>
+            <LuCalendar size={20} />
 
             <StyledDate>
               {formatDateRange({
@@ -34,10 +34,7 @@ export default function DateRangePickerInput({
         </Popover.Trigger>
 
         <Popover.Content>
-          <DateRangePicker
-            value={value}
-            onChange={onChange}
-          />
+          <DateRangePicker value={value} onChange={onChange} />
         </Popover.Content>
       </Popover.Root>
     </Container>

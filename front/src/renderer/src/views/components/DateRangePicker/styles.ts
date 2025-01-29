@@ -60,12 +60,12 @@ export const StyledDayPicker = styled(DayPicker)`
 
   .day_selected {
     background: ${({ theme }) => theme.colors.green.main} !important;
-    color: #FFF;
+    color: #fff;
     font-weight: 600;
   }
 
   .day_range_middle {
-    background-color:rgba(8, 159, 104, 0.56) !important;
-    color: #FFF;
+    background-color: rgba(8, 159, 104, 0.56) !important;
+    color: #fff;
   }
 `;
