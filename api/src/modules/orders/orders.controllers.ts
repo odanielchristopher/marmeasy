@@ -22,24 +22,20 @@ export class OrdersController {
     @Inject(IOrdersService) private readonly ordersService: IOrdersService,
   ) {}
 
+  @Get('/date')
+  findAllByDate(
+    @ActiveUserId() userId: string,
+    @Query() dateRangeDto: DateRangeDto,
+  ) {
+    return this.ordersService.findAllByDateRange(userId, dateRangeDto);
+  }
+
   @Get(':clientId')
   findAll(
     @ActiveUserId() userId: string,
     @Param('clientId', ParseUUIDPipe) clientId: string,
   ) {
     return this.ordersService.findAllByClientId(userId, clientId);
-  }
-
-  @Get('/date')
-  findAllByDate(
-    @ActiveUserId() userId: string,
-    @Query('startDate') startDate: string,
-    @Query('endDate') endDate: string,
-  ) {
-    const dateRangeDto = new DateRangeDto();
-    dateRangeDto.startDate = startDate;
-    dateRangeDto.endDate = endDate;
-    return this.ordersService.findAllByDateRange(userId, dateRangeDto);
   }
 
   @Post()
