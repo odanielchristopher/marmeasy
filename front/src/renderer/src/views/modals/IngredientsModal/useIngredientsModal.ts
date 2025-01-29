@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-interface UseIngredientsModalProps {
-  onSelected: (ingredient: Ingredient) => void;
-  onSubmit: (data: { selectedIngredients: Ingredient[], quantity: number, productName: string, productImage: string, productPrice: number, totalPrice: number }) => void;
-  productName: string;
-  productImage: string;
-  productPrice: number;
-}
+export const OrderDetailSchema = z.object({
+  selectedIngredients: z.array(z.object({
+    id: z.string(),
+    name: z.string(),
+    icon: z.string(),
+  })),
+  quantity: z.number().min(1, 'A quantidade deve ser pelo menos 1'),
+  productName: z.string(),
+  productImage: z.string(),
+  productPrice: z.number(),
+  totalPrice: z.number(),
+});
 
-export default function useIngredientsModal({ onSelected, onSubmit, productName, productImage, productPrice }: UseIngredientsModalProps) {
+export type OrderDetail = z.infer<typeof OrderDetailSchema>;
+
+export default function useIngredientsModal() {
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const { register, formState: { errors } } = useForm<OrderDetail>({
+    resolver: zodResolver(OrderDetailSchema),
+  });
+
 
   const handleCheckboxChange = (ingredient: Ingredient) => {
     setSelectedIngredients((prev) => {
@@ -19,9 +33,6 @@ export default function useIngredientsModal({ onSelected, onSubmit, productName,
       const newSelectedIngredients = isSelected
         ? prev.filter((ing) => ing.id !== ingredient.id)
         : [...prev, ingredient];
-      if (!isSelected) {
-        onSelected(ingredient);
-      }
       return newSelectedIngredients;
     });
   };
@@ -30,24 +41,13 @@ export default function useIngredientsModal({ onSelected, onSubmit, productName,
     setQuantity(newQuantity);
   };
 
-  const handleSubmit = () => {
-    const totalPrice = productPrice * quantity;
-    onSubmit({
-      selectedIngredients,
-      quantity,
-      productName,
-      productImage,
-      productPrice,
-      totalPrice,
-    });
-  };
-
   return {
     selectedIngredients,
     quantity,
     handleCheckboxChange,
     handleQuantityChange,
-    handleSubmit,
+    register,
+    errors,
   };
 }
 

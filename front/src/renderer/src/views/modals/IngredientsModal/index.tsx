@@ -1,5 +1,4 @@
 import * as Checkbox from '@radix-ui/react-checkbox';
-import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Product } from '@renderer/app/entities/Product';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Button from '@renderer/views/components/Button';
@@ -8,7 +7,7 @@ import { TimesNumericInput } from '@renderer/views/components/TimesNumericInput'
 import React from 'react';
 import { FaCheck } from 'react-icons/fa6';
 import { CheckBoxStyle, Container } from './styles';
-import useIngredientsModal from './useIngredientsModal';
+import useIngredientsModal, { OrderDetail } from './useIngredientsModal';
 
 interface IngredientsModalProps {
   open: boolean;
@@ -16,13 +15,11 @@ interface IngredientsModalProps {
   onClose(): void;
   description?: string;
   answer: string;
-  onConfirm(): void;
   product: Product;
   title: string;
-  onSelected(ingredient: Ingredient): void;
-  selectedIngredientsIds: string[];
-  onSubmit: (data: { selectedIngredients: Ingredient[], quantity: number, productName: string, productImage: string, productPrice: number, totalPrice: number }) => void;
+  addProductToOrder(details: OrderDetail): void;
 }
+
 
 export default function IngredientsModal({
   open,
@@ -30,16 +27,14 @@ export default function IngredientsModal({
   onClose,
   product,
   title,
-  onSelected,
-  onSubmit,
+  addProductToOrder,
 }: IngredientsModalProps) {
   const {
     selectedIngredients,
     quantity,
     handleCheckboxChange,
     handleQuantityChange,
-    handleSubmit,
-  } = useIngredientsModal({ onSelected, onSubmit, productName: product.name, productImage: product.imagePath, productPrice: product.price });
+  } = useIngredientsModal();
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -57,8 +52,7 @@ export default function IngredientsModal({
                   key={ingredient.id}
                 >
                   <span>
-                    {' '}
-                    {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}{' '}
+                    {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}
                   </span>
                   <CheckBoxStyle
                     id={ingredient.id}
@@ -83,7 +77,18 @@ export default function IngredientsModal({
           />
         </div>
 
-        <Button onClick={handleSubmit}>
+        <Button onClick={() => {
+          const productDetails: OrderDetail = {
+            selectedIngredients,
+            quantity,
+            productName: product.name,
+            productImage: product.imagePath,
+            productPrice: product.price,
+            totalPrice: product.price * quantity,
+          };
+          addProductToOrder(productDetails);
+          onClose();
+        }}>
           Adicionar
         </Button>
       </Container>

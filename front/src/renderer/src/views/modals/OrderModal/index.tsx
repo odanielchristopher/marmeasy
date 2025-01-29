@@ -25,12 +25,16 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     openModalIngredients,
     selectedProduct,
     handleCategorySelect,
-    handleSelectedIngredients,
     handleOpenIngredientModal,
     handleCloseIngredientModal,
-    handleIngredientsSubmit,
     handleOrderSubmit,
-  } = useOrderModal(isOpen);
+    addProductToOrder,
+    handleOpenEditModal,
+    handleOpenDeleteModal,
+    isEditModalOpen,
+    isDeleteModalOpen,
+    editIndex,
+  } = useOrderModal(isOpen, onClose);
 
   return (
     <>
@@ -98,8 +102,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                           </div>
                         </div>
                         <div className="functions">
-                          <img src={Edit} alt="" />
-                          <img src={Trash} alt="" />
+                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditModal(index)}/> {/* Editar */}
+                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteModal(index)} /> {/* Excluir */}
                         </div>
                     </OrderItemsList>
                   );
@@ -116,7 +120,6 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
 
       {openModalIngredients && selectedProduct && (
         <IngredientModal
-          onSelected={handleSelectedIngredients}
           open={openModalIngredients}
           onClose={handleCloseIngredientModal}
           product={selectedProduct}
@@ -130,11 +133,16 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               ? 'Selecione os ingredientes desejados'
               : 'Deseja adicionar este produto ao pedido?'
           }
-          onConfirm={() => {
-            handleCloseIngredientModal();
-          }}
-          onSubmit={handleIngredientsSubmit}
+          addProductToOrder={addProductToOrder}
         />
+      )}
+
+      {isEditModalOpen && editIndex !== null && (
+        <></>
+      )}
+
+      {isDeleteModalOpen && editIndex !== null && (
+        <></>
       )}
     </>
   );
