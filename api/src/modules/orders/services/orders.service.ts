@@ -32,12 +32,18 @@ export class OrdersService implements IOrdersService {
   async findAllByDateRange(userId: string, dateRangeDto: DateRangeDto) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { startDate, endDate } = dateRangeDto;
+    const { startDate, endDate, limit, offset } = dateRangeDto;
 
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    return this.ordersRepository.findAllByDateRange(userId, start, end);
+    return this.ordersRepository.findAllByDateRange(
+      userId,
+      start,
+      end,
+      limit,
+      offset,
+    );
   }
 
   async create(userId: string, createOrderDto: CreateOrderDto) {

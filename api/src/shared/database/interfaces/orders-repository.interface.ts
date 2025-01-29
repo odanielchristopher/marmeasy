@@ -13,6 +13,8 @@ export interface IOrdersRepository {
     userId: string,
     startDate: Date,
     endDate: Date,
+    limit?: number,
+    offset?: number,
   ): Promise<Order[]>;
 
   findFirstByClientId(
@@ -39,10 +41,12 @@ export type FindUniqueOrderByIdDto = {
   id: string;
 };
 
-export type findAllByDateRangeDto = {
+export type FindAllByDateRangeDto = {
   userId: string;
   startDate: Date;
   endDate: Date;
+  limit?: number;
+  offset?: number;
 };
 
 export type FindFirstOrderByClientIdDto = {

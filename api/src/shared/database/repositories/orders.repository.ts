@@ -54,8 +54,12 @@ export class OrdersRepository implements IOrdersRepository {
     userId: string,
     startDate: Date,
     endDate: Date,
+    limit?: number,
+    offset?: number,
   ): Promise<Order[]> {
     const findedOrders = await this.prismaService.order.findMany({
+      skip: offset || 0,
+      take: limit || 10,
       where: {
         userId,
         date: {

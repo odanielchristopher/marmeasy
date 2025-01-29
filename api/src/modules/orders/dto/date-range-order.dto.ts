@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsDateString, Validate } from 'class-validator';
+import { Transform } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsDateString,
+  Validate,
+  IsOptional,
+  IsInt,
+  Min,
+} from 'class-validator';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -8,7 +16,7 @@ import {
 
 @ValidatorConstraint({ name: 'DateRange', async: false })
 export class DateRangeValidator implements ValidatorConstraintInterface {
-  validate(value: any, args: ValidationArguments) {
+  validate(value: any) {
     if (!value.startDate || !value.endDate) {
       return false;
     }
@@ -23,7 +31,7 @@ export class DateRangeValidator implements ValidatorConstraintInterface {
     return start <= end;
   }
 
-  defaultMessage(args: ValidationArguments) {
+  defaultMessage() {
     return 'A data de início deve ser anterior ou igual à data de término.';
   }
 }
@@ -44,6 +52,28 @@ export class DateRangeDto {
   )
   @ApiProperty({ example: '2026-01-31', description: 'Data de término.' })
   endDate: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Transform(({ value }) => (value ? parseInt(value, 10) : value))
+  @ApiProperty({
+    example: 10,
+    description: 'Número de resultados por página (limit)',
+    required: false,
+  })
+  limit?: number = 10;
+
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Transform(({ value }) => (value ? parseInt(value, 10) : value))
+  @ApiProperty({
+    example: 0,
+    description: 'Número de resultados a pular (offset)',
+    required: false,
+  })
+  offset?: number = 0;
 
   @Validate(DateRangeValidator)
   get dateRange() {
