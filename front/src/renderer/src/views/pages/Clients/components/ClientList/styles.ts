@@ -8,13 +8,13 @@ export const ListContainer = styled.div`
   display: flex;
   gap: 1.6rem;
   flex-wrap: wrap;
+  margin-top: 2.4rem;
 `;
 
 export const Container = styled.div`
   background-color: #fff;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
-  margin-top: 1.6rem;
   padding: 1.6rem;
   width: 100%;
   max-width: 30rem;

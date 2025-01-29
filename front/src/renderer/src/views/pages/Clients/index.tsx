@@ -3,11 +3,7 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import {
-  Container,
-  LoaderContainer,
-  NotFoundContainer,
-} from './styles';
+import { Container, LoaderContainer, NotFoundContainer } from './styles';
 
 import ClientList from './components/ClientList';
 
@@ -18,12 +14,14 @@ import useClients from './useClients';
 
 export default function Clients() {
   const {
-    handleChangeSearchTerm,
     hasClient,
     isLoading,
     isSearchEmpty,
     searchTerm,
     filteredClients,
+    finalPageLoaderRef,
+    isFetchingNextPage,
+    handleChangeSearchTerm,
   } = useClients();
 
   return (
@@ -51,7 +49,7 @@ export default function Clients() {
           {hasClient && (
             <>
               <ClientList clients={filteredClients} />
-              <LoaderContainer>
+              <LoaderContainer ref={finalPageLoaderRef} $isFetchingNextPage={isFetchingNextPage}>
                 <Loader $isLoading size={32} />
               </LoaderContainer>
             </>

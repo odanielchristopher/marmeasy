@@ -1,17 +1,36 @@
 import { useClientsQuery } from '@renderer/app/hooks/queries/useClientsQuery';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function useClient() {
   const [searchTerm, setSearchTerm] = useState('');
 
-  const { clients, isLoading } = useClientsQuery();
-  useRef();
+  const { clients, isLoading, nextPage, hasNextPage, isFetchingNextPage } = useClientsQuery(15);
+  const finalPageLoaderRef = useRef<null | HTMLDivElement>(null);
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver();
+  useEffect(() => {
+    if (!finalPageLoaderRef.current) {
+      return;
+    }
 
-  //   observer.observe
-  // }, []);
+    const observer = new IntersectionObserver((entries, obs) => {
+      const { isIntersecting } = entries[0];
+
+      if (!hasNextPage) {
+        obs.disconnect();
+        return;
+      }
+
+      if (isIntersecting && hasNextPage) {
+        nextPage();
+      }
+    });
+
+    observer.observe(finalPageLoaderRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLoading, nextPage]);
 
   function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);
@@ -22,8 +41,8 @@ export default function useClient() {
       clients
         .filter((client) =>
           client.name.toLowerCase().includes(searchTerm.toLowerCase()),
-        )
-        .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
+        ),
+        // .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],
   );
 
@@ -36,6 +55,8 @@ export default function useClient() {
     hasClient,
     searchTerm,
     filteredClients,
+    finalPageLoaderRef,
     handleChangeSearchTerm,
+    isFetchingNextPage,
   };
 }

@@ -13,7 +13,7 @@ httpClient.interceptors.response.use(async (data) => {
   return data;
 });
 
-export async function getAll(page = 1, perPage = 10) {
+export async function getAll(page = 1, perPage = 5) {
   const { data } = await httpClient.get<PaginatedResponse<Client[]>>('/clients', {
     params: {
       _page: page,

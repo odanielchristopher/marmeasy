@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
@@ -14,9 +14,20 @@ export const Container = styled.div`
   }
 `;
 
-export const LoaderContainer = styled.div`
+interface LoaderContainerProps {
+  $isFetchingNextPage?: boolean;
+}
+
+export const LoaderContainer = styled.div<LoaderContainerProps>`
   height: 70px;
   width: 100%;
+
+  ${({ $isFetchingNextPage }) => !$isFetchingNextPage && css`
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  `}
 `;
 
 export const NotFoundContainer = styled.div`
