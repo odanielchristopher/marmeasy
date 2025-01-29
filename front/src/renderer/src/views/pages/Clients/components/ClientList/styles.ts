@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 
+export const ListContainer = styled.div`
+  overflow-y: auto;
+  width: 100%;
+  padding-bottom: 2.4rem;
+  padding-left: 0.8rem;
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+`;
+
 export const Container = styled.div`
   background-color: #fff;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);

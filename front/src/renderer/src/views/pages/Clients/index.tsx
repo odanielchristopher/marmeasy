@@ -3,7 +3,11 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import { Container, Content, NotFoundContainer } from './styles';
+import {
+  Container,
+  LoaderContainer,
+  NotFoundContainer,
+} from './styles';
 
 import ClientList from './components/ClientList';
 
@@ -43,8 +47,15 @@ export default function Clients() {
       {isLoading && <Loader $isLoading size={50} />}
 
       {!isLoading && (
-        <Content>
-          {hasClient && <ClientList clients={filteredClients} />}
+        <>
+          {hasClient && (
+            <>
+              <ClientList clients={filteredClients} />
+              <LoaderContainer>
+                <Loader $isLoading size={32} />
+              </LoaderContainer>
+            </>
+          )}
 
           {isSearchEmpty && (
             <NotFoundContainer>
@@ -52,7 +63,7 @@ export default function Clients() {
               <p>Não encontramos nenhum cliente!</p>
             </NotFoundContainer>
           )}
-        </Content>
+        </>
       )}
     </Container>
   );

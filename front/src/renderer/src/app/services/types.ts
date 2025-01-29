@@ -1,4 +1,4 @@
-export interface PaginatedResponse {
-  data: any;
+export interface PaginatedResponse<TData> {
+  data: TData;
   items: number;
 }

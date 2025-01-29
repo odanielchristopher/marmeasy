@@ -6,20 +6,17 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-  .filtros {
+  .list-container {
+    width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
   }
 `;
 
-export const Content = styled.div`
-  overflow-y: auto;
+export const LoaderContainer = styled.div`
+  height: 70px;
   width: 100%;
-  padding-bottom: 2.4rem;
-  padding-left: 0.8rem;
-  display: flex;
-  gap: 1.6rem;
-  flex-wrap: wrap;
 `;
 
 export const NotFoundContainer = styled.div`

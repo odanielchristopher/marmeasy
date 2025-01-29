@@ -1,10 +1,17 @@
 import { useClientsQuery } from '@renderer/app/hooks/queries/useClientsQuery';
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 export default function useClient() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const { clients, isLoading } = useClientsQuery();
+  useRef();
+
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver();
+
+  //   observer.observe
+  // }, []);
 
   function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);
@@ -13,8 +20,8 @@ export default function useClient() {
   const filteredClients = useMemo(
     () =>
       clients
-        .filter((contact) =>
-          contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        .filter((client) =>
+          client.name.toLowerCase().includes(searchTerm.toLowerCase()),
         )
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],
