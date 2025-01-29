@@ -22,7 +22,7 @@ export class ClientsService implements IClientsService {
     private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
-  async findAllByUserId(userId: string, page: number, perPage: number) {
+  async findAllByUserId(userId: string, page = 1, perPage = 20) {
     const { data, items } = await this.clientsRepository.findManyByUserId({
       userId,
       order: 'asc',

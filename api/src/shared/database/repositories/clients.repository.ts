@@ -19,12 +19,11 @@ export class ClientsRepository implements IClientsRepository {
   async findManyByUserId(
     findManyDto: FindManyByUserIdDto,
   ): Promise<IPaginatedResponse<Client[]>> {
-    const { userId, order, page = 1, perPage = 10 } = findManyDto;
+    const { userId, order, page, perPage } = findManyDto;
 
     // Calcula a posição inicial
     const skip = (page - 1) * perPage;
 
-    // Busca os clientes paginados
     const clients = await this.prismaService.client.findMany({
       where: { userId, active: true },
       orderBy: { name: order },
