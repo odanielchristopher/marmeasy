@@ -6,7 +6,7 @@ import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
-import IngredientModal from '@renderer/views/modals/IngredientsModal';
+import IngredientModal from '@renderer/views/pages/Orders/components/modals/IngredientsModal';
 import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 import useOrderModal from './useOrderModal';
 
