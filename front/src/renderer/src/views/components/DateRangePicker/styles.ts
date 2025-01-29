@@ -55,7 +55,7 @@ export const StyledDayPicker = styled(DayPicker)`
   .day_today {
     background: ${({ theme }) => theme.colors.orange.light} !important;
     color: #fff !important;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .day_selected {
@@ -65,9 +65,7 @@ export const StyledDayPicker = styled(DayPicker)`
   }
 
   .day_range_middle {
-    /* background:#f7ae27 !important; */
-
-    background-color:rgba(8, 159, 104, 0.56);
+    background-color:rgba(8, 159, 104, 0.56) !important;
     color: #FFF;
   }
 `;
