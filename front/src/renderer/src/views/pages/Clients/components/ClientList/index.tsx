@@ -76,7 +76,7 @@ export default function ClientList({ clients }: ClientListProps) {
                 </div>
 
                 <div className="bottom">
-                  <span>Totais de pedidos: {21}</span>
+                  <span>Total de pedidos: {21}</span>
                 </div>
               </Main>
               <Footer>

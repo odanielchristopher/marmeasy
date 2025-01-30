@@ -1,13 +1,14 @@
+// useSearchClientsQuery
 import { clientsService } from '@renderer/app/services/clientsService';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export function useClientsQuery(perPage = 20) {
+export function useSearchClientsQuery(searchTerm: string, perPage = 20) {
   const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['clients', 'getAll'],
+      queryKey: ['clients', 'search', searchTerm],
       initialPageParam: 1,
       queryFn: async ({ pageParam }) =>
-        clientsService.getAll(pageParam, perPage),
+        clientsService.getBySearchTerm({ searchTerm, page: pageParam, perPage }),
       getNextPageParam: (lastPage, allPages, lastPageParam) => {
         const totalPages = Math.ceil(lastPage.items / perPage);
 
@@ -19,13 +20,14 @@ export function useClientsQuery(perPage = 20) {
 
         return lastPageParam + 1;
       },
-      staleTime: 60000 * 2,
+      enabled: searchTerm.length > 0 ? true : false,
+      staleTime: 60000,
     });
 
   const clients = data?.pages.flatMap((page) => page.data);
 
   return {
-    clients: clients ?? [],
+    findedClients: clients ?? [],
     isLoading: isFetching,
     nextPage: fetchNextPage,
     hasNextPage,

@@ -18,7 +18,7 @@ export function formatDateRange(date: DateRange) {
   const formattedDateTo = formatter.format(dateTo);
 
   if (!date.to) {
-    return formattedDateFrom;
+    return `${formattedDateFrom} -`;
   }
 
   return `${formattedDateFrom} - ${formattedDateTo}`;

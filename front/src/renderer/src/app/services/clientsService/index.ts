@@ -1,6 +1,6 @@
 import { create } from './create';
 import { getAll } from './getAll';
-import { getBySearchTerm } from './getAllBySearchTerm';
+import { getBySearchTerm } from './getBySearchTerm';
 import { getOne } from './getOne';
 import { remove } from './remove';
 import { update } from './update';

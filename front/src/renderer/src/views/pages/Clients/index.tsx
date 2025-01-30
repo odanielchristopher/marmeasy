@@ -18,7 +18,7 @@ export default function Clients() {
     isLoading,
     isSearchEmpty,
     searchTerm,
-    filteredClients,
+    clientsToRender,
     finalPageLoaderRef,
     isFetchingNextPage,
     handleChangeSearchTerm,
@@ -48,7 +48,7 @@ export default function Clients() {
         <>
           {hasClient && (
             <>
-              <ClientList clients={filteredClients} />
+              <ClientList clients={clientsToRender} />
               <LoaderContainer
                 ref={finalPageLoaderRef}
                 $isFetchingNextPage={isFetchingNextPage}
