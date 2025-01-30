@@ -8,7 +8,7 @@ export const paymentFormSchema = z.object({
   date: z.date(),
   value: z
     .number({ required_error: 'O valor é obrigatório.' })
-    .min(0, { message: 'O valor não pode ser negativo.' }),
+    .min(1, { message: 'O valor deve ser maior que zero.' }),
 });
 
 export type PaymentFormSchema = z.infer<typeof paymentFormSchema>;
