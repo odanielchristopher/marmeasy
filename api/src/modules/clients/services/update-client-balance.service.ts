@@ -18,12 +18,15 @@ export class UpdateClientBalance implements IUpdateClientBalanceService {
   async update({
     userId,
     clientId,
-    newBalance,
+    previousValue,
+    newValue,
   }: UpdateBalanceParams): Promise<Client> {
     const findedClient = await this.validateClientOwnershipService.validate(
       userId,
       clientId,
     );
+
+    const newBalance = findedClient.balance - (previousValue || 0) + newValue;
 
     const { id, name, type, address, document, phone } = findedClient;
 

@@ -32,14 +32,14 @@ export class PaymentsService implements IPaymentsService {
   async create(userId: string, createPaymentDto: CreatePaymentDto) {
     const { date, type, value, clientId } = createPaymentDto;
 
-    const { client } = await this.validateEntitiesOwnership({
+    await this.validateEntitiesOwnership({
       userId,
       clientId,
     });
 
     await this.updateClientBalance({
       userId,
-      client,
+      clientId,
       newValue: value,
     });
 
@@ -61,15 +61,14 @@ export class PaymentsService implements IPaymentsService {
   ) {
     const { date, type, value, clientId } = updatePaymentDto;
 
-    const { client, payment } = await this.validateEntitiesOwnership({
+    const { payment } = await this.validateEntitiesOwnership({
       userId,
       paymentId,
-      clientId,
     });
 
     await this.updateClientBalance({
       userId,
-      client,
+      clientId,
       previousValue: payment.value,
       newValue: value,
     });
@@ -87,7 +86,19 @@ export class PaymentsService implements IPaymentsService {
   }
 
   async remove(userId: string, paymentId: string) {
-    await this.validateEntitiesOwnership({ userId, paymentId });
+    const { payment } = await this.validateEntitiesOwnership({
+      userId,
+      paymentId,
+    });
+
+    const { clientId, value } = payment;
+
+    await this.updateClientBalance({
+      clientId,
+      userId,
+      previousValue: value,
+      newValue: 0,
+    });
 
     return this.paymentsRepository.delete({
       userId,
@@ -116,21 +127,20 @@ export class PaymentsService implements IPaymentsService {
 
   private async updateClientBalance({
     userId,
-    client,
+    clientId,
     previousValue,
     newValue,
   }: {
     userId: string;
-    client: Client;
+    clientId: string;
     previousValue?: number;
     newValue: number;
   }): Promise<Client> {
-    const newBalance = client.balance - (previousValue || 0) + newValue;
-
     return this.updateClientBalanceService.update({
       userId,
-      clientId: client.id,
-      newBalance,
+      clientId,
+      previousValue,
+      newValue,
     });
   }
 }

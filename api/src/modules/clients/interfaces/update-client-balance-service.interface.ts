@@ -7,9 +7,9 @@ export const IUpdateClientBalanceService = Symbol(
 export type UpdateBalanceParams = {
   userId: string;
   clientId: string;
-  newBalance: number;
+  previousValue: number;
+  newValue: number;
 };
-
 export interface IUpdateClientBalanceService {
   update(params: UpdateBalanceParams): Promise<Client>;
 }
