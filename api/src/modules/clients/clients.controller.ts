@@ -24,21 +24,6 @@ export class ClientsController {
     @Inject(IClientsService) private readonly clientsService: IClientsService,
   ) {}
 
-  @Get('/search')
-  findAllBySearchTerm(
-    @ActiveUserId() userId: string,
-    @Query('page') page: number,
-    @Query('perPage') perPage: number,
-    @Body() searchTermDto: SearchTermDto,
-  ) {
-    return this.clientsService.findAllBySearchTerm(
-      userId,
-      searchTermDto,
-      page,
-      perPage,
-    );
-  }
-
   @Get()
   findAll(
     @ActiveUserId() userId: string,
@@ -54,6 +39,21 @@ export class ClientsController {
     @Param('clientId', ParseUUIDPipe) clientId: string,
   ) {
     return this.clientsService.findOneByUserId(userId, clientId);
+  }
+
+  @Post('/search')
+  findAllBySearchTerm(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Body() searchTermDto: SearchTermDto,
+  ) {
+    return this.clientsService.findAllBySearchTerm(
+      userId,
+      searchTermDto,
+      page,
+      perPage,
+    );
   }
 
   @Post()
