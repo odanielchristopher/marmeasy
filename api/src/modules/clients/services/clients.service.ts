@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IClientsRepository } from 'src/shared/database/interfaces/clients-repository.interface';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { IClientsService } from '../interfaces/clients-service.interface';
@@ -22,25 +23,31 @@ export class ClientsService implements IClientsService {
     private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
-  async findAllByUserId(userId: string, page = 1, perPage = 20) {
-    const { data, items } = await this.clientsRepository.findManyByUserId({
+  findAllBySearchTerm(
+    userId: string,
+    searchTerm: SearchTermDto,
+    page: number,
+    perPage: number,
+  ) {
+    return this.clientsRepository.findManyBySearchTerm({
       userId,
+      searchTerm,
+      page: page || 1,
+      perPage: perPage || 20,
       order: 'asc',
-      page,
-      perPage,
     });
-
-    const sortedData = data.sort((a, b) =>
-      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
-    );
-
-    return {
-      data: sortedData,
-      items,
-    };
   }
 
-  async findOneByUserId(userId: string, clientId: string) {
+  findAllByUserId(userId: string, page: number, perPage: number) {
+    return this.clientsRepository.findManyByUserId({
+      userId,
+      order: 'asc',
+      page: page || 1,
+      perPage: perPage || 20,
+    });
+  }
+
+  findOneByUserId(userId: string, clientId: string) {
     return this.clientsRepository.findFirstById({ userId, id: clientId });
   }
 

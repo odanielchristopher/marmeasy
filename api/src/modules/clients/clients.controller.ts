@@ -13,6 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { IClientsService } from './interfaces/clients-service.interface';
@@ -22,6 +23,21 @@ export class ClientsController {
   constructor(
     @Inject(IClientsService) private readonly clientsService: IClientsService,
   ) {}
+
+  @Get('/search')
+  findAllBySearchTerm(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Body() searchTermDto: SearchTermDto,
+  ) {
+    return this.clientsService.findAllBySearchTerm(
+      userId,
+      searchTermDto,
+      page,
+      perPage,
+    );
+  }
 
   @Get()
   findAll(

@@ -1,4 +1,5 @@
 import { Client } from 'src/modules/clients/entities/client.entity';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { IPaginatedResponse } from 'src/shared/types';
 
 export const IClientsRepository = Symbol('IClientsRepository');
@@ -6,6 +7,10 @@ export const IClientsRepository = Symbol('IClientsRepository');
 export interface IClientsRepository {
   findManyByUserId(
     findManyDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Client[]>>;
+
+  findManyBySearchTerm(
+    findManyBySearchTermDto: FindManyBySearchTermDto,
   ): Promise<IPaginatedResponse<Client[]>>;
 
   findFirstById(findFirstByIdDto: FindFirstClientByIdDto): Promise<Client>;
@@ -21,11 +26,19 @@ export interface IClientsRepository {
   delete(deleteDto: DeleteClientDto): Promise<void>;
 }
 
+export type FindManyBySearchTermDto = {
+  userId: string;
+  order: 'asc' | 'desc';
+  searchTerm: SearchTermDto;
+  page: number;
+  perPage: number;
+};
+
 export type FindManyByUserIdDto = {
   userId: string;
   order: 'asc' | 'desc';
-  page?: number;
-  perPage?: number;
+  page: number;
+  perPage: number;
 };
 
 export type FindFirstClientByIdDto = {

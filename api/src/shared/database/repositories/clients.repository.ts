@@ -6,6 +6,7 @@ import {
   DeleteClientDto,
   FindFirstClientByDocumentDto,
   FindFirstClientByIdDto,
+  FindManyBySearchTermDto,
   FindManyByUserIdDto,
   IClientsRepository,
   UpdateClientDto,
@@ -15,6 +16,47 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class ClientsRepository implements IClientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findManyBySearchTerm(
+    findManyBySearchTermDto: FindManyBySearchTermDto,
+  ): Promise<IPaginatedResponse<Client[]>> {
+    const { userId, order, searchTerm, page, perPage } =
+      findManyBySearchTermDto;
+
+    const skip = (page - 1) * perPage;
+
+    const { query } = searchTerm;
+
+    const clients = await this.prismaService.client.findMany({
+      where: {
+        userId,
+        active: true,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      orderBy: { name: order },
+      take: perPage,
+      skip,
+    });
+
+    const totalItems = await this.prismaService.client.count({
+      where: {
+        userId,
+        active: true,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    return {
+      data: clients.map(Client.parse),
+      items: totalItems,
+    };
+  }
 
   async findManyByUserId(
     findManyDto: FindManyByUserIdDto,
