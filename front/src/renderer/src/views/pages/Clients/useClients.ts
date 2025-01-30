@@ -14,7 +14,7 @@ export default function useClient() {
     nextPage: nextNormalPage,
     hasNextPage: hasNextNormalPage,
     isFetchingNextPage: isFetchingNextNormalPage,
-  } = useClientsQuery(15);
+  } = useClientsQuery(20);
 
   const {
     findedClients: searchedClients,
