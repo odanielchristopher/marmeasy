@@ -8,7 +8,11 @@ export function useSearchClientsQuery(searchTerm: string, perPage = 20) {
       queryKey: ['clients', 'search', searchTerm],
       initialPageParam: 1,
       queryFn: async ({ pageParam }) =>
-        clientsService.getBySearchTerm({ searchTerm, page: pageParam, perPage }),
+        clientsService.getBySearchTerm({
+          searchTerm,
+          page: pageParam,
+          perPage,
+        }),
       getNextPageParam: (lastPage, allPages, lastPageParam) => {
         const totalPages = Math.ceil(lastPage.items / perPage);
 
