@@ -6,7 +6,9 @@ import { z } from 'zod';
 export const paymentFormSchema = z.object({
   type: z.enum(['CREDIT_CARD', 'DEBIT_CARD', 'CASH']),
   date: z.date(),
-  value: z.number({ required_error: 'O valor é obrigatório.' }).or(z.string()),
+  value: z
+    .number({ required_error: 'O valor é obrigatório.' })
+    .min(0, { message: 'O valor não pode ser negativo.' }),
 });
 
 export type PaymentFormSchema = z.infer<typeof paymentFormSchema>;

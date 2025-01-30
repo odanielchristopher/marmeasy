@@ -18,12 +18,11 @@ export default function useEditClientModal({
 }: UseEditClientModalProps) {
   const { mutateAsync: updateClient, isPending: isLoading } = useMutation({
     mutationFn: async (data: UpdateClientParams) => clientsService.update(data),
-    onSuccess: (updatedClient) => {
-      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) =>
-        clients.map((client) =>
-          client.id === updatedClient.id ? updatedClient : client,
-        ),
-      );
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['clients', 'getAll'],
+        exact: true,
+      });
     },
   });
 

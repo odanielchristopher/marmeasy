@@ -1,5 +1,4 @@
 import { queryClient } from '@renderer/App';
-import { Client } from '@renderer/app/entities/Client';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { CreateClientParams } from '@renderer/app/services/clientsService/create';
 import toast from '@renderer/app/utils/toast';
@@ -10,11 +9,11 @@ import { AxiosError } from 'axios';
 export default function useCompanyModal(closeModal: () => void) {
   const { mutateAsync: createCompany, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateClientParams) => clientsService.create(data),
-    onSuccess: (newCompany) => {
-      queryClient.setQueryData(['clients', 'getAll'], (oldData: Client[]) => [
-        ...oldData,
-        newCompany,
-      ]);
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['clients', 'getAll'],
+        exact: true,
+      });
     },
   });
 

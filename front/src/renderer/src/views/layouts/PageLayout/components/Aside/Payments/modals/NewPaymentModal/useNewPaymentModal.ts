@@ -3,9 +3,10 @@ import { Client } from '@renderer/app/entities/Client';
 import { Payment } from '@renderer/app/entities/Payment';
 import { paymentsService } from '@renderer/app/services/paymentsService';
 import { CreatePaymentParams } from '@renderer/app/services/paymentsService/create';
+import { PaginatedResponse } from '@renderer/app/services/types';
 import { calculateNewBalance } from '@renderer/app/utils/calculateNewBalance';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
+import { InfiniteData, useMutation } from '@tanstack/react-query';
 import { PaymentFormSchema } from '../../PaymentForm/usePaymentFormModal';
 
 interface UseNewPaymentModalProps {
@@ -20,29 +21,35 @@ export default function useNewPaymentModal({
   const { mutateAsync: createPayment, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreatePaymentParams) =>
       paymentsService.create(data),
+
     onSuccess: (newPayment: Payment) => {
       queryClient.setQueryData(
-        ['payments', 'getAll'],
-        (payments: Payment[]) => [...payments, newPayment],
+        ['payments', 'getAll', { id: newPayment.clientId }],
+        (payments: Payment[] | undefined) => [...(payments ?? []), newPayment],
       );
 
-      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => {
-        const updatedClients = clients.map((oldClient) => {
-          if (oldClient.id === client?.id) {
-            return {
-              ...oldClient,
-              balance: calculateNewBalance({
-                currentBalance: Number(oldClient.balance),
-                newValue: newPayment.value,
-              }),
-            };
-          }
-
-          return oldClient;
-        });
-
-        return updatedClients;
-      });
+      queryClient.setQueryData(
+        ['clients', 'getAll'],
+        (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              data: page.data.map((oldClient) =>
+                oldClient.id === newPayment.clientId
+                  ? {
+                      ...oldClient,
+                      balance: calculateNewBalance({
+                        currentBalance: Number(oldClient.balance),
+                        newValue: newPayment.value,
+                      }),
+                    }
+                  : oldClient,
+              ),
+            })),
+          };
+        },
+      );
     },
   });
 
@@ -63,7 +70,7 @@ export default function useNewPaymentModal({
       });
 
       onSuccess();
-    } catch {
+    } catch (error) {
       toast({
         type: 'danger',
         text: 'Ocorreu um erro ao criar pagamento.',

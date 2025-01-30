@@ -7,8 +7,8 @@ export async function getAll(page = 1, perPage = 5) {
     '/clients',
     {
       params: {
-        _page: page,
-        _per_page: perPage,
+        page,
+        perPage,
       },
     },
   );

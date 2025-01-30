@@ -52,6 +52,7 @@ export default function PaymentForm({
                   value={value}
                   onChange={onChange}
                   $error={errors.value?.message}
+                  allowNegative={false}
                 />
               )}
             />

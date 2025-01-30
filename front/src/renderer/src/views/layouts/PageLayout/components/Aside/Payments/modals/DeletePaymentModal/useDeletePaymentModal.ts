@@ -3,9 +3,10 @@ import { Client } from '@renderer/app/entities/Client';
 import { Payment } from '@renderer/app/entities/Payment';
 import { paymentsService } from '@renderer/app/services/paymentsService';
 import { RemovePaymentParams } from '@renderer/app/services/paymentsService/remove';
+import { PaginatedResponse } from '@renderer/app/services/types';
 import { calculateNewBalance } from '@renderer/app/utils/calculateNewBalance';
 import toast from '@renderer/app/utils/toast';
-import { useMutation } from '@tanstack/react-query';
+import { InfiniteData, useMutation } from '@tanstack/react-query';
 
 interface DeletePaymentModalProps {
   payment: Payment | null;
@@ -23,7 +24,7 @@ export default function useDeletePaymentModal({
       paymentsService.remove(data),
     onSuccess: () => {
       queryClient.setQueryData(
-        ['payments', 'getAll'],
+        ['payments', 'getAll', { id: client!.id }],
         (payments: Payment[]) => {
           return payments.filter(
             (payment) => payment.id !== paymentShouldDeleted?.id,
@@ -31,23 +32,30 @@ export default function useDeletePaymentModal({
         },
       );
 
-      queryClient.setQueryData(['clients', 'getAll'], (clients: Client[]) => {
-        const updatedClients = clients.map((oldClient) => {
-          if (oldClient.id === client?.id) {
-            return {
-              ...oldClient,
-              balance: calculateNewBalance({
-                currentBalance: Number(oldClient.balance),
-                newValue: -paymentShouldDeleted!.value,
-              }),
-            };
-          }
+      queryClient.setQueryData(
+        ['clients', 'getAll'],
+        (oldData: InfiniteData<PaginatedResponse<Client[]>> | undefined) => {
+          if (!oldData) return oldData;
 
-          return oldClient;
-        });
-
-        return updatedClients;
-      });
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              data: page.data.map((oldClient) =>
+                oldClient.id === client?.id
+                  ? {
+                      ...oldClient,
+                      balance: calculateNewBalance({
+                        currentBalance: Number(oldClient.balance),
+                        newValue: -paymentShouldDeleted!.value,
+                      }),
+                    }
+                  : oldClient,
+              ),
+            })),
+          };
+        },
+      );
     },
   });
 

@@ -19,14 +19,10 @@ export default function useDeleteClientModal({
       return clientsService.remove(data);
     },
     onSuccess: () => {
-      queryClient.setQueryData(
-        ['clients', 'getAll'],
-        (oldClients: Client[]) => {
-          return oldClients.filter(
-            (client) => client.id !== clientBeingDeleted!.id,
-          );
-        },
-      );
+      queryClient.invalidateQueries({
+        queryKey: ['clients', 'getAll'],
+        exact: true,
+      });
     },
   });
 

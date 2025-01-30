@@ -47,7 +47,7 @@ export default function Payments({ client }: PaymentsProps) {
 
       <Container>
         <Header>
-          <h3>Histórico de pagamentos</h3>
+          <h3>Pagamentos do {client!.name}</h3>
 
           <AddButton type="button" onClick={handleOpenNewPaymentModal}>
             <IoIosAdd size={32} />

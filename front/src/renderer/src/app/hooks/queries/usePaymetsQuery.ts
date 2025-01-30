@@ -5,7 +5,7 @@ import { GetAllPaymentsParams } from '@renderer/app/services/paymentsService/get
 
 export function usePaymentsQuery(params: GetAllPaymentsParams) {
   const { data, isFetching: isLoading } = useQuery({
-    queryKey: ['payments', 'getAll'],
+    queryKey: ['payments', 'getAll', { id: params.clientId }],
     queryFn: async () => paymentsService.getAll(params),
     staleTime: 3 * 60 * 1000,
   });
