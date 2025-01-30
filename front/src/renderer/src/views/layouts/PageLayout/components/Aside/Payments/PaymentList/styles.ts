@@ -37,6 +37,7 @@ export const PaymentInfosContainer = styled.div`
   width: 80%;
 
   .left {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
 
