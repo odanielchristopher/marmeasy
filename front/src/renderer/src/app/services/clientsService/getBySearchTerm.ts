@@ -13,15 +13,13 @@ export async function getBySearchTerm({
   perPage = 20,
   searchTerm,
 }: GetBySearchTermParams) {
-  const { data } = await httpClient.post<PaginatedResponse<Client[]>>(
+  const { data } = await httpClient.get<PaginatedResponse<Client[]>>(
     '/clients/search',
-    {
-      query: searchTerm,
-    },
     {
       params: {
         page,
         perPage,
+        query: searchTerm,
       },
     },
   );
