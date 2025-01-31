@@ -1,3 +1,4 @@
+import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import Edit from '@renderer/assets/Images/Edit.svg';
 import noImage from '@renderer/assets/Images/empty-image.svg';
@@ -6,9 +7,10 @@ import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
-import IngredientModal from '@renderer/views/pages/Orders/components/modals/IngredientsModal';
+import IngredientModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
+import EditItemModal from '../../Items/EditItemModal';
 import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
-import useOrderModal from './useOrderModal';
+import useOrderModal from './useNewOrderModal';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -24,6 +26,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     orderDetails,
     openModalIngredients,
     selectedProduct,
+    setOrderDetails,
     handleCategorySelect,
     handleOpenIngredientModal,
     handleCloseIngredientModal,
@@ -31,6 +34,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     addProductToOrder,
     handleOpenEditModal,
     handleOpenDeleteModal,
+    handleCloseEditModal,
     isEditModalOpen,
     isDeleteModalOpen,
     editIndex,
@@ -92,7 +96,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                         <div className="infoOrder">
                           <div className="nameDetails">
                             <p><strong>{order.productName}</strong></p>
-                            {order.selectedIngredients.map((ingredient) => (
+                            {order.selectedIngredients.map((ingredient: Ingredient) => (
                                 <span key={ingredient.id}>{ingredient.name}</span>
                               ))}
                           </div>
@@ -102,8 +106,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                           </div>
                         </div>
                         <div className="functions">
-                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditModal(index)}/> {/* Editar */}
-                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteModal(index)} /> {/* Excluir */}
+                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditModal(index)}/>
+                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteModal(index)} />
                         </div>
                     </OrderItemsList>
                   );
@@ -133,12 +137,23 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               ? 'Selecione os ingredientes desejados'
               : 'Deseja adicionar este produto ao pedido?'
           }
-          addProductToOrder={addProductToOrder}
+          onSubmit={addProductToOrder}
         />
       )}
 
-      {isEditModalOpen && editIndex !== null && (
-        <></>
+      {isEditModalOpen && editIndex !== null && selectedProduct && (
+        <EditItemModal
+          open={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          product={selectedProduct}
+          title="Editar Pedido"
+          answer="Atualize as informações do pedido"
+          index={editIndex}
+          order={orderDetails[editIndex]}
+          addProductToOrder={addProductToOrder}
+          setOrderDetails={setOrderDetails}
+          orderDetails={orderDetails}
+        />
       )}
 
       {isDeleteModalOpen && editIndex !== null && (

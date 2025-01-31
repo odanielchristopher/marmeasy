@@ -9,8 +9,8 @@ export const OrderDetailSchema = z.object({
     id: z.string(),
     name: z.string(),
     icon: z.string(),
-  })),
-  quantity: z.number().min(1, 'A quantidade deve ser pelo menos 1'),
+  })).min(1, 'Selecione pelo menos um ingrediente'),
+  quantity: z.number().min(1, {}),
   productName: z.string(),
   productImage: z.string(),
   productPrice: z.number(),
@@ -19,9 +19,9 @@ export const OrderDetailSchema = z.object({
 
 export type OrderDetail = z.infer<typeof OrderDetailSchema>;
 
-export default function useIngredientsModal() {
-  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
-  const [quantity, setQuantity] = useState(1);
+export default function useItemForm(initialOrder: OrderDetail | undefined) {
+  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(initialOrder?.selectedIngredients || []);
+  const [quantity, setQuantity] = useState(initialOrder?.quantity || 1);
   const { register, formState: { errors } } = useForm<OrderDetail>({
     resolver: zodResolver(OrderDetailSchema),
   });

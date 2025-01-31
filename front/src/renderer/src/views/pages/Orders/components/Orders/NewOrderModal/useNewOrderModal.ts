@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { OrderDetail } from '../IngredientsModal/useIngredientsModal';
+import { OrderDetail } from '../../Items/NewItemModal/useNewItemModal';
 
 export const orderFormSchema = z.object({
   date: z.date(),
@@ -49,6 +49,10 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    setIsOrderModalOpen(isOpen);
+  }, [isOpen]);
+
   function handleCategorySelect(category: ProductCategory) {
     setSelectedCategory(category);
   }
@@ -64,12 +68,8 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
 
   function handleCloseModalIngredients() {
     setOpenModalIngredients(false);
-    setSelectedProduct(null);
+    // setSelectedProduct(null);
   }
-
-  useEffect(() => {
-    setIsOrderModalOpen(isOpen);
-  }, [isOpen]);
 
   function handleOpenIngredientModal(product: Product) {
     handleOpenModalIngredients(product);
@@ -84,39 +84,28 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
   function handleOpenEditModal(index: number) {
     setEditIndex(index);
     setIsEditModalOpen(true);
+    setIsOrderModalOpen(false);
   };
+
+  function handleCloseEditModal() {
+    setIsEditModalOpen(false);
+    setIsOrderModalOpen(true);
+  }
 
   function handleOpenDeleteModal(index: number) {
     setEditIndex(index);
-    setIsDeleteModalOpen(false);
+    setIsDeleteModalOpen(true);
+    setIsOrderModalOpen(false);
   };
 
-  function handleConfimEdit(OrderDetailsUpdated: OrderDetail) {
-    {editIndex !== null && editOrderDetail(editIndex, OrderDetailsUpdated);}
-    setIsEditModalOpen(false);
-  }
-
-  function handleConfirmDelete(index: number) {
-    {editIndex !== null && deleteOrderDetail(index);}
+  function handleCloseDeleteModal() {
     setIsDeleteModalOpen(false);
+    setIsOrderModalOpen(true);
   }
 
-  // funções crud
   function addProductToOrder(details: OrderDetail) {
     setOrderDetails((prevDetails) => [...prevDetails, details]);
   }
-
-  function editOrderDetail(index: number, OrderDetailsUpdated: OrderDetail) {
-    setOrderDetails((prevDetails) => {
-      return prevDetails.map((detail, i) => (i === index ? OrderDetailsUpdated : detail));
-    });
-  };
-
-  function deleteOrderDetail(index: number) {
-    setOrderDetails((prevDetails) => {
-      return prevDetails.filter((_, i) => i !== index);
-    });
-  };
 
   const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateOrderParams) =>
@@ -156,6 +145,7 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     orderDate,
     openModalIngredients,
     selectedProduct,
+    setOrderDetails,
     handleCategorySelect,
     handleOrderDateChange,
     handleOpenModalIngredients,
@@ -165,12 +155,10 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     handleOrderSubmit,
     handleOpenEditModal,
     handleOpenDeleteModal,
-    handleConfimEdit,
-    handleConfirmDelete,
+    handleCloseEditModal,
+    handleCloseDeleteModal,
     orderDetails,
     addProductToOrder,
-    editOrderDetail,
-    deleteOrderDetail,
     isEditModalOpen,
     isDeleteModalOpen,
     editIndex,
