@@ -7,22 +7,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 2rem;
-
-  div {
-    width: 100%;
-  }
-
-  div.quantity-box {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-
-    div {
-      width: 20%;
-    }
-  }
+  gap: 1.2 rem;
 
   .ingredientLabel {
     border: 1px solid ${({ theme }) => theme.colors.gray.lighter};
@@ -39,73 +24,15 @@ export const Container = styled.div`
     padding: 1.6rem;
     margin-top: 10px;
   }
-`;
 
-export const Content = styled.div`
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  gap: 2.4rem;
-
-  font-size: 1.6rem;
-
-  strong {
-    max-width: 20rem;
-    text-align: center;
-    font-weight: 700;
-  }
-
-  p {
-    text-align: center;
-  }
-`;
-
-export const CancelButton = styled.button`
-  align-items: center;
-  background: transparent;
-  border: 0.1rem solid ${({ theme }) => theme.colors.black.main};
-  border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: 0rem 0.4rem 1rem 0rem #0000000a;
-  color: ${({ theme }) => theme.colors.black.main};
-  display: flex;
-  font-size: 1.6rem;
-  font-weight: 400;
-  justify-content: center;
-  height: 4.2rem;
-  padding: 0 1.4rem;
-  transition: background 0.2s ease-in;
-
-  &:hover {
-    border: 0.1rem solid ${({ theme }) => theme.colors.gray.main};
-    color: ${({ theme }) => theme.colors.gray.main};
-  }
-
-  &:focus {
-    outline: 0.1rem solid ${({ theme }) => theme.colors.green.main};
-  }
-
-  &:active {
-    outline: none;
-    border: 0.1rem solid ${({ theme }) => theme.colors.gray.light};
-    color: ${({ theme }) => theme.colors.gray.light};
-  }
-
-  &[disabled] {
-    background: ${({ theme }) => theme.colors.gray.lighter} !important;
-    cursor: default !important;
-  }
-`;
-
-export const Actions = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 1.2rem;
-
-  button {
+  .error {
+    color: ${({ theme }) => theme.colors.red.main};
+    font-size: 1.2rem;
+    margin-top: 0.4rem;
     width: 100%;
-    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
   }
 `;
 
@@ -121,5 +48,27 @@ export const CheckBoxStyle = styled(Checkbox.Root)`
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+`;
+
+export const QuantityContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.6rem;
+  width: 100%;
+
+  div {
+    width: 100%;
+    text-align: right;
+
+    input {
+      width: 50%;
+    }
+
+    .error {
+      justify-content: end;
+    }
   }
 `;

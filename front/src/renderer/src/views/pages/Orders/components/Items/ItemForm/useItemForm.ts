@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { Product } from '@renderer/app/entities/Product';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -10,7 +11,7 @@ export const OrderDetailSchema = z.object({
     name: z.string(),
     icon: z.string(),
   })).min(1, 'Selecione pelo menos um ingrediente'),
-  quantity: z.number().min(1, {}),
+  quantity: z.number().min(1, 'A quantidade deve ser maior que 0'),
   productName: z.string(),
   productImage: z.string(),
   productPrice: z.number(),
@@ -19,26 +20,51 @@ export const OrderDetailSchema = z.object({
 
 export type OrderDetail = z.infer<typeof OrderDetailSchema>;
 
-export default function useItemForm(initialOrder: OrderDetail | undefined) {
+export default function useItemForm(initialOrder: OrderDetail | undefined, product: Product, onSubmit: (details: OrderDetail) => void, onClose: () => void) {
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(initialOrder?.selectedIngredients || []);
   const [quantity, setQuantity] = useState(initialOrder?.quantity || 1);
-  const { register, formState: { errors } } = useForm<OrderDetail>({
+
+  const { handleSubmit, formState: { errors }, setValue, trigger } = useForm<OrderDetail>({
     resolver: zodResolver(OrderDetailSchema),
+    defaultValues: {
+      selectedIngredients: initialOrder?.selectedIngredients || [],
+      quantity: initialOrder?.quantity || 1,
+      productName: initialOrder?.productName || '',
+      productImage: initialOrder?.productImage || '',
+      productPrice: initialOrder?.productPrice || 0,
+      totalPrice: initialOrder?.totalPrice || 0,
+    },
   });
 
 
   const handleCheckboxChange = (ingredient: Ingredient) => {
-    setSelectedIngredients((prev) => {
-      const isSelected = prev.some((ing) => ing.id === ingredient.id);
-      const newSelectedIngredients = isSelected
-        ? prev.filter((ing) => ing.id !== ingredient.id)
-        : [...prev, ingredient];
-      return newSelectedIngredients;
-    });
+    const isSelected = selectedIngredients.some((ing) => ing.id === ingredient.id);
+    const newSelectedIngredients = isSelected
+      ? selectedIngredients.filter((ing) => ing.id !== ingredient.id)
+      : [...selectedIngredients, ingredient];
+
+    setSelectedIngredients(newSelectedIngredients);
+    setValue('selectedIngredients', newSelectedIngredients);
+    trigger('selectedIngredients');
   };
 
   const handleQuantityChange = (newQuantity: number) => {
+    setValue('quantity', newQuantity);
     setQuantity(newQuantity);
+    trigger('quantity');
+  };
+
+  const onSubmitForm = (data: OrderDetail) => {
+    const productDetails: OrderDetail = {
+      selectedIngredients: data.selectedIngredients,
+      quantity: data.quantity,
+      productName: product.name,
+      productImage: product.imagePath,
+      productPrice: product.price,
+      totalPrice: product.price * data.quantity,
+    };
+    onSubmit(productDetails);
+    onClose();
   };
 
   return {
@@ -46,7 +72,8 @@ export default function useItemForm(initialOrder: OrderDetail | undefined) {
     quantity,
     handleCheckboxChange,
     handleQuantityChange,
-    register,
+    handleSubmit,
+    onSubmitForm,
     errors,
   };
 }
