@@ -29,7 +29,7 @@ export class ClientsController {
     @ActiveUserId() userId: string,
     @Query('page') page: number,
     @Query('perPage') perPage: number,
-    @Query('search') searchTerm: string,
+    @Query('query') searchTerm: string,
   ) {
     const searchTermDto = new SearchTermDto(searchTerm);
 
