@@ -50,7 +50,11 @@ export default function Navigation({ $area }: NavigationProps) {
           <span>Cardápio</span>
         </StyledLink>
 
-        <StyledLink type="button" to={'/dashboard'} $active={pathname === '/dashboard'}>
+        <StyledLink
+          type="button"
+          to={'/dashboard'}
+          $active={pathname === '/dashboard'}
+        >
           <DashboardIcon />
           <span>Relatórios</span>
         </StyledLink>
