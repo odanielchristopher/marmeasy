@@ -1,6 +1,12 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IClientsRepository } from 'src/shared/database/interfaces/clients-repository.interface';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
 import { IClientsService } from '../interfaces/clients-service.interface';
@@ -17,20 +23,31 @@ export class ClientsService implements IClientsService {
     private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
-  async findAllByUserId(userId: string) {
-    const clients = await this.clientsRepository.findManyByUserId({
+  findAllBySearchTerm(
+    userId: string,
+    searchTerm: SearchTermDto,
+    page: number,
+    perPage: number,
+  ) {
+    return this.clientsRepository.findManyBySearchTerm({
       userId,
+      searchTerm,
+      page: page || 1,
+      perPage: perPage || 20,
       order: 'asc',
     });
-
-    const sortedClients = clients.sort((a, b) =>
-      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
-    );
-
-    return sortedClients;
   }
 
-  async findOneByUserId(userId: string, clientId: string) {
+  findAllByUserId(userId: string, page: number, perPage: number) {
+    return this.clientsRepository.findManyByUserId({
+      userId,
+      order: 'asc',
+      page: page || 1,
+      perPage: perPage || 20,
+    });
+  }
+
+  findOneByUserId(userId: string, clientId: string) {
     return this.clientsRepository.findFirstById({ userId, id: clientId });
   }
 
@@ -41,14 +58,29 @@ export class ClientsService implements IClientsService {
       createClientDto;
 
     if (document) {
-      const documentAlreadyExists =
+      const clientAlreadyExists =
         await this.clientsRepository.findFirstByDocument({ userId, document });
 
       const errorMessage =
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
-      if (documentAlreadyExists) {
+      if (clientAlreadyExists && clientAlreadyExists.active) {
         throw new BadRequestException(errorMessage);
+      }
+
+      if (clientAlreadyExists && !clientAlreadyExists.active) {
+        return this.clientsRepository.update({
+          userId,
+          data: {
+            id: clientAlreadyExists.id,
+            name,
+            phone,
+            address,
+            document,
+            type,
+            balance: initialBalance,
+          },
+        });
       }
     }
 
@@ -84,7 +116,7 @@ export class ClientsService implements IClientsService {
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
       if (client && client.id !== clientId) {
-        throw new BadRequestException(errorMessage);
+        throw new ConflictException(errorMessage);
       }
     }
 

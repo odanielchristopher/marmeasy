@@ -37,7 +37,7 @@ export default function ClientForm({
       </p>
 
       <BalanceContainer>
-        <span className="label">Saldo*</span>
+        <span className="label">Saldo</span>
 
         <div className="input-container">
           <div className="input">

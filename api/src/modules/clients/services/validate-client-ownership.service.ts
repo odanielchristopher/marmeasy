@@ -20,5 +20,7 @@ export class ValidateClientOwnershipService
     if (!isOwner) {
       throw new NotFoundException('Cliente não encontrado.');
     }
+
+    return isOwner;
   }
 }

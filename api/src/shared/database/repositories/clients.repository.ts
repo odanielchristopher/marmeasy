@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Client } from 'src/modules/clients/entities/client.entity';
+import { IPaginatedResponse } from 'src/shared/types';
 import {
   CreateClientDto,
   DeleteClientDto,
   FindFirstClientByDocumentDto,
   FindFirstClientByIdDto,
+  FindManyBySearchTermDto,
   FindManyByUserIdDto,
   IClientsRepository,
   UpdateClientDto,
@@ -15,15 +17,71 @@ import { PrismaService } from '../prisma.service';
 export class ClientsRepository implements IClientsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findManyByUserId(findManyDto: FindManyByUserIdDto): Promise<Client[]> {
-    const { userId, order } = findManyDto;
+  async findManyBySearchTerm(
+    findManyBySearchTermDto: FindManyBySearchTermDto,
+  ): Promise<IPaginatedResponse<Client[]>> {
+    const { userId, order, searchTerm, page, perPage } =
+      findManyBySearchTermDto;
+
+    const skip = (page - 1) * perPage;
+
+    const { query } = searchTerm;
 
     const clients = await this.prismaService.client.findMany({
-      where: { userId },
+      where: {
+        userId,
+        active: true,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
       orderBy: { name: order },
+      take: perPage,
+      skip,
     });
 
-    return clients.map(Client.parse);
+    const totalItems = await this.prismaService.client.count({
+      where: {
+        userId,
+        active: true,
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    });
+
+    return {
+      data: clients.map(Client.parse),
+      items: totalItems,
+    };
+  }
+
+  async findManyByUserId(
+    findManyDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Client[]>> {
+    const { userId, order, page, perPage } = findManyDto;
+
+    // Calcula a posição inicial
+    const skip = (page - 1) * perPage;
+
+    const clients = await this.prismaService.client.findMany({
+      where: { userId, active: true },
+      orderBy: { name: order },
+      take: perPage,
+      skip,
+    });
+
+    // Conta o total de registros
+    const totalItems = await this.prismaService.client.count({
+      where: { userId, active: true },
+    });
+
+    return {
+      data: clients.map(Client.parse),
+      items: totalItems,
+    };
   }
 
   async findFirstById(
@@ -68,7 +126,10 @@ export class ClientsRepository implements IClientsRepository {
 
     const updatedClient = await this.prismaService.client.update({
       where: { id: data.id, userId },
-      data,
+      data: {
+        ...data,
+        active: true,
+      },
     });
 
     return Client.parse(updatedClient);
@@ -77,8 +138,11 @@ export class ClientsRepository implements IClientsRepository {
   async delete(deleteDto: DeleteClientDto): Promise<void> {
     const { userId, id } = deleteDto;
 
-    await this.prismaService.client.delete({
-      where: { id, userId },
+    await this.prismaService.client.update({
+      where: { userId, id },
+      data: {
+        active: false,
+      },
     });
   }
 }

@@ -14,6 +14,7 @@ export const Container = styled.div`
     display: flex;
     gap: 0.6rem;
     margin-top: 0.2rem;
+    width: 20rem;
 
     span {
       font-size: 1.2rem;

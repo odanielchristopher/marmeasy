@@ -1,10 +1,17 @@
 import { Client } from '@renderer/app/entities/Client';
 import { httpClient } from '../httpClient';
+import { PaginatedResponse } from '../types';
 
-export type GetAllResponse = Array<Client>;
-
-export async function getAll() {
-  const { data } = await httpClient.get<GetAllResponse>('/clients');
+export async function getAll(page = 1, perPage = 5) {
+  const { data } = await httpClient.get<PaginatedResponse<Client[]>>(
+    '/clients',
+    {
+      params: {
+        page,
+        perPage,
+      },
+    },
+  );
 
   return data;
 }

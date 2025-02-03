@@ -1,43 +1,44 @@
 import { useEffect, useState } from 'react';
-import {
-  Actions,
-  ActionsButton,
-  Container,
-  Empty,
-  Header,
-  Main,
-} from './styles';
+import { Actions, Container, Empty, Header, Main } from './styles';
 
 import { useLocation } from 'react-router-dom';
 
 import useAside from '@renderer/app/hooks/useAside';
-import clipboard from '@renderer/assets/Images/Clipboard.svg';
 
 import fraseSvg from '@renderer/assets/Images/nome-marmeasy.svg';
 import DetailsOrder from './DetailsOrder';
+import Payments from './Payments';
+
+import clipboard from '@renderer/assets/Images/Clipboard.svg';
 
 interface AsideProps {
   area: string;
 }
 
 export default function Aside({ area }: AsideProps) {
-  const [showDetails, setShowDetails] = useState(true);
-
   const { showClientData, seletedClient, handleHiddenClientData } = useAside();
-
-  function handleShowDetails() {
-    setShowDetails(true);
-  }
+  const { pathname } = useLocation();
+  const [showOrders, setShowOrders] = useState(false);
+  const [showPayments, setShowPayments] = useState(true);
 
   useEffect(() => {
+    function handleAsideData(pathname: string) {
+      if (pathname == '/orders') {
+        setShowOrders(true);
+        setShowPayments(false);
+        return;
+      }
+
+      setShowOrders(false);
+      setShowPayments(true);
+    }
+
+    handleAsideData(pathname);
+
     return () => {
       handleHiddenClientData();
     };
-  }, []);
-
-  const location = useLocation();
-
-  const hasOrders = ['/orders'].includes(location.pathname);
+  }, [pathname]);
 
   return (
     <Container $area={area}>
@@ -45,11 +46,7 @@ export default function Aside({ area }: AsideProps) {
         <img src={fraseSvg} alt="Marmeasy" />
       </Header>
 
-      <Actions>
-        <ActionsButton $isActive={showDetails} onClick={handleShowDetails}>
-          Mostrar detalhes
-        </ActionsButton>
-      </Actions>
+      <Actions></Actions>
 
       {!showClientData && (
         <Main>
@@ -63,12 +60,10 @@ export default function Aside({ area }: AsideProps) {
           </Empty>
         </Main>
       )}
-      {showClientData &&
-        showDetails && [
-          hasOrders && (
-            <DetailsOrder key="detailsOrder" client={seletedClient} />
-          ),
-        ]}
+
+      {showClientData && showOrders && <DetailsOrder client={seletedClient} />}
+
+      {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
   );
 }

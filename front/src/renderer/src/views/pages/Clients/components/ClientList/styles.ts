@@ -1,10 +1,20 @@
 import styled from 'styled-components';
 
+export const ListContainer = styled.div`
+  overflow-y: auto;
+  width: 100%;
+  padding-bottom: 2.4rem;
+  padding-left: 0.8rem;
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  padding-top: 2.4rem;
+`;
+
 export const Container = styled.div`
   background-color: #fff;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
-  margin-top: 1.6rem;
   padding: 1.6rem;
   width: 100%;
   max-width: 30rem;

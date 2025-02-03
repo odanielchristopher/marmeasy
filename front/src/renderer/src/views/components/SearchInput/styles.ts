@@ -18,7 +18,7 @@ export const Input = styled.input`
   padding: 0.8rem 1rem;
   padding-left: 4.2rem;
   border-radius: 1rem;
-  height: 4.8rem;
+  height: 5.2rem;
   border: 0.08rem solid transparent;
   font-size: 1.6rem;
   line-height: 1.8rem;

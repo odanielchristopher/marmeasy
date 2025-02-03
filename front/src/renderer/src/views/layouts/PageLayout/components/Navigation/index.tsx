@@ -5,6 +5,7 @@ import { LuLogOut } from 'react-icons/lu';
 import { PiUserCircle } from 'react-icons/pi';
 import { TbUsers } from 'react-icons/tb';
 
+import { DashboardIcon } from '@renderer/assets/Icons/DashboardIcon';
 import { OrdersIcon } from '@renderer/assets/Icons/OrdersIcon';
 import {
   Container,
@@ -21,7 +22,7 @@ interface NavigationProps {
 }
 
 export default function Navigation({ $area }: NavigationProps) {
-  const { handleLogOutLink, handleProfileLink } = useNavigation();
+  const { handleLogOutLink, handleProfileLink, pathname } = useNavigation();
 
   return (
     <Container $area={$area}>
@@ -30,19 +31,32 @@ export default function Navigation({ $area }: NavigationProps) {
       </LogoContainer>
 
       <MainContainer>
-        <StyledLink type="button" to={'/'}>
+        <StyledLink type="button" to={'/'} $active={pathname === '/'}>
           <TbUsers size={32} />
           <span>Clientes</span>
         </StyledLink>
 
-        <StyledLink type="button" to={'/orders'}>
+        <StyledLink
+          type="button"
+          to={'/orders'}
+          $active={pathname == '/orders'}
+        >
           <OrdersIcon />
           <span>Pedidos</span>
         </StyledLink>
 
-        <StyledLink type="button" to={'/menu'}>
+        <StyledLink type="button" to={'/menu'} $active={pathname === '/menu'}>
           <BiFoodMenu size={32} />
           <span>Cardápio</span>
+        </StyledLink>
+
+        <StyledLink
+          type="button"
+          to={'/dashboard'}
+          $active={pathname === '/dashboard'}
+        >
+          <DashboardIcon />
+          <span>Relatórios</span>
         </StyledLink>
       </MainContainer>
 

@@ -10,8 +10,10 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { IClientsService } from './interfaces/clients-service.interface';
@@ -22,9 +24,30 @@ export class ClientsController {
     @Inject(IClientsService) private readonly clientsService: IClientsService,
   ) {}
 
+  @Get('/search')
+  findAllBySearchTerm(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Query('query') searchTerm: string,
+  ) {
+    const searchTermDto = new SearchTermDto(searchTerm);
+
+    return this.clientsService.findAllBySearchTerm(
+      userId,
+      searchTermDto,
+      page,
+      perPage,
+    );
+  }
+
   @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.clientsService.findAllByUserId(userId);
+  findAll(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+  ) {
+    return this.clientsService.findAllByUserId(userId, page, perPage);
   }
 
   @Get(':clientId')
