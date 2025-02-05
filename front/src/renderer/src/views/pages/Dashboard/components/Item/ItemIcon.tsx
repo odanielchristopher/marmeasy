@@ -1,9 +1,10 @@
 import { IconContainer, IconProps } from '../IconContainer';
 
-interface CardIconProps extends IconProps {
+
+interface ItemIconProps extends IconProps {
   children: React.ReactNode;
 }
 
-export function CardIcon({ children, color, height }: CardIconProps) {
+export function ItemIcon({ children, color, height }: ItemIconProps) {
   return <IconContainer color={color} height={height}>{children}</IconContainer>;
 }

@@ -8,7 +8,7 @@ export const Container = styled.div`
   padding: 1.6rem;
 `;
 
-export const SectionTitle = styled.h4`
+export const SectionTitle = styled.h3`
   font-size: 1.4rem;
   font-weight: 500;
   line-height: 150.007%;
