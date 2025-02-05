@@ -10,7 +10,9 @@ import { ExpenseIcon } from '@renderer/assets/Icons/ExpenseIcon';
 import { HandCoinsIcon } from '@renderer/assets/Icons/HandCoinsIcon';
 import { IncomeIcon } from '@renderer/assets/Icons/IncomeIcon';
 import { Card } from './components/Card';
-import { CardsContainer, Container, FiltersContainer, Main } from './styles';
+import CategoriesSection from './components/CategoriesSection';
+import Graph from './components/Graph';
+import { CardsContainer, Container, FiltersContainer, GraphSection, Main } from './styles';
 
 export default function Dashboard() {
   const { selectedDateRange, handleSelectedDateRange } = useDashboard();
@@ -76,6 +78,11 @@ export default function Dashboard() {
             </Card.Content>
           </Card.Root>
         </CardsContainer>
+
+        <GraphSection>
+          <Graph />
+          <CategoriesSection />
+        </GraphSection>
       </Main>
     </Container>
   );
