@@ -9,6 +9,14 @@ export interface IOrdersRepository {
     findManyByClientIdDto: FindManyByClientIdDto,
   ): Promise<Order[]>;
 
+  findAllByDateRange(
+    userId: string,
+    startDate: Date,
+    endDate: Date,
+    limit?: number,
+    offset?: number,
+  ): Promise<Order[]>;
+
   findFirstByClientId(
     findFirstByClientIdDto: FindFirstOrderByClientIdDto,
   ): Promise<Order>;
@@ -31,6 +39,14 @@ export type FindManyByClientIdDto = {
 export type FindUniqueOrderByIdDto = {
   userId: string;
   id: string;
+};
+
+export type FindAllByDateRangeDto = {
+  userId: string;
+  startDate: Date;
+  endDate: Date;
+  limit?: number;
+  offset?: number;
 };
 
 export type FindFirstOrderByClientIdDto = {

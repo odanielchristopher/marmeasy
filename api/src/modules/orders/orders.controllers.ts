@@ -8,17 +8,27 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { IOrdersService } from './interfaces/orders-service.interface';
+import { DateRangeDto } from './dto/date-range-order.dto';
 
 @Controller('orders')
 export class OrdersController {
   constructor(
     @Inject(IOrdersService) private readonly ordersService: IOrdersService,
   ) {}
+
+  @Get('/date')
+  findAllByDate(
+    @ActiveUserId() userId: string,
+    @Query() dateRangeDto: DateRangeDto,
+  ) {
+    return this.ordersService.findAllByDateRange(userId, dateRangeDto);
+  }
 
   @Get(':clientId')
   findAll(
