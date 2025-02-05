@@ -5,9 +5,9 @@ interface ItemRootProps extends RootProps, ComponentProps<'div'> {
   children: React.ReactNode;
 }
 
-export function ItemRoot({ children, hasAction }: ItemRootProps) {
+export function ItemRoot({ children, ...props }: ItemRootProps) {
   return (
-    <Root hasAction={hasAction}>
+    <Root {...props}>
       {children}
     </Root>
   );

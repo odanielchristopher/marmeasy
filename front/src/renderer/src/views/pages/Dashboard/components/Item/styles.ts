@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 export interface RootProps {
-  hasAction?: boolean;
+  $hasAction?: boolean;
 }
 
 export const Root = styled.div<RootProps>`
@@ -9,12 +9,33 @@ export const Root = styled.div<RootProps>`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  border: 2px solid transparent;
+  border-radius: 1.0rem;
+  padding: .4rem;
+
+  & + & {
+    padding-top: .8rem;
+    border-top-color: #CCC;
+    border-radius: 0;
+  }
+
+  ${({ $hasAction }) => $hasAction && css`
+    cursor: pointer;
+    transition: all ease-in 100ms;
+
+    &:hover {
+      border-color: ${({ theme }) => theme.colors.orange.light};
+      border-radius: 1.0rem;
+      scale: calc(103%);
+    }
+  `}
 `;
 
 export interface BoxProps {
   $justify?: 'center' | 'start' | 'end' | 'between';
   $direction?: 'column' | 'row';
   $align?: 'center' | 'start' | 'end';
+  $gap?: number;
 }
 
 const boxVariants = {
@@ -49,6 +70,7 @@ const boxVariants = {
 
 export const Box = styled.div<BoxProps>`
   display: flex;
+  gap: ${({ $gap }) => $gap ? `${$gap/10}rem` : '.8rem'};
   ${({ $justify }) => $justify ? boxVariants[`justify_${$justify}`] : boxVariants['justify_start']}
   ${({ $align }) => $align ? boxVariants[`align_${$align}`] : boxVariants['align_start']}
   ${({ $direction }) => boxVariants[$direction || 'row']}

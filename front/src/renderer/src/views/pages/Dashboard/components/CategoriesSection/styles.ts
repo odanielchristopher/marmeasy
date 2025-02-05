@@ -9,9 +9,10 @@ export const Container = styled.div`
 `;
 
 export const SectionTitle = styled.h3`
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 500;
   line-height: 150.007%;
+  margin-bottom: .8rem;
 `;
 
 export const Separator = styled.div`
