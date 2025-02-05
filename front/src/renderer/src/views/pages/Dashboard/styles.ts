@@ -2,7 +2,26 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
-  margin-top: 1.6rem;
+  padding-block: 1.6rem;
+  padding-right: 2rem;
   width: 100%;
   height: 100%;
+`;
+
+export const FiltersContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
+export const Main = styled.main`
+  margin-top: 1.6rem;
+  width: 100%;
+`;
+
+export const CardsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
 `;
