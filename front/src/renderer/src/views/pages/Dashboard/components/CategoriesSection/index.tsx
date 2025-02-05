@@ -1,9 +1,13 @@
-import { Container } from './styles';
+import ExpensesSection from './ExpensesSection';
+import IncomesSection from './IncomesSection';
+import { Container, Separator } from './styles';
 
 export default function CategoriesSection() {
   return (
     <Container>
-      Categories
+      <IncomesSection />
+      <Separator />
+      <ExpensesSection />
     </Container>
   );
 }
