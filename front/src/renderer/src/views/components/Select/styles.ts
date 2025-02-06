@@ -10,6 +10,7 @@ interface LabelProps extends HasError {
 }
 
 export const Container = styled.div`
+  min-width: 20rem;
   max-width: 35rem;
   position: relative;
   color: ${({ theme }) => theme.colors.red.dark};

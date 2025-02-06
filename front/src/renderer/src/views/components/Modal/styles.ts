@@ -36,6 +36,7 @@ export const StyledRdxDialogContent = styled(
   width: 100%;
   max-width: ${({ $maxWidth }) => $maxWidth || '45.0rem'};
   max-height: 92vh;
+  min-height: 45rem;
   overflow-y: auto;
 
   &::-webkit-scrollbar {

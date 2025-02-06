@@ -1,7 +1,7 @@
 import { Expense } from '@renderer/app/entities/Expense';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
-import { Item } from '../../Item';
+import { Item } from '../../../components/Item';
 import { SectionTitle } from '../styles';
 import { Container } from './styles';
 

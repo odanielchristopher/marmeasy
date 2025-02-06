@@ -1,14 +1,13 @@
 interface CardIconProps {
-  height?: number;
-  width?: number;
+  size?: number;
 }
 
-export function CardIcon({ height = 25, width = 24 }: CardIconProps) {
+export function CardIcon({ size = 24 }: CardIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
+      width={size}
+      height={size + 1}
       viewBox="0 0 24 25"
       fill="none"
     >

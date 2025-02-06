@@ -1,11 +1,11 @@
-import { Help } from './styles';
+import { Help, HelpProps } from './styles';
 
-interface ItemHelpProps {
+interface ItemHelpProps extends HelpProps {
   text: string;
 }
 
-export function ItemHelp({ text }: ItemHelpProps) {
+export function ItemHelp({ text, ...props }: ItemHelpProps) {
   return (
-    <Help>{text}</Help>
+    <Help {...props}>{text}</Help>
   );
 }

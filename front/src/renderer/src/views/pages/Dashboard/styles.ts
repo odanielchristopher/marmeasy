@@ -11,6 +11,7 @@ export const Container = styled.div`
 export const FiltersContainer = styled.div`
   align-items: center;
   display: flex;
+  gap: 1.2rem;
   justify-content: flex-end;
   width: 100%;
 `;

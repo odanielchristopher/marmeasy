@@ -84,6 +84,7 @@ const TitleVariants = {
   `,
   secondary: css`
     color: ${({ theme }) => theme.colors.gray.main};
+    font-weight: 600;
   `,
 };
 

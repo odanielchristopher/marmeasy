@@ -23,6 +23,10 @@ export const Root = styled.div<RootProps>`
       scale: calc(103%);
     }
   `}
+
+  & + & {
+    margin-top: .8rem;
+  }
 `;
 
 export interface BoxProps {
@@ -99,8 +103,22 @@ export const Currency = styled.strong<CurrencyProps>`
   ${({ color }) => currencyVariants[color || 'default']}
 `;
 
-export const Help = styled.span`
-  font-size: 1.2rem;
+export interface HelpProps {
+  $type?: 'primary' | 'secondary';
+}
+
+const helpVariants = {
+  primary: css`
+    color: ${({ theme }) => theme.colors.black.main};
+  `,
+  secondary: css`
+    color: ${({ theme }) => theme.colors.gray.light};
+  `,
+};
+
+export const Help = styled.span<HelpProps>`
+  font-size: 1.4rem;
   font-weight: 600;
   line-height: 150%;
+  ${({ $type }) => helpVariants[$type || 'primary']}
 `;
