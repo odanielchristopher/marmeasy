@@ -13,12 +13,6 @@ export const Root = styled.div<RootProps>`
   border-radius: 1.0rem;
   padding: .4rem;
 
-  & + & {
-    padding-top: .8rem;
-    border-top-color: #CCC;
-    border-radius: 0;
-  }
-
   ${({ $hasAction }) => $hasAction && css`
     cursor: pointer;
     transition: all ease-in 100ms;
