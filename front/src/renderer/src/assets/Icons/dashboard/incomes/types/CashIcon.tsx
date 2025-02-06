@@ -2,22 +2,35 @@ interface CashIconProps {
   size?: number;
 }
 
-export function CashIcon({ size = 36 }: CashIconProps) {
+export function CashIcon({ size = 24 }: CashIconProps) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
       <path
-        stroke="currentColor"
+        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+        stroke="CurrentColor"
+        strokeWidth="1.25"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.5"
-        d="M18.027 28.84c5.523 0 10-4.477 10-10 0-5.522-4.477-10-10-10s-10 4.478-10 10c0 5.523 4.478 10 10 10Z"
       />
       <path
-        stroke="currentColor"
+        d="M16 8H10C9.46957 8 8.96086 8.21071 8.58579 8.58579C8.21071 8.96086 8 9.46957 8 10C8 10.5304 8.21071 11.0391 8.58579 11.4142C8.96086 11.7893 9.46957 12 10 12H14C14.5304 12 15.0391 12.2107 15.4142 12.5858C15.7893 12.9609 16 13.4696 16 14C16 14.5304 15.7893 15.0391 15.4142 15.4142C15.0391 15.7893 14.5304 16 14 16H8"
+        stroke="CurrentColor"
+        strokeWidth="1.25"
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1.5"
-        d="M23.027 13.34h-7.5a2.39 2.39 0 0 0-1.767.806 2.895 2.895 0 0 0-.733 1.944c0 .73.264 1.43.733 1.945a2.39 2.39 0 0 0 1.767.805h5c.663 0 1.3.29 1.768.806.469.515.732 1.215.732 1.944 0 .73-.263 1.43-.732 1.945a2.39 2.39 0 0 1-1.768.805h-7.5M18.027 26.34v-15"
+      />
+      <path
+        d="M12 18V6"
+        stroke="CurrentColor"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

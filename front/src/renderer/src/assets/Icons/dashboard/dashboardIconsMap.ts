@@ -1,5 +1,4 @@
 import { ExpenseIcon } from '../ExpenseIcon';
-import { CashIcon } from '../payments/types/CashIcon';
 import { DeliveryIcon } from './expenses/DeliveryIcon';
 import { EmployeesIcon } from './expenses/Employees';
 import { EquipmentsIcon } from './expenses/Equipments';
@@ -8,6 +7,7 @@ import { MeatsIcon } from './expenses/MeatsIcon';
 import { TaxesIcon } from './expenses/TaxesIcon';
 import { UtensilsIcon } from './expenses/UtensilsIcon';
 import { CardIcon } from './incomes/types/CardIcon';
+import { CashIcon } from './incomes/types/CashIcon';
 
 export const dashboardIconsMap = {
   income: {
@@ -18,10 +18,10 @@ export const dashboardIconsMap = {
     default: ExpenseIcon,
     taxes: TaxesIcon,
     employees: EmployeesIcon,
-    equipment: EquipmentsIcon,
+    equipments: EquipmentsIcon,
     meats: MeatsIcon,
     utensils: UtensilsIcon,
     delivery: DeliveryIcon,
-    garrison: GarrisonsIcon,
+    garrisons: GarrisonsIcon,
   },
 };
