@@ -34,7 +34,25 @@ export const GraphSection = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 1.6rem;
   width: 100%;
-  height: 58.0rem;
-
+  height: 58rem;
   margin-bottom: 4.2rem;
+
+  @media (max-width: 1170px) {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    grid-template-rows: repeat(4, 1fr); /* 4 linhas */
+    height: auto; /* Ajusta altura automaticamente */
+
+    & > :first-child {
+      grid-column: span 2; /* Ocupa as duas colunas */
+      grid-row: span 2; /* Ocupa as duas primeiras linhas */
+    }
+
+    & > :nth-child(2) {
+      grid-column: span 2; /* Ocupa as duas colunas */
+      grid-row: span 2; /* Ocupa as duas últimas linhas */
+    }
+
+    height: 60.0rem;
+  }
 `;
+
