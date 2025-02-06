@@ -24,7 +24,7 @@ export default function Favorites() {
         <Card.Content>
           <Card.Header>
             <Card.Icon color="success" height={28}>
-              <CheckIcon width={29} height={28} />
+              <CheckIcon size={28} />
             </Card.Icon>
             <Card.Title text="1° do cardápio" type="secondary" />
           </Card.Header>

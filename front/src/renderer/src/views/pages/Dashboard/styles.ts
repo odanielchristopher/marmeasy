@@ -35,7 +35,7 @@ export const GraphSection = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 1.6rem;
   width: 100%;
-  height: 58rem;
+  height: 48rem;
   margin-bottom: 4.2rem;
 
   @media (max-width: 1170px) {
@@ -53,7 +53,14 @@ export const GraphSection = styled.div`
       grid-row: span 2; /* Ocupa as duas últimas linhas */
     }
 
-    height: 60.0rem;
+    height: 80rem;
+  }
+
+  @media (max-width: 768px) {
+    height: 60rem;
+  }
+
+  @media (max-width: 520px) {
+    height: 40rem;
   }
 `;
-

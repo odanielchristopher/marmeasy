@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Description = styled.p`
   display: block;
@@ -13,9 +13,30 @@ export const Description = styled.p`
   border-bottom: 1px solid #ccc;
 `;
 
-export const Label = styled.strong`
+export interface LabelProps {
+  type?: 'primary' | 'secondary' | 'terciary';
+}
+
+const labelVariants = {
+  primary: css`
+    color: ${({ theme }) => theme.colors.black.main};
+  `,
+  secondary: css`
+    color: ${({ theme }) => theme.colors.gray.light};
+    font-weight: 600;
+  `,
+  terciary: css`
+    color: ${({ theme }) => theme.colors.gray.light};
+    font-size: 1.6rem;
+    font-weight: 600;
+  `,
+};
+
+export const Label = styled.strong<LabelProps>`
   font-size: 1.8rem;
   font-weight: 500;
   line-height: 130%;
   letter-spacing: -0.1rem;
+
+  ${({ type }) => labelVariants[type || 'primary']}
 `;

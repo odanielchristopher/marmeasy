@@ -1,9 +1,9 @@
-import { Label } from './styles';
+import { Label, LabelProps } from './styles';
 
-interface ModalLabelProps {
+interface ModalLabelProps extends LabelProps {
   text: string;
 }
 
-export function ModalLabel({ text }: ModalLabelProps) {
-  return <Label>{text}</Label>;
+export function ModalLabel({ text, ...props }: ModalLabelProps) {
+  return <Label {...props}>{text}</Label>;
 }
