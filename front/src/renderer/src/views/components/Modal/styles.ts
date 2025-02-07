@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const overlayShow = keyframes`
   from {
@@ -21,8 +21,9 @@ const contentShow = keyframes`
 	}
 `;
 
-interface DialogContentProps {
+export interface DialogContentProps {
   $maxWidth?: string;
+  $maxHeight?: number;
 }
 
 export const StyledRdxDialogContent = styled(
@@ -49,6 +50,10 @@ export const StyledRdxDialogContent = styled(
   transform: translate(-50%, -50%);
   z-index: 50;
   outline: none;
+
+  ${({ $maxHeight }) => $maxHeight && css`
+    max-height: ${$maxHeight/10}rem;
+  `}
 `;
 
 export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`

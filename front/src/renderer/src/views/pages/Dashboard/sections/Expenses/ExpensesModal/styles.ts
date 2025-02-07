@@ -13,7 +13,7 @@ export const ListPerDate = styled.div`
 export const AddButton = styled.button`
   align-items: center;
   background-color: transparent;
-  border: 2px solid ${({ theme }) => theme.colors.orange.light };
+  border: 2px solid transparent;
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.orange.light };
   display: flex;
@@ -23,6 +23,7 @@ export const AddButton = styled.button`
 
   &:hover, &:focus {
     color: #FFF;
+    border-color: ${({ theme }) => theme.colors.orange.light };
     background-color: ${({ theme }) => theme.colors.orange.light };
   }
 `;

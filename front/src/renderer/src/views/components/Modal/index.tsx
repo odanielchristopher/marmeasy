@@ -5,18 +5,18 @@ import { CloseIcon } from '@renderer/assets/Icons/CloseIcon';
 import {
   ActionContainer,
   CloseButton,
+  DialogContentProps,
   Header,
   StyledRdxDialogContent,
   StyledRdxDialogOverlay,
   Title,
 } from './styles';
-export interface ModalProps {
+export interface ModalProps extends DialogContentProps {
   open: boolean;
   children: React.ReactNode;
   onClose?(): void;
   title: string;
   action?: React.ReactNode;
-  $maxWidth?: string;
 }
 
 export default function Modal({
@@ -25,13 +25,13 @@ export default function Modal({
   open,
   children,
   onClose,
-  $maxWidth,
+  ...props
 }: ModalProps) {
   return (
     <Dialog.Root open={open} onOpenChange={onClose}>
       <Dialog.Portal>
         <StyledRdxDialogOverlay />
-        <StyledRdxDialogContent aria-describedby="" $maxWidth={$maxWidth}>
+        <StyledRdxDialogContent aria-describedby="" {...props}>
           <Dialog.Title about={title}>
             <Header>
               <CloseButton onClick={onClose}>
