@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { OrderDetail } from '../../Items/NewItemModal/useNewItemModal';
+import { OrderDetail } from '../../Items/ItemForm/useItemForm';
 
 export const orderFormSchema = z.object({
   date: z.date(),
@@ -61,23 +61,15 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     setOrderDate(date);
   }
 
-  function handleOpenModalIngredients(product: Product) {
+  function handleOpenIngredientModal(product: Product) {
     setSelectedProduct(product);
     setOpenModalIngredients(true);
-  }
-
-  function handleCloseModalIngredients() {
-    setOpenModalIngredients(false);
-    // setSelectedProduct(null);
-  }
-
-  function handleOpenIngredientModal(product: Product) {
-    handleOpenModalIngredients(product);
+    setIsDeleteModalOpen(false);
     setIsOrderModalOpen(false);
   };
 
   function handleCloseIngredientModal() {
-    handleCloseModalIngredients();
+    setOpenModalIngredients(false);
     setIsOrderModalOpen(true);
   };
 
@@ -148,8 +140,6 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     setOrderDetails,
     handleCategorySelect,
     handleOrderDateChange,
-    handleOpenModalIngredients,
-    handleCloseModalIngredients,
     handleOpenIngredientModal,
     handleCloseIngredientModal,
     handleOrderSubmit,

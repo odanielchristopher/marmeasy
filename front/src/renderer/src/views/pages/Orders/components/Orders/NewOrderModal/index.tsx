@@ -8,6 +8,7 @@ import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
 import NewItemModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
+import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 import useOrderModal from './useNewOrderModal';
@@ -159,7 +160,15 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
       )}
 
       {isDeleteModalOpen && editIndex !== null && (
-        <></>
+        <DeleteItemModal
+          open={isDeleteModalOpen}
+          onClose={handleCloseEditModal}
+          title="Deletar Pedido"
+          answer="Deseja deletar este pedido?"
+          index={editIndex}
+          setOrderDetails={setOrderDetails}
+          orderDetails={orderDetails}
+        />
       )}
     </>
   );
