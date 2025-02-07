@@ -15,6 +15,7 @@ interface ItemFormProps {
   product: Product;
   onSubmit(details: OrderDetail): void;
   order?: OrderDetail;
+  hasIngredients: boolean;
 }
 
 export default function ItemForm({
@@ -22,6 +23,7 @@ export default function ItemForm({
   product,
   onSubmit,
   order,
+  hasIngredients,
 }: ItemFormProps) {
   const {
     selectedIngredients,
@@ -34,7 +36,8 @@ export default function ItemForm({
   } = useItemForm(order, product,onSubmit, onClose);
 
   return (
-    <>
+    hasIngredients ? (
+      <>
       <Container>
         <div key={product.id}>
           {product.ingredients.map((ingredient: Ingredient) => {
@@ -82,6 +85,23 @@ export default function ItemForm({
       <Button onClick={handleSubmit(onSubmitForm)}>
         Adicionar
       </Button>
-  </>
+    </>
+    ) : (
+      <Container>
+        <QuantityContainer>
+          <p>Quantidade*:</p>
+          <TimesNumericInput
+            $error={errors.quantity?.message}
+            value={quantity}
+            name="quantity"
+            onInputChange={handleQuantityChange}
+          />
+        </QuantityContainer>
+
+        <Button onClick={handleSubmit(onSubmitForm)}>
+          Adicionar
+        </Button>
+      </Container>
+    )
   );
 }

@@ -10,7 +10,7 @@ export const OrderDetailSchema = z.object({
     id: z.string(),
     name: z.string(),
     icon: z.string(),
-  })).min(1, 'Selecione pelo menos um ingrediente'),
+  })),
   quantity: z.number().min(1, 'A quantidade deve ser maior que 0'),
   productName: z.string(),
   productImage: z.string(),

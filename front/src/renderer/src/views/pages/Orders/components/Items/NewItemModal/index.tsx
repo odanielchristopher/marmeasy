@@ -6,7 +6,7 @@ import { OrderDetail } from '../ItemForm/useItemForm';
 import { Container } from './styles';
 
 
-interface IngredientsModalProps {
+interface NewItemModalProps {
   open: boolean;
   children?: React.ReactNode;
   onClose(): void;
@@ -15,17 +15,19 @@ interface IngredientsModalProps {
   product: Product;
   title: string;
   onSubmit(details: OrderDetail): void;
+  hasIngredients: boolean;
 }
 
 
-export default function IngredientsModal({
+export default function NewItemModal({
   open,
   answer,
   onClose,
   product,
   title,
   onSubmit : addProductToOrder,
-}: IngredientsModalProps) {
+  hasIngredients,
+}: NewItemModalProps) {
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -35,6 +37,7 @@ export default function IngredientsModal({
           product={product}
           onSubmit={addProductToOrder}
           onClose={onClose}
+          hasIngredients={hasIngredients}
         />
       </Container>
     </Modal>

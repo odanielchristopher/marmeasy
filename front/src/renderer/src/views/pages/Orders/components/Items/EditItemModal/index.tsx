@@ -19,6 +19,7 @@ interface EditModalProps {
   addProductToOrder(details: OrderDetail): void;
   setOrderDetails: (details: OrderDetail[]) => void;
   orderDetails: OrderDetail[];
+  hasIngredients: boolean;
 }
 
 
@@ -31,6 +32,7 @@ export default function EditItemModal({
   index,
   setOrderDetails,
   orderDetails,
+  hasIngredients,
 }: EditModalProps) {
   const {
     handleConfimEdit,
@@ -45,6 +47,7 @@ export default function EditItemModal({
           onSubmit={ handleConfimEdit }
           onClose={onClose}
           order={orderDetails[index]}
+          hasIngredients={hasIngredients}
         />
       </Container>
     </Modal>

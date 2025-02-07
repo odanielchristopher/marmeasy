@@ -7,7 +7,7 @@ import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 import Modal from '@renderer/views/components/Modal';
-import IngredientModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
+import NewItemModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 import useOrderModal from './useNewOrderModal';
@@ -123,7 +123,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
       )}
 
       {openModalIngredients && selectedProduct && (
-        <IngredientModal
+        <NewItemModal
           open={openModalIngredients}
           onClose={handleCloseIngredientModal}
           product={selectedProduct}
@@ -138,6 +138,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               : 'Deseja adicionar este produto ao pedido?'
           }
           onSubmit={addProductToOrder}
+          hasIngredients={selectedProduct.ingredients.length > 0}
         />
       )}
 
@@ -153,6 +154,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
           addProductToOrder={addProductToOrder}
           setOrderDetails={setOrderDetails}
           orderDetails={orderDetails}
+          hasIngredients={selectedProduct.ingredients.length > 0}
         />
       )}
 
