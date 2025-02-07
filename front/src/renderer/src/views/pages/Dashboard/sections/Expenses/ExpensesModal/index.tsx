@@ -1,17 +1,32 @@
-import { formatCurrency } from '@renderer/app/utils/formatCurrency';
-import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
 import { useCallback, useState } from 'react';
+
+import { Expense } from '@renderer/app/entities/Expense';
+import { History } from '@renderer/app/services/types';
+
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
-import NewExpenseModal from '../NewExpenseModal';
-import { AddButton, ListPerDate } from './styles';
+import { translateExpenseType } from '../../CategoriesSection/ExpensesSection';
 
+import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+import { formatDay } from '@renderer/app/utils/formatDay';
+import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
+
+import NewExpenseModal from '../NewExpenseModal';
+
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
+import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
+import { AddButton, ListPerDate } from './styles';
 interface ExpensesModalProps {
   open: boolean;
   onClose(): void;
+  expensesHistory: History<Expense>;
 }
 
-export default function ExpensesModal({ onClose, open }: ExpensesModalProps) {
+export default function ExpensesModal({
+  onClose,
+  open,
+  expensesHistory,
+}: ExpensesModalProps) {
   const [isOpenNewExpenseModal, setIsOpenNewExpenseModal] = useState(false);
 
   const handleOpenNewExpenseModal = useCallback(() => {
@@ -51,63 +66,51 @@ export default function ExpensesModal({ onClose, open }: ExpensesModalProps) {
         </AddButton>
       }
     >
-      <ListPerDate>
-        <Modal.Label text="Janeiro, 2025" />
-        <Modal.Description text="Sexta, 31 jan. 2025" />
+      {Object.entries(expensesHistory).map(([monthYear, days]) => (
+        <ListPerDate key={monthYear}>
+          <Modal.Label
+            text={capitalizeFirstLetter(formatMonthYear(monthYear))}
+          />
 
-        <Item.Root $hasAction>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <DashboardCategoryIcon type="expense" icon="default" size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Outras saídas" />
-              <Item.Currency
-                text={`R$ ${formatCurrency(120.58)}`}
-                color="danger"
+          {Object.entries(days).map(([day, expenses]) => (
+            <div key={day}>
+              <Modal.Description
+                text={capitalizeFirstLetter(formatDay(day, monthYear))}
               />
-            </Item.Box>
-          </Item.Box>
-        </Item.Root>
 
-        <Item.Root $hasAction>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <DashboardCategoryIcon type="expense" icon="delivery" size={32} />
-            </Item.Icon>
+              {expenses.map((expense) => {
+                const type = expense.type.toLowerCase();
+                const title =
+                  translateExpenseType[
+                    type as keyof typeof translateExpenseType
+                  ];
 
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Entregas" />
-              <Item.Currency
-                text={`R$ ${formatCurrency(120.58)}`}
-                color="danger"
-              />
-            </Item.Box>
-          </Item.Box>
-        </Item.Root>
-      </ListPerDate>
+                return (
+                  <Item.Root $hasAction key={expense.id}>
+                    <Item.Box $align="center">
+                      <Item.Icon height={32}>
+                        <DashboardCategoryIcon
+                          type="expense"
+                          icon={type}
+                          size={32}
+                        />
+                      </Item.Icon>
 
-      <ListPerDate>
-        <Modal.Label text="Dezembro, 2024" />
-        <Modal.Description text="Sábado, 31 dez. 2024" />
-
-        <Item.Root $hasAction>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <DashboardCategoryIcon type="expense" icon="default" size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Outras saídas" />
-              <Item.Currency
-                text={`R$ ${formatCurrency(120.58)}`}
-                color="danger"
-              />
-            </Item.Box>
-          </Item.Box>
-        </Item.Root>
-      </ListPerDate>
+                      <Item.Box $direction="column" $gap={-7}>
+                        <Item.Title text={title} />
+                        <Item.Currency
+                          text={`R$ ${formatCurrency(expense.value)}`}
+                          color="danger"
+                        />
+                      </Item.Box>
+                    </Item.Box>
+                  </Item.Root>
+                );
+              })}
+            </div>
+          ))}
+        </ListPerDate>
+      ))}
     </Modal.Root>
   );
 }

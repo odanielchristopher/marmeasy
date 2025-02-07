@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+export const ListPerDate = styled.div`
   & + & {
     margin-top: 2.4rem;
   }

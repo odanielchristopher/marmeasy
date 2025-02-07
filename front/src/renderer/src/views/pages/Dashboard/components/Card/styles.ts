@@ -25,6 +25,7 @@ export const Root = styled.button<RootProps>`
   border-radius: 1rem;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex: 1 1 20.0rem;
   justify-content: space-between;
   padding: 1.2rem;
   transition: all ease-in 100ms;
@@ -36,9 +37,14 @@ export const Root = styled.button<RootProps>`
     scale: calc(103%);
   }
 
+  &:disabled {
+    border-color: transparent;
+    scale: 1;
+    cursor: inherit;
+  }
+
   ${({ $justify }) => RootVariants[$justify || 'between']}
 
-  flex: 1 1 20.0rem;
 
   @media (max-width: 1069px) {
     flex: 1 1 30rem;
@@ -97,9 +103,28 @@ export const Title = styled.h3<TitleProps>`
   ${({ type }) => TitleVariants[type || 'primary']};
 `;
 
-export const MainInfo = styled.strong`
+export interface MainInfoProps {
+  align?: 'center' | 'start' | 'end';
+}
+
+const mainInfoVariants = {
+  start: css`
+    text-align: start;
+  `,
+  center: css`
+    text-align: center;
+  `,
+  end: css`
+    text-align: end;
+  `,
+};
+
+export const MainInfo = styled.strong<MainInfoProps>`
   font-size: 2.4rem;
   font-weight: 600;
   line-height: 150.007%;
   max-width: 18rem;
+  text-align: left;
+
+  ${({ align }) => mainInfoVariants[align || 'start']};
 `;

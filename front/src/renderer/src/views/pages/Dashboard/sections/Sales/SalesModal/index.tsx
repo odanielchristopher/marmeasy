@@ -1,56 +1,67 @@
+import { Sale } from '@renderer/app/entities/Sale';
+import { History } from '@renderer/app/services/types';
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+import { formatDay } from '@renderer/app/utils/formatDay';
+import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
 import { HandCoinsIcon } from '@renderer/assets/Icons/HandCoinsIcon';
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
-import { Container } from './styles';
+import { ListPerDate } from './styles';
 
 interface SalesModalProps {
   open: boolean;
   onClose(): void;
+  salesHistory: History<Sale>;
 }
 
-export default function SalesModal({ onClose, open }: SalesModalProps) {
+export default function SalesModal({
+  onClose,
+  open,
+  salesHistory,
+}: SalesModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Vendas">
-      <Container>
-        <Modal.Label text="Janeiro, 2025" />
-        <Modal.Description text="Sexta, 31 jan. 2025" />
-
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon>
-              <HandCoinsIcon size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Plataforma" />
-              <Item.Help text="3 pedidos" $type="secondary" />
-            </Item.Box>
-          </Item.Box>
-
-          <Item.Currency
-            text={`R$ ${formatCurrency(120.58)}`}
-            color="success"
+      {Object.entries(salesHistory).map(([monthYear, days], index) => (
+        <ListPerDate key={index}>
+          <Modal.Label
+            text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />
-        </Item.Root>
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon>
-              <HandCoinsIcon size={32} />
-            </Item.Icon>
 
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Plataforma" />
-              <Item.Help text="3 pedidos" $type="secondary" />
-            </Item.Box>
-          </Item.Box>
+          {Object.entries(days).map(([day, sales], index) => (
+            <div key={index}>
+              <Modal.Description
+                text={capitalizeFirstLetter(formatDay(day, monthYear))}
+              />
 
-          <Item.Currency
-            text={`R$ ${formatCurrency(120.58)}`}
-            color="success"
-          />
-        </Item.Root>
-      </Container>
+              {sales.map((sale) => (
+                <Item.Root key={sale.id}>
+                  <Item.Box $align="center">
+                    <Item.Icon>
+                      <HandCoinsIcon size={32} />
+                    </Item.Icon>
+
+                    <Item.Box $direction="column" $gap={-7}>
+                      <Item.Title
+                        text={capitalizeFirstLetter(sale.clientName)}
+                      />
+                      <Item.Help
+                        text={`${sale.quantity} pedidos`}
+                        $type="secondary"
+                      />
+                    </Item.Box>
+                  </Item.Box>
+
+                  <Item.Currency
+                    text={`R$ ${formatCurrency(sale.value)}`}
+                    color="success"
+                  />
+                </Item.Root>
+              ))}
+            </div>
+          ))}
+        </ListPerDate>
+      ))}
     </Modal.Root>
   );
 }

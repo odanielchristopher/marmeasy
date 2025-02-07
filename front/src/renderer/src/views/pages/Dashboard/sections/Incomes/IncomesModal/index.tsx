@@ -1,57 +1,75 @@
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
-import { Container } from './styles';
 
+import { Income } from '@renderer/app/entities/Income';
+import { History } from '@renderer/app/services/types';
+
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
+import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
+
+import { formatDay } from '@renderer/app/utils/formatDay';
+import { translateIncomeType } from '../../CategoriesSection/IncomesSection';
+import { ListPerDate } from './styles';
 interface IncomesModalProps {
   open: boolean;
   onClose(): void;
+  incomesHistory: History<Income>;
 }
 
-export default function IncomesModal({ onClose, open }: IncomesModalProps) {
+export default function IncomesModal({
+  onClose,
+  open,
+  incomesHistory,
+}: IncomesModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Entradas">
-      <Container>
-        <Modal.Label text="Janeiro, 2025" />
-        <Modal.Description text="Sexta, 31 jan. 2025" />
-
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <DashboardCategoryIcon type="income" icon="default" size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Plataforma" />
-              <Item.Help text="Crédito" $type="secondary" />
-            </Item.Box>
-          </Item.Box>
-
-          <Item.Currency
-            text={`R$ ${formatCurrency(120.58)}`}
-            color="success"
+      {Object.entries(incomesHistory).map(([monthYear, days]) => (
+        <ListPerDate key={monthYear}>
+          <Modal.Label
+            text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />
-        </Item.Root>
 
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <DashboardCategoryIcon type="income" icon="cash" size={32} />
-            </Item.Icon>
+          {Object.entries(days).map(([day, incomes], index) => (
+            <div key={index}>
+              <Modal.Description
+                text={capitalizeFirstLetter(formatDay(day, monthYear))}
+              />
 
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="João" />
-              <Item.Help text="Débito" $type="secondary" />
-            </Item.Box>
-          </Item.Box>
+              {incomes.map((income) => (
+                <Item.Root key={income.id}>
+                  <Item.Box $align="center">
+                    <Item.Icon height={32}>
+                      <DashboardCategoryIcon
+                        type="income"
+                        icon={income.type === 'CASH' ? 'cash' : 'default'}
+                        size={32}
+                      />
+                    </Item.Icon>
 
-          <Item.Currency
-            text={`R$ ${formatCurrency(120.58)}`}
-            color="success"
-          />
-        </Item.Root>
-      </Container>
+                    <Item.Box $direction="column" $gap={-7}>
+                      <Item.Title
+                        text={capitalizeFirstLetter(income.clientName)}
+                      />
+                      <Item.Help
+                        text={translateIncomeType[income.type]}
+                        $type="secondary"
+                      />
+                    </Item.Box>
+                  </Item.Box>
+
+                  <Item.Currency
+                    text={`R$ ${formatCurrency(income.value)}`}
+                    color="success"
+                  />
+                </Item.Root>
+              ))}
+            </div>
+          ))}
+        </ListPerDate>
+      ))}
     </Modal.Root>
   );
 }

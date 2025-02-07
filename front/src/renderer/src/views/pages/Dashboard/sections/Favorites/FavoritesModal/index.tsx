@@ -1,3 +1,4 @@
+import { Favorite } from '@renderer/app/services/dashboard/favoritesService/getAll';
 import { CheckIcon } from '@renderer/assets/Icons/CheckIcon';
 import { IngredientIcon } from '@renderer/assets/Icons/IngredientIcon';
 import { Item } from '../../../components/Item';
@@ -7,64 +8,40 @@ import { Container } from './styles';
 interface FavoritesModalProps {
   open: boolean;
   onClose(): void;
+  favorites: { label: string; favorite: Favorite; isFirst: boolean }[];
 }
 
-export default function FavoritesModal({ onClose, open }: FavoritesModalProps) {
+export default function FavoritesModal({
+  onClose,
+  open,
+  favorites,
+}: FavoritesModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Favoritos">
-      <Container>
-        <Item.Box $align="center">
-          <CheckIcon color="#089F67" />
-          <Modal.Label text="1° do cardápio" type="secondary" />
-        </Item.Box>
-
-        <Item.Root>
+      {favorites.map(({ label, favorite, isFirst }) => (
+        <Container key={favorite.id}>
           <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <IngredientIcon size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Strogonoff de Frango" />
-              <Item.Help text="54 pedidos" $type="secondary" />
-            </Item.Box>
+            {isFirst && <CheckIcon color="#089F67" />}
+            <Modal.Label text={label} type="secondary" />
           </Item.Box>
-        </Item.Root>
-      </Container>
 
-      <Container>
-        <Modal.Label text="2° do cardápio" type="terciary" />
+          <Item.Root>
+            <Item.Box $align="center">
+              <Item.Icon height={32}>
+                <IngredientIcon size={32} />
+              </Item.Icon>
 
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <IngredientIcon size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Calabresa" />
-              <Item.Help text="38 pedidos" $type="secondary" />
+              <Item.Box $direction="column" $gap={-7}>
+                <Item.Title text={favorite.title} />
+                <Item.Help
+                  text={`${favorite.quantity} pedidos`}
+                  $type="secondary"
+                />
+              </Item.Box>
             </Item.Box>
-          </Item.Box>
-        </Item.Root>
-      </Container>
-
-      <Container>
-        <Modal.Label text="3° do cardápio" type="terciary" />
-
-        <Item.Root>
-          <Item.Box $align="center">
-            <Item.Icon height={32}>
-              <IngredientIcon size={32} />
-            </Item.Icon>
-
-            <Item.Box $direction="column" $gap={-7}>
-              <Item.Title text="Picadinho de carne" />
-              <Item.Help text="26 pedidos" $type="secondary" />
-            </Item.Box>
-          </Item.Box>
-        </Item.Root>
-      </Container>
+          </Item.Root>
+        </Container>
+      ))}
     </Modal.Root>
   );
 }

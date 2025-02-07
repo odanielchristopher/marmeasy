@@ -1,9 +1,9 @@
-import { MainInfo } from './styles';
+import { MainInfo, MainInfoProps } from './styles';
 
-interface CardInfoProps {
+interface CardInfoProps extends MainInfoProps {
   text: string;
 }
 
-export function CardInfo({ text }: CardInfoProps) {
-  return <MainInfo>{text}</MainInfo>;
+export function CardInfo({ text, ...props }: CardInfoProps) {
+  return <MainInfo {...props}>{text}</MainInfo>;
 }
