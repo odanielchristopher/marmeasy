@@ -42,9 +42,7 @@ export default function Expenses() {
           </>
         )}
 
-        {isLoading && (
-          <Loader size={24} $isLoading />
-        )}
+        {isLoading && <Loader size={24} $isLoading />}
       </Card.Root>
     </>
   );

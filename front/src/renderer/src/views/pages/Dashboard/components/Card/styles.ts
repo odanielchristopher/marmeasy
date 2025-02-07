@@ -25,7 +25,7 @@ export const Root = styled.button<RootProps>`
   border-radius: 1rem;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex: 1 1 20.0rem;
+  flex: 1 1 20rem;
   justify-content: space-between;
   padding: 1.2rem;
   transition: all ease-in 100ms;
@@ -44,7 +44,6 @@ export const Root = styled.button<RootProps>`
   }
 
   ${({ $justify }) => RootVariants[$justify || 'between']}
-
 
   @media (max-width: 1069px) {
     flex: 1 1 30rem;

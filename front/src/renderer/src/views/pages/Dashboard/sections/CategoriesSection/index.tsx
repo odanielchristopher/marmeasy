@@ -58,7 +58,7 @@ export default function CategoriesSection() {
         </>
       )}
 
-      {isLoading && <Loader size={24} $isLoading/>}
+      {isLoading && <Loader size={24} $isLoading />}
     </Container>
   );
 }

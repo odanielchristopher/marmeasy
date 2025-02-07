@@ -5,7 +5,7 @@ import { mockedHttpClient } from '../mockedHttpClient';
 export type GetIncomesResponse = {
   total: number;
   history: History<Income>;
-}
+};
 
 export async function getAll() {
   const { data } = await mockedHttpClient.get<GetIncomesResponse>('/incomes');

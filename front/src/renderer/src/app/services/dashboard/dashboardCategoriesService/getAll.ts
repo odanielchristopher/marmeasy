@@ -5,7 +5,7 @@ import { mockedHttpClient } from '../mockedHttpClient';
 export type Categories = {
   incomes: Income[];
   expenses: Expense[];
-}
+};
 
 export async function getAll() {
   const { data } = await mockedHttpClient.get<Categories>('/categories');
