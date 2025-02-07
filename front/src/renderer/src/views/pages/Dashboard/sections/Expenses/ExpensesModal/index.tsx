@@ -1,7 +1,9 @@
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
+import { useCallback, useState } from 'react';
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
+import NewExpenseModal from '../NewExpenseModal';
 import { AddButton, ListPerDate } from './styles';
 
 interface ExpensesModalProps {
@@ -10,13 +12,29 @@ interface ExpensesModalProps {
 }
 
 export default function ExpensesModal({ onClose, open }: ExpensesModalProps) {
+  const [isOpenNewExpenseModal, setIsOpenNewExpenseModal] = useState(false);
+
+  const handleOpenNewExpenseModal = useCallback(() => {
+    setIsOpenNewExpenseModal(true);
+  }, []);
+
+  const handleCloseNewExpenseModal = useCallback(() => {
+    setIsOpenNewExpenseModal(false);
+  }, []);
+
+  if (isOpenNewExpenseModal) {
+    return (
+      <NewExpenseModal open onClose={handleCloseNewExpenseModal}/>
+    );
+  }
+
   return (
     <Modal.Root
       open={open}
       onClose={onClose}
       title="Saídas"
       action={
-        <AddButton>
+        <AddButton onClick={handleOpenNewExpenseModal}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"

@@ -10,8 +10,6 @@ interface LabelProps extends HasError {
 }
 
 export const Container = styled.div`
-  min-width: 20rem;
-  max-width: 35rem;
   position: relative;
   color: ${({ theme }) => theme.colors.red.dark};
 
@@ -28,9 +26,21 @@ export const Container = styled.div`
   }
 `;
 
-export const SelectContainer = styled.div`
-  max-width: 35rem;
+export interface SelectContainerProps extends SelectTriggerProps {}
+
+const selectContainerVariants = {
+  primary: css`
+    max-width: 35rem;
+  `,
+  secondary: css`
+    width: 100%;
+  `,
+};
+
+export const SelectContainer = styled.div<SelectContainerProps>`
   position: relative;
+
+  ${({ $type: type }) => selectContainerVariants[type || 'primary']}
 `;
 
 export const StyledLabel = styled.label<LabelProps>`
@@ -63,11 +73,26 @@ export const StyledLabel = styled.label<LabelProps>`
     `}
 `;
 
-export const StyledRdxSelectTrigger = styled(RdxSelect.Trigger)<HasError>`
+export interface SelectTriggerProps extends HasError {
+  $type?: 'primary' | 'secondary';
+}
+
+const selectTriggerVariants = {
+  primary: css`
+    border: 0.1rem solid transparent;
+    box-shadow: 0px 6px 4px 0px rgba(0, 0, 0, 0.08);
+    max-width: 35rem;
+  `,
+  secondary: css`
+    border: 0.1rem solid #ccc;
+  `,
+};
+
+export const StyledRdxSelectTrigger = styled(
+  RdxSelect.Trigger,
+)<SelectTriggerProps>`
   background-color: #fff;
   border-radius: 1rem;
-  border: 0.1rem solid transparent;
-  box-shadow: 0px 6px 4px 0px rgba(0, 0, 0, 0.08);
   padding-inline: 1.2rem;
   padding-top: 0.4rem;
   width: 100%;
@@ -79,6 +104,8 @@ export const StyledRdxSelectTrigger = styled(RdxSelect.Trigger)<HasError>`
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
   font-size: 1.6rem;
+
+  ${({ $type: type }) => selectTriggerVariants[type || 'primary']}
 
   ${({ theme, $error }) =>
     $error &&
@@ -99,9 +126,9 @@ export const StyledRdxSelectContent = styled(RdxSelect.Content)`
   background: #fff;
   border-radius: 0 0 0.8rem 0.8rem;
   box-shadow: 0rem 1.1rem 2rem 0rem rgba(0, 0, 0, 0.1);
-  z-index: 4;
+  z-index: 50;
   width: var(--radix-select-trigger-width);
-  max-height: 30rem;
+  max-height: 40rem;
 `;
 
 export const StyledRdxSelectUpButton = styled(RdxSelect.ScrollUpButton)`
@@ -129,13 +156,15 @@ export const StyledRdxSelectViewport = styled(RdxSelect.Viewport)`
 export const StyledRdxSelectItem = styled(RdxSelect.Item)`
   padding: 0.8rem;
   outline: none;
+  cursor: pointer;
+  transition: background ease 0.3s;
+  border-radius: .4rem;
 
   &[data-state='checked'] {
     font-weight: 600;
   }
 
-  &[data-highlighted] {
-    background: #f8f9fa;
-    transition: all ease 0.3s;
+  &:hover {
+    background: #f0f0f0;
   }
 `;

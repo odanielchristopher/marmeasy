@@ -7,6 +7,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 import {
   Container,
   SelectContainer,
+  SelectTriggerProps,
   StyledLabel,
   StyledRdxSelectContent,
   StyledRdxSelectDownButton,
@@ -17,7 +18,7 @@ import {
   StyledRdxSelectViewport,
 } from './styles';
 
-interface SelectProps {
+interface SelectProps extends SelectTriggerProps {
   $error?: string;
   placeholder?: string;
   options: {
@@ -34,6 +35,7 @@ export default function Select({
   onChange,
   placeholder,
   value,
+  ...props
 }: SelectProps) {
   const [selectedValue, setSelectedValue] = useState(value ?? '');
 
@@ -44,13 +46,13 @@ export default function Select({
 
   return (
     <Container>
-      <SelectContainer>
+      <SelectContainer {...props}>
         <StyledLabel $error={$error} $isSeleted={!!selectedValue}>
           {placeholder}
         </StyledLabel>
 
         <RdxSelect.Root value={value} onValueChange={handleSelect}>
-          <StyledRdxSelectTrigger $error={$error}>
+          <StyledRdxSelectTrigger $error={$error} {...props} type="button">
             <RdxSelect.Value />
 
             <StyledRdxSelectIcon>
