@@ -4,9 +4,9 @@ interface CardTitleProps extends TitleProps {
   text: string;
 }
 
-export function CardTitle({ text, align, type }: CardTitleProps) {
+export function CardTitle({ text, $align: align, type }: CardTitleProps) {
   return (
-    <Title align={align} type={type}>
+    <Title $align={align} type={type}>
       {text}
     </Title>
   );

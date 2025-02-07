@@ -71,7 +71,7 @@ export const Header = styled.header`
 `;
 
 export interface TitleProps {
-  align?: 'center' | 'start' | 'end';
+  $align?: 'center' | 'start' | 'end';
   type?: 'primary' | 'secondary';
 }
 
@@ -99,12 +99,12 @@ export const Title = styled.h3<TitleProps>`
   font-weight: 500;
   line-height: 150.007%;
 
-  ${({ align }) => TitleVariants[align || 'start']};
+  ${({ $align: align }) => TitleVariants[align || 'start']};
   ${({ type }) => TitleVariants[type || 'primary']};
 `;
 
 export interface MainInfoProps {
-  align?: 'center' | 'start' | 'end';
+  $align?: 'center' | 'start' | 'end';
 }
 
 const mainInfoVariants = {
@@ -126,5 +126,5 @@ export const MainInfo = styled.strong<MainInfoProps>`
   max-width: 18rem;
   text-align: left;
 
-  ${({ align }) => mainInfoVariants[align || 'start']};
+  ${({ $align: align }) => mainInfoVariants[align || 'start']};
 `;

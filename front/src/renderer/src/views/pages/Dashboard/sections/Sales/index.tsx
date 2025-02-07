@@ -28,7 +28,7 @@ export default function Sales() {
         />
       )}
 
-      <Card.Root onClick={handleOpenSalesModal}>
+      <Card.Root onClick={handleOpenSalesModal} disabled={isLoading}>
         {!isLoading && (
           <>
             <Card.Content>

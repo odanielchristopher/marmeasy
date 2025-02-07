@@ -4,7 +4,7 @@ import { dashboardCategoriesService } from '@renderer/app/services/dashboard/das
 
 export function useDashboardCategoriesQuery() {
   const { data, isLoading } = useQuery({
-    queryKey: ['favorites', 'getAll'],
+    queryKey: ['dashboardCategories', 'getAll'],
     queryFn: async () => dashboardCategoriesService.getAll(),
     staleTime: 30000,
   });

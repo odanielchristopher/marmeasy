@@ -1,4 +1,5 @@
-import { categories } from '@renderer/app/mocks/categories';
+import { useDashboardCategoriesQuery } from '@renderer/app/hooks/queries/useDashboardCategoriesQuery';
+import Loader from '@renderer/views/components/Loader';
 import { useCallback, useState } from 'react';
 import CategoryModal from './CategoryModal';
 import ExpensesSection from './ExpensesSection';
@@ -12,9 +13,6 @@ export type SelectedCategory = {
 };
 
 export default function CategoriesSection() {
-  const expenses = categories.expenses;
-  const incomes = categories.incomes;
-
   const [isOpenCategoryModal, setIsOpenCategoryModal] = useState(false);
   const [selectedCategory, setSelectedCategory] =
     useState<SelectedCategory | null>(null);
@@ -29,6 +27,11 @@ export default function CategoriesSection() {
     setIsOpenCategoryModal(false);
   }, []);
 
+  const {
+    categories: { expenses, incomes },
+    isLoading,
+  } = useDashboardCategoriesQuery();
+
   return (
     <Container>
       {isOpenCategoryModal && (
@@ -41,9 +44,21 @@ export default function CategoriesSection() {
         />
       )}
 
-      <IncomesSection incomes={incomes} onSelect={handleOpenCategoryModal} />
-      <Separator />
-      <ExpensesSection expenses={expenses} onSelect={handleOpenCategoryModal} />
+      {!isLoading && (
+        <>
+          <IncomesSection
+            incomes={incomes}
+            onSelect={handleOpenCategoryModal}
+          />
+          <Separator />
+          <ExpensesSection
+            expenses={expenses}
+            onSelect={handleOpenCategoryModal}
+          />
+        </>
+      )}
+
+      {isLoading && <Loader size={24} $isLoading/>}
     </Container>
   );
 }

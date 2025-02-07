@@ -38,7 +38,11 @@ export default function Favorites() {
         />
       )}
 
-      <Card.Root $justify="center" onClick={handleOpenFavoritesModal}>
+      <Card.Root
+        $justify="center"
+        onClick={handleOpenFavoritesModal}
+        disabled={isLoading}
+      >
         {!isLoading && (
           <>
             <Card.Content>
@@ -48,7 +52,7 @@ export default function Favorites() {
                 </Card.Icon>
                 <Card.Title text="1° do cardápio" type="secondary" />
               </Card.Header>
-              <Card.Info text={sortedFavorites[0].title} align="center" />
+              <Card.Info text={sortedFavorites[0].title} $align="center" />
             </Card.Content>
           </>
         )}
