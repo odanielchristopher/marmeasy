@@ -1,14 +1,9 @@
-import { useCallback, useState } from 'react';
-import { DateRange } from 'react-day-picker';
+import { DashboardContext } from '@renderer/app/contexts/DashboardContext';
+import { useContext } from 'react';
 
 export default function useDashboard() {
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
-    from: undefined,
-  });
-
-  const handleSelectedDateRange = useCallback((value: DateRange) => {
-    setSelectedDateRange(value);
-  }, []);
+  const { handleSelectedDateRange, selectedDateRange } =
+    useContext(DashboardContext);
 
   return {
     selectedDateRange,
