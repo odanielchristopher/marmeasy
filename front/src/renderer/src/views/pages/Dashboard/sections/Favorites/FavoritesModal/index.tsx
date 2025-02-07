@@ -18,8 +18,8 @@ export default function FavoritesModal({
 }: FavoritesModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Favoritos">
-      {favorites.map(({ label, favorite, isFirst }) => (
-        <Container key={favorite.id}>
+      {favorites.map(({ label, favorite, isFirst }, index) => (
+        <Container key={index}>
           <Item.Box $align="center">
             {isFirst && <CheckIcon color="#089F67" />}
             <Modal.Label text={label} type="secondary" />

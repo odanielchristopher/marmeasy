@@ -22,8 +22,8 @@ export default function SalesModal({
 }: SalesModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Vendas">
-      {Object.entries(salesHistory).map(([monthYear, days], index) => (
-        <ListPerDate key={index}>
+      {Object.entries(salesHistory).map(([monthYear, days]) => (
+        <ListPerDate key={monthYear}>
           <Modal.Label
             text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />

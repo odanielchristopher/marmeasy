@@ -72,8 +72,8 @@ export default function ExpensesModal({
             text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />
 
-          {Object.entries(days).map(([day, expenses]) => (
-            <div key={day}>
+          {Object.entries(days).map(([day, expenses], index) => (
+            <div key={index}>
               <Modal.Description
                 text={capitalizeFirstLetter(formatDay(day, monthYear))}
               />
