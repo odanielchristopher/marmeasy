@@ -16,11 +16,11 @@ yarn-error.log*
 db.json
 
 # Arquivos de ambiente e configurações sensíveis
-*.env
+.env
+.env.development.local
+.env.test.local
+.env.production.local
 .env.local
-.env.development
-.env.test
-.env.production
 
 # Cache do editor e IDEs
 .vscode/
