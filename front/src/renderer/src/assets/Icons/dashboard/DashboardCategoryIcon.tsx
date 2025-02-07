@@ -19,5 +19,5 @@ export function DashboardCategoryIcon({
       )) ?? 'default'
     ] ?? dashboardIconsMap[type].default;
 
-  return <Icon size={size}/>;
+  return <Icon size={size} />;
 }

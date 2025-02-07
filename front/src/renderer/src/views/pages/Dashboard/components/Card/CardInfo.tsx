@@ -5,9 +5,5 @@ interface CardInfoProps {
 }
 
 export function CardInfo({ text }: CardInfoProps) {
-  return (
-    <MainInfo>
-      {text}
-    </MainInfo>
-  );
+  return <MainInfo>{text}</MainInfo>;
 }

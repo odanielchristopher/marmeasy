@@ -44,11 +44,7 @@ export default function IncomesSection({
             >
               <Item.Box $align="center">
                 <Item.Icon height={28}>
-                  <DashboardCategoryIcon
-                    type="income"
-                    icon={icon}
-                    size={28}
-                  />
+                  <DashboardCategoryIcon type="income" icon={icon} size={28} />
                 </Item.Icon>
                 <Item.Box $direction="column" $gap={-7}>
                   <Item.Title text={title} />

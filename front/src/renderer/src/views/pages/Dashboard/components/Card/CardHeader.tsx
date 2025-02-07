@@ -5,9 +5,5 @@ interface CardHeaderProps {
 }
 
 export function CardHeader({ children }: CardHeaderProps) {
-  return (
-    <Header>
-      {children}
-    </Header>
-  );
+  return <Header>{children}</Header>;
 }

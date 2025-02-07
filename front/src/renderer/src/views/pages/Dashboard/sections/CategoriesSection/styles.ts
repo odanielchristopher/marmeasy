@@ -22,13 +22,13 @@ export const Container = styled.div`
 
   /* Estilização do "thumb" da scrollbar (a parte arrastável) */
   &::-webkit-scrollbar-thumb {
-    background: #DDD; /* Cor do thumb */
+    background: #ddd; /* Cor do thumb */
     border-radius: 10px;
   }
 
   /* Hover no thumb */
   &::-webkit-scrollbar-thumb:hover {
-    background: #CCC;
+    background: #ccc;
   }
 `;
 

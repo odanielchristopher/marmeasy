@@ -5,5 +5,9 @@ interface CardIconProps extends IconProps {
 }
 
 export function CardIcon({ children, color, height }: CardIconProps) {
-  return <IconContainer color={color} height={height}>{children}</IconContainer>;
+  return (
+    <IconContainer color={color} height={height}>
+      {children}
+    </IconContainer>
+  );
 }

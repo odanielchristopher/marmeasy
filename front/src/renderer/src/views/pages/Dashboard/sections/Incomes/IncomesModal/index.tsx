@@ -19,7 +19,7 @@ export default function IncomesModal({ onClose, open }: IncomesModalProps) {
         <Item.Root>
           <Item.Box $align="center">
             <Item.Icon height={32}>
-              <DashboardCategoryIcon type='income' icon='default' size={32}/>
+              <DashboardCategoryIcon type="income" icon="default" size={32} />
             </Item.Icon>
 
             <Item.Box $direction="column" $gap={-7}>
@@ -37,7 +37,7 @@ export default function IncomesModal({ onClose, open }: IncomesModalProps) {
         <Item.Root>
           <Item.Box $align="center">
             <Item.Icon height={32}>
-              <DashboardCategoryIcon type='income' icon='cash' size={32}/>
+              <DashboardCategoryIcon type="income" icon="cash" size={32} />
             </Item.Icon>
 
             <Item.Box $direction="column" $gap={-7}>

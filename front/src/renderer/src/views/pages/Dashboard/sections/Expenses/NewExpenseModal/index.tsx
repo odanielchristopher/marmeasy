@@ -7,7 +7,10 @@ interface NewExpenseModalProps {
   onClose(): void;
 }
 
-export default function NewExpenseModal({ onClose, open }: NewExpenseModalProps) {
+export default function NewExpenseModal({
+  onClose,
+  open,
+}: NewExpenseModalProps) {
   return (
     <Modal.Root open={open} onClose={onClose} title="Novo gasto">
       <ExpenseForm

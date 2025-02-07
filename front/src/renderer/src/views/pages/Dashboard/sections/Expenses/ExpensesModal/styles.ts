@@ -15,15 +15,16 @@ export const AddButton = styled.button`
   background-color: transparent;
   border: 2px solid transparent;
   border-radius: 50%;
-  color: ${({ theme }) => theme.colors.orange.light };
+  color: ${({ theme }) => theme.colors.orange.light};
   display: flex;
   justify-content: center;
   padding: 1.2rem;
   transition: all ease-in 100ms;
 
-  &:hover, &:focus {
-    color: #FFF;
-    border-color: ${({ theme }) => theme.colors.orange.light };
-    background-color: ${({ theme }) => theme.colors.orange.light };
+  &:hover,
+  &:focus {
+    color: #fff;
+    border-color: ${({ theme }) => theme.colors.orange.light};
+    background-color: ${({ theme }) => theme.colors.orange.light};
   }
 `;

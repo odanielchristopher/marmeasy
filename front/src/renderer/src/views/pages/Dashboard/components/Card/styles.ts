@@ -45,7 +45,7 @@ export const Root = styled.button<RootProps>`
   }
 
   @media (max-width: 757px) {
-    flex: 1 1 22.0rem;
+    flex: 1 1 22rem;
   }
 `;
 

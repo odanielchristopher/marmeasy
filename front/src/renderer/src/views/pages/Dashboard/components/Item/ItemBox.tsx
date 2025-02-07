@@ -6,9 +6,5 @@ interface ItemBoxProps extends BoxProps {
 }
 
 export function ItemBox({ children, ...props }: ItemBoxProps) {
-  return (
-    <Box {...props}>
-      {children}
-    </Box>
-  );
+  return <Box {...props}>{children}</Box>;
 }

@@ -23,9 +23,7 @@ export default function ExpensesModal({ onClose, open }: ExpensesModalProps) {
   }, []);
 
   if (isOpenNewExpenseModal) {
-    return (
-      <NewExpenseModal open onClose={handleCloseNewExpenseModal}/>
-    );
+    return <NewExpenseModal open onClose={handleCloseNewExpenseModal} />;
   }
 
   return (

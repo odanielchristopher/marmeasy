@@ -76,7 +76,7 @@ export default function ExpenseForm({
           placeholder="Tipo*"
           value={selectedType}
           options={selectOption}
-          $type='secondary'
+          $type="secondary"
           onChange={handleSelectedType}
         />
       </SelectContainer>

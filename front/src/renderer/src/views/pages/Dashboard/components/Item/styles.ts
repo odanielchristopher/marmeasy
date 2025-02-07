@@ -10,22 +10,24 @@ export const Root = styled.div<RootProps>`
   justify-content: space-between;
   width: 100%;
   border: 2px solid transparent;
-  border-radius: 1.0rem;
-  padding: .4rem;
+  border-radius: 1rem;
+  padding: 0.4rem;
 
-  ${({ $hasAction }) => $hasAction && css`
-    cursor: pointer;
-    transition: all ease-in 100ms;
+  ${({ $hasAction }) =>
+    $hasAction &&
+    css`
+      cursor: pointer;
+      transition: all ease-in 100ms;
 
-    &:hover {
-      border-color: ${({ theme }) => theme.colors.orange.light};
-      border-radius: 1.0rem;
-      scale: calc(103%);
-    }
-  `}
+      &:hover {
+        border-color: ${({ theme }) => theme.colors.orange.light};
+        border-radius: 1rem;
+        scale: calc(103%);
+      }
+    `}
 
   & + & {
-    margin-top: .8rem;
+    margin-top: 0.8rem;
   }
 `;
 
@@ -68,9 +70,13 @@ const boxVariants = {
 
 export const Box = styled.div<BoxProps>`
   display: flex;
-  gap: ${({ $gap }) => $gap ? `${$gap/10}rem` : '.8rem'};
-  ${({ $justify }) => $justify ? boxVariants[`justify_${$justify}`] : boxVariants['justify_start']}
-  ${({ $align }) => $align ? boxVariants[`align_${$align}`] : boxVariants['align_start']}
+  gap: ${({ $gap }) => ($gap ? `${$gap / 10}rem` : '.8rem')};
+  ${({ $justify }) =>
+    $justify
+      ? boxVariants[`justify_${$justify}`]
+      : boxVariants['justify_start']}
+  ${({ $align }) =>
+    $align ? boxVariants[`align_${$align}`] : boxVariants['align_start']}
   ${({ $direction }) => boxVariants[$direction || 'row']}
 `;
 

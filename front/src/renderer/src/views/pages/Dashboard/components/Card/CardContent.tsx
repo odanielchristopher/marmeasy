@@ -5,9 +5,5 @@ interface CardContentProps {
 }
 
 export function CardContent({ children }: CardContentProps) {
-  return (
-    <Content>
-      {children}
-    </Content>
-  );
+  return <Content>{children}</Content>;
 }

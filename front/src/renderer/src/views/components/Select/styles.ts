@@ -158,7 +158,7 @@ export const StyledRdxSelectItem = styled(RdxSelect.Item)`
   outline: none;
   cursor: pointer;
   transition: background ease 0.3s;
-  border-radius: .4rem;
+  border-radius: 0.4rem;
 
   &[data-state='checked'] {
     font-weight: 600;

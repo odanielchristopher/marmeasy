@@ -52,7 +52,6 @@ export default function Graph() {
     },
   };
 
-
   return (
     <Container>
       <Bar data={data} options={options} />

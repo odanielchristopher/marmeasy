@@ -51,9 +51,11 @@ export const StyledRdxDialogContent = styled(
   z-index: 50;
   outline: none;
 
-  ${({ $maxHeight }) => $maxHeight && css`
-    max-height: ${$maxHeight/10}rem;
-  `}
+  ${({ $maxHeight }) =>
+    $maxHeight &&
+    css`
+      max-height: ${$maxHeight / 10}rem;
+    `}
 `;
 
 export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`

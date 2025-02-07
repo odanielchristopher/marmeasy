@@ -29,7 +29,8 @@ export default function DateRangePickerInput({
               {formatDateRange({
                 from: value.from,
                 to: value.to,
-              }) || (placeholder ?? 'Escolha um período')}
+              }) ||
+                (placeholder ?? 'Escolha um período')}
             </StyledDate>
           </StyledButton>
         </Popover.Trigger>

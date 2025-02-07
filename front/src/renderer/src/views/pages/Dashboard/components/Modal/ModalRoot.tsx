@@ -7,5 +7,9 @@ interface ModalRootProps extends ModalProps {
 }
 
 export function ModalRoot({ children, ...props }: ModalRootProps) {
-  return <Modal {...props} $maxHeight={580}>{children}</Modal>;
+  return (
+    <Modal {...props} $maxHeight={580}>
+      {children}
+    </Modal>
+  );
 }

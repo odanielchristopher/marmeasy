@@ -6,9 +6,5 @@ interface ItemRootProps extends RootProps, ComponentProps<'div'> {
 }
 
 export function ItemRoot({ children, ...props }: ItemRootProps) {
-  return (
-    <Root {...props}>
-      {children}
-    </Root>
-  );
+  return <Root {...props}>{children}</Root>;
 }

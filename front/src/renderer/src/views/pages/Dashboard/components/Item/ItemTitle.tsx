@@ -5,7 +5,5 @@ interface ItemTitleProps {
 }
 
 export function ItemTitle({ text }: ItemTitleProps) {
-  return (
-    <Title>{text}</Title>
-  );
+  return <Title>{text}</Title>;
 }

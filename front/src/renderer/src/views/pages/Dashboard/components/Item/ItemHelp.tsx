@@ -5,7 +5,5 @@ interface ItemHelpProps extends HelpProps {
 }
 
 export function ItemHelp({ text, ...props }: ItemHelpProps) {
-  return (
-    <Help {...props}>{text}</Help>
-  );
+  return <Help {...props}>{text}</Help>;
 }

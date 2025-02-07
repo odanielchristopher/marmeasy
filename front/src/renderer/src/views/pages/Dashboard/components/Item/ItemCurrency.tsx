@@ -5,7 +5,5 @@ interface ItemCurrencyProps extends CurrencyProps {
 }
 
 export function ItemCurrency({ text, ...props }: ItemCurrencyProps) {
-  return (
-    <Currency {...props}>{text}</Currency>
-  );
+  return <Currency {...props}>{text}</Currency>;
 }
