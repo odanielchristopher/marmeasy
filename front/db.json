@@ -1,29 +1,34 @@
 {
   "sales": {
-    "totalPedidos": 150,
-    "historico": {
+    "total": 240,
+    "history": {
       "2024-12": {
         "31": [
-          { "id": "1", "clientName": "João", "quantidade": 3, "valorTotal": 90.0 },
-          { "id": "2", "clientName": "Maria", "quantidade": 5, "valorTotal": 150.0 }
+          { "id": "1", "clientName": "João", "quantity": 3, "value": 90.0 },
+          { "id": "2", "clientName": "Maria", "quantity": 5, "value": 150.0 }
         ]
       }
     }
   },
   "incomes": {
-    "totalEntradas": 200,
-    "historico": {
+    "total": 250,
+    "history": {
       "2024-12": {
         "31": [
           { "id": "1", "clientName": "João", "type": "CREDIT_CARD", "value": 90.0 },
-          { "id": "2", "clientName": "Maria", "type": "PIX", "value": 150.0 }
+          { "id": "2", "clientName": "Maria", "type": "CASH", "value": 150.0 }
+        ]
+      },
+      "2024-11": {
+        "22": [
+          { "id": "1", "clientName": "João", "type": "DEBIT_CARD", "value": 10.0 }
         ]
       }
     }
   },
   "expenses": {
-    "totalSaidas": 50,
-    "historico": {
+    "total": 50,
+    "history": {
       "2024-12": {
         "31": [
           { "id": "1", "type": "MEATS", "value": 40.0 },
@@ -32,14 +37,14 @@
       }
     }
   },
-  "categorias": {
-    "entradas": [
-      { "type": "CREDIT_CARD", "valorTotal": 1200.0 },
-      { "type": "PIX", "valorTotal": 800.0 }
+  "categories": {
+    "incomes": [
+      { "type": "CREDIT_CARD", "value": 1200.0 },
+      { "type": "CASH", "value": 800.0 }
     ],
-    "saidas": [
-      { "type": "MEATS", "valorTotal": 500.0 },
-      { "type": "DELIVERY", "valorTotal": 200.0 }
+    "expenses": [
+      { "type": "MEATS", "value": 500.0 },
+      { "type": "DELIVERY", "value": 200.0 }
     ]
   }
 }
