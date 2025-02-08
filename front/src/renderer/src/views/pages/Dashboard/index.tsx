@@ -20,7 +20,14 @@ import {
 } from './styles';
 
 export default function Dashboard() {
-  const { selectedDateRange, handleSelectedDateRange } = useDashboard();
+  const {
+    selectedDateRange,
+    labels,
+    incomes,
+    expenses,
+    isLoading,
+    handleSelectedDateRange,
+  } = useDashboard();
 
   return (
     <Container>
@@ -53,7 +60,12 @@ export default function Dashboard() {
         </CardsContainer>
 
         <GraphSection>
-          <Graph />
+          <Graph
+            labels={labels}
+            incomes={incomes}
+            expenses={expenses}
+            $isLoading={isLoading}
+          />
 
           <CategoriesSection />
         </GraphSection>

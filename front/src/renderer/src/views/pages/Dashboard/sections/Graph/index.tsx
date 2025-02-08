@@ -1,24 +1,34 @@
+import Loader from '@renderer/views/components/Loader';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import './ChartJs';
 import { Container } from './styles';
 
-export default function Graph() {
-  const labels = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+interface GraphProps {
+  labels: string[];
+  incomes: number[];
+  expenses: number[];
+  $isLoading?: boolean;
+}
 
-  // Definição dos valores de entradas e saídas por dia
+export default function Graph({
+  expenses,
+  incomes,
+  labels,
+  $isLoading,
+}: GraphProps) {
   const data: ChartData<'bar'> = {
     labels,
     datasets: [
       {
         label: 'Entradas',
-        data: [1200, 2300, 1800, 2000, 2500, 1700, 1900],
+        data: incomes,
         backgroundColor: '#089f68dc',
         borderRadius: 18,
       },
       {
         label: 'Saídas',
-        data: [900, 1900, 1600, 1400, 2200, 1500, 1300],
+        data: expenses,
         backgroundColor: '#d73036e4',
         borderRadius: 18,
       },
@@ -30,7 +40,9 @@ export default function Graph() {
     maintainAspectRatio: false,
     scales: {
       x: {
-        ticks: { color: '#555' },
+        ticks: {
+          color: '#555',
+        },
         grid: { display: false },
       },
       y: {
@@ -54,7 +66,9 @@ export default function Graph() {
 
   return (
     <Container>
-      <Bar data={data} options={options} />
+      {!$isLoading && <Bar data={data} options={options} />}
+
+      {$isLoading && <Loader size={24} $isLoading />}
     </Container>
   );
 }
