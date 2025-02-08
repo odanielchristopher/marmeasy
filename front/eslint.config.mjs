@@ -42,6 +42,7 @@ export default [
       'no-console': 'warn', // Avisar sobre console.log
       'no-undef': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];

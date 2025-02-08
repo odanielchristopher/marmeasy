@@ -33,6 +33,7 @@ model Client {
   type     ClientType
   document String?
   balance  Float      @default(0)
+  active   Boolean    @default(true)
   payments Payment[]
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)

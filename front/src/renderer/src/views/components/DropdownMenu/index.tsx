@@ -28,6 +28,7 @@ interface DropdownMenuContentProps {
   side?: 'top' | 'right' | 'bottom' | 'left';
   sideOffset?: number;
   align?: 'center' | 'start' | 'end';
+  asChild?: boolean;
 }
 
 function DropdownMenuContent({
@@ -35,6 +36,7 @@ function DropdownMenuContent({
   side,
   sideOffset,
   align,
+  asChild,
 }: DropdownMenuContentProps) {
   return (
     <RdxDropdownMenu.Portal>
@@ -42,6 +44,7 @@ function DropdownMenuContent({
         side={side}
         sideOffset={sideOffset}
         align={align}
+        asChild={asChild}
       >
         {children}
       </StyledRdxDropdownMenuContent>

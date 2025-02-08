@@ -1,3 +1,5 @@
+import { Payment } from './Payment';
+
 export interface Client {
   id: string;
   name: string;
@@ -6,4 +8,5 @@ export interface Client {
   address?: string;
   document?: string;
   balance?: number | string;
+  payments: Payment[];
 }

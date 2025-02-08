@@ -23,11 +23,11 @@ export class UsersService implements IUsersService {
   async getUserById(userId: string) {
     await this.validateUserOwnershipService.validate(userId);
 
-    const { id, email, name } = await this.usersRepository.findUniquetById({
+    const { email, name } = await this.usersRepository.findUniquetById({
       userId,
     });
 
-    return { id, email, name };
+    return { email, name };
   }
 
   async update(userId: string, updateUserDto: UpdateUserDto) {
@@ -57,7 +57,7 @@ export class UsersService implements IUsersService {
       hashedNewPassword = await hash(updateUserDto.newPassword, 10);
     }
 
-    const { id, name, email } = await this.usersRepository.update({
+    const { name, email } = await this.usersRepository.update({
       data: {
         id: userId,
         name: updateUserDto.name,
@@ -66,7 +66,7 @@ export class UsersService implements IUsersService {
       },
     });
 
-    return { id, name, email };
+    return { name, email };
   }
 
   async remove(userId: string) {

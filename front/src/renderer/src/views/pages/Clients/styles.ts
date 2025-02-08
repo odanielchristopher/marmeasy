@@ -1,20 +1,35 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
   margin-top: 1.6rem;
   width: 100%;
   height: 100%;
+
+  .list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
-export const Content = styled.div`
-  overflow-y: auto;
+interface LoaderContainerProps {
+  $isFetchingNextPage?: boolean;
+}
+
+export const LoaderContainer = styled.div<LoaderContainerProps>`
+  height: 70px;
   width: 100%;
-  padding-bottom: 2.4rem;
-  padding-left: 0.8rem;
-  display: flex;
-  gap: 1.6rem;
-  flex-wrap: wrap;
+
+  ${({ $isFetchingNextPage }) =>
+    !$isFetchingNextPage &&
+    css`
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    `}
 `;
 
 export const NotFoundContainer = styled.div`

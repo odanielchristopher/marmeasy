@@ -28,15 +28,21 @@ export default function Fab() {
 
   return (
     <Container>
-      <ClientModal
-        isOpen={isOpenModalClient}
-        onClose={handleCloseClientModal}
-      />
-      <CompanyModal
-        isOpen={isOpenModalCompany}
-        onClose={handleCloseCompanyModal}
-      />
-      <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
+      {isOpenModalClient && (
+        <ClientModal
+          isOpen={isOpenModalClient}
+          onClose={handleCloseClientModal}
+        />
+      )}
+      {isOpenModalCompany && (
+        <CompanyModal
+          isOpen={isOpenModalCompany}
+          onClose={handleCloseCompanyModal}
+        />
+      )}
+      {isOpenOrderModal && (
+        <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
+      )}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <StyledButton>

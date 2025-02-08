@@ -6,6 +6,7 @@ import Plus from '@renderer/assets/Images/Plus.svg';
 import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
+import Loader from '@renderer/views/components/Loader';
 import Modal from '@renderer/views/components/Modal';
 import NewItemModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
 import DeleteItemModal from '../../Items/DeleteItemModal';
@@ -18,11 +19,14 @@ interface OrderModalProps {
   onClose(): void;
 }
 
+// const trueTest = true;
+
 export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     products,
     isOrderModalOpen,
+    isLoadingCategories,
     selectedCategory,
     orderDetails,
     openModalIngredients,
@@ -56,14 +60,22 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             {/* <DatePickerInput/> */}
 
             <BoxCategories>
-              {categories.map((category) => (
-                <IconCategory key={category.id} onClick={() => handleCategorySelect(category)} className={selectedCategory?.id === category.id ? 'active' : ''}>
+            {isLoadingCategories ? (
+              <Loader $isLoading={isLoadingCategories} size={20} />
+            ) : (
+              categories.map((category) => (
+                <IconCategory
+                  key={category.id}
+                  onClick={() => handleCategorySelect(category)}
+                  className={selectedCategory?.id === category.id ? 'active' : ''}
+                >
                   <div className="circle">
                     {category.icon}
                   </div>
                   <p>{category.name}</p>
                 </IconCategory>
-              ))}
+              ))
+            )}
             </BoxCategories>
 
             <ul className='productsOptions'>

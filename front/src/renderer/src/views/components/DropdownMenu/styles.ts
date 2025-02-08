@@ -56,6 +56,7 @@ export const StyledRdxDropdownMenuContent = styled(RdxDropdownMenu.Content)`
   border-radius: ${({ theme }) => theme.borderRadius};
   box-shadow: 0px 0px 6.8px 0px rgba(0, 0, 0, 0.2);
   padding: 0.8rem;
+  z-index: 50;
 
   > * + * {
     margin-top: 0.8rem;
@@ -87,6 +88,7 @@ export const StyledRdxDropdownMenuItem = styled(RdxDropdownMenu.Item)`
   outline: none;
   min-height: 4.8rem;
   padding: 0.8rem;
+  width: 100%;
 
   &:hover {
     background: #f0f0f0;

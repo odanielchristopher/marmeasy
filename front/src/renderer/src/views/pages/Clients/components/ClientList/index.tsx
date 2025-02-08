@@ -5,7 +5,15 @@ import formatPhone from '@renderer/app/utils/formatPhone';
 import { useState } from 'react';
 import { HiOutlinePencilAlt } from 'react-icons/hi';
 import EditClientModal from '../modals/EditClientModal';
-import { Container, Content, EditButton, Footer, Header, Main } from './styles';
+import {
+  Container,
+  Content,
+  EditButton,
+  Footer,
+  Header,
+  ListContainer,
+  Main,
+} from './styles';
 
 interface ClientListProps {
   clients: Client[];
@@ -33,51 +41,53 @@ export default function ClientList({ clients }: ClientListProps) {
         client={selectedClient}
         onClose={handleCloseEditClientModal}
       />
-      {clients.map((client) => (
-        <Container key={client.id}>
-          <EditButton
-            type="button"
-            onClick={() => {
-              handleHiddenClientData();
-              handleOpenEditClientModal(client);
-            }}
-          >
-            <HiOutlinePencilAlt size={24} />
-          </EditButton>
-          <Content onClick={() => handleShowClientData(client)}>
-            <Header>
-              <div className="infos">
-                <div className="infos-header">
-                  <strong>{client.name}</strong>
+      <ListContainer>
+        {clients.filter(client => client !== undefined && client !== null).map((client) => (
+          <Container key={client.id}>
+            <EditButton
+              type="button"
+              onClick={() => {
+                handleHiddenClientData();
+                handleOpenEditClientModal(client);
+              }}
+            >
+              <HiOutlinePencilAlt size={24} />
+            </EditButton>
+            <Content onClick={() => handleShowClientData(client)}>
+              <Header>
+                <div className="infos">
+                  <div className="infos-header">
+                    <strong>{client.name}</strong>
+                    <span>
+                      {client.type === 'FISICO' ? 'cliente' : 'empresa'}
+                    </span>
+                  </div>
                   <span>
-                    {client.type === 'FISICO' ? 'cliente' : 'empresa'}
+                    {client.phone
+                      ? formatPhone(client.phone ?? '')
+                      : 'Sem telefone'}
                   </span>
                 </div>
-                <span>
-                  {client.phone
-                    ? formatPhone(client.phone ?? '')
-                    : 'Sem telefone'}
-                </span>
-              </div>
-            </Header>
-            <Main>
-              <div className="top">
-                <strong>Endereço</strong>
-                <span>{client.address ?? 'Sem endereço'}</span>
-              </div>
+              </Header>
+              <Main>
+                <div className="top">
+                  <strong>Endereço</strong>
+                  <span>{client.address ?? 'Sem endereço'}</span>
+                </div>
 
-              <div className="bottom">
-                <span>Totais de pedidos: {21}</span>
-              </div>
-            </Main>
-            <Footer>
-              <span>Saldo</span>
+                <div className="bottom">
+                  <span>Total de pedidos: {21}</span>
+                </div>
+              </Main>
+              <Footer>
+                <span>Saldo</span>
 
-              <strong>R$ {formatCurrency(client.balance as number)}</strong>
-            </Footer>
-          </Content>
-        </Container>
-      ))}
+                <strong>R$ {formatCurrency(client.balance as number)}</strong>
+              </Footer>
+            </Content>
+          </Container>
+        ))}
+      </ListContainer>
     </>
   );
 }

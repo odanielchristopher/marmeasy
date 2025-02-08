@@ -57,17 +57,24 @@ export class Client {
   @IsNotEmpty({ message: 'O saldo inicial é obrigatório.' })
   balance: number;
 
+  active?: boolean;
+
   static parse(persistenteEntity: PrismaClient | null): Client {
     if (!persistenteEntity) {
       return null;
     }
 
+    const { id, name, type, address, balance, document, phone } =
+      persistenteEntity;
+
     return {
-      ...persistenteEntity,
-      phone: persistenteEntity.phone ?? undefined,
-      document: persistenteEntity.document ?? undefined,
-      address: persistenteEntity.address ?? undefined,
-      type: ClientType[persistenteEntity.type],
+      id,
+      name,
+      balance,
+      phone: phone ?? undefined,
+      document: document ?? undefined,
+      address: address ?? undefined,
+      type: ClientType[type],
     };
   }
 }

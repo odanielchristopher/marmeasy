@@ -8,6 +8,7 @@ import Menu from '@renderer/views/pages/Menu';
 import Orders from '@renderer/views/pages/Orders';
 import Register from '@renderer/views/pages/Register';
 
+import Dashboard from '@renderer/views/pages/Dashboard';
 import AuthGuard from './AuthGuard';
 
 export default function AppRoutes() {
@@ -25,6 +26,7 @@ export default function AppRoutes() {
           <Route element={<PageLayout />}>
             <Route path="/menu" element={<Menu />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/" element={<Clients />} />
           </Route>
         </Route>

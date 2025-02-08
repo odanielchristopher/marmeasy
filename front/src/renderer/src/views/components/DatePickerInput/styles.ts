@@ -1,39 +1,62 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+interface StyledButtonProps {
+  $error?: string;
+}
 
 export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin-top: 2px;
-  color: #7f1d1d; /* text-red-900 */
-`;
-
-export const Button = styled.button<{ $error?: boolean }>`
-  background-color: white;
-  width: 100%;
-  border-radius: 0.5rem; /* rounded-lg */
-  border: 1px solid ${({ $error }) => ($error ? '#7f1d1d' : '#6b7280')}; /* border-red-900 or border-gray-500 */
-  padding: 0 0.75rem; /* px-3 */
-  color: #374151; /* text-gray-700 */
-  transition: border-color 0.2s;
-  outline: none;
-  text-align: left;
   position: relative;
-  padding: 0.5rem;
+  width: 100%;
 
-  &:focus {
-    border-color: #1f2937; /* focus:border-gray-800 */
+  & + & {
+    margin-top: 1.2rem;
+  }
+
+  .error {
+    align-items: center;
+    color: ${({ theme }) => theme.colors.red.dark};
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.2rem;
+
+    span {
+      font-size: 1.2rem;
+    }
   }
 `;
 
-export const ErrorContainer = styled.div`
-  display: flex;
-  gap: 0.5rem; /* gap-2 */
-  align-items: center;
-  margin-top: 0.5rem; /* mt-2 */
-  color: #7f1d1d; /* text-red-900 */
+export const StyledButton = styled.button<StyledButtonProps>`
+  margin-top: 1.2rem;
+  background: #fff;
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+  height: 5.2rem;
+  color: ${({ theme }) => theme.colors.black.main};
+  text-align: left;
+  padding-left: 1.2rem;
+  padding-top: 2rem;
+  position: relative;
+
+  span {
+    font-size: 1.2rem;
+    color: ${({ theme }) => theme.colors.gray.light};
+    left: 1.3rem;
+    position: absolute;
+    pointer-events: none;
+    top: 0.4rem;
+  }
+
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.orange.light};
+  }
+
+  ${({ theme, $error }) =>
+    $error &&
+    css`
+      color: ${theme.colors.red.dark};
+      border-color: ${theme.colors.red.dark} !important;
+    `}
 `;
 
-export const ErrorMessage = styled.span`
-  font-size: 0.75rem; /* text-xs */
-`;
+export const StyledDate = styled.div``;

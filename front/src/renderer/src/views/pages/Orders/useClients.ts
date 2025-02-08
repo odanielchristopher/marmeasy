@@ -5,10 +5,14 @@ import { clientsService } from '@renderer/app/services/clientsService';
 import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
 export default function useClient() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
+    from: undefined,
+  });
 
   const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] =
     useState(false);
@@ -70,11 +74,15 @@ export default function useClient() {
     () =>
       clients
         .filter((contact) =>
-          contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+          contact && contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
         )
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],
   );
+
+  const handleSelectedDateRange = useCallback((date: DateRange) => {
+    setSelectedDateRange(date);
+  }, []);
 
   const isSearchEmpty = filteredClients.length < 1;
   const hasClient = filteredClients.length > 0;
@@ -82,11 +90,13 @@ export default function useClient() {
   return {
     isDeleteClientModalVisible,
     isLoading,
+    selectedDateRange,
     isSearchEmpty,
     hasClient,
     searchTerm,
     filteredClients,
     clientBeingDeleted,
+    handleSelectedDateRange,
     handleChangeSearchTerm,
     handleCloseDeleteClientModal,
     handleDeleteClient,
