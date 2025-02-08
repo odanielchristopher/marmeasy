@@ -60,9 +60,7 @@ export const ProductList = styled.li`
   }
 
   img {
-    max-width: 30%;
-    min-width: 30%;
-    max-height: 72px;
+    height: 80px;
     border-radius: 12px;
   }
 
@@ -96,7 +94,6 @@ export const Line = styled.hr`
 `;
 
 export const OrderItemsList = styled.div`
-
   display: flex;
   align-items: center;
   gap: 10px;

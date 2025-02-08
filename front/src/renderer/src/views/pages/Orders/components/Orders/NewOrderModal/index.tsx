@@ -5,11 +5,12 @@ import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
 import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
-import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
+import DatePickerInput from '@renderer/views/components/DatePickerInput';
 import { Input } from '@renderer/views/components/Input';
 import Loader from '@renderer/views/components/Loader';
 import Modal from '@renderer/views/components/Modal';
 import NewItemModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
+import { Controller } from 'react-hook-form';
 import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
@@ -24,6 +25,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     products,
+    control,
+    errors,
     isLoadingCategories,
     isOrderModalOpen,
     isItemModalOpen,
@@ -31,7 +34,6 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     isDeleteItemModalOpen,
     selectedCategory,
     selectedProduct,
-    selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
     handleOpenItemModal,
@@ -40,17 +42,22 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     handleOpenDeleteItemModal,
     handleCloseEditItemModal,
     handleCloseDeleteItemModal,
-    handleSelectedDateRange,
     addProductToOrder,
     orderDetails,
     editIndex,
   } = useOrderModal(isOpen);
+
+  const allCategories = [
+    { id: 'all', name: 'todos', icon: '🍽️' },
+    ...categories,
+  ];
 
   return (
     <>
       {!isItemModalOpen && (
         <Modal open={isOrderModalOpen} title="Novo pedido" onClose={onClose}>
           <Container>
+
             <Input
               type="text"
               placeholder="Nome do cliente"
@@ -58,16 +65,25 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               name='clientName'
             />
 
-            <DateRangePickerInput
-              value={selectedDateRange}
-              onChange={handleSelectedDateRange}
+            <Controller
+              control={control}
+              name="date"
+              defaultValue={new Date()}
+              render={({ field: { onChange, value } }) => (
+                <DatePickerInput
+                  onChange={onChange}
+                  value={value}
+                  placeholder="Data*"
+                  $error={errors.date?.message}
+                />
+              )}
             />
 
             <BoxCategories>
             {isLoadingCategories ? (
               <Loader $isLoading={isLoadingCategories} size={20} />
             ) : (
-              categories.map((category) => (
+              allCategories.map((category) => (
                 <IconCategory
                   key={category.id}
                   onClick={() => handleCategorySelect(category)}
@@ -83,23 +99,28 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             </BoxCategories>
 
             <ul className='productsOptions'>
-              {selectedCategory && products.filter((product) => product.category?.id === selectedCategory.id).map((product) => {
-                const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
+              {products
+                .filter((product) => {
+                  if (!selectedCategory || selectedCategory.id === 'all') return true;
+                  return product.category?.id === selectedCategory.id;
+                })
+                .map((product) => {
+                  const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
 
-                return (
-                  <ProductList key={product.id}>
-                    {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
-                    <div className='infos'>
-                      <strong>{product.name}</strong>
-                      <span>{product.description}</span>
-                      <div className="footer">
-                        <strong>R$ {formatCurrency(product.price)}</strong>
-                        <img src={Plus} alt="Adicionar" onClick={() => handleOpenItemModal(product)} />
+                  return (
+                    <ProductList key={product.id}>
+                      {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
+                      <div className='infos'>
+                        <strong>{product.name}</strong>
+                        <span>{product.description}</span>
+                        <div className="footer">
+                          <strong>R$ {formatCurrency(product.price)}</strong>
+                          <img src={Plus} alt="Adicionar" onClick={() => handleOpenItemModal(product)} />
+                        </div>
                       </div>
-                    </div>
-                  </ProductList>
-                );
-              })}
+                    </ProductList>
+                  );
+                })}
             </ul>
 
             {orderDetails.length > 0 && (

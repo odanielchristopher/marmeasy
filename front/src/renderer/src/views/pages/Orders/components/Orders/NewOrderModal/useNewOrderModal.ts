@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import { DateRange } from 'react-day-picker';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Product } from '@renderer/app/entities/Product';
@@ -43,11 +44,20 @@ export default function useOrderModal(isOpen: boolean) {
 
   const [editIndex, setEditIndex] = useState<number | null>(null);
 
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
-    from: undefined,
-  });
-
   const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
+
+  const {
+    formState: { errors },
+    control,
+  } = useForm<OrderFormSchema>({
+    resolver: zodResolver(orderFormSchema),
+    defaultValues: {
+      date: new Date(),
+      discount: 0,
+      items: [],
+      totalValue: 0,
+    },
+  });
 
   useEffect(() => {
     setIsOrderModalOpen(isOpen);
@@ -97,14 +107,11 @@ export default function useOrderModal(isOpen: boolean) {
     setOrderDetails((prevDetails) => [...prevDetails, details]);
   }
 
-  //datepicker
-  const handleSelectedDateRange = useCallback((date: DateRange) => {
-    setSelectedDateRange(date);
-  }, []);
-
   return {
     categories,
     products,
+    errors,
+    control,
     isLoadingCategories,
     isOrderModalOpen,
     isItemModalOpen,
@@ -112,7 +119,6 @@ export default function useOrderModal(isOpen: boolean) {
     isDeleteItemModalOpen,
     selectedCategory,
     selectedProduct,
-    selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
     handleOpenItemModal,
@@ -121,7 +127,6 @@ export default function useOrderModal(isOpen: boolean) {
     handleOpenDeleteItemModal,
     handleCloseEditItemModal,
     handleCloseDeleteItemModal,
-    handleSelectedDateRange,
     addProductToOrder,
     orderDetails,
     editIndex,
