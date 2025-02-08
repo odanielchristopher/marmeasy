@@ -24,31 +24,31 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     products,
-    isOrderModalOpen,
     isLoadingCategories,
+    isOrderModalOpen,
+    isItemModalOpen,
+    isEditItemModalOpen,
+    isDeleteItemModalOpen,
     selectedCategory,
-    orderDetails,
-    openModalIngredients,
     selectedProduct,
     selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
-    handleOpenIngredientModal,
-    handleCloseIngredientModal,
-    handleOrderSubmit,
-    addProductToOrder,
-    handleOpenEditModal,
-    handleOpenDeleteModal,
-    handleCloseEditModal,
+    handleOpenItemModal,
+    handleCloseItemModal,
+    handleOpenEditItemModal,
+    handleOpenDeleteItemModal,
+    handleCloseEditItemModal,
+    handleCloseDeleteItemModal,
     handleSelectedDateRange,
-    isEditModalOpen,
-    isDeleteModalOpen,
+    addProductToOrder,
+    orderDetails,
     editIndex,
-  } = useOrderModal(isOpen, onClose);
+  } = useOrderModal(isOpen);
 
   return (
     <>
-      {!openModalIngredients && (
+      {!isItemModalOpen && (
         <Modal open={isOrderModalOpen} title="Novo pedido" onClose={onClose}>
           <Container>
             <Input
@@ -94,7 +94,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                       <span>{product.description}</span>
                       <div className="footer">
                         <strong>R$ {formatCurrency(product.price)}</strong>
-                        <img src={Plus} alt="Adicionar" onClick={() => handleOpenIngredientModal(product)} />
+                        <img src={Plus} alt="Adicionar" onClick={() => handleOpenItemModal(product)} />
                       </div>
                     </div>
                   </ProductList>
@@ -123,8 +123,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                           </div>
                         </div>
                         <div className="functions">
-                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditModal(index)}/>
-                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteModal(index)} />
+                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditItemModal(index)}/>
+                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteItemModal(index)} />
                         </div>
                     </OrderItemsList>
                   );
@@ -132,17 +132,17 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               </div>
             )}
 
-            <Button type="submit" onClick={handleOrderSubmit}>
+            <Button type="submit">
               Fazer Pedido
             </Button>
           </Container>
         </Modal>
       )}
 
-      {openModalIngredients && selectedProduct && (
+      {isItemModalOpen && selectedProduct && (
         <NewItemModal
-          open={openModalIngredients}
-          onClose={handleCloseIngredientModal}
+          open={isItemModalOpen}
+          onClose={handleCloseItemModal}
           product={selectedProduct}
           title={
             selectedProduct.ingredients.length > 0
@@ -159,10 +159,10 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
         />
       )}
 
-      {isEditModalOpen && editIndex !== null && selectedProduct && (
+      {isEditItemModalOpen && editIndex !== null && selectedProduct && (
         <EditItemModal
-          open={isEditModalOpen}
-          onClose={handleCloseEditModal}
+          open={isEditItemModalOpen}
+          onClose={handleCloseEditItemModal}
           product={selectedProduct}
           title="Editar Pedido"
           answer="Atualize as informações do pedido"
@@ -175,10 +175,10 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
         />
       )}
 
-      {isDeleteModalOpen && editIndex !== null && (
+      {isDeleteItemModalOpen && editIndex !== null && (
         <DeleteItemModal
-          open={isDeleteModalOpen}
-          onClose={handleCloseEditModal}
+          open={isDeleteItemModalOpen}
+          onClose={handleCloseDeleteItemModal}
           title="Deletar Pedido"
           answer="Deseja deletar este pedido?"
           index={editIndex}

@@ -4,24 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-  }
-
-  ul.categoriesOptions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  ul.productsOptions {
-    overflow: auto;
-  }
 `;
 
 export const BoxCategories = styled.div`

@@ -1,17 +1,13 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Order } from '@renderer/app/entities/Order';
-import { Product } from '@renderer/app/entities/Product';
-import { ProductCategory } from '@renderer/app/entities/ProductCategory';
-import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
-import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
-import { ordersService } from '@renderer/app/services/ordersService';
-import { CreateOrderParams } from '@renderer/app/services/ordersService/create';
-import toast from '@renderer/app/utils/toast';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
-import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { Product } from '@renderer/app/entities/Product';
+import { ProductCategory } from '@renderer/app/entities/ProductCategory';
+
+import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProductCategoriesQuery';
+import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
+
 import { OrderDetail } from '../../Items/ItemForm/useItemForm';
 
 export const orderFormSchema = z.object({
@@ -31,27 +27,27 @@ export const orderFormSchema = z.object({
 
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
-export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { //clientId também
-  const { handleSubmit:hookFormHandleSubmit } = useForm<OrderFormSchema>({
-    resolver: zodResolver(orderFormSchema),
-  });
-  const queryClient = useQueryClient();
+export default function useOrderModal(isOpen: boolean) {
 
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
-  const { products, isLoading: isLoadingProducts } = useProductsQuery();
+  const { products } = useProductsQuery();
+
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
-  const [orderDate, setOrderDate] = useState<string>('');
-  const [openModalIngredients, setOpenModalIngredients] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  const [isItemModalOpen, setIsItemModalOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(isOpen);
-  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isEditItemModalOpen, setIsEditItemModalOpen] = useState(false);
+  const [isDeleteItemModalOpen, setIsDeleteItemModalOpen] = useState(false);
+
   const [editIndex, setEditIndex] = useState<number | null>(null);
+
   const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
     from: undefined,
   });
+
+  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
 
   useEffect(() => {
     setIsOrderModalOpen(isOpen);
@@ -61,41 +57,39 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     setSelectedCategory(category);
   }
 
-  function handleOrderDateChange(date: string) {
-    setOrderDate(date);
-  }
-
-  function handleOpenIngredientModal(product: Product) {
+  // Item modals
+  function handleOpenItemModal(product: Product) {
     setSelectedProduct(product);
-    setOpenModalIngredients(true);
-    setIsDeleteModalOpen(false);
+    setIsItemModalOpen(true);
+    setIsDeleteItemModalOpen(false);
     setIsOrderModalOpen(false);
   };
 
-  function handleCloseIngredientModal() {
-    setOpenModalIngredients(false);
+  function handleCloseItemModal() {
+    setIsItemModalOpen(false);
     setIsOrderModalOpen(true);
   };
 
-  function handleOpenEditModal(index: number) {
+  // actions item modals
+  function handleOpenEditItemModal(index: number) {
     setEditIndex(index);
-    setIsEditModalOpen(true);
+    setIsEditItemModalOpen(true);
     setIsOrderModalOpen(false);
   };
 
-  function handleCloseEditModal() {
-    setIsEditModalOpen(false);
+  function handleCloseEditItemModal() {
+    setIsEditItemModalOpen(false);
     setIsOrderModalOpen(true);
   }
 
-  function handleOpenDeleteModal(index: number) {
+  function handleOpenDeleteItemModal(index: number) {
     setEditIndex(index);
-    setIsDeleteModalOpen(true);
+    setIsDeleteItemModalOpen(true);
     setIsOrderModalOpen(false);
   };
 
-  function handleCloseDeleteModal() {
-    setIsDeleteModalOpen(false);
+  function handleCloseDeleteItemModal() {
+    setIsDeleteItemModalOpen(false);
     setIsOrderModalOpen(true);
   }
 
@@ -103,64 +97,33 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     setOrderDetails((prevDetails) => [...prevDetails, details]);
   }
 
+  //datepicker
   const handleSelectedDateRange = useCallback((date: DateRange) => {
     setSelectedDateRange(date);
   }, []);
-
-  const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateOrderParams) =>
-      ordersService.create(data),
-    onSuccess: (newOrder: Order) => {
-      queryClient.setQueryData(
-        ['orders', 'getAll'],
-        (orders: Order[]) => [...orders, newOrder],
-      );
-    },
-  });
-
-  const handleOrderSubmit = hookFormHandleSubmit(async (data) => {
-    try {
-      await createOrder(data);
-      toast({
-        type: 'success',
-        text: 'Pedido criado com sucesso.',
-      });
-      onSuccess();
-    } catch {
-      toast({
-        type: 'danger',
-        text: 'Ocorreu um erro ao tentar criar pedido.',
-      });
-    }
-  });
 
   return {
     categories,
     products,
     isLoadingCategories,
-    isLoadingProducts,
-    isLoading,
     isOrderModalOpen,
+    isItemModalOpen,
+    isEditItemModalOpen,
+    isDeleteItemModalOpen,
     selectedCategory,
-    orderDate,
-    openModalIngredients,
     selectedProduct,
     selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
-    handleOrderDateChange,
-    handleOpenIngredientModal,
-    handleCloseIngredientModal,
-    handleOrderSubmit,
-    handleOpenEditModal,
-    handleOpenDeleteModal,
-    handleCloseEditModal,
-    handleCloseDeleteModal,
+    handleOpenItemModal,
+    handleCloseItemModal,
+    handleOpenEditItemModal,
+    handleOpenDeleteItemModal,
+    handleCloseEditItemModal,
+    handleCloseDeleteItemModal,
     handleSelectedDateRange,
-    orderDetails,
     addProductToOrder,
-    isEditModalOpen,
-    isDeleteModalOpen,
+    orderDetails,
     editIndex,
   };
 }
