@@ -110,9 +110,7 @@ export const OrderItemsList = styled.div`
   }
 
   .smallImg {
-    max-width: 20%;
-    min-width: 20%;
-    max-height: 50px;
+    height: 60px;
     border-radius: 12px;
   }
 

@@ -2,12 +2,9 @@ import * as Checkbox from '@radix-ui/react-checkbox';
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-top: 4rem;
-
   display: flex;
-  align-items: center;
   flex-direction: column;
-  gap: 1.2 rem;
+  gap: 4rem;
 
   .ingredientLabel {
     border: 1px solid ${({ theme }) => theme.colors.gray.lighter};
