@@ -9,6 +9,7 @@ import Graph from './sections/Graph';
 import Incomes from './sections/Incomes';
 import Sales from './sections/Sales';
 
+import { ToogleGroup } from '@renderer/views/components/ToogleGroup';
 import Expenses from './sections/Expenses';
 import Favorites from './sections/Favorites';
 import {
@@ -21,12 +22,14 @@ import {
 
 export default function Dashboard() {
   const {
-    selectedDateRange,
     labels,
     incomes,
     expenses,
     isLoading,
+    selectedDateRange,
+    selectedOptionRange,
     handleSelectedDateRange,
+    handleSelectedOptionRange,
   } = useDashboard();
 
   return (
@@ -41,6 +44,20 @@ export default function Dashboard() {
 
       <FiltersContainer>
         <span>Filtros: </span>
+        <ToogleGroup
+          value={selectedOptionRange}
+          onChange={handleSelectedOptionRange}
+          options={[
+            {
+              label: '2 semanas',
+              value: 'QUINZENA',
+            },
+            {
+              label: 'Este mês',
+              value: 'MENSAL',
+            },
+          ]}
+        />
 
         <DateRangePickerInput
           value={selectedDateRange}
