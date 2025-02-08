@@ -61,5 +61,15 @@
     { "title": "Strogonoff de Frango", "quantity": 54 },
     { "title": "Frango ao Molho", "quantity": 41 },
     { "title": "Picadinho de Carne", "quantity": 36 }
-  ]
+  ],
+  "graph": {
+    "incomes": [
+      { "id": "1", "type": "CREDIT_CARD", "value": 1200.0, "date": "2024-11-24" },
+      { "id": "2", "type": "CASH", "value": 800.0, "date": "2024-11-25" }
+    ],
+    "expenses": [
+      { "id": "1", "type": "MEATS", "value": 500.0, "date": "2024-11-24" },
+      { "id": "2", "type": "DELIVERY", "value": 200.0, "date": "2024-11-25" }
+    ]
+  }
 }
