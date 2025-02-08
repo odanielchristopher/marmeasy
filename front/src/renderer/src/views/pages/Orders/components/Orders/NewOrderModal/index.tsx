@@ -5,6 +5,7 @@ import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
 import Trash from '@renderer/assets/Images/Trash.svg';
 import Button from '@renderer/views/components/Button';
+import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
 import { Input } from '@renderer/views/components/Input';
 import Loader from '@renderer/views/components/Loader';
 import Modal from '@renderer/views/components/Modal';
@@ -19,8 +20,6 @@ interface OrderModalProps {
   onClose(): void;
 }
 
-// const trueTest = true;
-
 export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
@@ -31,6 +30,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     orderDetails,
     openModalIngredients,
     selectedProduct,
+    selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
     handleOpenIngredientModal,
@@ -40,6 +40,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     handleOpenEditModal,
     handleOpenDeleteModal,
     handleCloseEditModal,
+    handleSelectedDateRange,
     isEditModalOpen,
     isDeleteModalOpen,
     editIndex,
@@ -57,7 +58,10 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               name='clientName'
             />
 
-            {/* <DatePickerInput/> */}
+            <DateRangePickerInput
+              value={selectedDateRange}
+              onChange={handleSelectedDateRange}
+            />
 
             <BoxCategories>
             {isLoadingCategories ? (

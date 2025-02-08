@@ -8,7 +8,8 @@ import { ordersService } from '@renderer/app/services/ordersService';
 import { CreateOrderParams } from '@renderer/app/services/ordersService/create';
 import toast from '@renderer/app/utils/toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { DateRange } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { OrderDetail } from '../../Items/ItemForm/useItemForm';
@@ -48,6 +49,9 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRange>({
+    from: undefined,
+  });
 
   useEffect(() => {
     setIsOrderModalOpen(isOpen);
@@ -99,6 +103,10 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     setOrderDetails((prevDetails) => [...prevDetails, details]);
   }
 
+  const handleSelectedDateRange = useCallback((date: DateRange) => {
+    setSelectedDateRange(date);
+  }, []);
+
   const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
     mutationFn: async (data: CreateOrderParams) =>
       ordersService.create(data),
@@ -137,6 +145,7 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     orderDate,
     openModalIngredients,
     selectedProduct,
+    selectedDateRange,
     setOrderDetails,
     handleCategorySelect,
     handleOrderDateChange,
@@ -147,6 +156,7 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
     handleOpenDeleteModal,
     handleCloseEditModal,
     handleCloseDeleteModal,
+    handleSelectedDateRange,
     orderDetails,
     addProductToOrder,
     isEditModalOpen,
