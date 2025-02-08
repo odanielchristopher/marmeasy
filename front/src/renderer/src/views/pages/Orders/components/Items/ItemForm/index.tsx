@@ -71,20 +71,20 @@ export default function ItemForm({
             {errors.selectedIngredients.message}
           </span>
         )}
-      </Container>
-      <QuantityContainer>
-        <p>Quantidade*:</p>
-        <TimesNumericInput
-          $error={errors.quantity?.message}
-          value={quantity}
-          name="quantity"
-          onInputChange={handleQuantityChange}
-        />
-      </QuantityContainer>
+        <QuantityContainer>
+          <p>Quantidade*:</p>
+          <TimesNumericInput
+            $error={errors.quantity?.message}
+            value={quantity}
+            name="quantity"
+            onInputChange={handleQuantityChange}
+          />
+        </QuantityContainer>
 
-      <Button onClick={handleSubmit(onSubmitForm)}>
+      <Button className='btnSubmit' onClick={handleSubmit(onSubmitForm)}>
         Adicionar
       </Button>
+      </Container>
     </>
     ) : (
       <Container>
@@ -98,7 +98,7 @@ export default function ItemForm({
           />
         </QuantityContainer>
 
-        <Button onClick={handleSubmit(onSubmitForm)}>
+        <Button className='btnSubmit' onClick={handleSubmit(onSubmitForm)}>
           Adicionar
         </Button>
       </Container>

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4rem;
+  gap: 2rem;
 
   .ingredientLabel {
     border: 1px solid ${({ theme }) => theme.colors.gray.lighter};
@@ -14,10 +14,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     font-size: 1.4rem;
-    line-height: 150%;
-
     padding: 1.6rem;
     margin-top: 10px;
   }
@@ -30,6 +27,10 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 0.4rem;
+  }
+
+  div.btnSubmit {
+    width: 100%;
   }
 `;
 
@@ -53,7 +54,6 @@ export const QuantityContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 1.2rem;
-  margin-top: 1.6rem;
   width: 100%;
 
   div {
