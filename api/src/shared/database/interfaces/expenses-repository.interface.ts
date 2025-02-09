@@ -1,5 +1,7 @@
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
 
+export const IExpensesRepository = Symbol('IExpensesRepository');
+
 export interface IExpensesRepository {
   findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense>;
 

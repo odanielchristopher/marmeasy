@@ -13,6 +13,7 @@ import { OrderItemsModule } from './modules/order-items/order-items.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { ExpensesModule } from './modules/expenses/expenses.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     OrdersModule,
     PaymentsModule,
     DashboardModule,
+    ExpensesModule,
   ],
   controllers: [],
   providers: [
