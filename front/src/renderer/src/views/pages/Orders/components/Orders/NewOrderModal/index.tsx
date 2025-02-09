@@ -1,20 +1,25 @@
+import { Controller } from 'react-hook-form';
+
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+
 import Edit from '@renderer/assets/Images/Edit.svg';
 import noImage from '@renderer/assets/Images/empty-image.svg';
 import Plus from '@renderer/assets/Images/Plus.svg';
 import Trash from '@renderer/assets/Images/Trash.svg';
+
 import Button from '@renderer/views/components/Button';
 import DatePickerInput from '@renderer/views/components/DatePickerInput';
 import { Input } from '@renderer/views/components/Input';
 import Loader from '@renderer/views/components/Loader';
 import Modal from '@renderer/views/components/Modal';
 import NewItemModal from '@renderer/views/pages/Orders/components/Items/NewItemModal';
-import { Controller } from 'react-hook-form';
+
 import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
-import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 import useOrderModal from './useNewOrderModal';
+
+import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -25,6 +30,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     products,
+    product,
     control,
     errors,
     isLoadingCategories,
@@ -44,7 +50,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     handleCloseDeleteItemModal,
     addProductToOrder,
     orderDetails,
-    editIndex,
+    index,
   } = useOrderModal(isOpen);
 
   const allCategories = [
@@ -87,7 +93,7 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                 <IconCategory
                   key={category.id}
                   onClick={() => handleCategorySelect(category)}
-                  className={selectedCategory?.id === category.id ? 'active' : ''}
+                  className={(selectedCategory?.id === category.id || (category.id === 'all' && !selectedCategory)) ? 'active' : ''}
                 >
                   <div className="circle">
                     {category.icon}
@@ -180,29 +186,28 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
         />
       )}
 
-      {isEditItemModalOpen && editIndex !== null && selectedProduct && (
+      {isEditItemModalOpen && index !== null && product && (
         <EditItemModal
           open={isEditItemModalOpen}
           onClose={handleCloseEditItemModal}
-          product={selectedProduct}
+          product={product}
           title="Editar Pedido"
           answer="Atualize as informações do pedido"
-          index={editIndex}
-          order={orderDetails[editIndex]}
-          addProductToOrder={addProductToOrder}
+          index={index}
+          order={orderDetails[index]}
           setOrderDetails={setOrderDetails}
           orderDetails={orderDetails}
-          hasIngredients={selectedProduct.ingredients.length > 0}
+          hasIngredients={product.ingredients.length > 0}
         />
       )}
 
-      {isDeleteItemModalOpen && editIndex !== null && (
+      {isDeleteItemModalOpen && index !== null && (
         <DeleteItemModal
           open={isDeleteItemModalOpen}
           onClose={handleCloseDeleteItemModal}
           title="Deletar Pedido"
           answer="Deseja deletar este pedido?"
-          index={editIndex}
+          index={index}
           setOrderDetails={setOrderDetails}
           orderDetails={orderDetails}
         />

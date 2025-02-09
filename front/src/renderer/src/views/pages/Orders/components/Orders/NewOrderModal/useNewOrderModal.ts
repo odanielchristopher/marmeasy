@@ -42,9 +42,11 @@ export default function useOrderModal(isOpen: boolean) {
   const [isEditItemModalOpen, setIsEditItemModalOpen] = useState(false);
   const [isDeleteItemModalOpen, setIsDeleteItemModalOpen] = useState(false);
 
-  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [index, setIndex] = useState<number | null>(null);
 
   const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
+
+  const [product, setProduct] = useState<Product | null>(null);
 
   const {
     formState: { errors },
@@ -82,7 +84,9 @@ export default function useOrderModal(isOpen: boolean) {
 
   // actions item modals
   function handleOpenEditItemModal(index: number) {
-    setEditIndex(index);
+    setIndex(index);
+    const productToEdit = products.find((p) => p.name === orderDetails[index].productName);
+    setProduct(productToEdit ?? null);
     setIsEditItemModalOpen(true);
     setIsOrderModalOpen(false);
   };
@@ -93,7 +97,7 @@ export default function useOrderModal(isOpen: boolean) {
   }
 
   function handleOpenDeleteItemModal(index: number) {
-    setEditIndex(index);
+    setIndex(index);
     setIsDeleteItemModalOpen(true);
     setIsOrderModalOpen(false);
   };
@@ -103,13 +107,15 @@ export default function useOrderModal(isOpen: boolean) {
     setIsOrderModalOpen(true);
   }
 
-  function addProductToOrder(details: OrderDetail) {
+  function addProductToOrder(details: OrderDetail, product: Product) {
     setOrderDetails((prevDetails) => [...prevDetails, details]);
+    setProduct(product);
   }
 
   return {
     categories,
     products,
+    product,
     errors,
     control,
     isLoadingCategories,
@@ -129,6 +135,6 @@ export default function useOrderModal(isOpen: boolean) {
     handleCloseDeleteItemModal,
     addProductToOrder,
     orderDetails,
-    editIndex,
+    index,
   };
 }

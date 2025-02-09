@@ -1,10 +1,12 @@
-import { Product } from '@renderer/app/entities/Product';
-import Modal from '@renderer/views/components/Modal';
 import React from 'react';
+
+import Modal from '@renderer/views/components/Modal';
 import ItemForm from '../ItemForm';
-import { OrderDetail } from '../ItemForm/useItemForm';
-import { Container } from './styles';
 import useEditModal from './useEditModal';
+
+import { Product } from '@renderer/app/entities/Product';
+import { Container } from '../ItemForm/styles';
+import { OrderDetail } from '../ItemForm/useItemForm';
 
 interface EditModalProps {
   open: boolean;
@@ -16,7 +18,6 @@ interface EditModalProps {
   title: string;
   index: number;
   order: OrderDetail;
-  addProductToOrder(details: OrderDetail): void;
   setOrderDetails: (details: OrderDetail[]) => void;
   orderDetails: OrderDetail[];
   hasIngredients: boolean;
@@ -42,6 +43,8 @@ export default function EditItemModal({
     <Modal open={open} title={title} onClose={onClose}>
       <Container>
         {answer}
+        {index}
+        {product.name}
         <ItemForm
           product={product}
           onSubmit={ handleConfimEdit }

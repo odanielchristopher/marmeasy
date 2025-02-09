@@ -4,6 +4,7 @@ import React from 'react';
 import ItemForm from '../ItemForm';
 import { OrderDetail } from '../ItemForm/useItemForm';
 import { Container } from './styles';
+import useNewItemModal from './useNewItemModal';
 
 
 interface NewItemModalProps {
@@ -14,7 +15,7 @@ interface NewItemModalProps {
   answer: string;
   product: Product;
   title: string;
-  onSubmit(details: OrderDetail): void;
+  onSubmit(details: OrderDetail, product: Product): void;
   hasIngredients: boolean;
 }
 
@@ -25,9 +26,12 @@ export default function NewItemModal({
   onClose,
   product,
   title,
-  onSubmit : addProductToOrder,
+  onSubmit,
   hasIngredients,
 }: NewItemModalProps) {
+  const {
+    handleConfirmNewItem,
+  } = useNewItemModal({ product, onClose, onSubmit });
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -35,7 +39,7 @@ export default function NewItemModal({
         {answer}
         <ItemForm
           product={product}
-          onSubmit={addProductToOrder}
+          onSubmit={handleConfirmNewItem}
           onClose={onClose}
           hasIngredients={hasIngredients}
         />
