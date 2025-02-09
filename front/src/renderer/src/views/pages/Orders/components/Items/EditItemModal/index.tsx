@@ -43,8 +43,6 @@ export default function EditItemModal({
     <Modal open={open} title={title} onClose={onClose}>
       <Container>
         {answer}
-        {index}
-        {product.name}
         <ItemForm
           product={product}
           onSubmit={ handleConfimEdit }

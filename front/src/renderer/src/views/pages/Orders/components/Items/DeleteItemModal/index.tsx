@@ -4,6 +4,7 @@ import Modal from '@renderer/views/components/Modal';
 import { useDeleteModal } from './useDeleteModal';
 
 import { Container } from '../ItemForm/styles';
+import { OrderDetail } from '../ItemForm/useItemForm';
 
 interface DeleteModalProps {
   open: boolean;
@@ -12,7 +13,7 @@ interface DeleteModalProps {
   title: string;
   index: number;
   setOrderDetails: (details: any) => void;
-  orderDetails: any;
+  orderDetails: OrderDetail[];
 }
 
 export default function DeleteItemModal({
@@ -25,6 +26,7 @@ export default function DeleteItemModal({
   orderDetails,
 }: DeleteModalProps) {
   const {
+    detailItem,
     handleConfirmDelete,
 } = useDeleteModal({ index, onClose, setOrderDetails, orderDetails });
 
@@ -32,9 +34,11 @@ export default function DeleteItemModal({
     <Modal open={open} title={title} onClose={onClose}>
       <Container>
         {answer}
-        <Button onClick={() => {
+        <strong>{detailItem.productName}</strong>
+        <Button
+          onClick={() => {
           handleConfirmDelete();
-        }}>Confirmar</Button>
+        }}>Deletar</Button>
       </Container>
     </Modal>
   );

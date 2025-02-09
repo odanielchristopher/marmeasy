@@ -205,8 +205,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
         <DeleteItemModal
           open={isDeleteItemModalOpen}
           onClose={handleCloseDeleteItemModal}
-          title="Deletar Pedido"
-          answer="Deseja deletar este pedido?"
+          title="Deletar Item do Pedido"
+          answer="Deseja deletar este item: "
           index={index}
           setOrderDetails={setOrderDetails}
           orderDetails={orderDetails}

@@ -5,6 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  text-align: center;
 
   .ingredientLabel {
     border: 1px solid ${({ theme }) => theme.colors.gray.lighter};
