@@ -12,7 +12,7 @@ interface ExpenseSectionProps {
 }
 
 export const translateExpenseType = {
-  default: 'Outras saídas',
+  others: 'Outras saídas',
   taxes: 'Impostos',
   employees: 'Funcionários',
   equipments: 'Equipamentos',
