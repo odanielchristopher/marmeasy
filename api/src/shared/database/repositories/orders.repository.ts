@@ -9,6 +9,7 @@ import {
   IOrdersRepository,
   UpdateOrderParams,
 } from '../interfaces/orders-repository.interface';
+import { OrderMapper, PrismaOrderResponse } from '../mappers/order.mapper';
 import { PrismaService } from '../prisma.service';
 
 const prismaResponse = {
@@ -47,7 +48,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return findendOrders.map(Order.parse);
+    return findendOrders.map(this.parser);
   }
 
   async findAllByDateRange(
@@ -70,7 +71,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return findedOrders.map(Order.parse);
+    return findedOrders.map(this.parser);
   }
 
   async findFirstByClientId(
@@ -83,7 +84,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return Order.parse(findedOrder);
+    return this.parser(findedOrder);
   }
 
   async findUniqueByUserId(
@@ -96,7 +97,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return Order.parse(findedOrder);
+    return this.parser(findedOrder);
   }
 
   async create(createDto: CreateOrderParams): Promise<Order> {
@@ -120,7 +121,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return Order.parse(createdOrder);
+    return this.parser(createdOrder);
   }
 
   async update(updateDto: UpdateOrderParams): Promise<Order> {
@@ -146,7 +147,7 @@ export class OrdersRepository implements IOrdersRepository {
       select: prismaResponse,
     });
 
-    return Order.parse(updatedOrder);
+    return this.parser(updatedOrder);
   }
 
   async delete(deleteDto: DeleteOrderItemDto): Promise<Order | void> {
@@ -156,5 +157,9 @@ export class OrdersRepository implements IOrdersRepository {
       where: { id, userId },
       include: { items: true },
     });
+  }
+
+  private parser(prismaOrder: PrismaOrderResponse) {
+    return OrderMapper.getInstance().toDomain(prismaOrder);
   }
 }
