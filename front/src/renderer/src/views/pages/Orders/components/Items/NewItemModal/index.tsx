@@ -1,10 +1,15 @@
-import { Product } from '@renderer/app/entities/Product';
-import Modal from '@renderer/views/components/Modal';
 import React from 'react';
+
+import { Product } from '@renderer/app/entities/Product';
+
+import Modal from '@renderer/views/components/Modal';
+
 import ItemForm from '../ItemForm';
 import { OrderDetail } from '../ItemForm/useItemForm';
-import { Container } from './styles';
+
 import useNewItemModal from './useNewItemModal';
+
+import { Container } from './styles';
 
 
 interface NewItemModalProps {

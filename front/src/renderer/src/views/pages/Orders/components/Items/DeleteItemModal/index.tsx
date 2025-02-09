@@ -1,7 +1,9 @@
 import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
-import { Container } from '../ItemForm/styles';
+
 import { useDeleteModal } from './useDeleteModal';
+
+import { Container } from '../ItemForm/styles';
 
 interface DeleteModalProps {
   open: boolean;
