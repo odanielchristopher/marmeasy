@@ -1,14 +1,19 @@
 import * as Checkbox from '@radix-ui/react-checkbox';
+
 import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Product } from '@renderer/app/entities/Product';
+
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
+
 import Button from '@renderer/views/components/Button';
 import { TimesNumericInput } from '@renderer/views/components/TimesNumericInput';
+
 import { CgCloseO } from 'react-icons/cg';
 import { FaCheck } from 'react-icons/fa6';
-import { CheckBoxStyle, Container, QuantityContainer } from './styles';
+
 import useItemForm, { OrderDetail } from './useItemForm';
 
+import { CheckBoxStyle, Container, QuantityContainer } from './styles';
 
 interface ItemFormProps {
   onClose(): void;

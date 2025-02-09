@@ -1,9 +1,11 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Ingredient } from '@renderer/app/entities/Ingredient';
-import { Product } from '@renderer/app/entities/Product';
 import { useState } from 'react';
+
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { Ingredient } from '@renderer/app/entities/Ingredient';
+import { Product } from '@renderer/app/entities/Product';
 
 export const OrderDetailSchema = z.object({
   selectedIngredients: z.array(z.object({
