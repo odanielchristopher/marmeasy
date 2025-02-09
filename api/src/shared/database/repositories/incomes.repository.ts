@@ -18,10 +18,12 @@ export class IncomesRepository implements IIncomesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findManyByUserId(findManyDto: findManyDto): Promise<Income[]> {
-    const { userId } = findManyDto;
+    const { userId, dateRange } = findManyDto;
+
+    const { fromDate, toDate } = dateRange;
 
     const incomes = await this.prismaService.payment.findMany({
-      where: { userId },
+      where: { userId, date: { gte: fromDate, lte: toDate } },
       include: {
         client: {
           select: {

@@ -60,8 +60,11 @@ export class DashboardService implements IDashboardService {
     return this.formatHistoryResponse({ data: sales, type: 'length' });
   }
 
-  getFavoritesIngredients(userId: string): Promise<FavoriteIngredient[]> {
-    return this.ordersRepository.findFavoriteIngredients({ userId });
+  getFavoritesIngredients(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<FavoriteIngredient[]> {
+    return this.ordersRepository.findFavoriteIngredients({ userId, dateRange });
   }
 
   getDashboardCategories(

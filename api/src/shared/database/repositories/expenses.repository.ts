@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Expense as PrismaExpense } from '@prisma/client';
 
 import {
-    CreateExpenseDto,
-    DeleteExpenseDto,
-    FindManyExpenseDto,
-    FindOneExpenseDto,
-    IExpensesRepository,
-    UpdateExpenseDto,
+  CreateExpenseDto,
+  DeleteExpenseDto,
+  FindManyExpenseDto,
+  FindOneExpenseDto,
+  IExpensesRepository,
+  UpdateExpenseDto,
 } from '../interfaces/expenses-repository.interface';
 
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
@@ -19,10 +19,18 @@ export class ExpensesRepository implements IExpensesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
-    const { userId } = findAllDto;
+    const { userId, dateRange } = findAllDto;
+
+    const { fromDate, toDate } = dateRange;
 
     const expenses = await this.prismaService.expense.findMany({
-      where: { userId },
+      where: {
+        userId,
+        date: {
+          gte: fromDate,
+          lte: toDate,
+        },
+      },
     });
 
     return expenses.map(this.parser);

@@ -13,6 +13,9 @@ export class DateRangeDto {
   @IsDateString({}, { message: 'A data de fim precisa ser um formato válido' })
   to: string;
 
+  fromDate: Date;
+  toDate: Date;
+
   constructor({ from, to }: { from: string; to: string }) {
     this.from = from;
     this.to = to;
@@ -25,5 +28,11 @@ export class DateRangeDto {
       );
       throw new BadRequestException(messages);
     }
+
+    this.fromDate = new Date(from);
+    this.fromDate.setUTCHours(0, 0, 0, 0);
+
+    this.toDate = new Date(to);
+    this.toDate.setUTCHours(23, 59, 59, 999);
   }
 }

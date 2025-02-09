@@ -42,6 +42,7 @@ export interface IOrdersRepository {
 export type FindFavoriteIngredientsDto = {
   userId: string;
   podiumPositions?: number;
+  dateRange: DateRangeDto;
 };
 
 export type FindManyByClientIdDto = {

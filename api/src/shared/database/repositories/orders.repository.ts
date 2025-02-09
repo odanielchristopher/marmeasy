@@ -53,7 +53,8 @@ export class OrdersRepository implements IOrdersRepository {
   async findFavoriteIngredients(
     findFavoritesDto: FindFavoriteIngredientsDto,
   ): Promise<FavoriteIngredient[]> {
-    const { userId, podiumPositions = 3 } = findFavoritesDto;
+    const { userId, podiumPositions = 3, dateRange } = findFavoritesDto;
+    const { fromDate, toDate } = dateRange;
 
     const topIngredients = await this.prismaService.$queryRaw<
       PrismaFavoriteResponse[]
@@ -63,7 +64,9 @@ export class OrdersRepository implements IOrdersRepository {
           COUNT(*) AS "totalUses"
       FROM "order_items" i
       JOIN "orders" o ON i."order_id" = o."id"
-      WHERE o."user_id" = ${userId}::uuid
+      WHERE
+        o."user_id" = ${userId}::uuid
+        AND o."date" BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
       GROUP BY "ingredientName"
       ORDER BY "totalUses" DESC
       LIMIT ${podiumPositions};
@@ -75,7 +78,8 @@ export class OrdersRepository implements IOrdersRepository {
   async findManyOnSaleFormat(
     findManySaleDto: FindManySaleDto,
   ): Promise<Sale[]> {
-    const { userId } = findManySaleDto;
+    const { userId, dateRange } = findManySaleDto;
+    const { fromDate, toDate } = dateRange;
 
     const sales = await this.prismaService.$queryRaw<PrismaSaleResponse[]>`
       SELECT
@@ -86,7 +90,9 @@ export class OrdersRepository implements IOrdersRepository {
         SUM(o."totalValue") AS "totalAmount"
       FROM "orders" o
       JOIN "clients" c ON o."client_id" = c."id"
-      WHERE o."user_id" = ${userId}::uuid
+      WHERE
+        o."user_id" = ${userId}::uuid
+        AND o."date" BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
       GROUP BY o."client_id", c."name", DATE_TRUNC('day', o."date")
       ORDER BY date DESC, quantity DESC;
     `;
