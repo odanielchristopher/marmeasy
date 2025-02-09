@@ -11,4 +11,9 @@ export class DateRangeDto {
   @IsNotEmpty({ message: 'A data de fim é obrigatória.' })
   @IsDateString({}, { message: 'A data de fim precisa ser um formato válido' })
   to: string;
+
+  constructor({ from, to }: { from: string; to: string }) {
+    this.from = from;
+    this.to = to;
+  }
 }
