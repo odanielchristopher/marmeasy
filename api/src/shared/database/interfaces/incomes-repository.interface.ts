@@ -1,11 +1,13 @@
 import { Income } from 'src/modules/dashboard/entities/income.entity';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 
 export const IIncomesRepository = Symbol('IIncomesRepository');
 
 export interface IIncomesRepository {
-  findManyByUser(findManyDto: findManyDto): Promise<Income[]>;
+  findManyByUserId(findManyDto: findManyDto): Promise<Income[]>;
 }
 
 export type findManyDto = {
   userId: string;
+  dateRange: DateRangeDto;
 };

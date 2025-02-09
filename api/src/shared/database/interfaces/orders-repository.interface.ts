@@ -3,6 +3,7 @@ import { Sale } from 'src/modules/dashboard/entities/sale.entity';
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
 import { Order } from 'src/modules/orders/entities/order.entity';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
 
@@ -51,6 +52,7 @@ export type FindManyByClientIdDto = {
 
 export type FindManySaleDto = {
   userId: string;
+  dateRange: DateRangeDto;
 };
 
 export type FindUniqueOrderByIdDto = {

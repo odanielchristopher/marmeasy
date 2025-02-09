@@ -17,7 +17,7 @@ import {
 export class IncomesRepository implements IIncomesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findManyByUser(findManyDto: findManyDto): Promise<Income[]> {
+  async findManyByUserId(findManyDto: findManyDto): Promise<Income[]> {
     const { userId } = findManyDto;
 
     const incomes = await this.prismaService.payment.findMany({

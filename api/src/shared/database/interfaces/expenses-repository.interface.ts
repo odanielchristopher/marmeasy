@@ -1,9 +1,10 @@
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 
 export const IExpensesRepository = Symbol('IExpensesRepository');
 
 export interface IExpensesRepository {
-  findAllByUserId(findAllDto: FindAllExpenseDto): Promise<Expense[]>;
+  findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]>;
 
   findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense>;
 
@@ -14,8 +15,9 @@ export interface IExpensesRepository {
   delete(deleteDto: DeleteExpenseDto): Promise<void>;
 }
 
-export type FindAllExpenseDto = {
+export type FindManyExpenseDto = {
   userId: string;
+  dateRange: DateRangeDto;
 };
 
 export type FindOneExpenseDto = {

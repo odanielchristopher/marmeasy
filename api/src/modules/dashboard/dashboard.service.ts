@@ -7,6 +7,7 @@ import { IDashboardService } from './interfaces/dashboard-service.interface';
 
 import { IIncomesRepository } from 'src/shared/database/interfaces/incomes-repository.interface';
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { Expense } from '../expenses/entities/expense.entity';
 import { FavoriteIngredient } from './entities/favorite.entity';
 import { Income } from './entities/income.entity';
@@ -23,20 +24,38 @@ export class DashboardService implements IDashboardService {
     private readonly ordersRepository: IOrdersRepository,
   ) {}
 
-  async getExpenses(userId: string): Promise<IHistoryResponse<Expense>> {
-    const expenses = await this.expensesRepository.findAllByUserId({ userId });
+  async getExpenses(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IHistoryResponse<Expense>> {
+    const expenses = await this.expensesRepository.findManyByUserId({
+      userId,
+      dateRange,
+    });
 
     return this.formatHistoryResponse({ data: expenses });
   }
 
-  async getIncomes(userId: string): Promise<IHistoryResponse<Income>> {
-    const incomes = await this.incomesRepository.findManyByUser({ userId });
+  async getIncomes(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IHistoryResponse<Income>> {
+    const incomes = await this.incomesRepository.findManyByUserId({
+      userId,
+      dateRange,
+    });
 
     return this.formatHistoryResponse({ data: incomes });
   }
 
-  async getSales(userId: string): Promise<IHistoryResponse<Sale>> {
-    const sales = await this.ordersRepository.findManyOnSaleFormat({ userId });
+  async getSales(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IHistoryResponse<Sale>> {
+    const sales = await this.ordersRepository.findManyOnSaleFormat({
+      userId,
+      dateRange,
+    });
 
     return this.formatHistoryResponse({ data: sales, type: 'length' });
   }
@@ -45,19 +64,31 @@ export class DashboardService implements IDashboardService {
     return this.ordersRepository.findFavoriteIngredients({ userId });
   }
 
-  getDashboardCategories(userId: string): Promise<IIncomesANDExpenses> {
-    return this.getIncomesAndExpenses(userId);
+  getDashboardCategories(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IIncomesANDExpenses> {
+    return this.getIncomesAndExpenses(userId, dateRange);
   }
 
-  getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses> {
-    return this.getIncomesAndExpenses(userId);
+  getDashboardGraphDatas(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IIncomesANDExpenses> {
+    return this.getIncomesAndExpenses(userId, dateRange);
   }
 
   // Helpers
-  private async getIncomesAndExpenses(userId: string) {
-    const expenses = await this.expensesRepository.findAllByUserId({ userId });
+  private async getIncomesAndExpenses(userId: string, dateRange: DateRangeDto) {
+    const expenses = await this.expensesRepository.findManyByUserId({
+      userId,
+      dateRange,
+    });
 
-    const incomes = await this.incomesRepository.findManyByUser({ userId });
+    const incomes = await this.incomesRepository.findManyByUserId({
+      userId,
+      dateRange,
+    });
 
     return {
       expenses,
