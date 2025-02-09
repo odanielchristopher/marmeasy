@@ -74,7 +74,7 @@ export default function useClient() {
     () =>
       clients
         .filter((contact) =>
-          contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+          contact && contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
         )
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],

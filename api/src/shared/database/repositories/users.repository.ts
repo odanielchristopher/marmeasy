@@ -34,7 +34,7 @@ export class UsersRepository implements IUsersRepository {
     const { email } = findUniqueByEmail;
 
     const [findedUser] = await this.prismaService.$queryRaw<User[]>`
-    SELECT id, name, email, passoword
+    SELECT id, name, email, password
     FROM users
     WHERE email = ${email}
     `;

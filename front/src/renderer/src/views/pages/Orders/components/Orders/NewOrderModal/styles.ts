@@ -4,24 +4,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-  }
-
-  ul.categoriesOptions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  ul.productsOptions {
-    overflow: auto;
-  }
 `;
 
 export const BoxCategories = styled.div`
@@ -29,7 +11,7 @@ export const BoxCategories = styled.div`
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 18px;
 `;
 
 export const IconCategory = styled.li`
@@ -39,10 +21,9 @@ export const IconCategory = styled.li`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  gap: 8px;
+  gap: 5px;
   opacity: 0.5;
   font-weight: bold;
-  margin-bottom: 16px;
 
   &.active {
     opacity: 1;
@@ -57,7 +38,10 @@ export const IconCategory = styled.li`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 14px;
   }
 `;
 
@@ -76,9 +60,7 @@ export const ProductList = styled.li`
   }
 
   img {
-    max-width: 30%;
-    min-width: 30%;
-    max-height: 72px;
+    height: 80px;
     border-radius: 12px;
   }
 
@@ -105,12 +87,60 @@ export const ProductList = styled.li`
   }
 `;
 
-export const Overlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
+export const Line = styled.hr`
+  margin: 16px 0;
+  border: 3px;
+  border-top: 1px solid #ccc;
+`;
+
+export const OrderItemsList = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1000;
+  margin-bottom: 26px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  span {
+    color: grey;
+    font-size: 14px;
+  }
+
+  .smallImg {
+    height: 60px;
+    border-radius: 12px;
+  }
+
+  div.infoOrder {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    div.nameDetails {
+    display: flex;
+    flex-direction: column;
+
+      p {
+        font-size: 14px;
+      }
+
+      span {
+        font-size: 12px;
+        margin-bottom: -4px;
+      }
+    }
+  }
+
+  div.functions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    img {
+      cursor: pointer;
+      width: 22px;
+    }
+  }
 `;
