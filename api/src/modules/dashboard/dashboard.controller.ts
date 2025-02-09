@@ -34,7 +34,7 @@ export class DashboardController {
     return this.dashboardService.getDashboardCategories(userId);
   }
 
-  @Get('/graph-datas')
+  @Get('/graph-data')
   getGraphData(@ActiveUserId() userId: string) {
     return this.dashboardService.getDashboardGraphDatas(userId);
   }

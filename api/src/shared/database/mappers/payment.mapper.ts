@@ -22,7 +22,8 @@ export class PaymentMapper {
       return null;
     }
 
-    const { id, date, type, value, clientId, userId } = persistenceObject;
+    const { id, date, type, value, clientId, userId, ...rest } =
+      persistenceObject;
 
     return {
       id,
@@ -31,6 +32,7 @@ export class PaymentMapper {
       userId,
       date: date.toISOString(),
       type: PaymentType[type],
+      ...rest,
     };
   }
 }

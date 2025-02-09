@@ -1,4 +1,4 @@
-import { Expense } from '@prisma/client';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { Income } from '../entities/income.entity';
 
 export interface IHistory<TEntity> {

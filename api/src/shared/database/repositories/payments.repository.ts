@@ -6,7 +6,6 @@ import {
   CreatePaymentDto,
   DeletePaymentDto,
   FindFirstPaymentDto,
-  FindManyByUserDto,
   FindManyPaymentsByIdDto,
   IPaymentsRepository,
   UpdatePaymentDto,
@@ -17,18 +16,6 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class PaymentsRepository implements IPaymentsRepository {
   constructor(private readonly prismaService: PrismaService) {}
-
-  async findManyByUserId(
-    findManyByUserDto: FindManyByUserDto,
-  ): Promise<Payment[]> {
-    const { userId } = findManyByUserDto;
-
-    const payments = await this.prismaService.payment.findMany({
-      where: { userId },
-    });
-
-    return payments.map(this.parser);
-  }
 
   async findManyByClientId(
     findManyDto: FindManyPaymentsByIdDto,

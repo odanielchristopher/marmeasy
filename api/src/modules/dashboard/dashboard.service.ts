@@ -1,17 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
+
+import { IHistory, IHistoryResponse, IIncomesANDExpenses } from './types';
+
 import { IExpensesRepository } from 'src/shared/database/interfaces/expenses-repository.interface';
+import { IDashboardService } from './interfaces/dashboard-service.interface';
+
+import { IIncomesRepository } from 'src/shared/database/interfaces/incomes-repository.interface';
 import { Expense } from '../expenses/entities/expense.entity';
 import { FavoriteIngredient } from './entities/favorite.entity';
 import { Income } from './entities/income.entity';
 import { Sale } from './entities/sale.entity';
-import { IDashboardService } from './interfaces/dashboard-service.interface';
-import { IHistory, IHistoryResponse, IIncomesANDExpenses } from './types';
 
 @Injectable()
 export class DashboardService implements IDashboardService {
   constructor(
     @Inject(IExpensesRepository)
     private readonly expensesRepository: IExpensesRepository,
+    @Inject(IIncomesRepository)
+    private readonly incomesRepository: IIncomesRepository,
   ) {}
 
   async getExpenses(userId: string): Promise<IHistoryResponse<Expense>> {
@@ -20,15 +26,13 @@ export class DashboardService implements IDashboardService {
     return this.formatHistoryResponse(expenses);
   }
 
+  async getIncomes(userId: string): Promise<IHistoryResponse<Income>> {
+    const incomes = await this.incomesRepository.findManyByUser({ userId });
+
+    return this.formatHistoryResponse(incomes);
+  }
+
   getSales(userId: string): Promise<IHistoryResponse<Sale>> {
-    throw new Error('Method not implemented.');
-  }
-
-  getIncomes(userId: string): Promise<IHistoryResponse<Income>> {
-    throw new Error('Method not implemented.');
-  }
-
-  getDashboardCategories(userId: string): Promise<IIncomesANDExpenses> {
     throw new Error('Method not implemented.');
   }
 
@@ -36,8 +40,26 @@ export class DashboardService implements IDashboardService {
     throw new Error('Method not implemented.');
   }
 
-  getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses> {
-    throw new Error('Method not implemented.');
+  async getDashboardCategories(userId: string): Promise<IIncomesANDExpenses> {
+    const expenses = await this.expensesRepository.findAllByUserId({ userId });
+
+    const incomes = await this.incomesRepository.findManyByUser({ userId });
+
+    return {
+      expenses,
+      incomes,
+    };
+  }
+
+  async getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses> {
+    const expenses = await this.expensesRepository.findAllByUserId({ userId });
+
+    const incomes = await this.incomesRepository.findManyByUser({ userId });
+
+    return {
+      expenses,
+      incomes,
+    };
   }
 
   private formatHistoryResponse<
