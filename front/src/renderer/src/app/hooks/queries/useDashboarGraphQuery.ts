@@ -5,8 +5,8 @@ import { format, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export function useDashboarGraphQuery() {
-  const { data, isLoading } = useQuery({
-    queryKey: ['dashboardGraph', 'getAll'],
+  const { data, isFetching } = useQuery({
+    queryKey: ['dashboard', 'dashboardGraph', 'getAll'],
     queryFn: async () => dashboardGraphService.getAll(),
   });
 
@@ -36,7 +36,7 @@ export function useDashboarGraphQuery() {
   const expenses = sortedEntries.map(([, data]) => data.expense);
 
   return {
-    isLoading,
+    isLoading: isFetching,
     labels: labels || [],
     incomes: incomes || [],
     expenses: expenses || [],

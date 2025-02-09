@@ -1,12 +1,19 @@
-import { createContext, useCallback, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { createContext, useCallback, useState } from 'react';
 import { DateRange } from 'react-day-picker';
+
 import { localStorageKeys } from '../config/localStorageKeys';
 
 export interface DashboardContextType {
+  DEFAULT_OPTION: OptionPeriodType;
   selectedDateRange: DateRange;
   selectedOptionRange: string;
-  handleSelectedOptionRange(value: string): void;
-  handleSelectedDateRange(value: DateRange): void;
+  setSelectedOptionRange: React.Dispatch<
+    React.SetStateAction<OptionPeriodType>
+  >;
+  setSelectedDateRange: React.Dispatch<React.SetStateAction<DateRange>>;
+  setDashboardStateWithInvalidation(newState: DateRange): void;
+  setDashboardState(newState: DateRange): void;
 }
 
 export const DashboardContext = createContext<DashboardContextType>(
@@ -25,82 +32,40 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
   const [selectedOptionRange, setSelectedOptionRange] =
     useState<OptionPeriodType>(DEFAULT_OPTION);
 
-  const getBiweeklyRange = (): DateRange => {
-    const today = new Date();
-    const from = new Date(today);
-    from.setDate(today.getDate() - 14); // Duas semanas atrás
-    return { from, to: today };
-  };
+  const queryClient = useQueryClient();
 
-  const getMonthlyRange = (): DateRange => {
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-    return { from: firstDay, to: lastDay };
-  };
-
-  const getDefaultRange = (): DateRange => {
-    return DEFAULT_OPTION === 'BIWEEKLY'
-      ? getBiweeklyRange()
-      : getMonthlyRange();
-  };
-
-  const handleSelectedOptionRange = useCallback((value: OptionPeriodType) => {
-    setSelectedOptionRange(value || DEFAULT_OPTION);
-
-    let newRange: DateRange;
-    if (value === 'BIWEEKLY') {
-      newRange = getBiweeklyRange();
-    } else if (value === 'MONTHLY') {
-      newRange = getMonthlyRange();
-    } else {
-      newRange = getDefaultRange();
-    }
-
-    setDashboardState(newRange);
+  const setDashboardState = useCallback((newState: DateRange) => {
+    localStorage.setItem(
+      localStorageKeys.DASHBOARD_DATE_RANGE,
+      JSON.stringify(newState),
+    );
   }, []);
 
-  const handleSelectedDateRange = useCallback(
-    (value: DateRange) => {
-      setSelectedDateRange(value);
+  const setDashboardStateWithInvalidation= useCallback((newState: DateRange) => {
+    setDashboardState(newState);
+
+    queryClient.invalidateQueries({
+      queryKey: ['dashboard'],
+      refetchType: 'active',
+    });
+  }, [setDashboardState]);
 
 
-      if (value.to) {
-        setDashboardState(value);
-      } else {
-        setDashboardState(getDefaultRange());
-        setSelectedOptionRange(!value.to ? DEFAULT_OPTION : '');
-      }
-    },
-    [selectedOptionRange],
-  );
-
-  useEffect(() => {
-    const storageDateRange = getDashboardState();
-
-    if (!storageDateRange || !storageDateRange.to) {
-      setDashboardState(getDefaultRange());
-    }
-  }, []);
 
   return (
     <DashboardContext.Provider
       value={{
+        DEFAULT_OPTION,
         selectedDateRange,
         selectedOptionRange,
-        handleSelectedDateRange,
-        handleSelectedOptionRange,
+        setSelectedDateRange,
+        setSelectedOptionRange,
+        setDashboardStateWithInvalidation,
+        setDashboardState,
       }}
     >
       {children}
     </DashboardContext.Provider>
-  );
-}
-
-export function setDashboardState(newState: DateRange) {
-  localStorage.setItem(
-    localStorageKeys.DASHBOARD_DATE_RANGE,
-    JSON.stringify(newState),
   );
 }
 
