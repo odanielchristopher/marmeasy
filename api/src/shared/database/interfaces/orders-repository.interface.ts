@@ -1,3 +1,5 @@
+import { FavoriteIngredient } from 'src/modules/dashboard/entities/favorite.entity';
+import { Sale } from 'src/modules/dashboard/entities/sale.entity';
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
 import { Order } from 'src/modules/orders/entities/order.entity';
@@ -11,11 +13,17 @@ export interface IOrdersRepository {
 
   findAllByDateRange(
     userId: string,
-    startDate: Date,
-    endDate: Date,
+    startDate: string,
+    endDate: string,
     limit?: number,
     offset?: number,
   ): Promise<Order[]>;
+
+  findManyOnSaleFormat(findManySaleDto: FindManySaleDto): Promise<Sale[]>;
+
+  findFavoriteIngredients(
+    findFavoritesDto: FindFavoriteIngredientsDto,
+  ): Promise<FavoriteIngredient[]>;
 
   findFirstByClientId(
     findFirstByClientIdDto: FindFirstOrderByClientIdDto,
@@ -30,10 +38,19 @@ export interface IOrdersRepository {
   delete(deleteDto: DeleteOrderItemDto): Promise<Order | void>;
 }
 
+export type FindFavoriteIngredientsDto = {
+  userId: string;
+  podiumPositions?: number;
+};
+
 export type FindManyByClientIdDto = {
   userId: string;
   clientId: string;
   order: 'asc' | 'desc';
+};
+
+export type FindManySaleDto = {
+  userId: string;
 };
 
 export type FindUniqueOrderByIdDto = {

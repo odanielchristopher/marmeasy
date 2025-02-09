@@ -1,16 +1,29 @@
 import { Injectable } from '@nestjs/common';
+
+import { PrismaService } from '../prisma.service';
+
+import { FavoriteIngredient } from 'src/modules/dashboard/entities/favorite.entity';
+import { Sale } from 'src/modules/dashboard/entities/sale.entity';
 import { Order } from 'src/modules/orders/entities/order.entity';
+
 import {
   CreateOrderParams,
   DeleteOrderItemDto,
+  FindFavoriteIngredientsDto,
   FindFirstOrderByClientIdDto,
   FindManyByClientIdDto,
+  FindManySaleDto,
   FindUniqueOrderByIdDto,
   IOrdersRepository,
   UpdateOrderParams,
 } from '../interfaces/orders-repository.interface';
+
+import {
+  FavoriteIngredientMapper,
+  PrismaFavoriteResponse,
+} from '../mappers/favorite-ingredient.mapper';
 import { OrderMapper, PrismaOrderResponse } from '../mappers/order.mapper';
-import { PrismaService } from '../prisma.service';
+import { PrismaSaleResponse, SaleMapper } from '../mappers/sale.mapper';
 
 const prismaResponse = {
   id: true,
@@ -37,6 +50,50 @@ const prismaResponse = {
 export class OrdersRepository implements IOrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findFavoriteIngredients(
+    findFavoritesDto: FindFavoriteIngredientsDto,
+  ): Promise<FavoriteIngredient[]> {
+    const { userId, podiumPositions = 3 } = findFavoritesDto;
+
+    const topIngredients = await this.prismaService.$queryRaw<
+      PrismaFavoriteResponse[]
+    >`
+      SELECT
+          unnest(i."ingredients") AS "ingredientName",
+          COUNT(*) AS "totalUses"
+      FROM "order_items" i
+      JOIN "orders" o ON i."order_id" = o."id"
+      WHERE o."user_id" = ${userId}::uuid
+      GROUP BY "ingredientName"
+      ORDER BY "totalUses" DESC
+      LIMIT ${podiumPositions};
+    `;
+
+    return topIngredients.map(this.favoriteIngredientParser);
+  }
+
+  async findManyOnSaleFormat(
+    findManySaleDto: FindManySaleDto,
+  ): Promise<Sale[]> {
+    const { userId } = findManySaleDto;
+
+    const sales = await this.prismaService.$queryRaw<PrismaSaleResponse[]>`
+      SELECT
+        o."client_id" AS "clientId",
+        c."name" AS "clientName",
+        DATE_TRUNC('day', o."date") AS "date",
+        COUNT(o."id") AS "quantity",
+        SUM(o."totalValue") AS "totalAmount"
+      FROM "orders" o
+      JOIN "clients" c ON o."client_id" = c."id"
+      WHERE o."user_id" = ${userId}::uuid
+      GROUP BY o."client_id", c."name", DATE_TRUNC('day', o."date")
+      ORDER BY date DESC, quantity DESC;
+    `;
+
+    return sales.map(this.saleParser);
+  }
+
   async findManyByClientId(
     findManyByClientIdDto: FindManyByClientIdDto,
   ): Promise<Order[]> {
@@ -53,14 +110,14 @@ export class OrdersRepository implements IOrdersRepository {
 
   async findAllByDateRange(
     userId: string,
-    startDate: Date,
-    endDate: Date,
-    limit?: number,
-    offset?: number,
+    startDate: string,
+    endDate: string,
+    perPage?: number,
+    page?: number,
   ): Promise<Order[]> {
     const findedOrders = await this.prismaService.order.findMany({
-      skip: offset || 0,
-      take: limit || 10,
+      skip: page || 0,
+      take: perPage || 10,
       where: {
         userId,
         date: {
@@ -161,5 +218,13 @@ export class OrdersRepository implements IOrdersRepository {
 
   private parser(prismaOrder: PrismaOrderResponse) {
     return OrderMapper.getInstance().toDomain(prismaOrder);
+  }
+
+  private saleParser(prismaSale: PrismaSaleResponse) {
+    return SaleMapper.getInstance().toDomain(prismaSale);
+  }
+
+  private favoriteIngredientParser(prismaFavorite: PrismaFavoriteResponse) {
+    return FavoriteIngredientMapper.getInstance().toDomain(prismaFavorite);
   }
 }
