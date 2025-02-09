@@ -4,6 +4,7 @@ import { Expense as PrismaExpense } from '@prisma/client';
 import {
   CreateExpenseDto,
   DeleteExpenseDto,
+  FindAllExpenseDto,
   FindOneExpenseDto,
   IExpensesRepository,
   UpdateExpenseDto,
@@ -16,6 +17,16 @@ import { PrismaService } from '../prisma.service';
 @Injectable()
 export class ExpensesRepository implements IExpensesRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findAllByUserId(findAllDto: FindAllExpenseDto): Promise<Expense[]> {
+    const { userId } = findAllDto;
+
+    const expenses = await this.prismaService.expense.findMany({
+      where: { userId },
+    });
+
+    return expenses.map(this.parser);
+  }
 
   async findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense> {
     const { id, userId } = findOneDto;

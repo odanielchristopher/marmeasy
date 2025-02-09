@@ -1,4 +1,4 @@
-import { Expense } from '@prisma/client';
+import { Expense } from 'src/modules/expenses/entities/expense.entity';
 import { FavoriteIngredient } from '../entities/favorite.entity';
 import { Income } from '../entities/income.entity';
 import { Sale } from '../entities/sale.entity';
@@ -7,15 +7,15 @@ import { IHistoryResponse, IIncomesANDExpenses } from '../types';
 export const IDashboardService = Symbol('IDashboardService');
 
 export interface IDashboardService {
-  getSales(): Promise<IHistoryResponse<Sale>>;
+  getSales(userId: string): Promise<IHistoryResponse<Sale>>;
 
-  getIncomes(): Promise<IHistoryResponse<Income>>;
+  getIncomes(userId: string): Promise<IHistoryResponse<Income>>;
 
-  getExpenses(): Promise<IHistoryResponse<Expense>>;
+  getExpenses(userId: string): Promise<IHistoryResponse<Expense>>;
 
-  getDashboardCategories(): Promise<IIncomesANDExpenses>;
+  getDashboardCategories(userId: string): Promise<IIncomesANDExpenses>;
 
-  getFavoritesIngredients(): Promise<FavoriteIngredient[]>;
+  getFavoritesIngredients(userId: string): Promise<FavoriteIngredient[]>;
 
-  getDashboardGraphDatas(): Promise<IIncomesANDExpenses>;
+  getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses>;
 }

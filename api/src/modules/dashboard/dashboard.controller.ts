@@ -1,4 +1,5 @@
 import { Controller, Get, Inject } from '@nestjs/common';
+import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { IDashboardService } from './interfaces/dashboard-service.interface';
 
 @Controller('dashboard')
@@ -9,32 +10,32 @@ export class DashboardController {
   ) {}
 
   @Get('/incomes')
-  getIncomes() {
-    return this.dashboardService.getIncomes();
+  getIncomes(@ActiveUserId() userId: string) {
+    return this.dashboardService.getIncomes(userId);
   }
 
   @Get('/expenses')
-  getExpenses() {
-    return this.dashboardService.getExpenses();
+  getExpenses(@ActiveUserId() userId: string) {
+    return this.dashboardService.getExpenses(userId);
   }
 
   @Get('/sales')
-  getSales() {
-    return this.dashboardService.getSales();
+  getSales(@ActiveUserId() userId: string) {
+    return this.dashboardService.getSales(userId);
   }
 
   @Get('/favorites')
-  getFavorites() {
-    return this.dashboardService.getFavoritesIngredients();
+  getFavorites(@ActiveUserId() userId: string) {
+    return this.dashboardService.getFavoritesIngredients(userId);
   }
 
   @Get('/categories')
-  getCategories() {
-    return this.dashboardService.getDashboardCategories();
+  getCategories(@ActiveUserId() userId: string) {
+    return this.dashboardService.getDashboardCategories(userId);
   }
 
   @Get('/graph-datas')
-  getGraphData() {
-    return this.dashboardService.getDashboardGraphDatas();
+  getGraphData(@ActiveUserId() userId: string) {
+    return this.dashboardService.getDashboardGraphDatas(userId);
   }
 }

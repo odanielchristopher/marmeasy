@@ -3,6 +3,8 @@ import { Expense } from 'src/modules/expenses/entities/expense.entity';
 export const IExpensesRepository = Symbol('IExpensesRepository');
 
 export interface IExpensesRepository {
+  findAllByUserId(findAllDto: FindAllExpenseDto): Promise<Expense[]>;
+
   findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense>;
 
   create(createDto: CreateExpenseDto): Promise<Expense>;
@@ -11,6 +13,10 @@ export interface IExpensesRepository {
 
   delete(deleteDto: DeleteExpenseDto): Promise<void>;
 }
+
+export type FindAllExpenseDto = {
+  userId: string;
+};
 
 export type FindOneExpenseDto = {
   userId: string;
