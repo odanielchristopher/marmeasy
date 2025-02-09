@@ -19,7 +19,14 @@ import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import useOrderModal from './useNewOrderModal';
 
-import { BoxCategories, Container, IconCategory, Line, OrderItemsList, ProductList } from './styles';
+import {
+  BoxCategories,
+  Container,
+  IconCategory,
+  Line,
+  OrderItemsList,
+  ProductList,
+} from './styles';
 
 interface OrderModalProps {
   isOpen: boolean;
@@ -63,12 +70,11 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
       {!isItemModalOpen && (
         <Modal open={isOrderModalOpen} title="Novo pedido" onClose={onClose}>
           <Container>
-
             <Input
               type="text"
               placeholder="Nome do cliente"
               maxLength={15}
-              name='clientName'
+              name="clientName"
             />
 
             <Controller
@@ -86,42 +92,56 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
             />
 
             <BoxCategories>
-            {isLoadingCategories ? (
-              <Loader $isLoading={isLoadingCategories} size={20} />
-            ) : (
-              allCategories.map((category) => (
-                <IconCategory
-                  key={category.id}
-                  onClick={() => handleCategorySelect(category)}
-                  className={(selectedCategory?.id === category.id || (category.id === 'all' && !selectedCategory)) ? 'active' : ''}
-                >
-                  <div className="circle">
-                    {category.icon}
-                  </div>
-                  <p>{category.name}</p>
-                </IconCategory>
-              ))
-            )}
+              {isLoadingCategories ? (
+                <Loader $isLoading={isLoadingCategories} size={20} />
+              ) : (
+                allCategories.map((category) => (
+                  <IconCategory
+                    key={category.id}
+                    onClick={() => handleCategorySelect(category)}
+                    className={
+                      selectedCategory?.id === category.id ||
+                      (category.id === 'all' && !selectedCategory)
+                        ? 'active'
+                        : ''
+                    }
+                  >
+                    <div className="circle">{category.icon}</div>
+                    <p>{category.name}</p>
+                  </IconCategory>
+                ))
+              )}
             </BoxCategories>
 
-            <ul className='productsOptions'>
+            <ul className="productsOptions">
               {products
                 .filter((product) => {
-                  if (!selectedCategory || selectedCategory.id === 'all') return true;
+                  if (!selectedCategory || selectedCategory.id === 'all')
+                    return true;
                   return product.category?.id === selectedCategory.id;
                 })
                 .map((product) => {
-                  const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
+                  const imagePath =
+                    product.imagePath &&
+                    `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
 
                   return (
                     <ProductList key={product.id}>
-                      {product.imagePath ? <img src={imagePath} /> : <img src={noImage} alt="Sem imagem" />}
-                      <div className='infos'>
+                      {product.imagePath ? (
+                        <img src={imagePath} />
+                      ) : (
+                        <img src={noImage} alt="Sem imagem" />
+                      )}
+                      <div className="infos">
                         <strong>{product.name}</strong>
                         <span>{product.description}</span>
                         <div className="footer">
                           <strong>R$ {formatCurrency(product.price)}</strong>
-                          <img src={Plus} alt="Adicionar" onClick={() => handleOpenItemModal(product)} />
+                          <img
+                            src={Plus}
+                            alt="Adicionar"
+                            onClick={() => handleOpenItemModal(product)}
+                          />
                         </div>
                       </div>
                     </ProductList>
@@ -133,35 +153,55 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               <div className="orderDetails">
                 <Line />
                 {orderDetails.map((order, index) => {
-                  const imagePath = order.productImage ? `${import.meta.env.VITE_API_URL}/${order.productImage}` : noImage;
+                  const imagePath = order.productImage
+                    ? `${import.meta.env.VITE_API_URL}/${order.productImage}`
+                    : noImage;
                   return (
                     <OrderItemsList key={index}>
-                      <img className="smallImg" src={imagePath} alt={order.productName} />
-                        <div className="infoOrder">
-                          <div className="nameDetails">
-                            <p><strong>{order.productName}</strong></p>
-                            {order.selectedIngredients.map((ingredient: Ingredient) => (
-                                <span key={ingredient.id}>{ingredient.name}</span>
-                              ))}
-                          </div>
-                          <div className="priceQuantity">
-                            <p><strong>R$ {formatCurrency(order.productPrice)}</strong></p>
-                            <span>{order.quantity}X</span>
-                          </div>
+                      <img
+                        className="smallImg"
+                        src={imagePath}
+                        alt={order.productName}
+                      />
+                      <div className="infoOrder">
+                        <div className="nameDetails">
+                          <p>
+                            <strong>{order.productName}</strong>
+                          </p>
+                          {order.selectedIngredients.map(
+                            (ingredient: Ingredient) => (
+                              <span key={ingredient.id}>{ingredient.name}</span>
+                            ),
+                          )}
                         </div>
-                        <div className="functions">
-                          <img src={Edit} alt="Editar" onClick={() => handleOpenEditItemModal(index)}/>
-                          <img src={Trash} alt="Deletar" onClick={() => handleOpenDeleteItemModal(index)} />
+                        <div className="priceQuantity">
+                          <p>
+                            <strong>
+                              R$ {formatCurrency(order.productPrice)}
+                            </strong>
+                          </p>
+                          <span>{order.quantity}X</span>
                         </div>
+                      </div>
+                      <div className="functions">
+                        <img
+                          src={Edit}
+                          alt="Editar"
+                          onClick={() => handleOpenEditItemModal(index)}
+                        />
+                        <img
+                          src={Trash}
+                          alt="Deletar"
+                          onClick={() => handleOpenDeleteItemModal(index)}
+                        />
+                      </div>
                     </OrderItemsList>
                   );
                 })}
               </div>
             )}
 
-            <Button type="submit">
-              Fazer Pedido
-            </Button>
+            <Button type="submit">Fazer Pedido</Button>
           </Container>
         </Modal>
       )}

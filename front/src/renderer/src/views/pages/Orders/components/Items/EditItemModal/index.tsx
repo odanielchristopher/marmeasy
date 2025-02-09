@@ -23,7 +23,6 @@ interface EditModalProps {
   hasIngredients: boolean;
 }
 
-
 export default function EditItemModal({
   open,
   answer,
@@ -35,9 +34,12 @@ export default function EditItemModal({
   orderDetails,
   hasIngredients,
 }: EditModalProps) {
-  const {
-    handleConfimEdit,
-  } = useEditModal(index, onClose, setOrderDetails, orderDetails);
+  const { handleConfimEdit } = useEditModal(
+    index,
+    onClose,
+    setOrderDetails,
+    orderDetails,
+  );
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -45,7 +47,7 @@ export default function EditItemModal({
         {answer}
         <ItemForm
           product={product}
-          onSubmit={ handleConfimEdit }
+          onSubmit={handleConfimEdit}
           onClose={onClose}
           order={orderDetails[index]}
           hasIngredients={hasIngredients}

@@ -120,8 +120,8 @@ export const OrderItemsList = styled.div`
     width: 100%;
 
     div.nameDetails {
-    display: flex;
-    flex-direction: column;
+      display: flex;
+      flex-direction: column;
 
       p {
         font-size: 14px;

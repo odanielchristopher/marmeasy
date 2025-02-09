@@ -73,8 +73,10 @@ export default function useClient() {
   const filteredClients = useMemo(
     () =>
       clients
-        .filter((contact) =>
-          contact && contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        .filter(
+          (contact) =>
+            contact &&
+            contact.name.toLowerCase().includes(searchTerm.toLowerCase()),
         )
         .sort((a, b) => (a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)),
     [clients, searchTerm],

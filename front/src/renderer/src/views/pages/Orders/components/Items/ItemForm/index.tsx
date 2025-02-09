@@ -38,15 +38,16 @@ export default function ItemForm({
     handleSubmit,
     onSubmitForm,
     errors,
-  } = useItemForm(order, product,onSubmit, onClose);
+  } = useItemForm(order, product, onSubmit, onClose);
 
-  return (
-    hasIngredients ? (
-      <>
+  return hasIngredients ? (
+    <>
       <Container>
         <div key={product.id}>
           {product.ingredients.map((ingredient: Ingredient) => {
-            const isChecked = selectedIngredients.some((ing) => ing.id === ingredient.id);
+            const isChecked = selectedIngredients.some(
+              (ing) => ing.id === ingredient.id,
+            );
 
             return (
               <label
@@ -62,8 +63,8 @@ export default function ItemForm({
                   onCheckedChange={() => handleCheckboxChange(ingredient)}
                   checked={isChecked}
                 >
-                <Checkbox.Indicator className="indicator">
-                  <FaCheck size={10} />
+                  <Checkbox.Indicator className="indicator">
+                    <FaCheck size={10} />
                   </Checkbox.Indicator>
                 </CheckBoxStyle>
               </label>
@@ -86,27 +87,26 @@ export default function ItemForm({
           />
         </QuantityContainer>
 
-      <Button className='btnSubmit' onClick={handleSubmit(onSubmitForm)}>
-        Adicionar
-      </Button>
-      </Container>
-    </>
-    ) : (
-      <Container>
-        <QuantityContainer>
-          <p>Quantidade*:</p>
-          <TimesNumericInput
-            $error={errors.quantity?.message}
-            value={quantity}
-            name="quantity"
-            onInputChange={handleQuantityChange}
-          />
-        </QuantityContainer>
-
-        <Button className='btnSubmit' onClick={handleSubmit(onSubmitForm)}>
+        <Button className="btnSubmit" onClick={handleSubmit(onSubmitForm)}>
           Adicionar
         </Button>
       </Container>
-    )
+    </>
+  ) : (
+    <Container>
+      <QuantityContainer>
+        <p>Quantidade*:</p>
+        <TimesNumericInput
+          $error={errors.quantity?.message}
+          value={quantity}
+          name="quantity"
+          onInputChange={handleQuantityChange}
+        />
+      </QuantityContainer>
+
+      <Button className="btnSubmit" onClick={handleSubmit(onSubmitForm)}>
+        Adicionar
+      </Button>
+    </Container>
   );
 }

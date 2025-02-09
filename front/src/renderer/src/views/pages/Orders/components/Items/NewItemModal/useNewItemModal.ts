@@ -7,7 +7,11 @@ interface NewItemModalProps {
   onSubmit(details: OrderDetail, product: Product): void;
 }
 
-export default function useNewItemModal({ product, onClose, onSubmit: addProductToOrder }: NewItemModalProps) {
+export default function useNewItemModal({
+  product,
+  onClose,
+  onSubmit: addProductToOrder,
+}: NewItemModalProps) {
   const handleConfirmNewItem = (details: OrderDetail) => {
     addProductToOrder(details, product);
     onClose();

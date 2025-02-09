@@ -7,12 +7,18 @@ interface DeleteModalProps {
   orderDetails: OrderDetail[];
 }
 
-export function useDeleteModal( {index, onClose, setOrderDetails, orderDetails} : DeleteModalProps) {
-
+export function useDeleteModal({
+  index,
+  onClose,
+  setOrderDetails,
+  orderDetails,
+}: DeleteModalProps) {
   const detailItem = orderDetails[index];
 
   function handleConfirmDelete() {
-    const newOrderDetails = orderDetails.filter((_: any, i: number) => i !== index);
+    const newOrderDetails = orderDetails.filter(
+      (_: any, i: number) => i !== index,
+    );
     setOrderDetails(newOrderDetails);
     onClose();
   }
