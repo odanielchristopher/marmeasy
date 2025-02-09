@@ -1,18 +1,34 @@
 import { Injectable } from '@nestjs/common';
+import { Payment as PrismaPayment } from '@prisma/client';
+
 import { Payment } from 'src/modules/payments/entities/payment.entity';
 import {
   CreatePaymentDto,
   DeletePaymentDto,
   FindFirstPaymentDto,
+  FindManyByUserDto,
   FindManyPaymentsByIdDto,
   IPaymentsRepository,
   UpdatePaymentDto,
 } from '../interfaces/payments-repository.interface';
+import { PaymentMapper } from '../mappers/payment.mapper';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PaymentsRepository implements IPaymentsRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async findManyByUserId(
+    findManyByUserDto: FindManyByUserDto,
+  ): Promise<Payment[]> {
+    const { userId } = findManyByUserDto;
+
+    const payments = await this.prismaService.payment.findMany({
+      where: { userId },
+    });
+
+    return payments.map(this.parser);
+  }
 
   async findManyByClientId(
     findManyDto: FindManyPaymentsByIdDto,
@@ -26,7 +42,7 @@ export class PaymentsRepository implements IPaymentsRepository {
       },
     });
 
-    return findendPayments.map(Payment.parse);
+    return findendPayments.map(this.parser);
   }
 
   async findFirstByUserId(
@@ -38,7 +54,7 @@ export class PaymentsRepository implements IPaymentsRepository {
       where: { id, userId },
     });
 
-    return Payment.parse(findedPayment);
+    return this.parser(findedPayment);
   }
 
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
@@ -56,7 +72,7 @@ export class PaymentsRepository implements IPaymentsRepository {
       },
     });
 
-    return Payment.parse(createdPayment);
+    return this.parser(createdPayment);
   }
 
   async update(updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
@@ -75,7 +91,7 @@ export class PaymentsRepository implements IPaymentsRepository {
       },
     });
 
-    return Payment.parse(updatedPayment);
+    return this.parser(updatedPayment);
   }
 
   async delete(deletePaymentDto: DeletePaymentDto): Promise<void> {
@@ -84,5 +100,9 @@ export class PaymentsRepository implements IPaymentsRepository {
     await this.prismaService.payment.delete({
       where: { id, userId },
     });
+  }
+
+  private parser(prismaPayment: PrismaPayment) {
+    return PaymentMapper.getInstance().toDomain(prismaPayment);
   }
 }

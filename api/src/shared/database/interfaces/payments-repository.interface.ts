@@ -3,16 +3,26 @@ import { Payment } from 'src/modules/payments/entities/payment.entity';
 export const IPaymentsRepository = Symbol('IPaymentsRepository');
 
 export interface IPaymentsRepository {
+  findManyByUserId(findManyByUserDto: FindManyByUserDto): Promise<Payment[]>;
+
   findManyByClientId(findManyDto: FindManyPaymentsByIdDto): Promise<Payment[]>;
+
   findFirstByUserId(findFirstByIdDto: FindFirstPaymentDto): Promise<Payment>;
+
   create(createPaymentDto: CreatePaymentDto): Promise<Payment>;
+
   update(updatePaymentDto: UpdatePaymentDto): Promise<Payment>;
+
   delete(deletePaymentDto: DeletePaymentDto): Promise<void>;
 }
 
 export type FindFirstPaymentDto = {
   userId: string;
   id: string;
+};
+
+export type FindManyByUserDto = {
+  userId: string;
 };
 
 export type FindManyPaymentsByIdDto = {
