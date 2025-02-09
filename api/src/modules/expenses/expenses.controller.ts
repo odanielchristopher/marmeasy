@@ -2,8 +2,11 @@ import {
   Body,
   Controller,
   Delete,
+  HttpCode,
+  HttpStatus,
   Inject,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
 } from '@nestjs/common';
@@ -30,16 +33,17 @@ export class ExpensesController {
   @Put(':expenseId')
   update(
     @ActiveUserId() userId: string,
-    @Param('expenseId') expenseId: string,
+    @Param('expenseId', ParseUUIDPipe) expenseId: string,
     @Body() updateExpenseDto: UpdateExpenseDto,
   ) {
     return this.expensesService.update(userId, expenseId, updateExpenseDto);
   }
 
   @Delete(':expenseId')
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(
     @ActiveUserId() userId: string,
-    @Param('expenseId') expenseId: string,
+    @Param('expenseId', ParseUUIDPipe) expenseId: string,
   ) {
     return this.expensesService.remove(userId, expenseId);
   }
