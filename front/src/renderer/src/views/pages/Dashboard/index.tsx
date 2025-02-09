@@ -50,11 +50,11 @@ export default function Dashboard() {
           options={[
             {
               label: '2 semanas',
-              value: 'QUINZENA',
+              value: 'BIWEEKLY',
             },
             {
               label: 'Este mês',
-              value: 'MENSAL',
+              value: 'MONTHLY',
             },
           ]}
         />
