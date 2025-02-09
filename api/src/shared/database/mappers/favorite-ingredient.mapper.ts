@@ -28,7 +28,7 @@ export class FavoriteIngredientMapper {
     return {
       id: ingredientName,
       title: ingredientName,
-      quantitity: Number(totalUses),
+      quantity: Number(totalUses),
     };
   }
 }

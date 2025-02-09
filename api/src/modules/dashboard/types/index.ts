@@ -13,6 +13,6 @@ export interface IHistoryResponse<TEntity> {
 }
 
 export interface IIncomesANDExpenses {
-  incomes: Income[];
-  expenses: Expense[];
+  incomes: Income[] | Partial<Income>[];
+  expenses: Expense[] | Partial<Expense>[];
 }

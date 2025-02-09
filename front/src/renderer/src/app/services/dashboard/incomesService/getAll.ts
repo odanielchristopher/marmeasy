@@ -1,6 +1,6 @@
 import { Income } from '@renderer/app/entities/Income';
+import { httpClient } from '../../httpClient';
 import { History } from '../../types';
-import { mockedHttpClient } from '../mockedHttpClient';
 
 export type GetIncomesResponse = {
   total: number;
@@ -8,7 +8,7 @@ export type GetIncomesResponse = {
 };
 
 export async function getAll() {
-  const { data } = await mockedHttpClient.get<GetIncomesResponse>('/incomes');
+  const { data } = await httpClient.get<GetIncomesResponse>('/dashboard/incomes');
 
   return data;
 }

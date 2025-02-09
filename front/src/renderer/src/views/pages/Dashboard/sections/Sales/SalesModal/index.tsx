@@ -34,8 +34,8 @@ export default function SalesModal({
                 text={capitalizeFirstLetter(formatDay(day, monthYear))}
               />
 
-              {sales.map((sale) => (
-                <Item.Root key={sale.id}>
+              {sales.map((sale, index) => (
+                <Item.Root key={index}>
                   <Item.Box $align="center">
                     <Item.Icon>
                       <HandCoinsIcon size={32} />

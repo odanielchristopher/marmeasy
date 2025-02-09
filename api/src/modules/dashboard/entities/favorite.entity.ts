@@ -3,5 +3,5 @@ export class FavoriteIngredient {
   title: string;
 
   // Quantidade de vezes que foi escolhido em um pedido;
-  quantitity: number;
+  quantity: number;
 }

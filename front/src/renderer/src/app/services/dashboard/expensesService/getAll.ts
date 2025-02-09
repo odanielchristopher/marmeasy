@@ -1,6 +1,6 @@
 import { Expense } from '@renderer/app/entities/Expense';
+import { httpClient } from '../../httpClient';
 import { History } from '../../types';
-import { mockedHttpClient } from '../mockedHttpClient';
 
 export type GetExpensesResponse = {
   total: number;
@@ -8,7 +8,7 @@ export type GetExpensesResponse = {
 };
 
 export async function getAll() {
-  const { data } = await mockedHttpClient.get<GetExpensesResponse>('/expenses');
+  const { data } = await httpClient.get<GetExpensesResponse>('/dashboard/expenses');
 
   return data;
 }

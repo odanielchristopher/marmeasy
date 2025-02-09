@@ -18,6 +18,28 @@ import { PrismaService } from '../prisma.service';
 export class ExpensesRepository implements IExpensesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findManyByCategory(
+    findAllDto: FindManyExpenseDto,
+  ): Promise<Partial<Expense>[]> {
+    const { userId, dateRange } = findAllDto;
+    const { fromDate, toDate } = dateRange;
+
+    const expenses = await this.prismaService.$queryRaw<PrismaExpense[]>`
+      SELECT
+        e."type",
+        (SELECT e2."id" FROM "expenses" e2 WHERE e2."type" = e."type" AND e2."user_id" = e."user_id" LIMIT 1) AS "id",
+        SUM(e."value") AS "value",
+        MAX(e."date") AS "date"
+      FROM "expenses" e
+      WHERE e."user_id" = ${userId}::uuid
+        AND e."date" BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
+      GROUP BY e."type", e."user_id"
+      ORDER BY "value" DESC;
+    `;
+
+    return expenses.map(this.parser);
+  }
+
   async findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
     const { userId, dateRange } = findAllDto;
 

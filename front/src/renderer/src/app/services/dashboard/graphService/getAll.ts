@@ -1,6 +1,6 @@
 import { Expense } from '@renderer/app/entities/Expense';
 import { Income } from '@renderer/app/entities/Income';
-import { mockedHttpClient } from '../mockedHttpClient';
+import { httpClient } from '../../httpClient';
 
 export type GraphData = {
   incomes: Income[];
@@ -8,7 +8,7 @@ export type GraphData = {
 };
 
 export async function getAll() {
-  const { data } = await mockedHttpClient.get<GraphData>('/graph');
+  const { data } = await httpClient.get<GraphData>('/dashboard/graph-data');
 
   return data;
 }

@@ -6,6 +6,10 @@ export const IExpensesRepository = Symbol('IExpensesRepository');
 export interface IExpensesRepository {
   findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]>;
 
+  findManyByCategory(
+    findAllDto: FindManyExpenseDto,
+  ): Promise<Partial<Expense>[]>;
+
   findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense>;
 
   create(createDto: CreateExpenseDto): Promise<Expense>;

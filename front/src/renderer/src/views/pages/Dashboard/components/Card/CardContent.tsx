@@ -1,9 +1,9 @@
-import { Content } from './styles';
+import { Content, ContentProps } from './styles';
 
-interface CardContentProps {
+interface CardContentProps extends ContentProps {
   children: React.ReactNode;
 }
 
-export function CardContent({ children }: CardContentProps) {
-  return <Content>{children}</Content>;
+export function CardContent({ children, ...props }: CardContentProps) {
+  return <Content {...props}>{children}</Content>;
 }

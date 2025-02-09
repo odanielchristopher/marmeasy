@@ -5,6 +5,8 @@ export const IIncomesRepository = Symbol('IIncomesRepository');
 
 export interface IIncomesRepository {
   findManyByUserId(findManyDto: findManyDto): Promise<Income[]>;
+
+  findManyByCategory(findManyDto: findManyDto): Promise<Partial<Income>[]>;
 }
 
 export type findManyDto = {

@@ -38,8 +38,8 @@ export default function IncomesModal({
                 text={capitalizeFirstLetter(formatDay(day, monthYear))}
               />
 
-              {incomes.map((income) => (
-                <Item.Root key={income.id}>
+              {incomes.map((income, index) => (
+                <Item.Root key={index}>
                   <Item.Box $align="center">
                     <Item.Icon height={32}>
                       <DashboardCategoryIcon

@@ -54,11 +54,31 @@ export const Root = styled.button<RootProps>`
   }
 `;
 
-export const Content = styled.div`
+export interface ContentProps {
+  $justify?: 'center' | 'start' | 'end' | 'between';
+}
+
+const contentVariants = {
+  start: css`
+    justify-content: flex-start;
+  `,
+  center: css`
+    justify-content: center;
+  `,
+  end: css`
+    justify-content: flex-end;
+  `,
+  between: css`
+    justify-content: space-between;
+  `,
+};
+
+export const Content = styled.div<ContentProps>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   height: 100%;
+
+  ${({ $justify }) => contentVariants[$justify || 'between']}
 `;
 
 export const Header = styled.header`

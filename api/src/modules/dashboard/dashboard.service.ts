@@ -83,12 +83,12 @@ export class DashboardService implements IDashboardService {
 
   // Helpers
   private async getIncomesAndExpenses(userId: string, dateRange: DateRangeDto) {
-    const expenses = await this.expensesRepository.findManyByUserId({
+    const expenses = await this.expensesRepository.findManyByCategory({
       userId,
       dateRange,
     });
 
-    const incomes = await this.incomesRepository.findManyByUserId({
+    const incomes = await this.incomesRepository.findManyByCategory({
       userId,
       dateRange,
     });

@@ -1,6 +1,6 @@
 import { Sale } from '@renderer/app/entities/Sale';
+import { httpClient } from '../../httpClient';
 import { History } from '../../types';
-import { mockedHttpClient } from '../mockedHttpClient';
 
 export type GetsalesResponse = {
   total: number;
@@ -8,7 +8,7 @@ export type GetsalesResponse = {
 };
 
 export async function getAll() {
-  const { data } = await mockedHttpClient.get<GetsalesResponse>('/sales');
+  const { data } = await httpClient.get<GetsalesResponse>('/dashboard/sales');
 
   return data;
 }
