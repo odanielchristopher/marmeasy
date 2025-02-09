@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ClientsModule } from '../clients/clients.module';
 import { OrderItemsModule } from '../order-items/order-items.module';
 import { UsersModule } from '../users/users.module';
 import { IOrdersService } from './interfaces/orders-service.interface';
@@ -8,7 +9,7 @@ import { OrdersService } from './services/orders.service';
 import { ValidateOrderOwnershipService } from './services/validade-order-ownership.service';
 
 @Module({
-  imports: [UsersModule, OrderItemsModule],
+  imports: [UsersModule, OrderItemsModule, ClientsModule],
   controllers: [OrdersController],
   providers: [
     {
