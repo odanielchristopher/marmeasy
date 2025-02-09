@@ -1,4 +1,5 @@
-import { IsDateString, IsNotEmpty } from 'class-validator';
+import { BadRequestException } from '@nestjs/common';
+import { IsDateString, IsNotEmpty, validateSync } from 'class-validator';
 
 export class DateRangeDto {
   @IsNotEmpty({ message: 'A data de inicio é obrigatória.' })
@@ -15,5 +16,14 @@ export class DateRangeDto {
   constructor({ from, to }: { from: string; to: string }) {
     this.from = from;
     this.to = to;
+
+    const errors = validateSync(this);
+
+    if (errors.length > 0) {
+      const messages = errors.flatMap((err) =>
+        Object.values(err.constraints || {}),
+      );
+      throw new BadRequestException(messages);
+    }
   }
 }
