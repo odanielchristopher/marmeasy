@@ -40,18 +40,16 @@ export class DashboardService implements IDashboardService {
     throw new Error('Method not implemented.');
   }
 
-  async getDashboardCategories(userId: string): Promise<IIncomesANDExpenses> {
-    const expenses = await this.expensesRepository.findAllByUserId({ userId });
-
-    const incomes = await this.incomesRepository.findManyByUser({ userId });
-
-    return {
-      expenses,
-      incomes,
-    };
+  getDashboardCategories(userId: string): Promise<IIncomesANDExpenses> {
+    return this.getIncomesAndExpenses(userId);
   }
 
-  async getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses> {
+  getDashboardGraphDatas(userId: string): Promise<IIncomesANDExpenses> {
+    return this.getIncomesAndExpenses(userId);
+  }
+
+  // Helpers
+  private async getIncomesAndExpenses(userId: string) {
     const expenses = await this.expensesRepository.findAllByUserId({ userId });
 
     const incomes = await this.incomesRepository.findManyByUser({ userId });
