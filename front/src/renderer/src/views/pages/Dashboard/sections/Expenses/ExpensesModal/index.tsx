@@ -12,7 +12,7 @@ import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { formatDay } from '@renderer/app/utils/formatDay';
 import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
 
-import NewExpenseModal from '../NewExpenseModal';
+import NewExpenseModal from './NewExpenseModal';
 
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
 import emptyImage from '@renderer/assets/Images/empty-box.svg';
@@ -41,7 +41,16 @@ export default function ExpensesModal({
   }, []);
 
   if (isOpenNewExpenseModal) {
-    return <NewExpenseModal open onClose={handleCloseNewExpenseModal} />;
+    return (
+      <NewExpenseModal
+        open
+        onClose={handleCloseNewExpenseModal}
+        onSuccess={() => {
+          handleCloseNewExpenseModal();
+          onClose();
+        }}
+      />
+    );
   }
 
   const hasExpenses = Object.entries(expensesHistory).length > 0;
