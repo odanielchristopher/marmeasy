@@ -1,24 +1,25 @@
-import { useCallback, useState } from 'react';
-
 import { Expense } from '@renderer/app/entities/Expense';
 import { History } from '@renderer/app/services/types';
-
-import { Item } from '../../../components/Item';
-import { Modal } from '../../../components/Modal';
-import { translateExpenseType } from '../../CategoriesSection/ExpensesSection';
 
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { formatDay } from '@renderer/app/utils/formatDay';
 import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
+import { translateExpenseType } from '../../../CategoriesSection/ExpensesSection';
 
-import NewExpenseModal from './NewExpenseModal';
+import NewExpenseModal from '../NewExpenseModal';
+import useExpensesModal from './useExpensesModal';
 
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
 import emptyImage from '@renderer/assets/Images/empty-box.svg';
 
-import { EmptyImageContainer } from '../../../components/EmptyImageContainer';
+import { Item } from '@renderer/views/pages/Dashboard/components/Item';
+import { Modal } from '@renderer/views/pages/Dashboard/components/Modal';
+
+import { EmptyImageContainer } from '@renderer/views/pages/Menu/styles';
+import EditExpenseModal from '../EditExpenseModal';
 import { AddButton, ListPerDate } from './styles';
+
 interface ExpensesModalProps {
   open: boolean;
   onClose(): void;
@@ -30,15 +31,16 @@ export default function ExpensesModal({
   open,
   expensesHistory,
 }: ExpensesModalProps) {
-  const [isOpenNewExpenseModal, setIsOpenNewExpenseModal] = useState(false);
-
-  const handleOpenNewExpenseModal = useCallback(() => {
-    setIsOpenNewExpenseModal(true);
-  }, []);
-
-  const handleCloseNewExpenseModal = useCallback(() => {
-    setIsOpenNewExpenseModal(false);
-  }, []);
+  const {
+    hasExpenses,
+    isOpenNewExpenseModal,
+    handleOpenNewExpenseModal,
+    handleCloseNewExpenseModal,
+    handleOpenEditExpenseModal,
+    handleCloseEditExpenseModal,
+    isOpenEditExpenseModal,
+    selectedExpense,
+  } = useExpensesModal({ expensesHistory });
 
   if (isOpenNewExpenseModal) {
     return (
@@ -53,7 +55,19 @@ export default function ExpensesModal({
     );
   }
 
-  const hasExpenses = Object.entries(expensesHistory).length > 0;
+  if (isOpenEditExpenseModal) {
+    return (
+      <EditExpenseModal
+        open
+        onClose={handleCloseEditExpenseModal}
+        onSuccess={() => {
+          handleCloseEditExpenseModal();
+          onClose();
+        }}
+        expense={selectedExpense}
+      />
+    );
+  }
 
   return (
     <Modal.Root
@@ -107,7 +121,11 @@ export default function ExpensesModal({
                   ];
 
                 return (
-                  <Item.Root $hasAction key={expense.id}>
+                  <Item.Root
+                    $hasAction
+                    key={expense.id}
+                    onClick={() => handleOpenEditExpenseModal(expense)}
+                  >
                     <Item.Box $align="center">
                       <Item.Icon height={32}>
                         <DashboardCategoryIcon

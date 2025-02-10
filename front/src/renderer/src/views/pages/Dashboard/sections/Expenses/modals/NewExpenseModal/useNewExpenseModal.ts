@@ -7,11 +7,11 @@ import { ExpenseFormSchema } from '../../ExpenseForm/useExpenseForm';
 
 import toast from '@renderer/app/utils/toast';
 
-interface UseNewExpenseModal {
+interface UseNewExpenseModalProps {
   onSuccess?(): void;
 }
 
-export default function useNewExpenseModal({ onSuccess }: UseNewExpenseModal) {
+export default function useNewExpenseModal({ onSuccess }: UseNewExpenseModalProps) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createExpense, isPending: isLoading } = useMutation({

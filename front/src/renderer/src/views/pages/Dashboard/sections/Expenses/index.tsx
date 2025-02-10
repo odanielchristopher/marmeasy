@@ -1,23 +1,18 @@
-import { useExpensesQuery } from '@renderer/app/hooks/queries/useExpensesQuery';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { ExpenseIcon } from '@renderer/assets/Icons/ExpenseIcon';
 import Loader from '@renderer/views/components/Loader';
-import { useCallback, useState } from 'react';
 import { Card } from '../../components/Card';
-import ExpensesModal from './ExpensesModal';
+import ExpensesModal from './modals/ExpensesModal';
+import useExpenses from './useExpenses';
 
 export default function Expenses() {
-  const [isOpenExpensesModal, setIsOpenExpensesModal] = useState(false);
-
-  const handleOpenExpensesModal = useCallback(() => {
-    setIsOpenExpensesModal(true);
-  }, []);
-
-  const handleCloseExpensesModal = useCallback(() => {
-    setIsOpenExpensesModal(false);
-  }, []);
-
-  const { expenses, isLoading } = useExpensesQuery();
+  const {
+    expenses,
+    isLoading,
+    isOpenExpensesModal,
+    handleOpenExpensesModal,
+    handleCloseExpensesModal,
+  } = useExpenses();
 
   return (
     <>

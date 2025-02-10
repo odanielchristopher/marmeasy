@@ -36,7 +36,7 @@ export class ExpensesService implements IExpensesService {
 
     const { date, type, value } = updateExpenseDto;
 
-    return this.expensesRepository.create({
+    return this.expensesRepository.update({
       userId,
       data: {
         id: expenseId,
