@@ -10,30 +10,31 @@ export function useDashboarGraphQuery() {
     queryFn: async () => dashboardGraphService.getAll(),
   });
 
-  const dataMap = new Map<string, { income: number; expense: number }>();
+  const dataMap = new Map<string, { date: Date; income: number; expense: number }>();
 
   data?.incomes.forEach((income) => {
-    const date = format(parseISO(income.date), 'd MMM', { locale: ptBR });
-    const current = dataMap.get(date) || { income: 0, expense: 0 };
+    const date = parseISO(income.date);
+    const dateKey = format(date, 'yyyy-MM-dd');
+    const current = dataMap.get(dateKey) || { date, income: 0, expense: 0 };
 
-    dataMap.set(date, { ...current, income: current.income + income.value });
+    dataMap.set(dateKey, { ...current, income: current.income + income.value });
   });
 
   data?.expenses.forEach((expense) => {
-    const date = format(parseISO(expense.date), 'd MMM', { locale: ptBR });
-    const current = dataMap.get(date) || { income: 0, expense: 0 };
+    const date = parseISO(expense.date);
+    const dateKey = format(date, 'yyyy-MM-dd');
+    const current = dataMap.get(dateKey) || { date, income: 0, expense: 0 };
 
-    dataMap.set(date, { ...current, expense: current.expense + expense.value });
+    dataMap.set(dateKey, { ...current, expense: current.expense + expense.value });
   });
 
-  const sortedEntries = Array.from(dataMap.entries()).sort(
-    ([dateA], [dateB]) =>
-      parseISO(dateA).getTime() - parseISO(dateB).getTime(),
+  const sortedEntries = Array.from(dataMap.values()).sort(
+    (a, b) => a.date.getTime() - b.date.getTime(),
   );
 
-  const labels = sortedEntries.map(([date]) => date);
-  const incomes = sortedEntries.map(([, data]) => data.income);
-  const expenses = sortedEntries.map(([, data]) => data.expense);
+  const labels = sortedEntries.map(({ date }) => format(date, 'd MMM', { locale: ptBR }));
+  const incomes = sortedEntries.map(({ income }) => income);
+  const expenses = sortedEntries.map(({ expense }) => expense);
 
   return {
     isLoading: isFetching,

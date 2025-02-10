@@ -40,27 +40,46 @@ export const GraphSection = styled.div`
 
   @media (max-width: 1170px) {
     grid-template-columns: repeat(2, 1fr); /* 2 colunas */
-    grid-template-rows: repeat(4, 1fr); /* 4 linhas */
-    height: auto; /* Ajusta altura automaticamente */
+    grid-template-rows: repeat(7, 1fr); /* 4 linhas */
 
     & > :first-child {
-      grid-column: span 2; /* Ocupa as duas colunas */
-      grid-row: span 2; /* Ocupa as duas primeiras linhas */
+      grid-column: span 2;
+      grid-row: span 3;
     }
 
     & > :nth-child(2) {
-      grid-column: span 2; /* Ocupa as duas colunas */
-      grid-row: span 2; /* Ocupa as duas últimas linhas */
+      grid-column: span 2;
+      grid-row: span 4;
     }
 
-    height: 80rem;
+    height: 100rem;
   }
 
   @media (max-width: 768px) {
-    height: 60rem;
+    height: 90rem;
+
+    & > :first-child {
+      grid-column: span 2;
+      grid-row: span 3;
+    }
+
+    & > :nth-child(2) {
+      grid-column: span 2;
+      grid-row: span 4;
+    }
   }
 
   @media (max-width: 520px) {
-    height: 40rem;
+    height: 70rem;
+
+    & > :first-child {
+      grid-column: span 2;
+      grid-row: span 2.5;
+    }
+
+    & > :nth-child(2) {
+      grid-column: span 2;
+      grid-row: span 4.5;
+    }
   }
 `;
