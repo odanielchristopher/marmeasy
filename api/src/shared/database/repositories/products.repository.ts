@@ -46,7 +46,7 @@ export class ProductsRepository implements IProductsRepository {
     } = findManyByUserIdDto;
 
     const query = this.prismaService.$queryRaw<Product[]>`
-        SELECT p.id, p.name, p.price, p.product_category_id
+        SELECT p.id, p.name, p.price, p.product_category_id AS "categoryId"
         FROM products p
         ${categoryName ? Prisma.sql`JOIN product_categories c ON p.product_category_id = c.id` : Prisma.sql``}
         WHERE p.user_id = ${userId}::uuid
@@ -59,13 +59,17 @@ export class ProductsRepository implements IProductsRepository {
 
   async findFirstByUserId(
     findFirstDto: FindFirstProductByUserIdDto,
-  ): Promise<Product> {
+  ): Promise<Product | null> {
     const { userId, id } = findFirstDto;
 
-    return this.prismaService.product.findFirst({
-      where: { userId, id },
-      select: prismaResponse,
-    });
+    const [product] = await this.prismaService.$queryRaw<Product[]>`
+      SELECT id, name, price, product_category_id AS "categoryId"
+      FROM products
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1;
+    `;
+
+    return product || null;
   }
 
   async create(createDto: CreateProductOnDBDto): Promise<Product> {
