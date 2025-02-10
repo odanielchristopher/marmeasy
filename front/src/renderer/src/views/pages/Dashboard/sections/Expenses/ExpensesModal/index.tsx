@@ -7,14 +7,17 @@ import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
 import { translateExpenseType } from '../../CategoriesSection/ExpensesSection';
 
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { formatDay } from '@renderer/app/utils/formatDay';
 import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
 
 import NewExpenseModal from '../NewExpenseModal';
 
-import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
+import emptyImage from '@renderer/assets/Images/empty-box.svg';
+
+import { EmptyImageContainer } from '../../../components/EmptyImageContainer';
 import { AddButton, ListPerDate } from './styles';
 interface ExpensesModalProps {
   open: boolean;
@@ -41,6 +44,8 @@ export default function ExpensesModal({
     return <NewExpenseModal open onClose={handleCloseNewExpenseModal} />;
   }
 
+  const hasExpenses = Object.entries(expensesHistory).length > 0;
+
   return (
     <Modal.Root
       open={open}
@@ -66,6 +71,13 @@ export default function ExpensesModal({
         </AddButton>
       }
     >
+      {!hasExpenses && (
+        <EmptyImageContainer>
+          <img src={emptyImage} alt="Sem gastos nesse período" />
+          <p>Não encontramos nenhum gasto nesse período</p>
+        </EmptyImageContainer>
+      )}
+
       {Object.entries(expensesHistory).map(([monthYear, days]) => (
         <ListPerDate key={monthYear}>
           <Modal.Label

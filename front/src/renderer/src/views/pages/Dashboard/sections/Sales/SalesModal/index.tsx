@@ -1,12 +1,18 @@
 import { Sale } from '@renderer/app/entities/Sale';
 import { History } from '@renderer/app/services/types';
+
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { formatDay } from '@renderer/app/utils/formatDay';
 import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
+
 import { HandCoinsIcon } from '@renderer/assets/Icons/HandCoinsIcon';
+import emptyImage from '@renderer/assets/Images/empty-cart.svg';
+
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
+
+import { EmptyImageContainer } from '../../../components/EmptyImageContainer';
 import { ListPerDate } from './styles';
 
 interface SalesModalProps {
@@ -20,8 +26,17 @@ export default function SalesModal({
   open,
   salesHistory,
 }: SalesModalProps) {
+  const hasSales = Object.entries(salesHistory).length > 0;
+
   return (
     <Modal.Root open={open} onClose={onClose} title="Vendas">
+      {!hasSales && (
+        <EmptyImageContainer>
+          <img src={emptyImage} alt="Sem vendas nesse período" />
+          <p>Não encontramos nenhuma venda nesse período</p>
+        </EmptyImageContainer>
+      )}
+
       {Object.entries(salesHistory).map(([monthYear, days]) => (
         <ListPerDate key={monthYear}>
           <Modal.Label

@@ -12,7 +12,13 @@ import { formatMonthYear } from '@renderer/app/utils/formatMonthYear';
 
 import { formatDay } from '@renderer/app/utils/formatDay';
 import { translateIncomeType } from '../../CategoriesSection/IncomesSection';
+
+import emptyImage from '@renderer/assets/Images/empty-box.svg';
+
+import { EmptyImageContainer } from '../../../components/EmptyImageContainer';
+
 import { ListPerDate } from './styles';
+
 interface IncomesModalProps {
   open: boolean;
   onClose(): void;
@@ -24,8 +30,17 @@ export default function IncomesModal({
   open,
   incomesHistory,
 }: IncomesModalProps) {
+  const hasIncomes = Object.entries(incomesHistory).length > 0;
+
   return (
     <Modal.Root open={open} onClose={onClose} title="Entradas">
+      {!hasIncomes && (
+        <EmptyImageContainer>
+          <img src={emptyImage} alt="Sem entradas nesse período" />
+          <p>Não encontramos nenhuma entrada nesse período</p>
+        </EmptyImageContainer>
+      )}
+
       {Object.entries(incomesHistory).map(([monthYear, days]) => (
         <ListPerDate key={monthYear}>
           <Modal.Label

@@ -1,8 +1,13 @@
 import { Favorite } from '@renderer/app/services/dashboard/favoritesService/getAll';
+
 import { CheckIcon } from '@renderer/assets/Icons/CheckIcon';
 import { IngredientIcon } from '@renderer/assets/Icons/IngredientIcon';
+import emptyImage from '@renderer/assets/Images/eating.svg';
+
 import { Item } from '../../../components/Item';
 import { Modal } from '../../../components/Modal';
+
+import { EmptyImageContainer } from '../../../components/EmptyImageContainer';
 import { Container } from './styles';
 
 interface FavoritesModalProps {
@@ -16,8 +21,17 @@ export default function FavoritesModal({
   open,
   favorites,
 }: FavoritesModalProps) {
+  const hasFavorites = favorites.length > 0;
+
   return (
     <Modal.Root open={open} onClose={onClose} title="Favoritos">
+      {!hasFavorites && (
+        <EmptyImageContainer>
+        <img src={emptyImage} alt="Sem favoritos nesse período" />
+        <p>Não encontramos nenhum favorito durante esse período</p>
+      </EmptyImageContainer>
+      )}
+
       {favorites.map(({ label, favorite, isFirst }, index) => (
         <Container key={index}>
           <Item.Box $align="center">
