@@ -28,7 +28,7 @@ export class DashboardService implements IDashboardService {
     userId: string,
     dateRange: DateRangeDto,
   ): Promise<IHistoryResponse<Expense>> {
-    const expenses = await this.expensesRepository.findManyByUserId({
+    const expenses = await this.expensesRepository.findManyInGroupByUserId({
       userId,
       dateRange,
     });
@@ -40,7 +40,7 @@ export class DashboardService implements IDashboardService {
     userId: string,
     dateRange: DateRangeDto,
   ): Promise<IHistoryResponse<Income>> {
-    const incomes = await this.incomesRepository.findManyByUserId({
+    const incomes = await this.incomesRepository.findManyInGroupByUserId({
       userId,
       dateRange,
     });
@@ -67,28 +67,36 @@ export class DashboardService implements IDashboardService {
     return this.ordersRepository.findFavoriteIngredients({ userId, dateRange });
   }
 
-  getDashboardCategories(
+  async getDashboardCategories(
     userId: string,
     dateRange: DateRangeDto,
   ): Promise<IIncomesANDExpenses> {
-    return this.getIncomesAndExpenses(userId, dateRange);
-  }
-
-  getDashboardGraphDatas(
-    userId: string,
-    dateRange: DateRangeDto,
-  ): Promise<IIncomesANDExpenses> {
-    return this.getIncomesAndExpenses(userId, dateRange);
-  }
-
-  // Helpers
-  private async getIncomesAndExpenses(userId: string, dateRange: DateRangeDto) {
     const expenses = await this.expensesRepository.findManyByCategory({
       userId,
       dateRange,
     });
 
     const incomes = await this.incomesRepository.findManyByCategory({
+      userId,
+      dateRange,
+    });
+
+    return {
+      expenses,
+      incomes,
+    };
+  }
+
+  async getDashboardGraphDatas(
+    userId: string,
+    dateRange: DateRangeDto,
+  ): Promise<IIncomesANDExpenses> {
+    const expenses = await this.expensesRepository.findManyByUser({
+      userId,
+      dateRange,
+    });
+
+    const incomes = await this.incomesRepository.findManyByUser({
       userId,
       dateRange,
     });

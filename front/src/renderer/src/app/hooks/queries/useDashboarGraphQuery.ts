@@ -28,7 +28,7 @@ export function useDashboarGraphQuery() {
 
   const sortedEntries = Array.from(dataMap.entries()).sort(
     ([dateA], [dateB]) =>
-      parseInt(dateA.split(' ')[0]) - parseInt(dateB.split(' ')[0]),
+      parseISO(dateA).getTime() - parseISO(dateB).getTime(),
   );
 
   const labels = sortedEntries.map(([date]) => date);

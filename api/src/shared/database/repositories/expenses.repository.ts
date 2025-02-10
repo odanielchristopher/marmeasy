@@ -18,6 +18,24 @@ import { PrismaService } from '../prisma.service';
 export class ExpensesRepository implements IExpensesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findManyByUser(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
+    const { userId, dateRange } = findAllDto;
+
+    const { fromDate, toDate } = dateRange;
+
+    const incomes = await this.prismaService.expense.findMany({
+      where: {
+        userId,
+        date: {
+          gte: fromDate,
+          lte: toDate,
+        },
+      },
+    });
+
+    return incomes.map(this.parser);
+  }
+
   async findManyByCategory(
     findAllDto: FindManyExpenseDto,
   ): Promise<Partial<Expense>[]> {
@@ -40,7 +58,9 @@ export class ExpensesRepository implements IExpensesRepository {
     return expenses.map(this.parser);
   }
 
-  async findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
+  async findManyInGroupByUserId(
+    findAllDto: FindManyExpenseDto,
+  ): Promise<Expense[]> {
     const { userId, dateRange } = findAllDto;
 
     const { fromDate, toDate } = dateRange;

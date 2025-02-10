@@ -4,12 +4,14 @@ import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 export const IIncomesRepository = Symbol('IIncomesRepository');
 
 export interface IIncomesRepository {
-  findManyByUserId(findManyDto: findManyDto): Promise<Income[]>;
+  findManyByUser(findManyDto: FindManyDto): Promise<Income[]>;
 
-  findManyByCategory(findManyDto: findManyDto): Promise<Partial<Income>[]>;
+  findManyInGroupByUserId(findManyDto: FindManyDto): Promise<Income[]>;
+
+  findManyByCategory(findManyDto: FindManyDto): Promise<Partial<Income>[]>;
 }
 
-export type findManyDto = {
+export type FindManyDto = {
   userId: string;
   dateRange: DateRangeDto;
 };

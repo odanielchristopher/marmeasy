@@ -4,7 +4,7 @@ import { PrismaService } from '../prisma.service';
 import { Income } from 'src/modules/dashboard/entities/income.entity';
 
 import {
-  findManyDto,
+  FindManyDto,
   IIncomesRepository,
 } from '../interfaces/incomes-repository.interface';
 
@@ -17,7 +17,25 @@ import {
 export class IncomesRepository implements IIncomesRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findManyByUserId(findManyDto: findManyDto): Promise<Income[]> {
+  async findManyByUser(findManyDto: FindManyDto): Promise<Income[]> {
+    const { userId, dateRange } = findManyDto;
+
+    const { fromDate, toDate } = dateRange;
+
+    const incomes = await this.prismaService.payment.findMany({
+      where: {
+        userId,
+        date: {
+          gte: fromDate,
+          lte: toDate,
+        },
+      },
+    });
+
+    return incomes.map(this.parser);
+  }
+
+  async findManyInGroupByUserId(findManyDto: FindManyDto): Promise<Income[]> {
     const { userId, dateRange } = findManyDto;
 
     const { fromDate, toDate } = dateRange;
@@ -42,7 +60,7 @@ export class IncomesRepository implements IIncomesRepository {
   }
 
   async findManyByCategory(
-    findManyDto: findManyDto,
+    findManyDto: FindManyDto,
   ): Promise<Partial<Income>[]> {
     const { userId, dateRange } = findManyDto;
     const { fromDate, toDate } = dateRange;

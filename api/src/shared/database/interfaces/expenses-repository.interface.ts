@@ -4,7 +4,9 @@ import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 export const IExpensesRepository = Symbol('IExpensesRepository');
 
 export interface IExpensesRepository {
-  findManyByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]>;
+  findManyByUser(findAllDto: FindManyExpenseDto): Promise<Expense[]>;
+
+  findManyInGroupByUserId(findAllDto: FindManyExpenseDto): Promise<Expense[]>;
 
   findManyByCategory(
     findAllDto: FindManyExpenseDto,
