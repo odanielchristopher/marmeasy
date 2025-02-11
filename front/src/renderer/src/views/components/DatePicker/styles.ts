@@ -47,20 +47,20 @@ export const StyledDayPicker = styled(DayPicker)`
     border-radius: 50%;
 
     &:hover {
-      background-color: ${({ theme }) => theme.colors.orange.lighter};
+      background-color: rgba(8, 159, 104, 0.56);
       color: #fff;
     }
   }
 
   .day_today {
-    background: ${({ theme }) => theme.colors.gray.lighter} !important;
-    color: ${({ theme }) => theme.colors.black.light};
+    background: ${({ theme }) => theme.colors.orange.light} !important;
+    color: #fff !important;
     font-weight: 700;
   }
 
   .day_selected {
-    background: ${({ theme }) => theme.colors.orange.light} !important;
-    color: #fff !important;
+    background: ${({ theme }) => theme.colors.green.main} !important;
+    color: #fff;
     font-weight: 600;
   }
 `;
