@@ -15,11 +15,11 @@ export const StyledRdxToogleGroupItem = styled(RdxToogleGroup.Item)`
     background: rgba(245, 245, 245, 0.78);
 
     &:first-child {
-      border-color:rgba(204, 204, 204, 0.72);
+      border-color: rgba(204, 204, 204, 0.72);
     }
 
     &:last-child {
-      border-color:rgba(204, 204, 204, 0.72);
+      border-color: rgba(204, 204, 204, 0.72);
     }
   }
 

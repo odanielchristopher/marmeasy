@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
 export const LoaderContainer = styled.div`
-  height: 32.0rem;
+  height: 32rem;
   width: 100%;
 `;

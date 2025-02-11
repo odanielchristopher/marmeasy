@@ -10,7 +10,10 @@ export function useDashboarGraphQuery() {
     queryFn: async () => dashboardGraphService.getAll(),
   });
 
-  const dataMap = new Map<string, { date: Date; income: number; expense: number }>();
+  const dataMap = new Map<
+    string,
+    { date: Date; income: number; expense: number }
+  >();
 
   data?.incomes.forEach((income) => {
     const date = parseISO(income.date);
@@ -25,14 +28,19 @@ export function useDashboarGraphQuery() {
     const dateKey = format(date, 'yyyy-MM-dd');
     const current = dataMap.get(dateKey) || { date, income: 0, expense: 0 };
 
-    dataMap.set(dateKey, { ...current, expense: current.expense + expense.value });
+    dataMap.set(dateKey, {
+      ...current,
+      expense: current.expense + expense.value,
+    });
   });
 
   const sortedEntries = Array.from(dataMap.values()).sort(
     (a, b) => a.date.getTime() - b.date.getTime(),
   );
 
-  const labels = sortedEntries.map(({ date }) => format(date, 'd MMM', { locale: ptBR }));
+  const labels = sortedEntries.map(({ date }) =>
+    format(date, 'd MMM', { locale: ptBR }),
+  );
   const incomes = sortedEntries.map(({ income }) => income);
   const expenses = sortedEntries.map(({ expense }) => expense);
 

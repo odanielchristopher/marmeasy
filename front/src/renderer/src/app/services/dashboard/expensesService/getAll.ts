@@ -8,11 +8,14 @@ export type GetExpensesResponse = {
 };
 
 export async function getAll(type?: string) {
-  const { data } = await httpClient.get<GetExpensesResponse>('/dashboard/expenses', {
-    params: {
-      type,
+  const { data } = await httpClient.get<GetExpensesResponse>(
+    '/dashboard/expenses',
+    {
+      params: {
+        type,
+      },
     },
-  });
+  );
 
   return data;
 }

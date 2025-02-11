@@ -12,13 +12,18 @@ interface UseEditExpenseModalProps {
   expenseId: string;
 }
 
-export default function useEditExpenseModal({ onSuccess, expenseId }: UseEditExpenseModalProps) {
-  const [isOpenDeleteExpenseModal, setIsOpenDeleteExpenseModal] = useState(false);
+export default function useEditExpenseModal({
+  onSuccess,
+  expenseId,
+}: UseEditExpenseModalProps) {
+  const [isOpenDeleteExpenseModal, setIsOpenDeleteExpenseModal] =
+    useState(false);
 
   const queryClient = useQueryClient();
 
   const { mutateAsync: updateExpense, isPending: isLoading } = useMutation({
-    mutationFn: async (data: UpdateExpenseParams) => expensesService.update(data),
+    mutationFn: async (data: UpdateExpenseParams) =>
+      expensesService.update(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['dashboard'],
@@ -38,26 +43,26 @@ export default function useEditExpenseModal({ onSuccess, expenseId }: UseEditExp
   const handleSubmit = useCallback(async (data: ExpenseFormSchema) => {
     const { date, type, value } = data;
 
-        try {
-          await updateExpense({
-            id: expenseId,
-            type,
-            date: date.toISOString(),
-            value: Number(value),
-          });
+    try {
+      await updateExpense({
+        id: expenseId,
+        type,
+        date: date.toISOString(),
+        value: Number(value),
+      });
 
-          toast({
-            type: 'success',
-            text: 'Gasto editado com sucesso.',
-          });
+      toast({
+        type: 'success',
+        text: 'Gasto editado com sucesso.',
+      });
 
-          onSuccess?.();
-        } catch (error) {
-          toast({
-            type: 'danger',
-            text: 'Ocorreu um erro ao editar o gasto.',
-          });
-        }
+      onSuccess?.();
+    } catch (error) {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao editar o gasto.',
+      });
+    }
   }, []);
 
   return {

@@ -20,13 +20,9 @@ export default function CategoriesSection() {
     <Container>
       {!isLoading && (
         <>
-          <IncomesSection
-            incomes={incomes}
-          />
+          <IncomesSection incomes={incomes} />
           <Separator />
-          <ExpensesSection
-            expenses={expenses}
-          />
+          <ExpensesSection expenses={expenses} />
         </>
       )}
 

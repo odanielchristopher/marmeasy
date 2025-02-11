@@ -22,7 +22,6 @@ export default function useExpensesModal({
     setIsOpenNewExpenseModal(false);
   }, []);
 
-
   const handleOpenEditExpenseModal = useCallback((expense: Expense) => {
     setSelectedExpense(expense);
     setIsOpenEditExpenseModal(true);

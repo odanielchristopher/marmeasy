@@ -5,7 +5,6 @@ export const EmptyImageContainer = styled.div`
   margin-inline: auto;
   height: 300px;
 
-
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -14,6 +14,11 @@ export const FiltersContainer = styled.div`
   gap: 1.2rem;
   justify-content: flex-end;
   width: 100%;
+
+  @media (max-width: 732px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 export const Main = styled.main`

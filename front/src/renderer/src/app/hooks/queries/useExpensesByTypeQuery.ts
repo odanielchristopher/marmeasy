@@ -7,7 +7,10 @@ interface UseExpensesByTypeQueryParams {
   enabled?: boolean;
 }
 
-export function useExpensesByTypeQuery({ type, enabled = true }: UseExpensesByTypeQueryParams) {
+export function useExpensesByTypeQuery({
+  type,
+  enabled = true,
+}: UseExpensesByTypeQueryParams) {
   const { data, isFetching } = useQuery({
     queryKey: ['dashboard', 'expenses', 'getAll', type],
     queryFn: async () => expensesService.getAll(type),

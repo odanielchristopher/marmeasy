@@ -11,11 +11,14 @@ interface UseNewExpenseModalProps {
   onSuccess?(): void;
 }
 
-export default function useNewExpenseModal({ onSuccess }: UseNewExpenseModalProps) {
+export default function useNewExpenseModal({
+  onSuccess,
+}: UseNewExpenseModalProps) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: createExpense, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateExpenseParams) => expensesService.create(data),
+    mutationFn: async (data: CreateExpenseParams) =>
+      expensesService.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['dashboard'],
@@ -27,25 +30,25 @@ export default function useNewExpenseModal({ onSuccess }: UseNewExpenseModalProp
   const handleSubmit = useCallback(async (data: ExpenseFormSchema) => {
     const { date, type, value } = data;
 
-        try {
-          await createExpense({
-            type,
-            date: date.toISOString(),
-            value: Number(value),
-          });
+    try {
+      await createExpense({
+        type,
+        date: date.toISOString(),
+        value: Number(value),
+      });
 
-          toast({
-            type: 'success',
-            text: 'Gasto registrado com sucesso.',
-          });
+      toast({
+        type: 'success',
+        text: 'Gasto registrado com sucesso.',
+      });
 
-          onSuccess?.();
-        } catch (error) {
-          toast({
-            type: 'danger',
-            text: 'Ocorreu um erro ao criar gasto.',
-          });
-        }
+      onSuccess?.();
+    } catch (error) {
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao criar gasto.',
+      });
+    }
   }, []);
 
   return {

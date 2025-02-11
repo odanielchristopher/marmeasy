@@ -45,14 +45,17 @@ export default function Favorites() {
       >
         {!isLoading && (
           <>
-            <Card.Content $justify='start'>
+            <Card.Content $justify="start">
               <Card.Header>
                 <Card.Icon color="success" height={28}>
                   <CheckIcon size={28} />
                 </Card.Icon>
                 <Card.Title text="1° do cardápio" type="secondary" />
               </Card.Header>
-              <Card.Info text={sortedFavorites[0]?.title ?? 'Sem favoritos'} $align="center" />
+              <Card.Info
+                text={sortedFavorites[0]?.title ?? 'Sem favoritos'}
+                $align="center"
+              />
             </Card.Content>
           </>
         )}

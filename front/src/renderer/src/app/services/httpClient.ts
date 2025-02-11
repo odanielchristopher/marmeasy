@@ -14,7 +14,9 @@ httpClient.interceptors.request.use((config) => {
   }
 
   if (config.url?.startsWith('/dashboard/')) {
-    const storageDateRange = localStorage.getItem(localStorageKeys.DASHBOARD_DATE_RANGE);
+    const storageDateRange = localStorage.getItem(
+      localStorageKeys.DASHBOARD_DATE_RANGE,
+    );
     if (storageDateRange) {
       const { from, to } = JSON.parse(storageDateRange);
 

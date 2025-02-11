@@ -41,16 +41,17 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
     );
   }, []);
 
-  const setDashboardStateWithInvalidation= useCallback((newState: DateRange) => {
-    setDashboardState(newState);
+  const setDashboardStateWithInvalidation = useCallback(
+    (newState: DateRange) => {
+      setDashboardState(newState);
 
-    queryClient.invalidateQueries({
-      queryKey: ['dashboard'],
-      refetchType: 'active',
-    });
-  }, [setDashboardState]);
-
-
+      queryClient.invalidateQueries({
+        queryKey: ['dashboard'],
+        refetchType: 'active',
+      });
+    },
+    [setDashboardState],
+  );
 
   return (
     <DashboardContext.Provider

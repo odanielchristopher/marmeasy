@@ -27,9 +27,9 @@ export default function FavoritesModal({
     <Modal.Root open={open} onClose={onClose} title="Favoritos">
       {!hasFavorites && (
         <EmptyImageContainer>
-        <img src={emptyImage} alt="Sem favoritos nesse período" />
-        <p>Não encontramos nenhum favorito durante esse período</p>
-      </EmptyImageContainer>
+          <img src={emptyImage} alt="Sem favoritos nesse período" />
+          <p>Não encontramos nenhum favorito durante esse período</p>
+        </EmptyImageContainer>
       )}
 
       {favorites.map(({ label, favorite, isFirst }, index) => (
