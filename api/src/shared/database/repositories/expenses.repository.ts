@@ -44,15 +44,15 @@ export class ExpensesRepository implements IExpensesRepository {
 
     const expenses = await this.prismaService.$queryRaw<PrismaExpense[]>`
       SELECT
-        e."type",
-        (SELECT e2."id" FROM "expenses" e2 WHERE e2."type" = e."type" AND e2."user_id" = e."user_id" LIMIT 1) AS "id",
-        SUM(e."value") AS "value",
-        MAX(e."date") AS "date"
-      FROM "expenses" e
-      WHERE e."user_id" = ${userId}::uuid
-        AND e."date" BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
-      GROUP BY e."type", e."user_id"
-      ORDER BY "value" DESC;
+        e.type,
+        (SELECT e2.id FROM expenses e2 WHERE e2.type = e.type AND e2.user_id = e.user_id LIMIT 1) AS id,
+        SUM(e.value) AS value,
+        MAX(e.date) AS date
+      FROM expenses e
+      WHERE e.user_id = ${userId}::uuid
+        AND e.date BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
+      GROUP BY e.type, e.user_id
+      ORDER BY value DESC;
     `;
 
     return expenses.map(this.parser);
@@ -61,7 +61,7 @@ export class ExpensesRepository implements IExpensesRepository {
   async findManyInGroupByUserId(
     findAllDto: FindManyExpenseDto,
   ): Promise<Expense[]> {
-    const { userId, dateRange } = findAllDto;
+    const { userId, dateRange, type } = findAllDto;
 
     const { fromDate, toDate } = dateRange;
 
@@ -72,6 +72,7 @@ export class ExpensesRepository implements IExpensesRepository {
           gte: fromDate,
           lte: toDate,
         },
+        type,
       },
     });
 

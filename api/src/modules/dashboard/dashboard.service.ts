@@ -8,7 +8,7 @@ import { IDashboardService } from './interfaces/dashboard-service.interface';
 import { IIncomesRepository } from 'src/shared/database/interfaces/incomes-repository.interface';
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 import { DateRangeDto } from 'src/shared/dto/date-range.dto';
-import { Expense } from '../expenses/entities/expense.entity';
+import { Expense, ExpenseType } from '../expenses/entities/expense.entity';
 import { PaymentType } from '../payments/entities/payment.entity';
 import { FavoriteIngredient } from './entities/favorite.entity';
 import { Income } from './entities/income.entity';
@@ -28,10 +28,12 @@ export class DashboardService implements IDashboardService {
   async getExpenses(
     userId: string,
     dateRange: DateRangeDto,
+    type?: string,
   ): Promise<IHistoryResponse<Expense>> {
     const expenses = await this.expensesRepository.findManyInGroupByUserId({
       userId,
       dateRange,
+      type: ExpenseType[type?.toUpperCase()],
     });
 
     return this.formatHistoryResponse({ data: expenses });
@@ -45,7 +47,7 @@ export class DashboardService implements IDashboardService {
     const incomes = await this.incomesRepository.findManyInGroupByUserId({
       userId,
       dateRange,
-      type: PaymentType[type],
+      type: PaymentType[type?.toUpperCase()],
     });
 
     return this.formatHistoryResponse({ data: incomes });

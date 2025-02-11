@@ -29,10 +29,12 @@ export class DashboardController {
     @ActiveUserId() userId: string,
     @Query('from') from: string,
     @Query('to') to: string,
+    @Query('type') type: string,
   ) {
     return this.dashboardService.getExpenses(
       userId,
       makeDateRangeDto({ from, to }),
+      type,
     );
   }
 

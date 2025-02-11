@@ -1,4 +1,7 @@
-import { Expense } from 'src/modules/expenses/entities/expense.entity';
+import {
+  Expense,
+  ExpenseType,
+} from 'src/modules/expenses/entities/expense.entity';
 import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 
 export const IExpensesRepository = Symbol('IExpensesRepository');
@@ -24,6 +27,7 @@ export interface IExpensesRepository {
 export type FindManyExpenseDto = {
   userId: string;
   dateRange: DateRangeDto;
+  type?: ExpenseType;
 };
 
 export type FindOneExpenseDto = {
