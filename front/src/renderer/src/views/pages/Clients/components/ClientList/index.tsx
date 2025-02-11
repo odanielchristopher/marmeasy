@@ -42,7 +42,7 @@ export default function ClientList({ clients }: ClientListProps) {
         onClose={handleCloseEditClientModal}
       />
       <ListContainer>
-        {clients.map((client) => (
+        {clients.filter(client => client !== undefined && client !== null).map((client) => (
           <Container key={client.id}>
             <EditButton
               type="button"
