@@ -12,18 +12,6 @@ export type PrismaPaymentWithClientName = PrismaPayment & {
 export class PartialIncomeMapper
   implements IDataMapper<Partial<PrismaPayment>, Partial<Income>>
 {
-  private static instance: PartialIncomeMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new PartialIncomeMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenceObject: Partial<PrismaPayment>): Partial<Income> {
     if (!persistenceObject) {
       return null;

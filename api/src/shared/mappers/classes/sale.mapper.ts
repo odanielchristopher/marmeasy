@@ -11,18 +11,6 @@ export type PrismaSaleResponse = PrismaOrder & {
 
 @Injectable()
 export class SaleMapper implements IDataMapper<PrismaSaleResponse, Sale> {
-  private static instance: SaleMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new SaleMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenceObject: PrismaSaleResponse): Sale {
     if (!persistenceObject) {
       return null;

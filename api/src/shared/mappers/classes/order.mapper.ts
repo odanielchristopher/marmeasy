@@ -7,18 +7,6 @@ import { IDataMapper } from '../interfaces/data-mapper.interface';
 export type PrismaOrderResponse = PrismaOrder & { items: OrderItem[] };
 
 export class OrderMapper implements IDataMapper<PrismaOrderResponse, Order> {
-  private static instance: OrderMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new OrderMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenceObject: PrismaOrderResponse): Order {
     if (!persistenceObject) {
       return null;

@@ -9,18 +9,6 @@ export type PrismaPaymentWithClientName = PrismaPayment & {
 export class IncomeMapper
   implements IDataMapper<PrismaPaymentWithClientName, Income>
 {
-  private static instance: IncomeMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new IncomeMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenceObject: PrismaPaymentWithClientName): Income {
     if (!persistenceObject) {
       return null;

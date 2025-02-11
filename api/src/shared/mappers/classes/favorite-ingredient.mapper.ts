@@ -9,18 +9,6 @@ export type PrismaFavoriteResponse = {
 export class FavoriteIngredientMapper
   implements IDataMapper<PrismaFavoriteResponse, FavoriteIngredient>
 {
-  private static instance: FavoriteIngredientMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new FavoriteIngredientMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenceObject: PrismaFavoriteResponse): FavoriteIngredient {
     if (!persistenceObject) {
       return null;

@@ -3,18 +3,6 @@ import { Client, ClientType } from 'src/modules/clients/entities/client.entity';
 import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export class ClientMapper implements IDataMapper<PrismaClient, Client> {
-  private static instance: ClientMapper;
-
-  static getInstance() {
-    if (!this.instance) {
-      return new ClientMapper();
-    }
-
-    return this.instance;
-  }
-
-  private constructor() {}
-
   toDomain(persistenteEntity: PrismaClient | null): Client {
     if (!persistenteEntity) {
       return null;
