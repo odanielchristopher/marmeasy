@@ -6,7 +6,6 @@ import { IDataMapper } from '../interfaces/data-mapper.interface';
 export type PrismaPaymentWithClientName = PrismaPayment & {
   clientName: string;
 };
-
 export class IncomeMapper
   implements IDataMapper<PrismaPaymentWithClientName, Income>
 {

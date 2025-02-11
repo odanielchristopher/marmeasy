@@ -6,9 +6,7 @@ import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export type PrismaOrderResponse = PrismaOrder & { items: OrderItem[] };
 
-export class OrderMapper
-  implements IDataMapper<PrismaOrderResponse, Order>
-{
+export class OrderMapper implements IDataMapper<PrismaOrderResponse, Order> {
   private static instance: OrderMapper;
 
   static getInstance() {

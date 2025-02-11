@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Expense as PrismaExpense } from '@prisma/client';
 
 import {
@@ -11,12 +11,17 @@ import {
 } from '../interfaces/expenses-repository.interface';
 
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
-import { ExpenseMapper } from '../mappers/expense.mapper';
+import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
+import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class ExpensesRepository implements IExpensesRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(IDataMappersFactory)
+    private readonly dataMappersFactory: IDataMappersFactory,
+  ) {}
 
   async findManyByUser(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
     const { userId, dateRange } = findAllDto;
@@ -33,7 +38,7 @@ export class ExpensesRepository implements IExpensesRepository {
       },
     });
 
-    return incomes.map(this.parser);
+    return incomes.map((expense) => this.parser(expense));
   }
 
   async findManyByCategory(
@@ -55,7 +60,7 @@ export class ExpensesRepository implements IExpensesRepository {
       ORDER BY value DESC;
     `;
 
-    return expenses.map(this.parser);
+    return expenses.map((expense) => this.parser(expense));
   }
 
   async findManyInGroupByUserId(
@@ -76,7 +81,7 @@ export class ExpensesRepository implements IExpensesRepository {
       },
     });
 
-    return expenses.map(this.parser);
+    return expenses.map((expense) => this.parser(expense));
   }
 
   async findOneByUserId(findOneDto: FindOneExpenseDto): Promise<Expense> {
@@ -132,6 +137,8 @@ export class ExpensesRepository implements IExpensesRepository {
   }
 
   private parser(prismaExpense: PrismaExpense) {
-    return ExpenseMapper.getInstance().toDomain(prismaExpense);
+    return this.dataMappersFactory
+      .getInstance<PrismaExpense, Expense>(DataMapperType.EXPENSE)
+      .toDomain(prismaExpense);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 
 import { Income } from 'src/modules/dashboard/entities/income.entity';
@@ -8,17 +8,20 @@ import {
   IIncomesRepository,
 } from '../interfaces/incomes-repository.interface';
 
-import { Prisma } from '@prisma/client';
-import {
-  IncomeMapper,
-  PrismaPaymentWithClientName,
-} from '../mappers/income.mapper';
+import { Prisma, Payment as PrismaPayment } from '@prisma/client';
+import { PrismaPaymentWithClientName } from 'src/shared/mappers/classes/income.mapper';
+import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
+import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
 
 @Injectable()
 export class IncomesRepository implements IIncomesRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(IDataMappersFactory)
+    private readonly dataMappersFactory: IDataMappersFactory,
+  ) {}
 
-  async findManyByUser(findManyDto: FindManyDto): Promise<Income[]> {
+  async findManyByUser(findManyDto: FindManyDto): Promise<Partial<Income>[]> {
     const { userId, dateRange } = findManyDto;
 
     const { fromDate, toDate } = dateRange;
@@ -33,7 +36,7 @@ export class IncomesRepository implements IIncomesRepository {
       },
     });
 
-    return incomes.map(this.parser);
+    return incomes.map((income) => this.partialParser(income));
   }
 
   async findManyInGroupByUserId(findManyDto: FindManyDto): Promise<Income[]> {
@@ -62,7 +65,7 @@ export class IncomesRepository implements IIncomesRepository {
     ORDER BY value DESC;
   `;
 
-    return incomes.map(this.parser);
+    return incomes.map((income) => this.parser(income));
   }
 
   async findManyInGroupByCategory(
@@ -86,14 +89,21 @@ export class IncomesRepository implements IIncomesRepository {
     ORDER BY value DESC;
     `;
 
-    return incomes.map(this.partialParser);
+    return incomes.map((income) => this.partialParser(income));
   }
 
   private parser(prismaIncome: PrismaPaymentWithClientName) {
-    return IncomeMapper.getInstance().toDomain(prismaIncome);
+    return this.dataMappersFactory
+      .getInstance<PrismaPaymentWithClientName, Income>(DataMapperType.INCOME)
+      .toDomain(prismaIncome);
   }
 
   private partialParser(prismaIncome: Partial<PrismaPaymentWithClientName>) {
-    return IncomeMapper.getInstance().partialIncomeToDomain(prismaIncome);
+    return this.dataMappersFactory
+      .getInstance<
+        Partial<PrismaPayment>,
+        Partial<Income>
+      >(DataMapperType.PARTIAL_INCOME)
+      .toDomain(prismaIncome);
   }
 }

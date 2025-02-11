@@ -1,17 +1,22 @@
+import { Injectable } from '@nestjs/common';
 import { Payment as PrismaPayment } from '@prisma/client';
 import { Income } from 'src/modules/dashboard/entities/income.entity';
 import { PaymentType } from 'src/modules/payments/entities/payment.entity';
+import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export type PrismaPaymentWithClientName = PrismaPayment & {
   clientName: string;
 };
 
-export class IncomeMapper {
-  private static instance: IncomeMapper;
+@Injectable()
+export class PartialIncomeMapper
+  implements IDataMapper<Partial<PrismaPayment>, Partial<Income>>
+{
+  private static instance: PartialIncomeMapper;
 
   static getInstance() {
     if (!this.instance) {
-      return new IncomeMapper();
+      return new PartialIncomeMapper();
     }
 
     return this.instance;
@@ -19,25 +24,7 @@ export class IncomeMapper {
 
   private constructor() {}
 
-  toDomain(persistenceObject: PrismaPaymentWithClientName): Income {
-    if (!persistenceObject) {
-      return null;
-    }
-
-    const { id, date, type, value, clientName } = persistenceObject;
-
-    return {
-      id,
-      value,
-      clientName,
-      date: date.toISOString(),
-      type: PaymentType[type],
-    };
-  }
-
-  partialIncomeToDomain(
-    persistenceObject: Partial<PrismaPayment>,
-  ): Partial<Income> {
+  toDomain(persistenceObject: Partial<PrismaPayment>): Partial<Income> {
     if (!persistenceObject) {
       return null;
     }

@@ -7,6 +7,7 @@ import { IProductCategoriesRepository } from './interfaces/product-categories-re
 import { IProductsRepository } from './interfaces/products-repository.interface';
 import { IUsersRepository } from './interfaces/users-repository.interface';
 
+import { MappersModule } from '../mappers/mappers.module';
 import { IExpensesRepository } from './interfaces/expenses-repository.interface';
 import { IIncomesRepository } from './interfaces/incomes-repository.interface';
 import { IOrdersRepository } from './interfaces/orders-repository.interface';
@@ -25,6 +26,7 @@ import { UsersRepository } from './repositories/users.repository';
 
 @Global()
 @Module({
+  imports: [MappersModule],
   providers: [
     PrismaService,
     {
@@ -69,46 +71,17 @@ import { UsersRepository } from './repositories/users.repository';
     },
   ],
   exports: [
-    {
-      provide: IUsersRepository,
-      useClass: UsersRepository,
-    },
-    {
-      provide: IProductCategoriesRepository,
-      useClass: ProductCategoriesRepository,
-    },
-    {
-      provide: IIngredientsRepository,
-      useClass: IngredientsRepository,
-    },
-    {
-      provide: IClientsRepository,
-      useClass: ClientsRepository,
-    },
-    {
-      provide: IProductsRepository,
-      useClass: ProductsRepository,
-    },
-    {
-      provide: IOrderItemsRepository,
-      useClass: OrderItemsRepository,
-    },
-    {
-      provide: IOrdersRepository,
-      useClass: OrdersRepository,
-    },
-    {
-      provide: IPaymentsRepository,
-      useClass: PaymentsRepository,
-    },
-    {
-      provide: IExpensesRepository,
-      useClass: ExpensesRepository,
-    },
-    {
-      provide: IIncomesRepository,
-      useClass: IncomesRepository,
-    },
+    PrismaService,
+    IProductsRepository,
+    IUsersRepository,
+    IProductCategoriesRepository,
+    IIngredientsRepository,
+    IClientsRepository,
+    IOrderItemsRepository,
+    IOrdersRepository,
+    IPaymentsRepository,
+    IExpensesRepository,
+    IIncomesRepository,
   ],
 })
 export class DatabaseModule {}

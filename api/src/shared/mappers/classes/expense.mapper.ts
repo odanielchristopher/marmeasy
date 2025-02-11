@@ -5,9 +5,7 @@ import {
 } from 'src/modules/expenses/entities/expense.entity';
 import { IDataMapper } from '../interfaces/data-mapper.interface';
 
-export class ExpenseMapper
-  implements IDataMapper<PrismaExpense, Expense>
-{
+export class ExpenseMapper implements IDataMapper<PrismaExpense, Expense> {
   private static instance: ExpenseMapper;
 
   static getInstance() {

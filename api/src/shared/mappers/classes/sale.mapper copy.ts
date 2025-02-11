@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { Order as PrismaOrder } from '@prisma/client';
 import { Sale } from 'src/modules/dashboard/entities/sale.entity';
+import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export type PrismaSaleResponse = PrismaOrder & {
   clientName: string;
@@ -7,7 +9,8 @@ export type PrismaSaleResponse = PrismaOrder & {
   totalAmount: number;
 };
 
-export class SaleMapper {
+@Injectable()
+export class SaleMapper implements IDataMapper<PrismaSaleResponse, Sale> {
   private static instance: SaleMapper;
 
   static getInstance() {
