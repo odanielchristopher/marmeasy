@@ -19,9 +19,11 @@ import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import useOrderModal from './useNewOrderModal';
 
+import { CgCloseO } from 'react-icons/cg';
 import {
   BoxCategories,
   Container,
+  ErrorMessage,
   IconCategory,
   Line,
   OrderItemsList,
@@ -33,13 +35,15 @@ interface OrderModalProps {
   onClose(): void;
 }
 
-export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
+export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
   const {
     categories,
     products,
     product,
     control,
     errors,
+    handleSubmit,
+    isLoading,
     isLoadingCategories,
     isOrderModalOpen,
     isItemModalOpen,
@@ -58,7 +62,8 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
     addProductToOrder,
     orderDetails,
     index,
-  } = useOrderModal(isOpen);
+    onSubmit,
+  } = useOrderModal(isOpen, onClose);
 
   const allCategories = [
     { id: 'all', name: 'todos', icon: '🍽️' },
@@ -70,11 +75,18 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
       {!isItemModalOpen && (
         <Modal open={isOrderModalOpen} title="Novo pedido" onClose={onClose}>
           <Container>
-            <Input
-              type="text"
-              placeholder="Nome do cliente"
-              maxLength={15}
+            <Controller
+              control={control}
               name="clientName"
+              render={({ field }) => (
+                <Input
+                  {...field}
+                  type="text"
+                  placeholder="Nome do cliente"
+                  maxLength={15}
+                  $error={errors.clientName?.message}
+                />
+              )}
             />
 
             <Controller
@@ -149,6 +161,15 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
                 })}
             </ul>
 
+            <ErrorMessage>
+              {errors.items ? (
+                <CgCloseO color="#F63131" />
+              ) : (
+                <CgCloseO color="transparent" />
+              )}
+              {errors.items?.message}
+            </ErrorMessage>
+
             {orderDetails.length > 0 && (
               <div className="orderDetails">
                 <Line />
@@ -201,7 +222,12 @@ export default function OrderModal({ isOpen, onClose }: OrderModalProps) {
               </div>
             )}
 
-            <Button type="submit">Fazer Pedido</Button>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              isLoading={isLoading}
+            >
+              Fazer Pedido
+            </Button>
           </Container>
         </Modal>
       )}
