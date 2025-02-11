@@ -2,7 +2,7 @@ import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { ExpenseIcon } from '@renderer/assets/Icons/ExpenseIcon';
 import Loader from '@renderer/views/components/Loader';
 import { Card } from '../../components/Card';
-import ExpensesModal from './modals/ExpensesModal';
+import ExpensesModal from '../../components/ExpensesModal';
 import useExpenses from './useExpenses';
 
 export default function Expenses() {

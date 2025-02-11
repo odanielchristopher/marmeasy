@@ -1,14 +1,19 @@
+import { useCallback, useState } from 'react';
+
 import { Income } from '@renderer/app/entities/Income';
+
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+
 import { DashboardCategoryIcon } from '@renderer/assets/Icons/dashboard/DashboardCategoryIcon';
-import { SelectedCategory } from '..';
 import { Item } from '../../../components/Item';
+
+import { useIncomesByTypeQuery } from '@renderer/app/hooks/queries/useIncomesByTypeQuery';
+import IncomesModal from '../../../components/IncomesModal';
 import { SectionTitle } from '../styles';
 import { Container } from './styles';
 
 interface IncomesSectionProps {
   incomes: Income[];
-  onSelect?(category: SelectedCategory): void;
 }
 
 export const translateIncomeType = {
@@ -17,12 +22,43 @@ export const translateIncomeType = {
   CASH: 'Dinheiro',
 };
 
-export default function IncomesSection({
-  incomes,
-  onSelect,
-}: IncomesSectionProps) {
+export default function IncomesSection({ incomes }: IncomesSectionProps) {
+  const [isOpenIncomeModal, setIsOpenIncomeModal] = useState(false);
+  const [selectedIncomeType, setSelectedIncomeType] = useState<
+    string | undefined
+  >();
+
+  const handleOpenIncomeModal = useCallback((income: Income) => {
+    setSelectedIncomeType(income.type);
+    setIsOpenIncomeModal(true);
+  }, []);
+
+  const handleCloseIncomeModal = useCallback(() => {
+    setSelectedIncomeType(undefined);
+    setIsOpenIncomeModal(false);
+  }, []);
+
+  const { incomes: selectedTypeIncomes, isLoading } = useIncomesByTypeQuery(
+    isOpenIncomeModal,
+    selectedIncomeType,
+  );
+
   return (
     <Container>
+      {isOpenIncomeModal && (
+        <IncomesModal
+          title={
+            translateIncomeType[
+              selectedIncomeType as keyof typeof translateIncomeType
+            ]
+          }
+          isLoading={isLoading}
+          onClose={handleCloseIncomeModal}
+          incomesHistory={selectedTypeIncomes.history}
+          open
+        />
+      )}
+
       <SectionTitle>Categorias de entradas</SectionTitle>
 
       <div>
@@ -34,13 +70,7 @@ export default function IncomesSection({
             <Item.Root
               $hasAction
               key={income.id}
-              onClick={() =>
-                onSelect?.({
-                  icon,
-                  title,
-                  type: 'income',
-                })
-              }
+              onClick={() => handleOpenIncomeModal(income)}
             >
               <Item.Box $align="center">
                 <Item.Icon height={28}>

@@ -5,7 +5,7 @@ import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import { IncomeIcon } from '@renderer/assets/Icons/IncomeIcon';
 import Loader from '@renderer/views/components/Loader';
 
-import IncomesModal from './IncomesModal';
+import IncomesModal from '../../components/IncomesModal';
 
 import { Card } from '../../components/Card';
 

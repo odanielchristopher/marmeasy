@@ -9,3 +9,4 @@ export const ListPerDate = styled.div`
     margin-bottom: 3.2rem;
   }
 `;
+
