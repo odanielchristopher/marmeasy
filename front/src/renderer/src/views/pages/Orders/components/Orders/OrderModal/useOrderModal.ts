@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { OrderDetail } from '../../Items/NewItemModal/useNewItemModal';
+import { OrderDetail } from '../../Items/ItemForm/useItemForm';
 
 export const orderFormSchema = z.object({
   date: z.date(),
@@ -30,8 +30,9 @@ export const orderFormSchema = z.object({
 
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
-export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { //clientId também
-  const { handleSubmit:hookFormHandleSubmit } = useForm<OrderFormSchema>({
+export default function useOrderModal(isOpen: boolean, onSuccess: () => void) {
+  //clientId também
+  const { handleSubmit: hookFormHandleSubmit } = useForm<OrderFormSchema>({
     resolver: zodResolver(orderFormSchema),
   });
   const queryClient = useQueryClient();
@@ -74,30 +75,34 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
   function handleOpenIngredientModal(product: Product) {
     handleOpenModalIngredients(product);
     setIsOrderModalOpen(false);
-  };
+  }
 
   function handleCloseIngredientModal() {
     handleCloseModalIngredients();
     setIsOrderModalOpen(true);
-  };
+  }
 
   function handleOpenEditModal(index: number) {
     setEditIndex(index);
     setIsEditModalOpen(true);
-  };
+  }
 
   function handleOpenDeleteModal(index: number) {
     setEditIndex(index);
     setIsDeleteModalOpen(false);
-  };
+  }
 
   function handleConfimEdit(OrderDetailsUpdated: OrderDetail) {
-    {editIndex !== null && editOrderDetail(editIndex, OrderDetailsUpdated);}
+    {
+      editIndex !== null && editOrderDetail(editIndex, OrderDetailsUpdated);
+    }
     setIsEditModalOpen(false);
   }
 
   function handleConfirmDelete(index: number) {
-    {editIndex !== null && deleteOrderDetail(index);}
+    {
+      editIndex !== null && deleteOrderDetail(index);
+    }
     setIsDeleteModalOpen(false);
   }
 
@@ -108,30 +113,35 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) { 
 
   function editOrderDetail(index: number, OrderDetailsUpdated: OrderDetail) {
     setOrderDetails((prevDetails) => {
-      return prevDetails.map((detail, i) => (i === index ? OrderDetailsUpdated : detail));
+      return prevDetails.map((detail, i) =>
+        i === index ? OrderDetailsUpdated : detail,
+      );
     });
-  };
+  }
 
   function deleteOrderDetail(index: number) {
     setOrderDetails((prevDetails) => {
       return prevDetails.filter((_, i) => i !== index);
     });
-  };
+  }
 
   const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
-    mutationFn: async (data: CreateOrderParams) =>
-      ordersService.create(data),
+    mutationFn: async (data: CreateOrderParams) => ordersService.create(data),
     onSuccess: (newOrder: Order) => {
-      queryClient.setQueryData(
-        ['orders', 'getAll'],
-        (orders: Order[]) => [...orders, newOrder],
-      );
+      queryClient.setQueryData(['orders', 'getAll'], (orders: Order[]) => [
+        ...orders,
+        newOrder,
+      ]);
     },
   });
 
   const handleOrderSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await createOrder(data);
+      // Isso tem que ser mudado
+      await createOrder({
+        ...data,
+        clientId: '',
+      });
       toast({
         type: 'success',
         text: 'Pedido criado com sucesso.',

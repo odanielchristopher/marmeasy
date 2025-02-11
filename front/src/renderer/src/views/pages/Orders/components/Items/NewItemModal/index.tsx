@@ -11,7 +11,6 @@ import useNewItemModal from './useNewItemModal';
 
 import { Container } from './styles';
 
-
 interface NewItemModalProps {
   open: boolean;
   children?: React.ReactNode;
@@ -24,7 +23,6 @@ interface NewItemModalProps {
   hasIngredients: boolean;
 }
 
-
 export default function NewItemModal({
   open,
   answer,
@@ -34,9 +32,11 @@ export default function NewItemModal({
   onSubmit,
   hasIngredients,
 }: NewItemModalProps) {
-  const {
-    handleConfirmNewItem,
-  } = useNewItemModal({ product, onClose, onSubmit });
+  const { handleConfirmNewItem } = useNewItemModal({
+    product,
+    onClose,
+    onSubmit,
+  });
 
   return (
     <Modal open={open} title={title} onClose={onClose}>

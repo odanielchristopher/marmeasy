@@ -25,10 +25,12 @@ export default function DeleteItemModal({
   setOrderDetails,
   orderDetails,
 }: DeleteModalProps) {
-  const {
-    detailItem,
-    handleConfirmDelete,
-} = useDeleteModal({ index, onClose, setOrderDetails, orderDetails });
+  const { detailItem, handleConfirmDelete } = useDeleteModal({
+    index,
+    onClose,
+    setOrderDetails,
+    orderDetails,
+  });
 
   return (
     <Modal open={open} title={title} onClose={onClose}>
@@ -37,8 +39,11 @@ export default function DeleteItemModal({
         <strong>{detailItem.productName}</strong>
         <Button
           onClick={() => {
-          handleConfirmDelete();
-        }}>Deletar</Button>
+            handleConfirmDelete();
+          }}
+        >
+          Deletar
+        </Button>
       </Container>
     </Modal>
   );
