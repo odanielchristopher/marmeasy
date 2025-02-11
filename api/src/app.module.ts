@@ -14,6 +14,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { ExpensesModule } from './modules/expenses/expenses.module';
+import { MappersModule } from './shared/mappers/mappers.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { ExpensesModule } from './modules/expenses/expenses.module';
     PaymentsModule,
     DashboardModule,
     ExpensesModule,
+    MappersModule,
   ],
   controllers: [],
   providers: [
