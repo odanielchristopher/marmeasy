@@ -7,8 +7,12 @@ export type GetIncomesResponse = {
   history: History<Income>;
 };
 
-export async function getAll() {
-  const { data } = await httpClient.get<GetIncomesResponse>('/dashboard/incomes');
+export async function getAll(type?: string) {
+  const { data } = await httpClient.get<GetIncomesResponse>('/dashboard/incomes', {
+    params: {
+      type,
+    },
+  });
 
   return data;
 }

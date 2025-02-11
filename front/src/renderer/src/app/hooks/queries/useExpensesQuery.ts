@@ -2,10 +2,10 @@ import { expensesService } from '@renderer/app/services/dashboard/expensesServic
 
 import { useQuery } from '@tanstack/react-query';
 
-export function useExpensesQuery() {
+export function useExpensesQuery(type?: string) {
   const { data, isFetching } = useQuery({
     queryKey: ['dashboard', 'expenses', 'getAll'],
-    queryFn: async () => expensesService.getAll(),
+    queryFn: async () => expensesService.getAll(type),
   });
 
   return {

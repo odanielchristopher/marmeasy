@@ -7,8 +7,12 @@ export type GetExpensesResponse = {
   history: History<Expense>;
 };
 
-export async function getAll() {
-  const { data } = await httpClient.get<GetExpensesResponse>('/dashboard/expenses');
+export async function getAll(type?: string) {
+  const { data } = await httpClient.get<GetExpensesResponse>('/dashboard/expenses', {
+    params: {
+      type,
+    },
+  });
 
   return data;
 }
