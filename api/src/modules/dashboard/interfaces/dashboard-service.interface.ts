@@ -16,6 +16,7 @@ export interface IDashboardService {
   getIncomes(
     userId: string,
     dateRangeDto: DateRangeDto,
+    type: string,
   ): Promise<IHistoryResponse<Income>>;
 
   getExpenses(

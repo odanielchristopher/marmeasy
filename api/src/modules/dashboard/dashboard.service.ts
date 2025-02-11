@@ -9,6 +9,7 @@ import { IIncomesRepository } from 'src/shared/database/interfaces/incomes-repos
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { Expense } from '../expenses/entities/expense.entity';
+import { PaymentType } from '../payments/entities/payment.entity';
 import { FavoriteIngredient } from './entities/favorite.entity';
 import { Income } from './entities/income.entity';
 import { Sale } from './entities/sale.entity';
@@ -39,10 +40,12 @@ export class DashboardService implements IDashboardService {
   async getIncomes(
     userId: string,
     dateRange: DateRangeDto,
+    type: string,
   ): Promise<IHistoryResponse<Income>> {
     const incomes = await this.incomesRepository.findManyInGroupByUserId({
       userId,
       dateRange,
+      type: PaymentType[type],
     });
 
     return this.formatHistoryResponse({ data: incomes });
@@ -76,7 +79,7 @@ export class DashboardService implements IDashboardService {
       dateRange,
     });
 
-    const incomes = await this.incomesRepository.findManyByCategory({
+    const incomes = await this.incomesRepository.findManyInGroupByCategory({
       userId,
       dateRange,
     });
