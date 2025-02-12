@@ -12,13 +12,21 @@ export default function useOrders() {
     from: undefined,
   });
 
+  const [selectedPeriod, setSelectedPeriod] = useState<{
+    from?: string;
+    to?: string;
+  }>();
+
   const {
     orders: normalOrders,
     isLoading: isOrdersLoading,
     nextPage: nextNormalPage,
     hasNextPage: hasNextNormalPage,
     isFetchingNextPage: isFetchingNextNormalPage,
-  } = useOrdersQuery(20);
+  } = useOrdersQuery({
+    from: selectedPeriod?.from,
+    to: selectedPeriod?.to,
+  });
 
   const {
     findedOrders: searchedOrders,
@@ -71,6 +79,19 @@ export default function useOrders() {
 
   const handleSelectedDateRange = useCallback((date: DateRange) => {
     setSelectedDateRange(date);
+
+    if (date.from && !date.to) {
+      setSelectedPeriod({
+        from: date.from?.toISOString(),
+        to: date.from?.toISOString(),
+      });
+      return;
+    }
+
+    setSelectedPeriod({
+      from: date.from?.toISOString(),
+      to: date.to?.toISOString(),
+    });
   }, []);
 
   return {
