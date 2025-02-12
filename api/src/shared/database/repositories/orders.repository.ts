@@ -12,17 +12,21 @@ import {
   FindFavoriteIngredientsDto,
   FindFirstOrderByClientIdDto,
   FindManyByClientIdDto,
+  FindManyBySeachTermDto,
+  FindManyByUserIdDto,
   FindManySaleDto,
   FindUniqueOrderByIdDto,
   IOrdersRepository,
   UpdateOrderParams,
 } from '../interfaces/orders-repository.interface';
 
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { PrismaFavoriteResponse } from 'src/shared/mappers/classes/favorite-ingredient.mapper';
 import { PrismaOrderResponse } from 'src/shared/mappers/classes/order.mapper';
 import { PrismaSaleResponse } from 'src/shared/mappers/classes/sale.mapper';
 import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
 import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IPaginatedResponse } from 'src/shared/types';
 
 const prismaResponse = {
   id: true,
@@ -52,6 +56,43 @@ export class OrdersRepository implements IOrdersRepository {
     @Inject(IDataMappersFactory)
     private readonly dataMappersFactory: IDataMappersFactory,
   ) {}
+
+  async findManyBySearchTerm(
+    findManyBySearchDto: FindManyBySeachTermDto,
+  ): Promise<IPaginatedResponse<Order[]>> {
+    const { userId, query, dateRange, page, perPage } = findManyBySearchDto;
+
+    const { from, to } = this.parseDateRange(dateRange);
+
+    const findedOrders = await this.prismaService.order.findMany({
+      skip: page || 0,
+      take: perPage || 10,
+      where: {
+        userId,
+        date: {
+          gte: from,
+          lte: to,
+        },
+        client: {
+          active: true,
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          },
+        },
+      },
+      select: prismaResponse,
+    });
+
+    const totalItems = await this.prismaService.order.count({
+      where: { userId },
+    });
+
+    return {
+      items: totalItems,
+      data: findedOrders.map((order) => this.parser(order)),
+    };
+  }
 
   async findFavoriteIngredients(
     findFavoritesDto: FindFavoriteIngredientsDto,
@@ -119,27 +160,34 @@ export class OrdersRepository implements IOrdersRepository {
     return findendOrders.map((order) => this.parser(order));
   }
 
-  async findAllByDateRange(
-    userId: string,
-    startDate: string,
-    endDate: string,
-    perPage?: number,
-    page?: number,
-  ): Promise<Order[]> {
+  async findManyByUserId(
+    findAllByDateRangeDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Order[]>> {
+    const { userId, perPage, page, dateRange } = findAllByDateRangeDto;
+
+    const { from, to } = this.parseDateRange(dateRange);
+
     const findedOrders = await this.prismaService.order.findMany({
       skip: page || 0,
       take: perPage || 10,
       where: {
         userId,
         date: {
-          gte: startDate,
-          lte: endDate,
+          gte: from,
+          lte: to,
         },
       },
       select: prismaResponse,
     });
 
-    return findedOrders.map((order) => this.parser(order));
+    const totalItems = await this.prismaService.order.count({
+      where: { userId },
+    });
+
+    return {
+      items: totalItems,
+      data: findedOrders.map((order) => this.parser(order)),
+    };
   }
 
   async findFirstByClientId(
@@ -225,6 +273,19 @@ export class OrdersRepository implements IOrdersRepository {
       where: { id, userId },
       include: { items: true },
     });
+  }
+
+  private parseDateRange(dateRange?: DateRangeDto) {
+    const from = dateRange?.from && dateRange.fromDate;
+    const to = dateRange?.to && dateRange.toDate;
+
+    from?.setHours(0, 0, 0, 0);
+    to?.setHours(23, 59, 59, 999);
+
+    return {
+      from,
+      to,
+    };
   }
 
   private parser(prismaOrder: PrismaOrderResponse) {

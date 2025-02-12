@@ -13,7 +13,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
-import { SearchTermDto } from 'src/shared/dto/search-term.dto';
+import { makeSearchTermDto } from 'src/shared/factories/search-term-dto.factory';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { IClientsService } from './interfaces/clients-service.interface';
@@ -31,11 +31,9 @@ export class ClientsController {
     @Query('perPage') perPage: number,
     @Query('query') searchTerm: string,
   ) {
-    const searchTermDto = new SearchTermDto(searchTerm);
-
     return this.clientsService.findAllBySearchTerm(
       userId,
-      searchTermDto,
+      makeSearchTermDto(searchTerm),
       page,
       perPage,
     );

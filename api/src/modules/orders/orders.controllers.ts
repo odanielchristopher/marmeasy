@@ -11,10 +11,11 @@ import {
   Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { makeDateRangeDto } from 'src/shared/factories/date-range-dto.factory';
+import { makeSearchTermDto } from 'src/shared/factories/search-term-dto.factory';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { IOrdersService } from './interfaces/orders-service.interface';
-import { DateRangeDto } from './dto/date-range-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -22,16 +23,42 @@ export class OrdersController {
     @Inject(IOrdersService) private readonly ordersService: IOrdersService,
   ) {}
 
-  @Get('/date')
-  findAllByDate(
+  @Get('/search')
+  findAllBySearchTerm(
     @ActiveUserId() userId: string,
-    @Query() dateRangeDto: DateRangeDto,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Query('query') searchTerm: string,
   ) {
-    return this.ordersService.findAllByDateRange(userId, dateRangeDto);
+    return this.ordersService.findAllBySearchTerm({
+      userId,
+      page,
+      perPage,
+      dateRange: this.makeDateRange({ from, to }),
+      searchTerm: makeSearchTermDto(searchTerm),
+    });
+  }
+
+  @Get()
+  findAll(
+    @ActiveUserId() userId: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+  ) {
+    return this.ordersService.findAllUserId({
+      userId,
+      page,
+      perPage,
+      dateRange: this.makeDateRange({ from, to }),
+    });
   }
 
   @Get(':clientId')
-  findAll(
+  findAlByClient(
     @ActiveUserId() userId: string,
     @Param('clientId', ParseUUIDPipe) clientId: string,
   ) {
@@ -61,5 +88,9 @@ export class OrdersController {
     @Param('orderId', ParseUUIDPipe) orderId: string,
   ) {
     return this.ordersService.delete(userId, orderId);
+  }
+
+  private makeDateRange({ from, to }: { from: string; to: string }) {
+    return from && to && makeDateRangeDto({ from, to });
   }
 }
