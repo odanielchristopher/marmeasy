@@ -19,7 +19,7 @@ export const Main = styled.div`
   overflow-y: auto;
   max-height: 100vh;
   width: 100%;
-  margin-left: 2.4rem;
+  padding-left: 2.4rem;
   padding-block: 2.4rem;
   &::-webkit-scrollbar {
     display: none;

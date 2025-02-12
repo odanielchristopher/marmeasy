@@ -4,9 +4,13 @@ export const IPaymentsRepository = Symbol('IPaymentsRepository');
 
 export interface IPaymentsRepository {
   findManyByClientId(findManyDto: FindManyPaymentsByIdDto): Promise<Payment[]>;
+
   findFirstByUserId(findFirstByIdDto: FindFirstPaymentDto): Promise<Payment>;
+
   create(createPaymentDto: CreatePaymentDto): Promise<Payment>;
+
   update(updatePaymentDto: UpdatePaymentDto): Promise<Payment>;
+
   delete(deletePaymentDto: DeletePaymentDto): Promise<void>;
 }
 

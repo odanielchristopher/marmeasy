@@ -1,5 +1,4 @@
 import { BadRequestException } from '@nestjs/common';
-import { Client as PrismaClient } from '@prisma/client';
 import { Transform } from 'class-transformer';
 import {
   IsEnum,
@@ -58,23 +57,4 @@ export class Client {
   balance: number;
 
   active?: boolean;
-
-  static parse(persistenteEntity: PrismaClient | null): Client {
-    if (!persistenteEntity) {
-      return null;
-    }
-
-    const { id, name, type, address, balance, document, phone } =
-      persistenteEntity;
-
-    return {
-      id,
-      name,
-      balance,
-      phone: phone ?? undefined,
-      document: document ?? undefined,
-      address: address ?? undefined,
-      type: ClientType[type],
-    };
-  }
 }

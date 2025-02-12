@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { DateRange } from 'react-day-picker';
 
 export function formatDateRange(date: DateRange) {
@@ -5,17 +7,10 @@ export function formatDateRange(date: DateRange) {
     return '';
   }
 
-  const dateFrom = date.from && new Date(date.from);
-  const dateTo = date.to && new Date(date.to);
+  const formatDate = (d: Date) => format(d, 'dd MMM, yyyy', { locale: ptBR });
 
-  const formatter = new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric',
-  });
-
-  const formattedDateFrom = formatter.format(dateFrom);
-  const formattedDateTo = formatter.format(dateTo);
+  const formattedDateFrom = date.from ? formatDate(new Date(date.from)) : '';
+  const formattedDateTo = date.to ? formatDate(new Date(date.to)) : '';
 
   if (!date.to) {
     return `${formattedDateFrom} -`;

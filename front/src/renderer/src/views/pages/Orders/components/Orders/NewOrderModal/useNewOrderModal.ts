@@ -29,7 +29,6 @@ export const orderFormSchema = z.object({
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
 export default function useOrderModal(isOpen: boolean) {
-
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
   const { products } = useProductsQuery();
@@ -75,21 +74,23 @@ export default function useOrderModal(isOpen: boolean) {
     setIsItemModalOpen(true);
     setIsDeleteItemModalOpen(false);
     setIsOrderModalOpen(false);
-  };
+  }
 
   function handleCloseItemModal() {
     setIsItemModalOpen(false);
     setIsOrderModalOpen(true);
-  };
+  }
 
   // actions item modals
   function handleOpenEditItemModal(index: number) {
     setIndex(index);
-    const productToEdit = products.find((p) => p.name === orderDetails[index].productName);
+    const productToEdit = products.find(
+      (p) => p.name === orderDetails[index].productName,
+    );
     setProduct(productToEdit ?? null);
     setIsEditItemModalOpen(true);
     setIsOrderModalOpen(false);
-  };
+  }
 
   function handleCloseEditItemModal() {
     setIsEditItemModalOpen(false);
@@ -100,7 +101,7 @@ export default function useOrderModal(isOpen: boolean) {
     setIndex(index);
     setIsDeleteItemModalOpen(true);
     setIsOrderModalOpen(false);
-  };
+  }
 
   function handleCloseDeleteItemModal() {
     setIsDeleteItemModalOpen(false);

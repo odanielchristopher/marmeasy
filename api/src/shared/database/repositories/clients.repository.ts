@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { Client as PrismaClient } from '@prisma/client';
+
 import { Client } from 'src/modules/clients/entities/client.entity';
+import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
+import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
 import { IPaginatedResponse } from 'src/shared/types';
 import {
   CreateClientDto,
@@ -15,7 +19,11 @@ import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class ClientsRepository implements IClientsRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(IDataMappersFactory)
+    private readonly dataMappersFactory: IDataMappersFactory,
+  ) {}
 
   async findManyBySearchTerm(
     findManyBySearchTermDto: FindManyBySearchTermDto,
@@ -53,7 +61,7 @@ export class ClientsRepository implements IClientsRepository {
     });
 
     return {
-      data: clients.map(Client.parse),
+      data: clients.map((client) => this.parser(client)),
       items: totalItems,
     };
   }
@@ -79,7 +87,7 @@ export class ClientsRepository implements IClientsRepository {
     });
 
     return {
-      data: clients.map(Client.parse),
+      data: clients.map((client) => this.parser(client)),
       items: totalItems,
     };
   }
@@ -93,7 +101,7 @@ export class ClientsRepository implements IClientsRepository {
       where: { userId, id },
     });
 
-    return Client.parse(client);
+    return this.parser(client);
   }
 
   async findFirstByDocument(
@@ -105,7 +113,7 @@ export class ClientsRepository implements IClientsRepository {
       where: { userId, document },
     });
 
-    return Client.parse(client);
+    return this.parser(client);
   }
 
   async create(createDto: CreateClientDto): Promise<Client> {
@@ -118,7 +126,7 @@ export class ClientsRepository implements IClientsRepository {
       },
     });
 
-    return Client.parse(createdClient);
+    return this.parser(createdClient);
   }
 
   async update(updateDto: UpdateClientDto): Promise<Client> {
@@ -132,7 +140,7 @@ export class ClientsRepository implements IClientsRepository {
       },
     });
 
-    return Client.parse(updatedClient);
+    return this.parser(updatedClient);
   }
 
   async delete(deleteDto: DeleteClientDto): Promise<void> {
@@ -144,5 +152,11 @@ export class ClientsRepository implements IClientsRepository {
         active: false,
       },
     });
+  }
+
+  private parser(prismaClient: PrismaClient): Client {
+    return this.dataMappersFactory
+      .getInstance<PrismaClient, Client>(DataMapperType.CLIENT)
+      .toDomain(prismaClient);
   }
 }

@@ -8,11 +8,13 @@ import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { Product } from '@renderer/app/entities/Product';
 
 export const OrderDetailSchema = z.object({
-  selectedIngredients: z.array(z.object({
-    id: z.string(),
-    name: z.string(),
-    icon: z.string(),
-  })),
+  selectedIngredients: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      icon: z.string(),
+    }),
+  ),
   quantity: z.number().min(1, 'A quantidade deve ser maior que 0'),
   productName: z.string(),
   productImage: z.string(),
@@ -22,11 +24,23 @@ export const OrderDetailSchema = z.object({
 
 export type OrderDetail = z.infer<typeof OrderDetailSchema>;
 
-export default function useItemForm(initialOrder: OrderDetail | undefined, product: Product, onSubmit: (details: OrderDetail) => void, onClose: () => void) {
-  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(initialOrder?.selectedIngredients || []);
+export default function useItemForm(
+  initialOrder: OrderDetail | undefined,
+  product: Product,
+  onSubmit: (details: OrderDetail) => void,
+  onClose: () => void,
+) {
+  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>(
+    initialOrder?.selectedIngredients || [],
+  );
   const [quantity, setQuantity] = useState(initialOrder?.quantity || 1);
 
-  const { handleSubmit, formState: { errors }, setValue, trigger } = useForm<OrderDetail>({
+  const {
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    trigger,
+  } = useForm<OrderDetail>({
     resolver: zodResolver(OrderDetailSchema),
     defaultValues: {
       selectedIngredients: initialOrder?.selectedIngredients || [],
@@ -38,9 +52,10 @@ export default function useItemForm(initialOrder: OrderDetail | undefined, produ
     },
   });
 
-
   const handleCheckboxChange = (ingredient: Ingredient) => {
-    const isSelected = selectedIngredients.some((ing) => ing.id === ingredient.id);
+    const isSelected = selectedIngredients.some(
+      (ing) => ing.id === ingredient.id,
+    );
     const newSelectedIngredients = isSelected
       ? selectedIngredients.filter((ing) => ing.id !== ingredient.id)
       : [...selectedIngredients, ingredient];
@@ -79,4 +94,3 @@ export default function useItemForm(initialOrder: OrderDetail | undefined, produ
     errors,
   };
 }
-

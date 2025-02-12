@@ -1,24 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IOrderItemsService } from 'src/modules/order-items/interfaces/order-items-service.interface';
+import { IValidateClientOwnershipService } from 'src/modules/clients/interfaces/validate-client-ownership-service.interface';
 import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { DateRangeDto } from '../dto/date-range-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { IOrdersService } from '../interfaces/orders-service.interface';
 import { IValidateOrderOwnershipService } from '../interfaces/validate-order-ownership-service.interface';
-import { DateRangeDto } from '../dto/date-range-order.dto';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
   constructor(
     @Inject(IOrdersRepository)
     private readonly ordersRepository: IOrdersRepository,
-    @Inject(IOrderItemsService)
-    private readonly orderItemsService: IOrderItemsService,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     @Inject(IValidateOrderOwnershipService)
     private readonly validateOrderOwnershipService: IValidateOrderOwnershipService,
+    @Inject(IValidateClientOwnershipService)
+    private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
   async findAllByClientId(userId: string, clientId: string) {
@@ -34,22 +34,20 @@ export class OrdersService implements IOrdersService {
 
     const { startDate, endDate, limit, offset } = dateRangeDto;
 
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-
     return this.ordersRepository.findAllByDateRange(
       userId,
-      start,
-      end,
+      startDate,
+      endDate,
       limit,
       offset,
     );
   }
 
   async create(userId: string, createOrderDto: CreateOrderDto) {
-    await this.validateUserOwnershipService.validate(userId);
-
     const { clientId, items, discount, date } = createOrderDto;
+
+    await this.validateUserOwnershipService.validate(userId);
+    await this.validateClientOwnershipService.validate(userId, clientId);
 
     const totalValue =
       items.reduce((acc, item) => acc + item.total, 0) - (discount ?? 0);
@@ -73,12 +71,13 @@ export class OrdersService implements IOrdersService {
     orderId: string,
     updateOrderDto: UpdateOrderDto,
   ) {
+    const { discount, items, date, clientId } = updateOrderDto;
+
     const existingOrder = await this.validateOrderOwnershipService.validate(
       userId,
       orderId,
     );
-
-    const { discount, items, date, clientId } = updateOrderDto;
+    await this.validateClientOwnershipService.validate(userId, clientId);
 
     const currentItemsTotal = existingOrder.items.reduce(
       (acc, item) => acc + item.total,
