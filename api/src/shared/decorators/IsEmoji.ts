@@ -17,7 +17,7 @@ export function IsEmoji(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any) {
-          return typeof value === 'string' && emojiRegex.test(value); // Verifica se o valor é uma string e contém um emoji.
+          return typeof value === 'string' && emojiRegex.test(value); // Verifica se o valor é uma string e é um emoji.
         },
         defaultMessage(args: ValidationArguments) {
           return `${args.property} deve ser um emoji válido.`;

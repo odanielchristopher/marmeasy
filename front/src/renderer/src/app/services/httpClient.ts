@@ -13,6 +13,23 @@ httpClient.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
+  if (config.url?.startsWith('/dashboard/')) {
+    const storageDateRange = localStorage.getItem(
+      localStorageKeys.DASHBOARD_DATE_RANGE,
+    );
+    if (storageDateRange) {
+      const { from, to } = JSON.parse(storageDateRange);
+
+      if (from && to) {
+        config.params = {
+          ...config.params, // Mantém os query params existentes
+          from,
+          to,
+        };
+      }
+    }
+  }
+
   return config;
 });
 

@@ -65,7 +65,7 @@ export default function useClient() {
   }
 
   const isLoading = isSearchLoading || isClientsLoading;
-  const isSearchEmpty = clientsToRender.length < 1 && isLoading;
+  const isSearchEmpty = clientsToRender.length < 1 && !isLoading;
   const hasClient = clientsToRender.length > 0;
 
   return {

@@ -20,6 +20,7 @@ model User {
   orders            Order[]
   orderItems        OrderItem[]
   payments          Payment[]
+  expenses          Expense[]
 
   @@map("users")
 }
@@ -144,4 +145,27 @@ enum PaymentType {
   CREDIT_CARD
   DEBIT_CARD
   CASH
+}
+
+model Expense {
+  id     String       @id @default(uuid()) @db.Uuid
+  userId String       @map("user_id") @db.Uuid
+  type   ExpenseType? @default(OTHERS)
+  date   DateTime     @default(now())
+  value  Float
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("expenses")
+}
+
+enum ExpenseType {
+  TAXES
+  DELIVERY
+  EQUIPMENTS
+  EMPLOYEES
+  UTENSILS
+  MEATS
+  GARRISONS
+  OTHERS
 }

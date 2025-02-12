@@ -1,5 +1,7 @@
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
+import { DashboardProvider } from '@renderer/app/contexts/DashboardContext';
+
 import { AuthLayout } from '@renderer/views/layouts/AuthLayout';
 import PageLayout from '@renderer/views/layouts/PageLayout';
 import Clients from '@renderer/views/pages/Clients';
@@ -26,8 +28,16 @@ export default function AppRoutes() {
           <Route element={<PageLayout />}>
             <Route path="/menu" element={<Menu />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/" element={<Clients />} />
+
+            <Route
+              path="/dashboard"
+              element={
+                <DashboardProvider>
+                  <Dashboard />
+                </DashboardProvider>
+              }
+            />
           </Route>
         </Route>
       </Routes>

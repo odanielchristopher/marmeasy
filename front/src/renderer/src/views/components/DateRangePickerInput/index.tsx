@@ -15,6 +15,7 @@ export interface DateRangePickerInputProps {
 export default function DateRangePickerInput({
   value,
   $error,
+  placeholder,
   onChange,
 }: DateRangePickerInputProps) {
   return (
@@ -28,7 +29,8 @@ export default function DateRangePickerInput({
               {formatDateRange({
                 from: value.from,
                 to: value.to,
-              }) || 'Escolha um período'}
+              }) ||
+                (placeholder ?? 'Escolha um período')}
             </StyledDate>
           </StyledButton>
         </Popover.Trigger>

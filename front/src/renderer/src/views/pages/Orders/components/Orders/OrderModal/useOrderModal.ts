@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { OrderDetail } from '../../Items/NewItemModal/useNewItemModal';
+import { OrderDetail } from '../../Items/ItemForm/useItemForm';
 
 export const orderFormSchema = z.object({
   date: z.date(),
@@ -137,7 +137,11 @@ export default function useOrderModal(isOpen: boolean, onSuccess: () => void) {
 
   const handleOrderSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      await createOrder(data);
+      // Isso tem que ser mudado
+      await createOrder({
+        ...data,
+        clientId: '',
+      });
       toast({
         type: 'success',
         text: 'Pedido criado com sucesso.',
