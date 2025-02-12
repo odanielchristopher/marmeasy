@@ -64,8 +64,10 @@ export class OrdersRepository implements IOrdersRepository {
 
     const { from, to } = this.parseDateRange(dateRange);
 
+    const skip = (page - 1) * perPage;
+
     const findedOrders = await this.prismaService.order.findMany({
-      skip: page || 0,
+      skip,
       take: perPage || 10,
       where: {
         userId,
@@ -167,8 +169,10 @@ export class OrdersRepository implements IOrdersRepository {
 
     const { from, to } = this.parseDateRange(dateRange);
 
+    const skip = (page - 1) * perPage;
+
     const findedOrders = await this.prismaService.order.findMany({
-      skip: page || 0,
+      skip,
       take: perPage || 10,
       where: {
         userId,
