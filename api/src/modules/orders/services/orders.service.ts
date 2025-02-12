@@ -28,8 +28,8 @@ export class OrdersService implements IOrdersService {
 
   async findAllBySearchTerm({
     userId,
-    page = 0,
-    perPage = 20,
+    page,
+    perPage,
     dateRange,
     searchTerm,
   }: FindAllBySearchTermDto): Promise<IPaginatedResponse<Order[]>> {
@@ -38,16 +38,16 @@ export class OrdersService implements IOrdersService {
     return this.ordersRepository.findManyBySearchTerm({
       userId,
       dateRange,
-      page,
-      perPage,
+      page: page || 1,
+      perPage: perPage || 20,
       query: searchTerm.query,
     });
   }
 
   async findAllUserId({
     userId,
-    page = 0,
-    perPage = 20,
+    page,
+    perPage,
     dateRange,
   }: FindAllByUserIdDto) {
     await this.validateUserOwnershipService.validate(userId);
@@ -55,8 +55,8 @@ export class OrdersService implements IOrdersService {
     return this.ordersRepository.findManyByUserId({
       userId,
       dateRange,
-      page,
-      perPage,
+      page: page || 1,
+      perPage: perPage || 20,
     });
   }
 

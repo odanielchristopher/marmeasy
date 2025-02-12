@@ -73,7 +73,7 @@ export class OrdersController {
     return this.ordersService.create(userId, createOrderDto);
   }
 
-  @Put('/:orderId')
+  @Put(':orderId')
   update(
     @ActiveUserId() userId: string,
     @Param('orderId', ParseUUIDPipe) orderId: string,
