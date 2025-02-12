@@ -22,21 +22,21 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory[] | null> {
     const { userId, order } = findManyDto;
 
-    const productCategories = await this.prismaService.productCategory.findMany(
-      {
-        where: { userId },
-        orderBy: {
-          name: order,
-        },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-        },
-      },
-    );
+    // Garante que order só tenha valores permitidos
+    const validOrder = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
-    return productCategories;
+    const query = `
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = $1::uuid
+      ORDER BY name ${validOrder}
+    `;
+
+    const productCategories = await this.prismaService.$queryRawUnsafe<
+      ProductCategory[]
+    >(query, userId);
+
+    return productCategories.length > 0 ? productCategories : null;
   }
 
   async findFirstByUserId(
