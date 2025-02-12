@@ -4,26 +4,24 @@ import Fab from '@renderer/views/components/Fab';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
-import ClientList from './components/OrdersList';
-
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
 import Loader from '@renderer/views/components/Loader';
 import SearchInput from '@renderer/views/components/SearchInput';
-import useClients from './useClients';
+import OrdersList from './components/OrdersList';
+import useOrders from './useOrders';
 
-export default function Clients() {
+export default function Orders() {
   const {
-    handleDeleteClient,
-    hasClient,
+    hasOrders,
     selectedDateRange,
     handleSelectedDateRange,
     isLoading,
     isSearchEmpty,
-    filteredClients,
     handleChangeSearchTerm,
     searchTerm,
-  } = useClients();
+    ordersToRender,
+  } = useOrders();
 
   return (
     <Container>
@@ -54,11 +52,8 @@ export default function Clients() {
 
       {!isLoading && (
         <Content>
-          {hasClient && (
-            <ClientList
-              onDeleteClient={handleDeleteClient}
-              clients={filteredClients}
-            />
+          {hasOrders && (
+            <OrdersList orders={ordersToRender}/>
           )}
 
           {isSearchEmpty && (
