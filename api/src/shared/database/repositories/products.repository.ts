@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { Product } from 'src/modules/products/entities/product.entity';
 import {
   CreateProductOnDBDto,
@@ -44,29 +45,31 @@ export class ProductsRepository implements IProductsRepository {
       order,
     } = findManyByUserIdDto;
 
-    const filters = {
-      userId,
-      ...(categoryName && { category: { name: categoryName } }), // Se tiver uma categoryName entao é adicionado nos filtros
-    };
+    const query = this.prismaService.$queryRaw<Product[]>`
+        SELECT p.id, p.name, p.price, p.product_category_id AS "categoryId"
+        FROM products p
+        ${categoryName ? Prisma.sql`JOIN product_categories c ON p.product_category_id = c.id` : Prisma.sql``}
+        WHERE p.user_id = ${userId}::uuid
+        ${categoryName ? Prisma.sql`AND c.name = ${categoryName}` : Prisma.sql``}
+        ORDER BY p.name ${Prisma.raw(order)};
+    `;
 
-    return this.prismaService.product.findMany({
-      where: filters,
-      select: prismaResponse,
-      orderBy: {
-        name: order,
-      },
-    });
+    return query;
   }
 
   async findFirstByUserId(
     findFirstDto: FindFirstProductByUserIdDto,
-  ): Promise<Product> {
+  ): Promise<Product | null> {
     const { userId, id } = findFirstDto;
 
-    return this.prismaService.product.findFirst({
-      where: { userId, id },
-      select: prismaResponse,
-    });
+    const [product] = await this.prismaService.$queryRaw<Product[]>`
+      SELECT id, name, price, product_category_id AS "categoryId"
+      FROM products
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1;
+    `;
+
+    return product || null;
   }
 
   async create(createDto: CreateProductOnDBDto): Promise<Product> {
