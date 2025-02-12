@@ -44,17 +44,14 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory | null> {
     const { userId, id } = findFirstByIdDto;
 
-    const findedProductCategory =
-      await this.prismaService.productCategory.findFirst({
-        where: { userId, id },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-        },
-      });
+    const result = await this.prismaService.$queryRaw<ProductCategory[]>`
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1
+    `;
 
-    return findedProductCategory;
+    return result.length > 0 ? result[0] : null;
   }
 
   async findFirstByName(
