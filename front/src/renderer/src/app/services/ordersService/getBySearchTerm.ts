@@ -6,12 +6,14 @@ export interface GetBySearchTermParams {
   page?: number;
   perPage?: number;
   searchTerm: string;
+  dateRange?: { from?: string; to?: string; }
 }
 
 export async function getBySearchTerm({
   page = 1,
   perPage = 20,
   searchTerm,
+  dateRange,
 }: GetBySearchTermParams) {
   const { data } = await httpClient.get<PaginatedResponse<Order[]>>(
     '/orders/search',
@@ -20,6 +22,8 @@ export async function getBySearchTerm({
         page,
         perPage,
         query: searchTerm,
+        from: dateRange?.from,
+        to: dateRange?.to,
       },
     },
   );

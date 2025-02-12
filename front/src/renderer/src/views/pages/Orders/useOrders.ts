@@ -34,7 +34,7 @@ export default function useOrders() {
     nextPage: nextSearchPage,
     hasNextPage: hasNextSearchPage,
     isFetchingNextPage: isFetchingNextSearchPage,
-  } = useSearchOrdersQuery(debouncedValue, 20);
+  } = useSearchOrdersQuery(debouncedValue, 20, selectedPeriod);
 
   const ordersToRender = debouncedValue ? searchedOrders : normalOrders;
 
