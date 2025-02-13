@@ -164,9 +164,6 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
       return;
     }
 
-    const clientId = client.id;
-    console.log({ clientId });
-
     const orderData = {
       ...data,
       clientId: client.id,
