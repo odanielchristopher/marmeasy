@@ -9,38 +9,25 @@ interface OrdersListProps {
 }
 
 const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
-  const { clientNameById } = useOrdersList();
+  const { clientNameById, clientTypeById, handleOrderClick, selectedOrderId } = useOrdersList();
 
   return (
     <>
       {orders.map((order) => {
-        // Calcular a soma das quantidades de itens
         const totalQuantity = order.items.reduce((sum, item) => sum + item.quantity, 0);
-
         return (
-          <Container key={order.id}>
+          <Container key={order.id} onClick={() => handleOrderClick(order.id)} className={selectedOrderId === order.id ? 'selected' : ''}>
             <div className="left">
-              <h3>{clientNameById(order.clientId)}</h3>
-              <p>Qtd: {totalQuantity}</p>
-              {order.items.map((item) => (
-                <div key={item.id}>
-                  {/* Renderizar detalhes do item, se necessário */}
-                </div>
-              ))}
+              <div className="clientsInfo">
+                <strong>{clientNameById(order.clientId)}</strong>
+                {clientTypeById(order.clientId) && <span>{clientTypeById(order.clientId)}</span>}
+              </div>
+              <span>Quantidade: {totalQuantity}</span>
             </div>
             <div className="right">
-              <p>{new Date(order.date).toLocaleDateString()}</p>
-              <p>{formatCurrency(order.totalValue)}</p>
+              <span>{new Date(order.date).toLocaleDateString()}</span>
+              <span>R$: {formatCurrency(order.totalValue)}</span>
             </div>
-
-            {/* <p>Desconto: {formatCurrency(order.discount)}</p> */}
-            {/* //! isso vai para o aside <ul>
-              {order.items.map((item) => (
-                <li key={item.name}>
-                  {item.quantity}x {item.name} - {formatCurrency(item.total)}
-                </li>
-              ))}
-            </ul> */}
           </Container>
         );
       })}

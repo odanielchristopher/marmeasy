@@ -4,6 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function useOrdersList() {
   const [clientsList, setClientsList] = useState<Client[]>([]);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
+  const handleOrderClick = (orderId: string) => {
+    setSelectedOrderId(orderId);
+  };
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -23,7 +28,15 @@ export default function useOrdersList() {
     return client ? client.name : undefined;
   }, [clientsList]);
 
+  const clientTypeById = useCallback((clientId: string) => {
+    const client = clientsList.find((client) => client.id === clientId);
+    return client ? client.type : undefined;
+  }, [clientsList]);
+
   return useMemo(() => ({
     clientNameById,
-  }), [clientNameById]);
+    clientTypeById,
+    handleOrderClick,
+    selectedOrderId,
+  }), [clientNameById, selectedOrderId]);
 }
