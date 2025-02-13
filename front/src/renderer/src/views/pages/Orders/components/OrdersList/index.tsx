@@ -9,7 +9,7 @@ interface OrdersListProps {
 }
 
 const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
-  const { clientNameById, clientTypeById, handleOrderClick, selectedOrderId } = useOrdersList();
+  const { findClient, handleOrderClick, selectedOrderId } = useOrdersList();
 
   return (
     <>
@@ -19,8 +19,8 @@ const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
           <Container key={order.id} onClick={() => handleOrderClick(order.id)} className={selectedOrderId === order.id ? 'selected' : ''}>
             <div className="left">
               <div className="clientsInfo">
-                <strong>{clientNameById(order.clientId)}</strong>
-                {clientTypeById(order.clientId) && <span>{clientTypeById(order.clientId)}</span>}
+                <strong>{findClient(order.clientId)?.name}</strong>
+                <span>{findClient(order.clientId)?.type}</span>
               </div>
               <span>Quantidade: {totalQuantity}</span>
             </div>
