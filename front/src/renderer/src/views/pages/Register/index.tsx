@@ -1,4 +1,3 @@
-
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 
@@ -14,7 +13,12 @@ import {
 } from './styles';
 
 export default function Register() {
-  const { errors, isLoading, register, handleSubmit } = useRegister();
+  const {
+    errors,
+    isLoading,
+    register,
+    handleSubmit,
+  } = useRegister();
 
   return (
     <Container>
@@ -37,7 +41,7 @@ export default function Register() {
         />
 
         <Input
-          type="email"
+          type="text"
           placeholder="E-mail"
           isLoading={isLoading}
           $error={errors.email?.message}
@@ -50,6 +54,14 @@ export default function Register() {
           isLoading={isLoading}
           $error={errors.password?.message}
           {...register('password')}
+        />
+
+        <Input
+          type="password"
+          placeholder="Confirme sua senha"
+          isLoading={isLoading}
+          $error={errors.confirmPassword?.message}
+          {...register('confirmPassword')}
         />
 
         <Button type="submit" isLoading={isLoading}>

@@ -1,13 +1,26 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const slidingIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+`;
 
 export const Container = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
-  width: 40rem;
+  width: 46rem;
   gap: 2.4rem;
+
+  animation: ${slidingIn} ease-in 200ms forwards;
 
   button {
     margin-top: 2rem;
@@ -42,7 +55,7 @@ export const Description = styled.span`
 `;
 
 export const StyledLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.orange.main} !important;
+  color: ${({ theme }) => theme.colors.orange.light} !important;
   text-decoration: none;
 
   font-size: 1.6rem;

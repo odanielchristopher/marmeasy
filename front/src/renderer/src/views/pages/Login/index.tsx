@@ -27,7 +27,7 @@ export default function Login() {
 
       <form onSubmit={handleSubmit}>
         <Input
-          type="email"
+          type="text"
           placeholder="E-mail"
           isLoading={isLoading}
           $error={errors.email?.message}
