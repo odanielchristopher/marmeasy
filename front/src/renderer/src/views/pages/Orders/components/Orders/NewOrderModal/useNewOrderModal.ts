@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { InfiniteData, useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -12,7 +12,10 @@ import { useProductCategoriesQuery } from '@renderer/app/hooks/queries/useProduc
 import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
 
 import { queryClient } from '@renderer/App';
+import { Client } from '@renderer/app/entities/Client';
+import { clientsService } from '@renderer/app/services/clientsService'; // Adicione esta linha
 import { ordersService } from '@renderer/app/services/ordersService';
+import { PaginatedResponse } from '@renderer/app/services/types';
 import toast from '@renderer/app/utils/toast';
 import { OrderDetail } from '../../Items/ItemForm/useItemForm';
 
@@ -107,8 +110,7 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
     setIsOrderModalOpen(true);
   }
 
-  function handleOpenDeleteItemModal(index: number) {
-    setIndex(index);
+  function handleOpenDeleteItemModal() {
     setIsDeleteItemModalOpen(true);
     setIsOrderModalOpen(false);
   }
@@ -146,7 +148,7 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
       };
       return ordersService.create(orderData);
     },
-    onSuccess: () => {
+    onSuccess: (newOrder) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       onClose();
     },
@@ -164,6 +166,9 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
       return;
     }
 
+    // Calcular o valor total do pedido
+    const totalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
+
     const orderData = {
       ...data,
       clientId: client.id,
@@ -174,10 +179,37 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
         quantity: item.quantity,
         total: item.totalPrice,
       })),
+      totalValue,
     };
 
     try {
       await createOrder(orderData);
+
+      const updatedBalance = Number(client.balance ?? 0) - totalValue;
+      await clientsService.update({
+        id: client.id,
+        name: client.name,
+        type: client.type,
+        balance: updatedBalance,
+      });
+
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: page.data.map((oldClient) =>
+              oldClient.id === client.id
+                ? {
+                    ...oldClient,
+                    balance: updatedBalance,
+                  }
+                : oldClient,
+            ),
+          })),
+        };
+      });
+
       toast({
         type: 'success',
         text: 'Pedido criado com sucesso.',
