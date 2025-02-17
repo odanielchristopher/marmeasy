@@ -29,14 +29,16 @@ export class OrderItemsRepository implements IOrderItemsRepository {
 
   async findUniqueByUserId(
     findUniqueDto: FindUniqueOrderItemByIdDto,
-  ): Promise<OrderItem> {
+  ): Promise<OrderItem | null> {
     const { userId, id } = findUniqueDto;
 
-    const findedOrderItem = await this.prismaService.orderItem.findUnique({
-      where: { userId, id },
-    });
-
-    return findedOrderItem;
+    const foundOrderItem = await this.prismaService.$queryRaw<OrderItem[]>`
+      SELECT *
+      FROM order_items
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1;
+    `;
+    return foundOrderItem[0];
   }
 
   async create(createDto: CreateOrderItemDto): Promise<OrderItem> {
