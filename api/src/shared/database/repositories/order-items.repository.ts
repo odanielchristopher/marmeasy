@@ -14,17 +14,19 @@ import { PrismaService } from '../prisma.service';
 export class OrderItemsRepository implements IOrderItemsRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findManyByOrderId(
+  async findManyByOrderId(
     findManyByOrderDto: FindManyByOrderIdDto,
   ): Promise<OrderItem[]> {
     const { orderId, userId, order } = findManyByOrderDto;
 
-    return this.prismaService.orderItem.findMany({
-      where: { orderId, userId },
-      orderBy: {
-        name: order,
-      },
-    });
+    const orderItems = await this.prismaService.$queryRaw<OrderItem[]>`
+      SELECT *
+      FROM order_items
+      WHERE order_id = ${orderId}::uuid AND user_id = ${userId}::uuid
+      ORDER BY name ${order};
+    `;
+
+    return orderItems;
   }
 
   async findUniqueByUserId(
