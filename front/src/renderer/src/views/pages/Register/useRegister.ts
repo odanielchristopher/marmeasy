@@ -24,17 +24,23 @@ const schema = z
       .string()
       .min(1, 'Senha é obrigatória.')
       .min(6, 'Senha deve conter pelo menos 6 dígitos.'),
-    confirmPassword: z.string().min(0),
+    confirmPassword: z.string(),
   })
-  .refine(
-    (data) => {
-      return data.password === data.confirmPassword;
-    },
-    {
-      message: 'Confirme a sua senha',
-      path: ['confirmPassword'],
-    },
-  );
+  .superRefine(({ password, confirmPassword }, ctx) => {
+    if (!confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Confirme a sua senha.',
+        path: ['confirmPassword'],
+      });
+    } else if (password !== confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'As senhas não estão iguais.',
+        path: ['confirmPassword'],
+      });
+    }
+  });
 
 type FormData = z.infer<typeof schema>;
 
