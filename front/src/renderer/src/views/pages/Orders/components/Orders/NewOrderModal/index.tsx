@@ -222,10 +222,7 @@ export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
               </div>
             )}
 
-            <Button
-              onClick={handleSubmit(onSubmit)}
-              isLoading={isLoading}
-            >
+            <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
               Fazer Pedido
             </Button>
           </Container>

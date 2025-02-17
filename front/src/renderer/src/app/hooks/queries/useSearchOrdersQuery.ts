@@ -2,7 +2,11 @@
 import { ordersService } from '@renderer/app/services/ordersService';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export function useSearchOrdersQuery(searchTerm: string, perPage = 20, dateRange?: { from?: string; to?: string; }) {
+export function useSearchOrdersQuery(
+  searchTerm: string,
+  perPage = 20,
+  dateRange?: { from?: string; to?: string },
+) {
   const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ['orders', 'search', searchTerm, dateRange],

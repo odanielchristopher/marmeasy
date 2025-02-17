@@ -20,15 +20,17 @@ export const orderFormSchema = z.object({
   clientName: z.string().min(1, 'O nome do cliente é obrigatório'),
   date: z.date(),
   discount: z.number(),
-  items: z.array(
-    z.object({
-      name: z.string(),
-      ingredients: z.array(z.string()),
-      unitPrice: z.number(),
-      quantity: z.number(),
-      total: z.number(),
-    }),
-  ).min(0, 'O pedido deve conter pelo menos um item'),
+  items: z
+    .array(
+      z.object({
+        name: z.string(),
+        ingredients: z.array(z.string()),
+        unitPrice: z.number(),
+        quantity: z.number(),
+        total: z.number(),
+      }),
+    )
+    .min(0, 'O pedido deve conter pelo menos um item'),
   totalValue: z.number(),
 });
 
@@ -138,7 +140,9 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
         clientId: client.id,
         items: orderDetails.map((item) => ({
           name: item.productName,
-          ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
+          ingredients: item.selectedIngredients.map(
+            (ingredient) => ingredient.name,
+          ),
           unitPrice: item.productPrice,
           quantity: item.quantity,
           total: item.totalPrice,
@@ -155,24 +159,29 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
   async function onSubmit(data: OrderFormSchema) {
     const client = findClientByName(data.clientName);
     if (!client) {
-      setError('clientName', { type: 'manual', message: 'Cliente não encontrado' });
+      setError('clientName', {
+        type: 'manual',
+        message: 'Cliente não encontrado',
+      });
       return;
     }
 
     if (orderDetails.length === 0) {
-      setError('items', { type: 'manual', message: 'O pedido deve conter pelo menos um item' });
+      setError('items', {
+        type: 'manual',
+        message: 'O pedido deve conter pelo menos um item',
+      });
       return;
     }
-
-    const clientId = client.id;
-    console.log({ clientId });
 
     const orderData = {
       ...data,
       clientId: client.id,
       items: orderDetails.map((item) => ({
         name: item.productName,
-        ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
+        ingredients: item.selectedIngredients.map(
+          (ingredient) => ingredient.name,
+        ),
         unitPrice: item.productPrice,
         quantity: item.quantity,
         total: item.totalPrice,

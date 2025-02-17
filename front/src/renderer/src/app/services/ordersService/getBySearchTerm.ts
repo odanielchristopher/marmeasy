@@ -6,7 +6,7 @@ export interface GetBySearchTermParams {
   page?: number;
   perPage?: number;
   searchTerm: string;
-  dateRange?: { from?: string; to?: string; }
+  dateRange?: { from?: string; to?: string };
 }
 
 export async function getBySearchTerm({

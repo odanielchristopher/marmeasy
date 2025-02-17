@@ -13,12 +13,7 @@ import {
 } from './styles';
 
 export default function Register() {
-  const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useRegister();
+  const { errors, isLoading, register, handleSubmit } = useRegister();
 
   return (
     <Container>
