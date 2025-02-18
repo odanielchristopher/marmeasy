@@ -13,7 +13,7 @@ import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
 
 import { queryClient } from '@renderer/App';
 import { Client } from '@renderer/app/entities/Client';
-import { clientsService } from '@renderer/app/services/clientsService'; // Adicione esta linha
+import { clientsService } from '@renderer/app/services/clientsService';
 import { ordersService } from '@renderer/app/services/ordersService';
 import { PaginatedResponse } from '@renderer/app/services/types';
 import toast from '@renderer/app/utils/toast';
@@ -110,7 +110,8 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
     setIsOrderModalOpen(true);
   }
 
-  function handleOpenDeleteItemModal() {
+  function handleOpenDeleteItemModal(index: number) {
+    setIndex(index);
     setIsDeleteItemModalOpen(true);
     setIsOrderModalOpen(false);
   }
@@ -148,7 +149,7 @@ export default function useOrderModal(isOpen: boolean, onClose: () => void) {
       };
       return ordersService.create(orderData);
     },
-    onSuccess: (newOrder) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
       onClose();
     },

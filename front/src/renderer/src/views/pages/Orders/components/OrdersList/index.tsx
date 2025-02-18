@@ -9,14 +9,19 @@ interface OrdersListProps {
 }
 
 const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
-  const { findClient, handleOrderClick, selectedOrderId } = useOrdersList();
+  const { findClient, handleOrderClick, selectedOrderId, handleShowOrderData } = useOrdersList();
+
+  const handleSelectOrder = (order: Order) => {
+    handleOrderClick(order.id);
+    handleShowOrderData(order);
+  };
 
   return (
     <>
       {orders.map((order) => {
         const totalQuantity = order.items.reduce((sum, item) => sum + item.quantity, 0);
         return (
-          <Container key={order.id} onClick={() => handleOrderClick(order.id)} className={selectedOrderId === order.id ? 'selected' : ''}>
+          <Container key={order.id} onClick={() => handleSelectOrder(order)} className={selectedOrderId === order.id ? 'selected' : ''}>
             <div className="left">
               <div className="clientsInfo">
                 <strong>{findClient(order.clientId)?.name}</strong>
@@ -26,7 +31,7 @@ const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
             </div>
             <div className="right">
               <span>{new Date(order.date).toLocaleDateString()}</span>
-              <span>R$: {formatCurrency(order.totalValue)}</span>
+              <span>R$ {formatCurrency(order.totalValue)}</span>
             </div>
           </Container>
         );

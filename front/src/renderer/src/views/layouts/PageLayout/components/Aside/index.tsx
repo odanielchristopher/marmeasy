@@ -16,7 +16,7 @@ interface AsideProps {
 }
 
 export default function Aside({ area }: AsideProps) {
-  const { showClientData, seletedClient, handleHiddenClientData } = useAside();
+  const { showClientData, showOrderData, seletedClient, selectedOrder, handleHiddenClientData, handleHiddenOrderData } = useAside();
   const { pathname } = useLocation();
   const [showOrders, setShowOrders] = useState(false);
   const [showPayments, setShowPayments] = useState(true);
@@ -37,6 +37,7 @@ export default function Aside({ area }: AsideProps) {
 
     return () => {
       handleHiddenClientData();
+      handleHiddenOrderData();
     };
   }, [pathname]);
 
@@ -48,21 +49,20 @@ export default function Aside({ area }: AsideProps) {
 
       <Actions></Actions>
 
-      {!showClientData && (
+      {!showClientData && !showOrderData && (
         <Main>
           <Empty>
             <img src={clipboard} alt="Empty" />
 
             <p>
-              <b>Nenhum cliente selecionado!</b>
-              Clique em algum cliente para ver seus detalhes.
+              <b>Nenhum cliente ou pedido selecionado!</b>
+              Clique em algum cliente ou pedido para ver seus detalhes.
             </p>
           </Empty>
         </Main>
       )}
 
-      {showClientData && showOrders && <DetailsOrder client={seletedClient} />}
-
+      {showOrderData && showOrders && <DetailsOrder order={selectedOrder} />}
       {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
   );
