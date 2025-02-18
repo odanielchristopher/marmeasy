@@ -45,16 +45,40 @@ export class ProductsRepository implements IProductsRepository {
       order,
     } = findManyByUserIdDto;
 
-    const query = this.prismaService.$queryRaw<Product[]>`
-        SELECT p.id, p.name, p.price, p.product_category_id AS "categoryId"
-        FROM products p
-        ${categoryName ? Prisma.sql`JOIN product_categories c ON p.product_category_id = c.id` : Prisma.sql``}
-        WHERE p.user_id = ${userId}::uuid
-        ${categoryName ? Prisma.sql`AND c.name = ${categoryName}` : Prisma.sql``}
-        ORDER BY p.name ${Prisma.raw(order)};
+    const products = await this.prismaService.$queryRaw<Product[]>`
+      SELECT
+        p.id,
+        p.name,
+        p.price,
+        p.description,
+        p."imagePath",
+        jsonb_agg(
+          jsonb_build_object(
+            'id', i.id,
+            'name', i.name,
+            'icon', i.icon
+          )
+        ) FILTER (WHERE i.id IS NOT NULL) AS ingredients,
+        jsonb_build_object(
+          'id', c.id,
+          'name', c.name,
+          'icon', c.icon
+        ) AS category
+      FROM products p
+      LEFT JOIN _product_ingredient pi ON pi."B" = p.id
+      LEFT JOIN ingredients i ON pi."A" = i.id
+      LEFT JOIN product_category c ON p.product_category_id = c.id
+      WHERE p.user_id = ${userId}::uuid
+      ${categoryName ? Prisma.sql`AND c.name = ${categoryName}` : Prisma.sql``}
+      GROUP BY p.id, c.id
+      ORDER BY p.name ${Prisma.raw(order)};
     `;
 
-    return query;
+    return products.map((product) => ({
+      ...product,
+      ingredients: product.ingredients ?? [],
+      category: product.category.id ? product.category : null,
+    }));
   }
 
   async findFirstByUserId(
@@ -63,13 +87,40 @@ export class ProductsRepository implements IProductsRepository {
     const { userId, id } = findFirstDto;
 
     const [product] = await this.prismaService.$queryRaw<Product[]>`
-      SELECT id, name, price, product_category_id AS "categoryId"
-      FROM products
-      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
-      LIMIT 1;
+      SELECT
+        p.id,
+        p.name,
+        p.price,
+        p.description,
+        p."imagePath",
+        jsonb_agg(
+          jsonb_build_object(
+            'id', i.id,
+            'name', i.name,
+            'icon', i.icon
+          )
+        ) FILTER (WHERE i.id IS NOT NULL) AS ingredients,
+        jsonb_build_object(
+          'id', c.id,
+          'name', c.name,
+          'icon', c.icon
+        ) AS category
+      FROM products p
+      LEFT JOIN _product_ingredient pi ON pi."B" = p.id
+      LEFT JOIN ingredients i ON pi."A" = i.id
+      LEFT JOIN product_category c ON p.product_category_id = c.id
+      WHERE p.user_id = ${userId}::uuid AND p.id = ${id}::uuid
+      GROUP BY p.id, c.id
+      LIMIT 1
     `;
 
-    return product || null;
+    return product
+      ? {
+          ...product,
+          ingredients: product.ingredients,
+          category: product.category.id ? product.category : null,
+        }
+      : null;
   }
 
   async create(createDto: CreateProductOnDBDto): Promise<Product> {

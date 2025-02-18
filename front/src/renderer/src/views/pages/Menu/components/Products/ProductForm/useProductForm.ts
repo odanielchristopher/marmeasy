@@ -62,7 +62,7 @@ export default function useProductForm({
       description: product?.description ?? '',
       categoryId: product?.category?.id ?? '',
       ingredientsIds:
-        product?.ingredients.map((ingredient) => ingredient.id) ?? [],
+        product?.ingredients?.map((ingredient) => ingredient.id) ?? [],
     },
   });
 

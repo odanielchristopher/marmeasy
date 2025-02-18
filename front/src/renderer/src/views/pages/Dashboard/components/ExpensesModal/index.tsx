@@ -17,8 +17,8 @@ import { Item } from '@renderer/views/pages/Dashboard/components/Item';
 import { Modal } from '@renderer/views/pages/Dashboard/components/Modal';
 
 import Loader from '@renderer/views/components/Loader';
-import { EmptyImageContainer } from '@renderer/views/pages/Menu/styles';
 import EditExpenseModal from '../../sections/Expenses/modals/EditExpenseModal';
+import { EmptyImageContainer } from '../EmptyImageContainer';
 import { LoaderContainer } from '../LoaderContainer';
 import { AddButton, ListPerDate } from './styles';
 

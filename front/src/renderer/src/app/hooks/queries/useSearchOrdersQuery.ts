@@ -1,14 +1,23 @@
+// useSearchClientsQuery
 import { ordersService } from '@renderer/app/services/ordersService';
-import { GetAllParams } from '@renderer/app/services/ordersService/getAll';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-export function useOrdersQuery({ perPage = 20, from, to }: GetAllParams) {
+export function useSearchOrdersQuery(
+  searchTerm: string,
+  perPage = 20,
+  dateRange?: { from?: string; to?: string },
+) {
   const { data, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ['orders', 'getAll', from, to],
+      queryKey: ['orders', 'search', searchTerm, dateRange],
       initialPageParam: 1,
       queryFn: async ({ pageParam }) =>
-        ordersService.getAll({ from, to, perPage, page: pageParam }),
+        ordersService.getBySearchTerm({
+          searchTerm,
+          page: pageParam,
+          perPage,
+          dateRange,
+        }),
       getNextPageParam: (lastPage, allPages, lastPageParam) => {
         const totalPages = Math.ceil(lastPage.items / perPage);
 
@@ -20,13 +29,14 @@ export function useOrdersQuery({ perPage = 20, from, to }: GetAllParams) {
 
         return lastPageParam + 1;
       },
-      staleTime: 60000 * 2,
+      enabled: searchTerm.length > 0 ? true : false,
+      staleTime: 60000,
     });
 
   const orders = data?.pages.flatMap((page) => page.data);
 
   return {
-    orders: orders ?? [],
+    findedOrders: orders ?? [],
     isLoading: isFetching,
     nextPage: fetchNextPage,
     hasNextPage,

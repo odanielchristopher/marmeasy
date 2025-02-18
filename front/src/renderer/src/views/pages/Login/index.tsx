@@ -1,23 +1,33 @@
-import { Link } from 'react-router-dom';
-
 import useLogin from './useLogin';
 
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
-import { Container, Description, Title } from './styles';
+import {
+  Container,
+  Description,
+  Header,
+  StyledLink,
+  TextContainer,
+  Title,
+} from './styles';
 
 export default function Login() {
   const { errors, isLoading, register, handleSubmit } = useLogin();
 
   return (
     <Container>
-      <Title>Entrar no sistema</Title>
+      <Header>
+        <Title>Acesse sua conta</Title>
 
-      <Description>Entre com seu e-mail e senha</Description>
+        <TextContainer>
+          <Description>Novo por aqui?</Description>
+          <StyledLink to="/register">Crie uma conta</StyledLink>
+        </TextContainer>
+      </Header>
 
       <form onSubmit={handleSubmit}>
         <Input
-          type="email"
+          type="text"
           placeholder="E-mail"
           isLoading={isLoading}
           $error={errors.email?.message}
@@ -36,8 +46,6 @@ export default function Login() {
           Entrar
         </Button>
       </form>
-
-      <Link to="/register">Ainda não possuo conta.</Link>
     </Container>
   );
 }

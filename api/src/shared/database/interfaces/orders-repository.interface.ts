@@ -4,6 +4,7 @@ import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
 import { Order } from 'src/modules/orders/entities/order.entity';
 import { DateRangeDto } from 'src/shared/dto/date-range.dto';
+import { IPaginatedResponse } from 'src/shared/types';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
 
@@ -12,13 +13,13 @@ export interface IOrdersRepository {
     findManyByClientIdDto: FindManyByClientIdDto,
   ): Promise<Order[]>;
 
-  findAllByDateRange(
-    userId: string,
-    startDate: string,
-    endDate: string,
-    limit?: number,
-    offset?: number,
-  ): Promise<Order[]>;
+  findManyBySearchTerm(
+    findManyBySearchDto: FindManyBySeachTermDto,
+  ): Promise<IPaginatedResponse<Order[]>>;
+
+  findManyByUserId(
+    findAllByUserIdDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Order[]>>;
 
   findManyOnSaleFormat(findManySaleDto: FindManySaleDto): Promise<Sale[]>;
 
@@ -61,13 +62,14 @@ export type FindUniqueOrderByIdDto = {
   id: string;
 };
 
-export type FindAllByDateRangeDto = {
+export type FindManyByUserIdDto = {
   userId: string;
-  startDate: Date;
-  endDate: Date;
-  limit?: number;
-  offset?: number;
+  dateRange?: DateRangeDto;
+  perPage?: number;
+  page?: number;
 };
+
+export type FindManyBySeachTermDto = FindManyByUserIdDto & { query: string };
 
 export type FindFirstOrderByClientIdDto = {
   userId: string;
