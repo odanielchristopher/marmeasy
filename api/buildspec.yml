@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime_versions:
+      nodejs: 20
+    commands:
+      - npm install -g @nestjs/cli # Garante que o NestJS CLI está instalado
+      - curl -fsSL https://get.docker.com | sh # Garante que o Docker está instalado
+      - docker --version
+
+  pre_build:
+    commands:
+      - echo "Autenticando no Docker..."
+      - echo $AWS_ECR_PASSWORD | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+
+  build:
+    commands:
+      - echo "Iniciando a construção da API..."
+      - docker compose -f docker-compose.yml up --build -d
+      - docker ps # Verifica se os containers estão rodando corretamente
+
+  post_build:
+    commands:
+      - echo "Build finalizado com sucesso!"
