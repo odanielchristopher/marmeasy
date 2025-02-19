@@ -5,11 +5,8 @@ import Modal from '@renderer/views/components/Modal';
 import useProfileModal from './useProfileModal';
 
 import { Transition } from '@headlessui/react';
-import { DeleteIcon } from '@renderer/assets/Icons/DeleteIcon';
-import DeleteModal from '../DeleteModal';
 import {
   Container,
-  DeleteButton,
   Form,
   InfoContainer,
   NewPasswordButton,
@@ -22,43 +19,17 @@ export default function ProfileModal() {
     isLoading,
     isOpen,
     wantChangePassword,
-    isDeleteModalOpen,
-    handleDeleteUser,
     handleSubmit,
     register,
     handleWannaChangePassword,
-    handleOpenDeleteModal,
-    handleCloseDeleteModal,
     handleCloseProfileModal,
   } = useProfileModal();
-
-  if (isDeleteModalOpen) {
-    return (
-      <DeleteModal
-        open
-        onClose={handleCloseDeleteModal}
-        onConfirm={handleDeleteUser}
-        answer={`
-          Tem ceteza que deseja excluir sua conta?
-        `}
-        description={`
-          Todos os dados relacionados a sua conta
-          serão apagados e não poderão ser recuperados.
-        `}
-      />
-    );
-  }
 
   return (
     <Modal
       open={isOpen}
       onClose={handleCloseProfileModal}
       title="Dados do usuário"
-      action={
-        <DeleteButton onClick={handleOpenDeleteModal}>
-          <DeleteIcon />
-        </DeleteButton>
-      }
     >
       <Container>
         <p>Edite aqui as suas informações.</p>
