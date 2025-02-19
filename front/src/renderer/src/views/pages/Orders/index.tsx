@@ -1,49 +1,30 @@
 import { TbUsers } from 'react-icons/tb';
 
 import Fab from '@renderer/views/components/Fab';
-import Select from '@renderer/views/components/Select';
-import Button from '@renderer/views/components/Button';
 
 import { Container, Content, Header, NotFoundContainer } from './styles';
 
-import ClientList from './components/OrdersList';
-
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
+import DateRangePickerInput from '@renderer/views/components/DateRangePickerInput';
 import Loader from '@renderer/views/components/Loader';
-import DeleteModal from '@renderer/views/modals/DeleteModal';
-import useClients from './useClients';
+import SearchInput from '@renderer/views/components/SearchInput';
+import OrdersList from './components/OrdersList';
+import useOrders from './useOrders';
 
-export default function Clients() {
+export default function Orders() {
   const {
-    handleOnConfirmDeleteClient,
-    handleCloseDeleteClientModal,
-    handleDeleteClient,
-    hasClient,
-    isDeleteClientModalVisible,
-    clientBeingDeleted,
+    hasOrders,
+    selectedDateRange,
+    handleSelectedDateRange,
     isLoading,
     isSearchEmpty,
-    filteredClients,
-  } = useClients();
+    handleChangeSearchTerm,
+    searchTerm,
+    ordersToRender,
+  } = useOrders();
 
   return (
     <Container>
-      <DeleteModal
-        onConfirm={handleOnConfirmDeleteClient}
-        open={isDeleteClientModalVisible}
-        onClose={handleCloseDeleteClientModal}
-        answer={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Tem certeza que deseja excluir esse cliente?'
-            : 'Tem certeza que deseja excluir essa empresa?'
-        }
-        description={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Todos os dados relacionados a esse cliente serão apagados e não poderão ser recuperados.'
-            : 'Todos os dados relacionados a essa empresa serão apagados e não poderão ser recuperados.'
-        }
-      />
-
       <Fab />
 
       <Header>
@@ -54,27 +35,24 @@ export default function Clients() {
         <p>Gerencie os pedidos feitos pelos seus clientes</p>
       </Header>
 
-      <div className="align-container">
-        <Select
-          placeholder="Escolha o cliente"
-          options={[
-            { value: 'FISICO', label: 'Cliente' },
-            { value: 'JURIDICO', label: 'Empresa' },
-          ]}
+      <div className="filters">
+        <SearchInput
+          placeholder="Pesquisa por nome..."
+          value={searchTerm}
+          onValueChange={handleChangeSearchTerm}
         />
-        <div className="date-container">
-          <p>Escolha um período</p>
-        </div>
-      </div>
 
+        <DateRangePickerInput
+          value={selectedDateRange}
+          onChange={handleSelectedDateRange}
+        />
+      </div>
 
       {isLoading && <Loader $isLoading size={50} />}
 
       {!isLoading && (
         <Content>
-          {hasClient && (
-            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
-          )}
+          {hasOrders && <OrdersList orders={ordersToRender} />}
 
           {isSearchEmpty && (
             <NotFoundContainer>
@@ -85,5 +63,5 @@ export default function Clients() {
         </Content>
       )}
     </Container>
-);
+  );
 }

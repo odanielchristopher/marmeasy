@@ -1,28 +1,121 @@
 import { Injectable } from '@nestjs/common';
-import { type Prisma } from '@prisma/client';
+import { ProductCategory } from 'src/modules/product-categories/entities/product-category.entity';
+import {
+  CreateProductCategoryDto,
+  DeleteProductCategoryDto,
+  FindFirstProductCategoryByNameDto,
+  FindFirstProductCategoryDto,
+  FindManyProductCategoriesDto,
+  IProductCategoriesRepository,
+  UpdateProductCategoryDto,
+} from '../interfaces/product-categories-repository.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
-export class ProductCategoriesRespository {
+export class ProductCategoriesRepository
+  implements IProductCategoriesRepository
+{
   constructor(private readonly prismaService: PrismaService) {}
 
-  findMany(findManyDto: Prisma.ProductCategoryFindManyArgs) {
-    return this.prismaService.productCategory.findMany(findManyDto);
+  async findManyByUserId(
+    findManyDto: FindManyProductCategoriesDto,
+  ): Promise<ProductCategory[] | null> {
+    const { userId, order } = findManyDto;
+
+    // Garante que order só tenha valores permitidos
+    const validOrder = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+    const query = `
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = $1::uuid
+      ORDER BY name ${validOrder}
+    `;
+
+    const productCategories = await this.prismaService.$queryRawUnsafe<
+      ProductCategory[]
+    >(query, userId);
+
+    return productCategories.length > 0 ? productCategories : null;
   }
 
-  findFirst(findFirstDto: Prisma.ProductCategoryFindFirstArgs) {
-    return this.prismaService.productCategory.findFirst(findFirstDto);
+  async findFirstByUserId(
+    findFirstByIdDto: FindFirstProductCategoryDto,
+  ): Promise<ProductCategory | null> {
+    const { userId, id } = findFirstByIdDto;
+
+    const result = await this.prismaService.$queryRaw<ProductCategory[]>`
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1
+    `;
+
+    return result.length > 0 ? result[0] : null;
   }
 
-  create(createDto: Prisma.ProductCategoryCreateArgs) {
-    return this.prismaService.productCategory.create(createDto);
+  async findFirstByName(
+    findFirstByNameDto: FindFirstProductCategoryByNameDto,
+  ): Promise<ProductCategory | null> {
+    const { userId, name } = findFirstByNameDto;
+
+    const result = await this.prismaService.$queryRaw<ProductCategory[]>`
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid AND name = ${name}
+      LIMIT 1
+    `;
+
+    return result.length > 0 ? result[0] : null;
   }
 
-  update(updateDto: Prisma.ProductCategoryUpdateArgs) {
-    return this.prismaService.productCategory.update(updateDto);
+  async create(
+    createProductCategoryDto: CreateProductCategoryDto,
+  ): Promise<ProductCategory | null> {
+    const { data, userId } = createProductCategoryDto;
+
+    const createdProductCategory =
+      await this.prismaService.productCategory.create({
+        data: {
+          ...data,
+          userId,
+        },
+        select: {
+          id: true,
+          name: true,
+          icon: true,
+        },
+      });
+
+    return createdProductCategory;
   }
 
-  delete(deleteDto: Prisma.ProductCategoryDeleteArgs) {
-    return this.prismaService.productCategory.delete(deleteDto);
+  async update(
+    updateProductCategoryDto: UpdateProductCategoryDto,
+  ): Promise<ProductCategory | null> {
+    const { data, userId } = updateProductCategoryDto;
+
+    const updatedProductCategory =
+      await this.prismaService.productCategory.update({
+        where: { userId, id: data.id },
+        data,
+        select: {
+          id: true,
+          name: true,
+          icon: true,
+        },
+      });
+
+    return updatedProductCategory;
+  }
+
+  async delete(
+    deleteProductCategoryDto: DeleteProductCategoryDto,
+  ): Promise<void> {
+    const { id, userId } = deleteProductCategoryDto;
+
+    await this.prismaService.productCategory.delete({
+      where: { userId, id },
+    });
   }
 }

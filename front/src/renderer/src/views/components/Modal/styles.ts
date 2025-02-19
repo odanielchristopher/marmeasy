@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 const overlayShow = keyframes`
   from {
@@ -21,11 +21,14 @@ const contentShow = keyframes`
 	}
 `;
 
-interface DialogContentProps {
-  $maxWidth?: string
+export interface DialogContentProps {
+  $maxWidth?: string;
+  $maxHeight?: number;
 }
 
-export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>`
+export const StyledRdxDialogContent = styled(
+  Dialog.Content,
+)<DialogContentProps>`
   animation: ${contentShow} 0.3s forwards;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -34,6 +37,7 @@ export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>
   width: 100%;
   max-width: ${({ $maxWidth }) => $maxWidth || '45.0rem'};
   max-height: 92vh;
+  min-height: 45rem;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -46,6 +50,12 @@ export const StyledRdxDialogContent = styled(Dialog.Content)<DialogContentProps>
   transform: translate(-50%, -50%);
   z-index: 50;
   outline: none;
+
+  ${({ $maxHeight }) =>
+    $maxHeight &&
+    css`
+      max-height: ${$maxHeight / 10}rem;
+    `}
 `;
 
 export const StyledRdxDialogOverlay = styled(Dialog.Overlay)`

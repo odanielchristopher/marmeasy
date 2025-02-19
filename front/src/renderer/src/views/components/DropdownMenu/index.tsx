@@ -6,12 +6,8 @@ import {
   StyledRdxDropdownMenuTrigger,
 } from './styles';
 
-function DropdownMenuRoot({ children }: { children: React.ReactNode}) {
-  return (
-    <RdxDropdownMenu.Root>
-      {children}
-    </RdxDropdownMenu.Root>
-  );
+function DropdownMenuRoot({ children }: { children: React.ReactNode }) {
+  return <RdxDropdownMenu.Root>{children}</RdxDropdownMenu.Root>;
 }
 
 interface DropdownMenuTriggerProps {
@@ -32,12 +28,24 @@ interface DropdownMenuContentProps {
   side?: 'top' | 'right' | 'bottom' | 'left';
   sideOffset?: number;
   align?: 'center' | 'start' | 'end';
+  asChild?: boolean;
 }
 
-function DropdownMenuContent({ children, side, sideOffset, align }: DropdownMenuContentProps) {
+function DropdownMenuContent({
+  children,
+  side,
+  sideOffset,
+  align,
+  asChild,
+}: DropdownMenuContentProps) {
   return (
     <RdxDropdownMenu.Portal>
-      <StyledRdxDropdownMenuContent side={side} sideOffset={sideOffset} align={align}>
+      <StyledRdxDropdownMenuContent
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        asChild={asChild}
+      >
         {children}
       </StyledRdxDropdownMenuContent>
     </RdxDropdownMenu.Portal>
@@ -50,12 +58,13 @@ interface DropdownMenuItemProps {
   asChild?: boolean;
 }
 
-function DropdownMenuItem({ children, onSelected, asChild }: DropdownMenuItemProps) {
+function DropdownMenuItem({
+  children,
+  onSelected,
+  asChild,
+}: DropdownMenuItemProps) {
   return (
-    <StyledRdxDropdownMenuItem
-      onSelect={onSelected}
-      asChild={asChild}
-    >
+    <StyledRdxDropdownMenuItem onSelect={onSelected} asChild={asChild}>
       {children}
     </StyledRdxDropdownMenuItem>
   );

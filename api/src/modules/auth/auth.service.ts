@@ -1,28 +1,29 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersRespository } from 'src/shared/database/repositories/users.repository';
 import { SigninDto } from './dto/signin.dto';
 import { SignupDto } from './dto/signup.dto';
 
 import { compare, hash } from 'bcryptjs';
+import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { IAuthService } from './interfaces/auth-service.interface';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(
-    private readonly userRespository: UsersRespository,
+    @Inject(IUsersRepository)
+    private readonly userRespository: IUsersRepository,
     private readonly jwtService: JwtService,
   ) {}
 
   async signin(signinDto: SigninDto) {
     const { email, password } = signinDto;
 
-    const user = await this.userRespository.findUnique({
-      where: { email },
-    });
+    const user = await this.userRespository.findUniqueByEmail({ email });
 
     if (!user) {
       throw new UnauthorizedException('Usuário não cadastrado.');
@@ -42,10 +43,7 @@ export class AuthService {
   async signup(signupDto: SignupDto) {
     const { name, email, password } = signupDto;
 
-    const emailTaken = await this.userRespository.findUnique({
-      where: { email },
-      select: { id: true },
-    });
+    const emailTaken = await this.userRespository.findUniqueByEmail({ email });
 
     if (emailTaken) {
       throw new ConflictException('Esse e-mail já está em uso.');
@@ -54,19 +52,13 @@ export class AuthService {
     const hashedPassword = await hash(password, 10);
 
     const user = await this.userRespository.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-        productCategories: {
-          createMany: {
-            data: [
-              { icon: '🍝', name: 'marmitas' },
-              { icon: '🍹', name: 'bebidas' },
-              { icon: '🍟', name: 'lanches' },
-            ],
-          },
-        },
+      data: { name, email, password: hashedPassword },
+      relations: {
+        productCategories: [
+          { icon: '🍝', name: 'marmitas' },
+          { icon: '🍹', name: 'bebidas' },
+          { icon: '🍟', name: 'lanches' },
+        ],
       },
     });
 

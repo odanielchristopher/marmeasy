@@ -5,12 +5,26 @@ import { RemoveProductCategoryParams } from '@renderer/app/services/productCateg
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 
-export default function useDeleteCategoryModal(categoryBeingDeleted: ProductCategory | null, onCofirm: () => void) {
+export default function useDeleteCategoryModal(
+  categoryBeingDeleted: ProductCategory | null,
+  onCofirm: () => void,
+) {
   const { mutateAsync: removeCategory, isPending: isloading } = useMutation({
-    mutationFn: async (data: RemoveProductCategoryParams) => productCategoriesService.remove(data),
+    mutationFn: async (data: RemoveProductCategoryParams) =>
+      productCategoriesService.remove(data),
     onSuccess: () => {
-      queryClient.setQueryData(['product-categories', 'getAll'], (categories: ProductCategory[]) => {
-        return categories.filter((category) => category.id !== categoryBeingDeleted!.id);
+      queryClient.setQueryData(
+        ['product-categories', 'getAll'],
+        (categories: ProductCategory[]) => {
+          return categories.filter(
+            (category) => category.id !== categoryBeingDeleted!.id,
+          );
+        },
+      );
+
+      queryClient.refetchQueries({
+        queryKey: ['products', 'getAll'],
+        exact: true,
       });
     },
   });

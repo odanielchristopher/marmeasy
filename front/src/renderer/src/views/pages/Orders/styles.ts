@@ -7,7 +7,7 @@ export const Container = styled.div`
   width: 100%;
   height: 100%;
 
-    .align-container {
+  .align-container {
     display: flex;
     align-items: center;
     justify-content: space-between; /* Distribui o espaço entre os itens */
@@ -18,15 +18,16 @@ export const Container = styled.div`
   .date-container {
     display: flex;
     align-items: center;
+    width: 30rem;
     gap: 0.8rem; /* Espaço entre o texto e o botão */
   }
 
-  /* Opcional: Ajustar a largura do Select */
-  .align-container > div:first-child {
-    flex: 1; /* Permite que o Select ocupe o espaço disponível */
-    max-width: 300px; /* Define um limite máximo */
+  .filters {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
   }
-
 `;
 
 export const Header = styled.header`
@@ -76,6 +77,6 @@ export const NotFoundContainer = styled.div`
 
     b {
       display: block;
-}
-}
+    }
+  }
 `;

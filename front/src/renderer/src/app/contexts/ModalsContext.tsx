@@ -32,14 +32,16 @@ export function ModalsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <ModalsContext.Provider value={{
-      isProfileModalOpen,
-      isDeleteUserModalOpen,
-      handleCloseDeleteUserModal,
-      handleOpenDeleteUserModal,
-      handleOpenProfileModal,
-      handleCloseProfileModal,
-    }}>
+    <ModalsContext.Provider
+      value={{
+        isProfileModalOpen,
+        isDeleteUserModalOpen,
+        handleCloseDeleteUserModal,
+        handleOpenDeleteUserModal,
+        handleOpenProfileModal,
+        handleCloseProfileModal,
+      }}
+    >
       {children}
     </ModalsContext.Provider>
   );

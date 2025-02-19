@@ -1,226 +1,169 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
-import { OrdersRespository } from "src/shared/database/repositories/orders.repository";
+import { Inject, Injectable } from '@nestjs/common';
+import { IValidateClientOwnershipService } from 'src/modules/clients/interfaces/validate-client-ownership-service.interface';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
+import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
+import { IPaginatedResponse } from 'src/shared/types';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { UpdateStatusOrderDto } from "../dto/update-status-order.dto";
-import { ValidateOrderOwnershipService } from "./validade-order-ownership.service";
-import { OrderItemsService } from "src/modules/order-items/services/order-items.service";
-import { CreateOrderItemDto } from "src/modules/order-items/dto/create-order-items.dto";
-import { UpdateOrderDto } from "../dto/update-order.dto";
-import { OrderStatus } from "../entities/status.entity";
-import { UpdateQuantityOrderItemDto } from "../dto/update-order-item.dto";
+import { UpdateOrderDto } from '../dto/update-order.dto';
+import { Order } from '../entities/order.entity';
+import {
+  FindAllBySearchTermDto,
+  FindAllByUserIdDto,
+  IOrdersService,
+} from '../interfaces/orders-service.interface';
+import { IValidateOrderOwnershipService } from '../interfaces/validate-order-ownership-service.interface';
+import { Client } from 'src/modules/clients/entities/client.entity';
+import { IUpdateClientBalanceService } from 'src/modules/clients/interfaces/update-client-balance-service.interface';
 
 @Injectable()
-export class OrdersService {
-    constructor(
+export class OrdersService implements IOrdersService {
+  constructor(
+    @Inject(IOrdersRepository)
+    private readonly ordersRepository: IOrdersRepository,
+    @Inject(IUpdateClientBalanceService)
+    private readonly updateClientBalanceService: IUpdateClientBalanceService,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
+    @Inject(IValidateOrderOwnershipService)
+    private readonly validateOrderOwnershipService: IValidateOrderOwnershipService,
+    @Inject(IValidateClientOwnershipService)
+    private readonly validateClientOwnershipService: IValidateClientOwnershipService,
+  ) {}
 
-        private readonly ordersRepository: OrdersRespository,
-        private readonly orderItemsService: OrderItemsService,
-        private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-        private readonly validateOrderOwnershipService: ValidateOrderOwnershipService,
-    ) {}
+  async findAllBySearchTerm({
+    userId,
+    page,
+    perPage,
+    dateRange,
+    searchTerm,
+  }: FindAllBySearchTermDto): Promise<IPaginatedResponse<Order[]>> {
+    await this.validateUserOwnershipService.validate(userId);
 
-    async findOneById(userId: string, orderId: string) {
+    return this.ordersRepository.findManyBySearchTerm({
+      userId,
+      dateRange,
+      page: page || 1,
+      perPage: perPage || 20,
+      query: searchTerm.query,
+    });
+  }
 
-        const order = await this.ordersRepository.findUnique({
-            where: { userId, id: orderId },
-            include: {
-              items: true,
-            },
-          });
+  async findAllUserId({
+    userId,
+    page,
+    perPage,
+    dateRange,
+  }: FindAllByUserIdDto) {
+    await this.validateUserOwnershipService.validate(userId);
 
-        if (!order) {
-            throw new NotFoundException('Pedido não encontrado.');
-        }
+    return this.ordersRepository.findManyByUserId({
+      userId,
+      dateRange,
+      page: page || 1,
+      perPage: perPage || 20,
+    });
+  }
 
-        return order;
-    }
+  async findAllByClientId(userId: string, clientId: string) {
+    return this.ordersRepository.findManyByClientId({
+      clientId,
+      userId,
+      order: 'desc',
+    });
+  }
 
-    async findAllByUserId(userId: string) {
-        return this.ordersRepository.findMany({
-          where: { userId },
-          include: {
-            items: true,
-          },
-        });
-    }
+  async create(userId: string, createOrderDto: CreateOrderDto) {
+    const { clientId, items, discount, date } = createOrderDto;
 
+    await this.validateUserOwnershipService.validate(userId);
+    await this.validateClientOwnershipService.validate(userId, clientId);
 
-    async create(
-        userId: string,
-        createOrderDto: CreateOrderDto,
-    ) {
-        await this.validateUserOwnershipService.validate(userId);
-    
-        const { clientId, items, discount } = createOrderDto;
-    
-    
-        const order = await this.ordersRepository.create({
-            data: {
-                user: { connect: { id: userId } },
-                client: { connect: { id: clientId } },
-                discount,
-            },
-        });
+    const totalValue =
+      items.reduce((acc, item) => acc + item.total, 0) - (discount ?? 0);
 
-        let totalItems = 0;
-    
-        await Promise.all(
-            items.map(async (item) => {
-                const createOrderItemDto = new CreateOrderItemDto();
-                createOrderItemDto.productId = item.productId;
-                createOrderItemDto.quantity = item.quantity;
-    
-                const createdItem = await this.orderItemsService.create(userId, order.id, createOrderItemDto);
-    
-                totalItems += createdItem.total;
-            }),
-        );
+    await this.updateClientBalance({
+      userId,
+      clientId,
+      newValue: totalValue * -1,
+    });
 
-        const totalValueOrder = totalItems - discount;
+    const createdOrder = await this.ordersRepository.create({
+      userId,
+      data: {
+        clientId,
+        discount: discount ?? 0,
+        date,
+        total: totalValue,
+        items,
+      },
+    });
 
-        const updatedOrder = await this.ordersRepository.update({ 
-            where: { id: order.id },
-            data: { totalValue: totalValueOrder },
-            include: { items: true },
-        });
+    return createdOrder;
+  }
 
-        return updatedOrder;
-    }
+  async update(
+    userId: string,
+    orderId: string,
+    updateOrderDto: UpdateOrderDto,
+  ) {
+    const { discount, items, date, clientId } = updateOrderDto;
 
-    async update(
-        userId: string,
-        orderId: string,
-        updateOrder: UpdateOrderDto
-    ) {
-        await this.validateOrderOwnershipService.validate(userId, orderId);
+    const existingOrder = await this.validateOrderOwnershipService.validate(
+      userId,
+      orderId,
+    );
+    await this.validateClientOwnershipService.validate(userId, clientId);
 
-        const { discount } = updateOrder;
+    const currentItemsTotal = existingOrder.items.reduce(
+      (acc, item) => acc + item.total,
+      0,
+    );
+    const newItemsTotal = items.reduce((acc, item) => acc + item.total, 0);
+    const newTotalValue =
+      currentItemsTotal -
+      (existingOrder.discount ?? 0) +
+      newItemsTotal -
+      (discount ?? 0);
 
-        const order = await this.ordersRepository.findUnique({
-            where: { userId, id: orderId }, include: { items: true }, 
-        });
+    const updatedOrder = await this.ordersRepository.update({
+      userId,
+      id: orderId,
+      data: {
+        clientId,
+        date: date,
+        discount,
+        total: newTotalValue,
+        items,
+      },
+    });
 
-        if (!order) {
-            throw new NotFoundException('Pedido não encontrado.');
-        }
+    return updatedOrder;
+  }
 
-        console.log(order);
+  async delete(userId: string, orderId: string) {
+    await this.validateOrderOwnershipService.validate(userId, orderId);
 
-        const newtotalValue = (order.totalValue + order.discount) - discount;
-        
-        return this.ordersRepository.update({
-            where: { id: orderId },
-            data: { discount, totalValue: newtotalValue },
-        });
-    }
+    await this.ordersRepository.delete({ id: orderId, userId });
 
-    async updateStatus(
-        userId: string,
-        orderId: string,
-        updateOrderStatusDto: UpdateStatusOrderDto,
-    ) {
-        await this.validateOrderOwnershipService.validate(userId, orderId);
+    return { message: 'Pedido excluído com sucesso.' };
+  }
 
-        const order = await this.ordersRepository.findUnique({
-            where: { userId, id: orderId },
-        });
-
-        if (!order) {
-            throw new NotFoundException('Pedido não encontrado.');
-        }
-
-        return this.ordersRepository.update({
-            where: { id: orderId },
-            data: { status: updateOrderStatusDto.status },
-        });
-    }
-
-    async updateQuantityItem(userId: string, orderId: string, orderItemId: string, updateQuantityOrderItemDto: UpdateQuantityOrderItemDto) {
-        await this.validateOrderOwnershipService.validate(userId, orderId);
-        
-        const { quantity } = updateQuantityOrderItemDto;
-
-        const order = await this.ordersRepository.findUnique({
-            where: { id: orderId },
-            include: { items: true },
-        }) as { id: string; 
-                userId: string; 
-                clientId: string; 
-                date: Date; 
-                totalValue: number; 
-                discount: number; 
-                status: OrderStatus; 
-                items: { id: string; 
-                         total: number;
-                         unitPrice: number; 
-                         quantity: number }[];
-                        };
-        if (!order) {
-            throw new NotFoundException('Pedido não encontrado.');
-        }
-
-        const item = order.items.find((i) => i.id === orderItemId);
-
-        if (!item) {
-            throw new NotFoundException('Item do pedido não encontrado.');
-        }
-
-        const newItemTotal = item.unitPrice * quantity;
-
-        await this.orderItemsService.update(userId, orderItemId, { quantity, total: newItemTotal });
-
-        const totalItems = order.items.reduce((sum, i) => {
-            if (i.id === orderItemId) {
-                return sum + newItemTotal; 
-            }
-            return sum + i.total;
-        }, 0);
-
-        const newOrderTotalValue = totalItems - order.discount;
-
-        await this.ordersRepository.update({
-            where: { id: orderId },
-            data: { totalValue: newOrderTotalValue },
-        });
-
-        return { message: 'Quantidade do item atualizada com sucesso.', totalValue: newOrderTotalValue };
-    }
-
-    async delete(userId: string, orderId: string) {
-        await this.validateOrderOwnershipService.validate(userId, orderId);
-
-        await this.ordersRepository.delete({
-            where: { id: orderId },
-        });
-
-        return { message: 'Pedido excluído com sucesso.' };
-    }
-
-    async deleteItem(userId: string, orderId: string, orderItemId: string) {
-        await this.validateOrderOwnershipService.validate(userId, orderId);
-    
-        await this.orderItemsService.delete(userId, orderItemId);
-    
-        const order = await this.ordersRepository.findUnique({
-            where: { id: orderId },
-            include: { items: true },
-        }) as { id: string; userId: string; clientId: string; date: Date; totalValue: number; discount: number; status: OrderStatus; items: { total: number }[] };
-    
-        if (!order) {
-            throw new NotFoundException('Pedido não encontrado.');
-        }
-          
-        const totalItems = order.items.reduce((sum, item) => sum + item.total, 0);
-    
-        const newTotalValue = totalItems - order.discount;
-    
-        await this.ordersRepository.update({
-            where: { id: orderId },
-            data: { totalValue: newTotalValue },
-        });
-    
-        return { message: 'Item excluído e pedido atualizado com sucesso.' };
-    }
-    
+  private async updateClientBalance({
+    userId,
+    clientId,
+    previousValue,
+    newValue,
+  }: {
+    userId: string;
+    clientId: string;
+    previousValue?: number;
+    newValue: number;
+  }): Promise<Client> {
+    return this.updateClientBalanceService.update({
+      userId,
+      clientId,
+      previousValue,
+      newValue,
+    });
+  }
 }

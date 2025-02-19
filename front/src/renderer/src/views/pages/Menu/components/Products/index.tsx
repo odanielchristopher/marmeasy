@@ -14,11 +14,11 @@ import noImage from '@renderer/assets/Images/empty-image.svg';
 import useProducts from './useProducts';
 
 import Loader from '@renderer/views/components/Loader';
+import { EmptyImageContainer } from '../../styles';
 import {
   ActionButton,
   CategoryContainer,
   Container,
-  EmptyImageContainer,
   Header,
   LoaderContainer,
   ProductImage,
@@ -46,7 +46,10 @@ export default function Products() {
   return (
     <>
       {openNewProductModal && (
-        <NewProductModal open={openNewProductModal} onClose={handleCloseNewProductModal} />
+        <NewProductModal
+          open={openNewProductModal}
+          onClose={handleCloseNewProductModal}
+        />
       )}
 
       {productBeingEdited && (
@@ -82,12 +85,16 @@ export default function Products() {
               <Table.HeaderCollumn>Nome</Table.HeaderCollumn>
               <Table.HeaderCollumn>Categoria</Table.HeaderCollumn>
               <Table.HeaderCollumn>Preço</Table.HeaderCollumn>
-              <Table.HeaderCollumn style={{ width: '12%' }}>Ações</Table.HeaderCollumn>
+              <Table.HeaderCollumn style={{ width: '12%' }}>
+                Ações
+              </Table.HeaderCollumn>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {products.map((product) => {
-              const imagePath = product.imagePath && `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
+              const imagePath =
+                product.imagePath &&
+                `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
 
               return (
                 <Table.Row key={product.id}>
@@ -102,16 +109,28 @@ export default function Products() {
                   </Table.Cell>
                   <Table.Cell style={{ width: '20%' }}>
                     <CategoryContainer>
-                      <span>{product.category.icon}</span>
-                      <span>{capitalizeFirstLetter(product.category.name)}</span>
+                      {product.category && (
+                        <>
+                          <span>{product.category.icon}</span>
+                          <span>
+                            {capitalizeFirstLetter(product.category.name)}
+                          </span>
+                        </>
+                      )}
+
+                      {!product.category && <span>Nenhuma</span>}
                     </CategoryContainer>
                   </Table.Cell>
-                  <Table.Cell style={{ width: '20%' }}>R$ {formatCurrency(product.price)}</Table.Cell>
+                  <Table.Cell style={{ width: '20%' }}>
+                    R$ {formatCurrency(product.price)}
+                  </Table.Cell>
                   <Table.Cell style={{ display: 'flex', gap: '.4rem' }}>
                     <ActionButton onClick={() => handleOpenEditModal(product)}>
                       <Pencil />
                     </ActionButton>
-                    <ActionButton onClick={() => handleOpenDeleteModal(product)}>
+                    <ActionButton
+                      onClick={() => handleOpenDeleteModal(product)}
+                    >
                       <DeleteIcon />
                     </ActionButton>
                   </Table.Cell>
@@ -121,7 +140,7 @@ export default function Products() {
           </Table.Body>
         </Table.Container>
 
-        {(!hasProducts && !isLoading) && (
+        {!hasProducts && !isLoading && (
           <EmptyImageContainer>
             <img src={emptyCart} alt="Sem produtos" />
             <span>Sem produtos cadastros</span>

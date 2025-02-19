@@ -17,8 +17,10 @@ model User {
   products          Product[]
   productCategories ProductCategory[]
   ingredients       Ingredient[]
-  Order             Order[]
-  OrderItem         OrderItem[]
+  orders            Order[]
+  orderItems        OrderItem[]
+  payments          Payment[]
+  expenses          Expense[]
 
   @@map("users")
 }
@@ -30,12 +32,15 @@ model Client {
   phone    String?
   address  String?
   type     ClientType
-  document String?    @unique
+  document String?
   balance  Float      @default(0)
+  active   Boolean    @default(true)
+  payments Payment[]
 
-  user  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Order Order[]
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
 
+  @@unique([userId, document])
   @@map("clients")
 }
 
@@ -45,19 +50,17 @@ enum ClientType {
 }
 
 model Product {
-  id          String          @id @default(uuid()) @db.Uuid
-  userId      String          @map("user_id") @db.Uuid
+  id          String       @id @default(uuid()) @db.Uuid
+  userId      String       @map("user_id") @db.Uuid
   name        String
   description String?
   imagePath   String?
   price       Float
-  category    ProductCategory @relation(fields: [categoryId], references: [id])
-  ingredients Ingredient[]    @relation("product_ingredient")
+  categoryId  String?      @map("product_category_id") @db.Uuid
+  ingredients Ingredient[] @relation("product_ingredient")
 
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  categoryId   String  @map("product_category_id") @db.Uuid
-  ingredientId String? @db.Uuid
-  OrderItem    OrderItem[]
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
   @@map("products")
 }
@@ -104,17 +107,17 @@ model Order {
 }
 
 model OrderItem {
-  id        String @id @default(uuid()) @db.Uuid
-  orderId   String @map("order_id") @db.Uuid
-  productId String @map("product_id") @db.Uuid
-  userId    String @map("user_id") @db.Uuid
-  quantity  Int    @default(1)
-  unitPrice Float
-  total     Float  @default(0)
+  id          String   @id @default(uuid()) @db.Uuid
+  orderId     String   @map("order_id") @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  name        String
+  ingredients String[]
+  quantity    Int      @default(1)
+  unitPrice   Float
+  total       Float    @default(0)
 
-  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product Product @relation(fields: [productId], references: [id])
-  user    User    @relation(fields: [userId], references: [id])
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id])
 
   @@map("order_items")
 }
@@ -122,7 +125,47 @@ model OrderItem {
 enum OrderStatus {
   PENDING
   PAID
-  CANCELED
-  SHIPPED
-  DELIVERED
+}
+
+model Payment {
+  id       String      @id @default(uuid()) @db.Uuid
+  userId   String      @map("user_id") @db.Uuid
+  clientId String      @map("client_id") @db.Uuid
+  type     PaymentType
+  date     DateTime    @default(now())
+  value    Float
+
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  DEBIT_CARD
+  CASH
+}
+
+model Expense {
+  id     String       @id @default(uuid()) @db.Uuid
+  userId String       @map("user_id") @db.Uuid
+  type   ExpenseType? @default(OTHERS)
+  date   DateTime     @default(now())
+  value  Float
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("expenses")
+}
+
+enum ExpenseType {
+  TAXES
+  DELIVERY
+  EQUIPMENTS
+  EMPLOYEES
+  UTENSILS
+  MEATS
+  GARRISONS
+  OTHERS
 }

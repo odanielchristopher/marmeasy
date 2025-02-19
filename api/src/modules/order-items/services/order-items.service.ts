@@ -1,91 +1,92 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { ValidateUserOwnershipService } from '../../users/services/validate-user-ownership.service';
-import { ProductsRespository } from "src/shared/database/repositories/products.repository";
+import { Inject, Injectable } from '@nestjs/common';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
+import { IOrderItemsRepository } from 'src/shared/database/interfaces/orders-item-repository.interface';
 import { CreateOrderItemDto } from '../dto/create-order-items.dto';
-import { OrderItemsRepository } from "src/shared/database/repositories/order-items.repository";
-import { ValidateOrderItemsOwnershipService } from "./validate-product-order-item.service";
-import { UpdateOrderDto } from "src/modules/orders/dto/update-order.dto";
-import { UpdateQuantityOrderItemDto } from "../dto/update-ordem-item.dto";
+import { UpdateOrderItemDto } from '../dto/update-ordem-item.dto';
+import { IOrderItemsService } from '../interfaces/order-items-service.interface';
+import { IValidateOrderItemsOwnershipService } from '../interfaces/validate-order-item-ownership-service.interface';
 
 @Injectable()
-export class OrderItemsService {
-    constructor(
-        private readonly productsRepository: ProductsRespository,
-        private readonly orderItemsRepository: OrderItemsRepository,
-        private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-        private readonly validateOrderItemsOwnershipService: ValidateOrderItemsOwnershipService,
-    ) {}
+export class OrderItemsService implements IOrderItemsService {
+  constructor(
+    @Inject(IOrderItemsRepository)
+    private readonly orderItemsRepository: IOrderItemsRepository,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
+    @Inject(IValidateOrderItemsOwnershipService)
+    private readonly validateOrderItemsOwnershipService: IValidateOrderItemsOwnershipService,
+  ) {}
 
-    async findAll(userId: string) {
-        await this.validateUserOwnershipService.validate(userId);
+  async findAllByOrder(userId: string, orderId: string) {
+    await this.validateUserOwnershipService.validate(userId);
 
-        return this.orderItemsRepository.findMany({
-            where: { userId },
-        });
-    }
+    return this.orderItemsRepository.findManyByOrderId({
+      userId,
+      orderId,
+      order: 'asc',
+    });
+  }
 
-    async findOneById(userId: string, orderItemId: string) {
-        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+  async findOneById(userId: string, orderItemId: string) {
+    await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
 
-        return this.orderItemsRepository.findUnique({
-            where: { id: orderItemId, userId },
-        });
-    }
+    return this.orderItemsRepository.findUniqueByUserId({
+      id: orderItemId,
+      userId,
+    });
+  }
 
-    async create(
-        userId: string,
-        orderId: string,
-        createOrderItemDto: CreateOrderItemDto,
-    ) {
-        await this.validateUserOwnershipService.validate(userId);
-        
-        const { productId, quantity } = createOrderItemDto;
+  async create(
+    userId: string,
+    orderId: string,
+    createOrderItemDto: CreateOrderItemDto,
+  ) {
+    await this.validateUserOwnershipService.validate(userId);
 
-        const productAlreadyExists = await this.productsRepository.findFirst({
-            where: { userId, id: productId },
-        });
+    const { quantity, ingredients, name, total, unitPrice } =
+      createOrderItemDto;
 
-        if (!productAlreadyExists) {
-            throw new BadRequestException('Produto não encontrado.');
-        }
+    return this.orderItemsRepository.create({
+      userId,
+      data: {
+        name,
+        ingredients,
+        quantity,
+        unitPrice,
+        total,
+        orderId,
+      },
+    });
+  }
 
-        const total = quantity * productAlreadyExists.price;
+  async update(
+    userId: string,
+    orderItemId: string,
+    updateOrderItemDto: UpdateOrderItemDto,
+  ) {
+    await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
 
-        return this.orderItemsRepository.create({
-            data: {
-                product: { connect: { id: productId } },
-                order: { connect: { id: orderId } },
-                user: { connect: { id: userId } },
-                quantity,
-                unitPrice: productAlreadyExists.price,
-                total,
-            },
-        });
-    }
+    const { name, ingredients, quantity, unitPrice, total } =
+      updateOrderItemDto;
 
-    async update(
-        userId: string,
-        orderItemId: string,
-        updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
-    ) {
-        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
-        return this.orderItemsRepository.update({
-            where: { id: orderItemId },
-            data: updateQuantityOrderItemDto,
-        });
-    }
+    return this.orderItemsRepository.update({
+      userId,
+      data: {
+        id: orderItemId,
+        name,
+        ingredients,
+        quantity,
+        unitPrice,
+        total,
+      },
+    });
+  }
 
-    async delete(
-        userId: string,
-        orderItemId: string,
-    ) {
-        await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
+  async delete(userId: string, orderItemId: string) {
+    await this.validateOrderItemsOwnershipService.validate(userId, orderItemId);
 
-        await this.orderItemsRepository.delete({
-            where: { id: orderItemId, userId },
-        });
+    await this.orderItemsRepository.delete({ id: orderItemId, userId });
 
-        return { message: 'Pedido excluído com sucesso.' };
-    }
+    return { message: 'Item do pedido excluído com sucesso.' };
+  }
 }
-

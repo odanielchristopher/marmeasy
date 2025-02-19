@@ -3,49 +3,29 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import { Container, Content, NotFoundContainer } from './styles';
+import { Container, LoaderContainer, NotFoundContainer } from './styles';
 
 import ClientList from './components/ClientList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
 import { SectionHeader } from '@renderer/views/components/SectionHeader';
-import DeleteModal from '@renderer/views/modals/DeleteModal';
 import useClients from './useClients';
 
 export default function Clients() {
   const {
-    handleOnConfirmDeleteClient,
-    handleCloseDeleteClientModal,
-    handleDeleteClient,
-    handleChangeSearchTerm,
     hasClient,
-    isDeleteClientModalVisible,
-    clientBeingDeleted,
     isLoading,
     isSearchEmpty,
     searchTerm,
-    filteredClients,
+    clientsToRender,
+    finalPageLoaderRef,
+    isFetchingNextPage,
+    handleChangeSearchTerm,
   } = useClients();
 
   return (
     <Container>
-      <DeleteModal
-        onConfirm={handleOnConfirmDeleteClient}
-        open={isDeleteClientModalVisible}
-        onClose={handleCloseDeleteClientModal}
-        answer={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Tem certeza que deseja excluir esse cliente?'
-            : 'Tem certeza que deseja excluir essa empresa?'
-        }
-        description={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Todos os dados relacionados a esse cliente serão apagados e não poderão ser recuperados.'
-            : 'Todos os dados relacionados a essa empresa serão apagados e não poderão ser recuperados.'
-        }
-      />
-
       <Fab />
 
       <SectionHeader>
@@ -65,9 +45,17 @@ export default function Clients() {
       {isLoading && <Loader $isLoading size={50} />}
 
       {!isLoading && (
-        <Content>
+        <>
           {hasClient && (
-            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
+            <>
+              <ClientList clients={clientsToRender} />
+              <LoaderContainer
+                ref={finalPageLoaderRef}
+                $isFetchingNextPage={isFetchingNextPage}
+              >
+                <Loader $isLoading size={32} />
+              </LoaderContainer>
+            </>
           )}
 
           {isSearchEmpty && (
@@ -76,7 +64,7 @@ export default function Clients() {
               <p>Não encontramos nenhum cliente!</p>
             </NotFoundContainer>
           )}
-        </Content>
+        </>
       )}
     </Container>
   );

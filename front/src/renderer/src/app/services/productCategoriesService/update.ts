@@ -6,10 +6,7 @@ export interface UpdateProductCategoryParams {
   name: string;
 }
 
-export async function update({
-  id,
-  ...params
-}: UpdateProductCategoryParams) {
+export async function update({ id, ...params }: UpdateProductCategoryParams) {
   const { data } = await httpClient.put(`/product-categories/${id}`, params);
 
   return data;

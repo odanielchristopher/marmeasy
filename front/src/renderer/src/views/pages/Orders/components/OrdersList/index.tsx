@@ -1,42 +1,31 @@
-import { Client } from '@renderer/app/entities/Client';
-import useAside from '@renderer/app/hooks/useAside';
-import formatPhone from '@renderer/app/utils/formatPhone';
-import { Container, Content, Left, Right } from './styles';
+import { Order } from '@renderer/app/entities/Order';
+import { formatCurrency } from '@renderer/app/utils/formatCurrency';
+import React from 'react';
 
-interface CardListProps {
-  clients: Client[];
-  onDeleteClient(client: Client): void;
+interface OrdersListProps {
+  orders: Order[];
 }
 
-export default function ClientList({ clients, onDeleteClient }: CardListProps) {
-  const { handleShowClientData, handleHiddenClientData } = useAside();
-
+const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
   return (
-    <>
-      {clients.map((client) => (
-        <Container key={client.id} onClick={() => handleShowClientData(client)}>
-          <Content>
-            <Left>
-              <div className="infos">
-                <div className='infos-left'>
-                  <strong>{client.name}</strong>
-                  <span>{client.type === 'FISICO' ? 'cliente' : 'empresa'}</span>
-                  <p>{client.phone ? formatPhone(client.phone ?? '') : 'Sem telefone'}</p>
-                </div>
-                <span>Qtd: {1}</span>
-              </div>
-            </Left>
-            <Right>
-              <div className='infos'>
-                <div className='infos-right'>
-                  <span className='date'>17 de agosto</span>
-                </div>
-                <span className='price'>R$ 15,00</span>
-              </div>
-            </Right>
-          </Content>
-        </Container>
+    <div>
+      {orders.map((order) => (
+        <div key={order.id}>
+          <h3>{order.clientId}</h3>
+          <p>Data: {new Date(order.date).toLocaleDateString()}</p>
+          <p>Valor Total: {formatCurrency(order.totalValue)}</p>
+          <p>Desconto: {formatCurrency(order.discount)}</p>
+          <ul>
+            {order.items.map((item) => (
+              <li key={item.name}>
+                {item.quantity}x {item.name} - {formatCurrency(item.total)}
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-</>
-);
-}
+    </div>
+  );
+};
+
+export default OrdersList;

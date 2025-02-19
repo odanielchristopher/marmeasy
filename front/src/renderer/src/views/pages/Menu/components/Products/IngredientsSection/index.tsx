@@ -5,9 +5,11 @@ import { Ingredient } from '@renderer/app/entities/Ingredient';
 import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
 import Loader from '@renderer/views/components/Loader';
 
+import addNotes from '@renderer/assets/Images/add-notes.svg';
+
 import useIngredientsSection from './useIngredientsSection';
 
-import { Container, StyledRdxCheckbox } from './styles';
+import { Container, EmptyContainer, StyledRdxCheckbox } from './styles';
 
 interface IngredientsProps {
   openNewIngredientModal(): void;
@@ -22,6 +24,7 @@ export default function IngredientsSection({
 }: IngredientsProps) {
   const {
     isLoading,
+    hasIngredients,
     filteredIngredients,
     handleChangeSearchTerm,
   } = useIngredientsSection();
@@ -36,7 +39,11 @@ export default function IngredientsSection({
       <div className="filter">
         <span>Busque o ingrediente</span>
 
-        <input type="text" placeholder="Ex: Baião" onChange={(event) => handleChangeSearchTerm(event)}/>
+        <input
+          type="text"
+          placeholder="Ex: Baião"
+          onChange={(event) => handleChangeSearchTerm(event)}
+        />
       </div>
 
       <div className="list">
@@ -48,22 +55,35 @@ export default function IngredientsSection({
 
         {!isLoading &&
           filteredIngredients.map((ingredient, key) => {
-            const isChecked = selectedIngredientsIds.some((ingredientsId) => ingredientsId === ingredient.id);
+            const isChecked = selectedIngredientsIds.some(
+              (ingredientsId) => ingredientsId === ingredient.id,
+            );
 
             return (
               <label className="item" htmlFor={ingredient.id} key={key}>
-              <span>
-                {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}
-              </span>
+                <span>
+                  {ingredient.icon} {capitalizeFirstLetter(ingredient.name)}
+                </span>
 
-              <StyledRdxCheckbox id={ingredient.id} onCheckedChange={() => onSelected(ingredient)} checked={isChecked}>
-                <Checkbox.Indicator className="indicator">
-                  <FaCheck size={10} />
-                </Checkbox.Indicator>
-              </StyledRdxCheckbox>
-            </label>
+                <StyledRdxCheckbox
+                  id={ingredient.id}
+                  onCheckedChange={() => onSelected(ingredient)}
+                  checked={isChecked}
+                >
+                  <Checkbox.Indicator className="indicator">
+                    <FaCheck size={10} />
+                  </Checkbox.Indicator>
+                </StyledRdxCheckbox>
+              </label>
             );
           })}
+
+        {!isLoading && !hasIngredients && (
+          <EmptyContainer>
+            <img src={addNotes} alt="Sem ingredients" />
+            <span>Não encontramos nenhum ingrediente.</span>
+          </EmptyContainer>
+        )}
       </div>
     </Container>
   );

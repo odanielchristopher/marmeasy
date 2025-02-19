@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin-top: 4.0rem;
+  margin-top: 4rem;
 
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 4.0rem;
+  gap: 4rem;
 `;
 
 export const Content = styled.div`
@@ -18,7 +18,7 @@ export const Content = styled.div`
   font-size: 1.6rem;
 
   strong {
-    max-width: 20.0rem;
+    max-width: 20rem;
     text-align: center;
     font-weight: 700;
   }
@@ -31,9 +31,9 @@ export const Content = styled.div`
 export const CancelButton = styled.button`
   align-items: center;
   background: transparent;
-  border: .1rem solid ${({ theme }) => theme.colors.black.main};
+  border: 0.1rem solid ${({ theme }) => theme.colors.black.main};
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: 0rem .4rem 1.0rem 0rem #0000000A;
+  box-shadow: 0rem 0.4rem 1rem 0rem #0000000a;
   color: ${({ theme }) => theme.colors.black.main};
   display: flex;
   font-size: 1.6rem;
@@ -41,20 +41,20 @@ export const CancelButton = styled.button`
   justify-content: center;
   height: 4.2rem;
   padding: 0 1.4rem;
-  transition: background .2s ease-in;
+  transition: background 0.2s ease-in;
 
   &:hover {
-    border: .1rem solid ${({ theme }) => theme.colors.gray.main};
+    border: 0.1rem solid ${({ theme }) => theme.colors.gray.main};
     color: ${({ theme }) => theme.colors.gray.main};
   }
 
   &:focus {
-    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+    outline: 0.1rem solid ${({ theme }) => theme.colors.green.main};
   }
 
   &:active {
     outline: none;
-    border: .1rem solid ${({ theme }) => theme.colors.gray.light};
+    border: 0.1rem solid ${({ theme }) => theme.colors.gray.light};
     color: ${({ theme }) => theme.colors.gray.light};
   }
 

@@ -1,57 +1,54 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { ValidateUserOwnershipService } from 'src/modules/users/services/validate-user-ownership.service';
-import { ClientsRespository } from 'src/shared/database/repositories/clients.repository';
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
+import { IValidateUserOwnershipService } from 'src/modules/users/interfaces/validate-user-ownership-service.interface';
+import { IClientsRepository } from 'src/shared/database/interfaces/clients-repository.interface';
+import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 import { CreateClientDto } from '../dto/create-client.dto';
 import { UpdateClientDto } from '../dto/update-client.dto';
-import { ValidateClientOwnershipService } from './validate-client-ownership.service';
+import { IClientsService } from '../interfaces/clients-service.interface';
+import { IValidateClientOwnershipService } from '../interfaces/validate-client-ownership-service.interface';
 
 @Injectable()
-export class ClientsService {
+export class ClientsService implements IClientsService {
   constructor(
-    private readonly clientsRepository: ClientsRespository,
-    private readonly validateUserOwnershipService: ValidateUserOwnershipService,
-    private readonly validateClientOwnershipService: ValidateClientOwnershipService,
+    @Inject(IClientsRepository)
+    private readonly clientsRepository: IClientsRepository,
+    @Inject(IValidateUserOwnershipService)
+    private readonly validateUserOwnershipService: IValidateUserOwnershipService,
+    @Inject(IValidateClientOwnershipService)
+    private readonly validateClientOwnershipService: IValidateClientOwnershipService,
   ) {}
 
-  async findAllByUserId(userId: string) {
-    const clients = await this.clientsRepository.findMany({
-      where: {
-        userId,
-      },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        type: true,
-        address: true,
-        document: true,
-        balance: true,
-      },
+  findAllBySearchTerm(
+    userId: string,
+    searchTerm: SearchTermDto,
+    page: number,
+    perPage: number,
+  ) {
+    return this.clientsRepository.findManyBySearchTerm({
+      userId,
+      searchTerm,
+      page: page || 1,
+      perPage: perPage || 20,
+      order: 'asc',
     });
-
-    const sortedClients = clients.sort((a, b) =>
-      a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1,
-    );
-
-    return sortedClients;
   }
 
-  async findOneByUserId(userId: string, clientId: string) {
-    return this.clientsRepository.findFirst({
-      where: {
-        userId,
-        id: clientId,
-      },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        type: true,
-        address: true,
-        document: true,
-        balance: true,
-      },
+  findAllByUserId(userId: string, page: number, perPage: number) {
+    return this.clientsRepository.findManyByUserId({
+      userId,
+      order: 'asc',
+      page: page || 1,
+      perPage: perPage || 20,
     });
+  }
+
+  findOneByUserId(userId: string, clientId: string) {
+    return this.clientsRepository.findFirstById({ userId, id: clientId });
   }
 
   async create(userId: string, createClientDto: CreateClientDto) {
@@ -61,28 +58,39 @@ export class ClientsService {
       createClientDto;
 
     if (document) {
-      const documentAlreadyExists = await this.clientsRepository.findFirst({
-        where: { userId, document },
-        select: {
-          document: true,
-        },
-      });
+      const clientAlreadyExists =
+        await this.clientsRepository.findFirstByDocument({ userId, document });
 
       const errorMessage =
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
-      if (documentAlreadyExists) {
+      if (clientAlreadyExists && clientAlreadyExists.active) {
         throw new BadRequestException(errorMessage);
+      }
+
+      if (clientAlreadyExists && !clientAlreadyExists.active) {
+        return this.clientsRepository.update({
+          userId,
+          data: {
+            id: clientAlreadyExists.id,
+            name,
+            phone,
+            address,
+            document,
+            type,
+            balance: initialBalance,
+          },
+        });
       }
     }
 
     return this.clientsRepository.create({
+      userId,
       data: {
-        userId,
         name,
-        phone: phone || null,
-        address: address || null,
-        document: document || null,
+        phone,
+        address,
+        document,
         type,
         balance: initialBalance,
       },
@@ -99,40 +107,29 @@ export class ClientsService {
     const { name, phone, address, document, type, balance } = updateClientDto;
 
     if (document) {
-      const client = await this.clientsRepository.findFirst({
-        where: { userId, document },
-        select: {
-          document: true,
-          id: true,
-        },
+      const client = await this.clientsRepository.findFirstByDocument({
+        userId,
+        document,
       });
 
       const errorMessage =
         type === 'FISICO' ? 'CPF já cadastrado.' : 'CNPJ já cadastrado.';
 
       if (client && client.id !== clientId) {
-        throw new BadRequestException(errorMessage);
+        throw new ConflictException(errorMessage);
       }
     }
 
     return this.clientsRepository.update({
-      where: { userId, id: clientId },
+      userId,
       data: {
+        id: clientId,
         name,
-        phone: phone || null,
-        address: address || null,
-        document: document || null,
+        phone,
+        address,
+        document,
         type,
         balance,
-      },
-      select: {
-        id: true,
-        name: true,
-        phone: true,
-        address: true,
-        document: true,
-        type: true,
-        balance: true,
       },
     });
   }
@@ -140,9 +137,7 @@ export class ClientsService {
   async remove(userId: string, clientId: string) {
     await this.validateClientOwnershipService.validate(userId, clientId);
 
-    await this.clientsRepository.delete({
-      where: { id: clientId },
-    });
+    await this.clientsRepository.delete({ userId, id: clientId });
 
     return null;
   }

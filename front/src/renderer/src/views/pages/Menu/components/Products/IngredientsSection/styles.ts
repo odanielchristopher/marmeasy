@@ -7,7 +7,7 @@ export const Container = styled.div`
   gap: 2.4rem;
 
   width: 100%;
-  max-width: 42.0rem;
+  max-width: 42rem;
 
   header {
     display: flex;
@@ -90,6 +90,21 @@ export const Container = styled.div`
 
       padding: 1.6rem;
     }
+  }
+`;
+
+export const EmptyContainer = styled.div`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+
+  color: ${({ theme }) => theme.colors.gray.dark};
+
+  img {
+    width: 200px;
   }
 `;
 

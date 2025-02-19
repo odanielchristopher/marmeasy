@@ -3,37 +3,67 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { makeDateRangeDto } from 'src/shared/factories/date-range-dto.factory';
+import { makeSearchTermDto } from 'src/shared/factories/search-term-dto.factory';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { OrdersService } from './services/orders.service';
-import { UpdateStatusOrderDto } from './dto/update-status-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { UpdateQuantityOrderItemDto } from './dto/update-order-item.dto';
+import { IOrdersService } from './interfaces/orders-service.interface';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) {}
+  constructor(
+    @Inject(IOrdersService) private readonly ordersService: IOrdersService,
+  ) {}
+
+  @Get('/search')
+  findAllBySearchTerm(
+    @ActiveUserId() userId: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Query('query') searchTerm: string,
+  ) {
+    return this.ordersService.findAllBySearchTerm({
+      userId,
+      page,
+      perPage,
+      dateRange: this.makeDateRange({ from, to }),
+      searchTerm: makeSearchTermDto(searchTerm),
+    });
+  }
 
   @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.ordersService.findAllByUserId(userId);
-  }
-
-  @Get(':orderId')
-  findOne(
+  findAll(
     @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
   ) {
-    return this.ordersService.findOneById(userId, orderId);
+    return this.ordersService.findAllUserId({
+      userId,
+      page,
+      perPage,
+      dateRange: this.makeDateRange({ from, to }),
+    });
   }
 
+  @Get(':clientId')
+  findAlByClient(
+    @ActiveUserId() userId: string,
+    @Param('clientId', ParseUUIDPipe) clientId: string,
+  ) {
+    return this.ordersService.findAllByClientId(userId, clientId);
+  }
 
   @Post()
   create(
@@ -43,31 +73,13 @@ export class OrdersController {
     return this.ordersService.create(userId, createOrderDto);
   }
 
-  @Put('/:orderId')
+  @Put(':orderId')
   update(
     @ActiveUserId() userId: string,
     @Param('orderId', ParseUUIDPipe) orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
     return this.ordersService.update(userId, orderId, updateOrderDto);
-  }
-
-  @Put('/:orderId/items/:orderItemId')
-  updateQuantity(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Param('orderItemId', ParseUUIDPipe) orderItemId: string,
-    @Body() updateQuantityOrderItemDto: UpdateQuantityOrderItemDto,
-  ) {
-    return this.ordersService.updateQuantityItem(userId, orderId, orderItemId, updateQuantityOrderItemDto);
-  }
-  @Put('/status/:orderId')
-  updateStatus(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Body() updateStatusOrderDto: UpdateStatusOrderDto,
-  ) {
-    return this.ordersService.updateStatus(userId, orderId, updateStatusOrderDto);
   }
 
   @Delete(':orderId')
@@ -78,12 +90,7 @@ export class OrdersController {
     return this.ordersService.delete(userId, orderId);
   }
 
-  @Delete(':orderId/items/:orderItemId')
-  deleteItem(
-    @ActiveUserId() userId: string,
-    @Param('orderId', ParseUUIDPipe) orderId: string,
-    @Param('orderItemId', ParseUUIDPipe) orderItemId: string,
-  ) {
-    return this.ordersService.deleteItem(userId, orderId, orderItemId);
+  private makeDateRange({ from, to }: { from: string; to: string }) {
+    return from && to && makeDateRangeDto({ from, to });
   }
 }

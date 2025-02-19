@@ -4,11 +4,13 @@ import { DropdownMenu } from '../DropdownMenu';
 
 import { BusinessIcon } from '@renderer/assets/Icons/Business';
 import { ClientIcon } from '@renderer/assets/Icons/ClientIcon';
+import { Refeicao } from '@renderer/assets/Icons/Refeicao';
 
 import { Container, StyledButton, StyledItem } from './styles';
 
-import ClientModal from '@renderer/views/modals/ClientModal';
-import CompanyModal from '@renderer/views/modals/CompanyModal';
+import ClientModal from '@renderer/views/pages/Clients/components/modals/ClientModal';
+import CompanyModal from '@renderer/views/pages/Clients/components/modals/CompanyModal';
+import OrderModal from '@renderer/views/pages/Orders/components/Orders/NewOrderModal';
 import { useFab } from './useFab';
 
 export default function Fab() {
@@ -19,12 +21,28 @@ export default function Fab() {
     handleOpenCompanyModal,
     handleCloseClientModal,
     handleCloseCompanyModal,
+    isOpenOrderModal,
+    handleOpenOrderModal,
+    handleCloseOrderModal,
   } = useFab();
 
   return (
     <Container>
-      <ClientModal isOpen={isOpenModalClient} onClose={handleCloseClientModal} />
-      <CompanyModal isOpen={isOpenModalCompany} onClose={handleCloseCompanyModal} />
+      {isOpenModalClient && (
+        <ClientModal
+          isOpen={isOpenModalClient}
+          onClose={handleCloseClientModal}
+        />
+      )}
+      {isOpenModalCompany && (
+        <CompanyModal
+          isOpen={isOpenModalCompany}
+          onClose={handleCloseCompanyModal}
+        />
+      )}
+      {isOpenOrderModal && (
+        <OrderModal isOpen={isOpenOrderModal} onClose={handleCloseOrderModal} />
+      )}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <StyledButton>
@@ -39,10 +57,19 @@ export default function Fab() {
               Novo cliente
             </StyledItem>
           </DropdownMenu.Item>
-          <DropdownMenu.Item onSelected={() => handleOpenCompanyModal()} asChild>
+          <DropdownMenu.Item
+            onSelected={() => handleOpenCompanyModal()}
+            asChild
+          >
             <StyledItem>
               <BusinessIcon />
               Nova empresa
+            </StyledItem>
+          </DropdownMenu.Item>
+          <DropdownMenu.Item onSelected={() => handleOpenOrderModal()} asChild>
+            <StyledItem>
+              <Refeicao />
+              Novo pedido
             </StyledItem>
           </DropdownMenu.Item>
         </DropdownMenu.Content>

@@ -10,11 +10,17 @@ export default function useDeleteProductModal(
   productBeingDeleted: Product | null,
 ) {
   const { mutateAsync: removeProduct, isPending: isLoading } = useMutation({
-    mutationFn: async (data: RemoveProductParams) => productsService.remove(data),
+    mutationFn: async (data: RemoveProductParams) =>
+      productsService.remove(data),
     onSuccess: () => {
-      queryClient.setQueryData(['products', 'getAll'], (products: Product[]) => {
-        return products.filter((product) => product.id !== productBeingDeleted!.id);
-      });
+      queryClient.setQueryData(
+        ['products', 'getAll'],
+        (products: Product[]) => {
+          return products.filter(
+            (product) => product.id !== productBeingDeleted!.id,
+          );
+        },
+      );
     },
   });
 

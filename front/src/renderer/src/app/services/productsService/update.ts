@@ -7,7 +7,7 @@ export interface UpdateProductParams {
   name: string;
   description?: string;
   price: string;
-  categoryId: string;
+  categoryId?: string;
   ingredientsIds: string[];
   removeImage: boolean;
 }
@@ -32,12 +32,19 @@ export async function update({
     formData.append('description', description);
   }
 
+  if (categoryId) {
+    formData.append('categoryId', categoryId);
+  }
+
+  formData.append('id', id);
   formData.append('name', name);
   formData.append('price', price);
-  formData.append('categoryId', categoryId);
   formData.append('ingredientsIds', JSON.stringify(ingredientsIds));
 
-  const { data } = await httpClient.put<Product>(`/products/${id}?removeImage=${removeImage}`, formData);
+  const { data } = await httpClient.put<Product>(
+    `/products/${id}?removeImage=${removeImage}`,
+    formData,
+  );
 
   return data;
 }

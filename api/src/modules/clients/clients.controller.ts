@@ -5,23 +5,47 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   Param,
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { makeSearchTermDto } from 'src/shared/factories/search-term-dto.factory';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
-import { ClientsService } from './services/clients.service';
+import { IClientsService } from './interfaces/clients-service.interface';
 
 @Controller('clients')
 export class ClientsController {
-  constructor(private readonly clientsService: ClientsService) {}
+  constructor(
+    @Inject(IClientsService) private readonly clientsService: IClientsService,
+  ) {}
+
+  @Get('/search')
+  findAllBySearchTerm(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+    @Query('query') searchTerm: string,
+  ) {
+    return this.clientsService.findAllBySearchTerm(
+      userId,
+      makeSearchTermDto(searchTerm),
+      page,
+      perPage,
+    );
+  }
 
   @Get()
-  findAll(@ActiveUserId() userId: string) {
-    return this.clientsService.findAllByUserId(userId);
+  findAll(
+    @ActiveUserId() userId: string,
+    @Query('page') page: number,
+    @Query('perPage') perPage: number,
+  ) {
+    return this.clientsService.findAllByUserId(userId, page, perPage);
   }
 
   @Get(':clientId')
