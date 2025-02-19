@@ -36,6 +36,7 @@ const prismaResponse = {
   discount: true,
   status: true,
   totalValue: true,
+  active: true,
   items: {
     select: {
       id: true,
@@ -71,6 +72,7 @@ export class OrdersRepository implements IOrdersRepository {
       take: perPage || 10,
       where: {
         userId,
+        active: true,
         date: {
           gte: from,
           lte: to,
@@ -154,7 +156,7 @@ export class OrdersRepository implements IOrdersRepository {
     const { order, userId, clientId } = findManyByClientIdDto;
 
     const findendOrders = await this.prismaService.order.findMany({
-      where: { userId, clientId },
+      where: { userId, clientId, active: true },
       orderBy: { date: order },
       select: prismaResponse,
     });
@@ -176,6 +178,7 @@ export class OrdersRepository implements IOrdersRepository {
       take: perPage || 10,
       where: {
         userId,
+        active: true,
         date: {
           gte: from,
           lte: to,
@@ -200,7 +203,7 @@ export class OrdersRepository implements IOrdersRepository {
     const { id, userId, clientId } = findFirstByClientIdDto;
 
     const findedOrder = await this.prismaService.order.findFirst({
-      where: { id, userId, clientId },
+      where: { id, userId, clientId, active: true },
       select: prismaResponse,
     });
 
@@ -213,7 +216,7 @@ export class OrdersRepository implements IOrdersRepository {
     const { id, userId } = findUniqueDto;
 
     const findedOrder = await this.prismaService.order.findUnique({
-      where: { id, userId },
+      where: { id, userId, active: true },
       select: prismaResponse,
     });
 
@@ -273,9 +276,11 @@ export class OrdersRepository implements IOrdersRepository {
   async delete(deleteDto: DeleteOrderItemDto): Promise<Order | void> {
     const { id, userId } = deleteDto;
 
-    await this.prismaService.order.delete({
+    await this.prismaService.order.update({
       where: { id, userId },
-      include: { items: true },
+      data: {
+        active: false,
+      },
     });
   }
 
