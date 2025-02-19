@@ -36,14 +36,13 @@ export class IngredientsRepository implements IIngredientsRepository {
   ): Promise<Ingredient> {
     const { userId, id } = findFirstByIdDto;
 
-    const findedIngredient = await this.prismaService.ingredient.findFirst({
-      where: { userId, id },
-      select: {
-        id: true,
-        name: true,
-        icon: true,
-      },
-    });
+    const [findedIngredient] = await this.prismaService.$queryRaw<Ingredient[]>`
+      SELECT id, name, icon
+      FROM ingredients
+      WHERE user_id = ${userId}::uuid
+      AND id = ${id}::uuid
+      LIMIT 1;
+    `;
 
     return findedIngredient;
   }
