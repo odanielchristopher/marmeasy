@@ -57,10 +57,7 @@ type FormData = z.infer<typeof schema>;
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
 
-  const {
-    isProfileModalOpen: isOpen,
-    handleCloseProfileModal,
-  } = useModals();
+  const { isProfileModalOpen: isOpen, handleCloseProfileModal } = useModals();
 
   const {
     register,
