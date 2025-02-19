@@ -23,4 +23,4 @@ RUN npm install -g @nestjs/cli
 EXPOSE 3000
 
 # Comando inicial para rodar em modo desenvolvimento
-CMD ["npm", "run", "start:dev"]
+CMD ["npm", "run", "start:prod"]

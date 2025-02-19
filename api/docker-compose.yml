@@ -25,7 +25,7 @@ services:
       - /usr/src/app/uploads
     depends_on:
       - postgres
-    command: npm run start:dev # Comando automatizado
+    command: npm run start:prod # Comando automatizado
 
 volumes:
   postgres_data:
