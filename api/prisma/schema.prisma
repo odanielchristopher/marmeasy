@@ -97,6 +97,7 @@ model Order {
   date       DateTime    @default(now())
   totalValue Float       @default(0)
   discount   Float       @default(0)
+  active     Boolean     @default(true)
   status     OrderStatus @default(PENDING)
   items      OrderItem[]
 
