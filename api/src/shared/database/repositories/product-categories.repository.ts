@@ -22,19 +22,19 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory[] | null> {
     const { userId, order } = findManyDto;
 
-    // Garante que order só tenha valores permitidos
-    const validOrder = order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
-
-    const query = `
-      SELECT id, name, icon
-      FROM product_category
-      WHERE user_id = $1::uuid
-      ORDER BY name ${validOrder}
-    `;
-
-    const productCategories = await this.prismaService.$queryRawUnsafe<
+    const productCategories = await this.prismaService.$queryRaw<
       ProductCategory[]
-    >(query, userId);
+    >`
+      SELECT
+        id,
+        name,
+        icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid
+      ORDER BY
+        CASE WHEN ${order} = 'DESC' THEN name END DESC,
+        CASE WHEN ${order} = 'ASC' THEN name END ASC;
+    `;
 
     return productCategories.length > 0 ? productCategories : null;
   }
