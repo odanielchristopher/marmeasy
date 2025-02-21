@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Client as PrismaClient } from '@prisma/client';
 
 import { Client } from 'src/modules/clients/entities/client.entity';
-import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IClientMapperFactory } from 'src/shared/mappers/factories/client-mapper.factory';
+import { IDataMapperFactory } from 'src/shared/mappers/interfaces/data-mapper-factory.interface';
 import { IPaginatedResponse } from 'src/shared/types';
 import {
   CreateClientDto,
@@ -21,8 +21,11 @@ import { PrismaService } from '../prisma.service';
 export class ClientsRepository implements IClientsRepository {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(IDataMappersFactory)
-    private readonly dataMappersFactory: IDataMappersFactory,
+    @Inject(IClientMapperFactory)
+    private readonly clientMapperFactory: IDataMapperFactory<
+      PrismaClient,
+      Client
+    >,
   ) {}
 
   async findManyBySearchTerm(
@@ -155,8 +158,6 @@ export class ClientsRepository implements IClientsRepository {
   }
 
   private parser(prismaClient: PrismaClient): Client {
-    return this.dataMappersFactory
-      .getInstance<PrismaClient, Client>(DataMapperType.CLIENT)
-      .toDomain(prismaClient);
+    return this.clientMapperFactory.getInstance().toDomain(prismaClient);
   }
 }

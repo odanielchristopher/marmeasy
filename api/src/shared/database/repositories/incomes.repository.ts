@@ -8,17 +8,26 @@ import {
   IIncomesRepository,
 } from '../interfaces/incomes-repository.interface';
 
-import { Prisma, Payment as PrismaPayment } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 import { PrismaPaymentWithClientName } from 'src/shared/mappers/classes/income.mapper';
-import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IIncomeMapperFactory } from 'src/shared/mappers/factories/income-mapper.factory';
+import { IPartialIncomeMapperFactory } from 'src/shared/mappers/factories/partial-income-mapper.factory';
+import { IDataMapperFactory } from 'src/shared/mappers/interfaces/data-mapper-factory.interface';
 
 @Injectable()
 export class IncomesRepository implements IIncomesRepository {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(IDataMappersFactory)
-    private readonly dataMappersFactory: IDataMappersFactory,
+    @Inject(IIncomeMapperFactory)
+    private readonly incomeMapperFactory: IDataMapperFactory<
+      PrismaPaymentWithClientName,
+      Income
+    >,
+    @Inject(IPartialIncomeMapperFactory)
+    private readonly partialIncomeMapperFactory: IDataMapperFactory<
+      Partial<PrismaPaymentWithClientName>,
+      Partial<Income>
+    >,
   ) {}
 
   async findManyByUser(findManyDto: FindManyDto): Promise<Partial<Income>[]> {
@@ -93,17 +102,10 @@ export class IncomesRepository implements IIncomesRepository {
   }
 
   private parser(prismaIncome: PrismaPaymentWithClientName) {
-    return this.dataMappersFactory
-      .getInstance<PrismaPaymentWithClientName, Income>(DataMapperType.INCOME)
-      .toDomain(prismaIncome);
+    return this.incomeMapperFactory.getInstance().toDomain(prismaIncome);
   }
 
   private partialParser(prismaIncome: Partial<PrismaPaymentWithClientName>) {
-    return this.dataMappersFactory
-      .getInstance<
-        Partial<PrismaPayment>,
-        Partial<Income>
-      >(DataMapperType.PARTIAL_INCOME)
-      .toDomain(prismaIncome);
+    return this.partialIncomeMapperFactory.getInstance().toDomain(prismaIncome);
   }
 }

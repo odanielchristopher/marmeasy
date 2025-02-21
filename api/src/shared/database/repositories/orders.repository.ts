@@ -24,8 +24,10 @@ import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { PrismaFavoriteResponse } from 'src/shared/mappers/classes/favorite-ingredient.mapper';
 import { PrismaOrderResponse } from 'src/shared/mappers/classes/order.mapper';
 import { PrismaSaleResponse } from 'src/shared/mappers/classes/sale.mapper';
-import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IFavoriteIngredientMapperFactory } from 'src/shared/mappers/factories/favorite-ingredient-mapper.factory';
+import { IOrderMapperFactory } from 'src/shared/mappers/factories/order-mapper.factory';
+import { ISaleMapperFactory } from 'src/shared/mappers/factories/sale-mapper.factory';
+import { IDataMapperFactory } from 'src/shared/mappers/interfaces/data-mapper-factory.interface';
 import { IPaginatedResponse } from 'src/shared/types';
 
 const prismaResponse = {
@@ -54,8 +56,21 @@ const prismaResponse = {
 export class OrdersRepository implements IOrdersRepository {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(IDataMappersFactory)
-    private readonly dataMappersFactory: IDataMappersFactory,
+    @Inject(IOrderMapperFactory)
+    private readonly orderMapperFactory: IDataMapperFactory<
+      PrismaOrderResponse,
+      Order
+    >,
+    @Inject(ISaleMapperFactory)
+    private readonly saleMapperFactory: IDataMapperFactory<
+      PrismaSaleResponse,
+      Sale
+    >,
+    @Inject(IFavoriteIngredientMapperFactory)
+    private readonly favoriteIngredientMapperFactory: IDataMapperFactory<
+      PrismaFavoriteResponse,
+      FavoriteIngredient
+    >,
   ) {}
 
   async findManyBySearchTerm(
@@ -298,23 +313,16 @@ export class OrdersRepository implements IOrdersRepository {
   }
 
   private parser(prismaOrder: PrismaOrderResponse) {
-    return this.dataMappersFactory
-      .getInstance<PrismaOrderResponse, Order>(DataMapperType.ORDER)
-      .toDomain(prismaOrder);
+    return this.orderMapperFactory.getInstance().toDomain(prismaOrder);
   }
 
   private saleParser(prismaSale: PrismaSaleResponse) {
-    return this.dataMappersFactory
-      .getInstance<PrismaSaleResponse, Sale>(DataMapperType.SALE)
-      .toDomain(prismaSale);
+    return this.saleMapperFactory.getInstance().toDomain(prismaSale);
   }
 
   private favoriteIngredientParser(prismaFavorite: PrismaFavoriteResponse) {
-    return this.dataMappersFactory
-      .getInstance<
-        PrismaFavoriteResponse,
-        FavoriteIngredient
-      >(DataMapperType.FAVORITE)
+    return this.favoriteIngredientMapperFactory
+      .getInstance()
       .toDomain(prismaFavorite);
   }
 }

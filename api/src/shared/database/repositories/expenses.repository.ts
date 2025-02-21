@@ -11,16 +11,19 @@ import {
 } from '../interfaces/expenses-repository.interface';
 
 import { Expense } from 'src/modules/expenses/entities/expense.entity';
-import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IPaymentMapperFactory } from 'src/shared/mappers/factories/payment-mapper.factory';
+import { IDataMapperFactory } from 'src/shared/mappers/interfaces/data-mapper-factory.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class ExpensesRepository implements IExpensesRepository {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(IDataMappersFactory)
-    private readonly dataMappersFactory: IDataMappersFactory,
+    @Inject(IPaymentMapperFactory)
+    private readonly paymentMapperFactory: IDataMapperFactory<
+      PrismaExpense,
+      Expense
+    >,
   ) {}
 
   async findManyByUser(findAllDto: FindManyExpenseDto): Promise<Expense[]> {
@@ -137,8 +140,6 @@ export class ExpensesRepository implements IExpensesRepository {
   }
 
   private parser(prismaExpense: PrismaExpense) {
-    return this.dataMappersFactory
-      .getInstance<PrismaExpense, Expense>(DataMapperType.EXPENSE)
-      .toDomain(prismaExpense);
+    return this.paymentMapperFactory.getInstance().toDomain(prismaExpense);
   }
 }

@@ -10,7 +10,7 @@ export type PrismaPaymentWithClientName = PrismaPayment & {
 
 @Injectable()
 export class PartialIncomeMapper
-  implements IDataMapper<Partial<PrismaPayment>, Partial<Income>>
+  implements IDataMapper<Partial<PrismaPaymentWithClientName>, Partial<Income>>
 {
   private static instace: PartialIncomeMapper;
 
@@ -22,7 +22,9 @@ export class PartialIncomeMapper
     return this.instace;
   }
 
-  toDomain(persistenceObject: Partial<PrismaPayment>): Partial<Income> {
+  toDomain(
+    persistenceObject: Partial<PrismaPaymentWithClientName>,
+  ): Partial<Income> {
     if (!persistenceObject) {
       return null;
     }

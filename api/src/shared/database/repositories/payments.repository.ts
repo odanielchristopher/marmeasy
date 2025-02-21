@@ -12,16 +12,19 @@ import {
   UpdatePaymentDto,
 } from '../interfaces/payments-repository.interface';
 
-import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IPaymentMapperFactory } from 'src/shared/mappers/factories/payment-mapper.factory';
+import { IDataMapperFactory } from 'src/shared/mappers/interfaces/data-mapper-factory.interface';
 import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class PaymentsRepository implements IPaymentsRepository {
   constructor(
     private readonly prismaService: PrismaService,
-    @Inject(IDataMappersFactory)
-    private readonly dataMappersFactory: IDataMappersFactory,
+    @Inject(IPaymentMapperFactory)
+    private readonly paymentMapperFactory: IDataMapperFactory<
+      PrismaPayment,
+      Payment
+    >,
   ) {}
 
   async findManyByClientId(
@@ -97,8 +100,6 @@ export class PaymentsRepository implements IPaymentsRepository {
   }
 
   private parser(prismaPayment: PrismaPayment) {
-    return this.dataMappersFactory
-      .getInstance<PrismaPayment, Payment>(DataMapperType.PAYMENT)
-      .toDomain(prismaPayment);
+    return this.paymentMapperFactory.getInstance().toDomain(prismaPayment);
   }
 }
