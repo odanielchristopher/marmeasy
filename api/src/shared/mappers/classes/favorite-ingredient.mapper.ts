@@ -9,6 +9,18 @@ export type PrismaFavoriteResponse = {
 export class FavoriteIngredientMapper
   implements IDataMapper<PrismaFavoriteResponse, FavoriteIngredient>
 {
+  private static instace: FavoriteIngredientMapper;
+
+  static getInstance() {
+    if (!this.instace) {
+      this.instace = new FavoriteIngredientMapper();
+    }
+
+    return this.instace;
+  }
+
+  private constructor() {}
+
   toDomain(persistenceObject: PrismaFavoriteResponse): FavoriteIngredient {
     if (!persistenceObject) {
       return null;

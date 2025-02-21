@@ -6,6 +6,18 @@ import {
 import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export class ExpenseMapper implements IDataMapper<PrismaExpense, Expense> {
+  private static instace: ExpenseMapper;
+
+  static getInstance() {
+    if (!this.instace) {
+      this.instace = new ExpenseMapper();
+    }
+
+    return this.instace;
+  }
+
+  private constructor() {}
+
   toDomain(persistenceObject: PrismaExpense): Expense {
     if (!persistenceObject) {
       return null;

@@ -6,6 +6,16 @@ import {
 import { IDataMapper } from '../interfaces/data-mapper.interface';
 
 export class PaymentMapper implements IDataMapper<PrismaPayment, Payment> {
+  private static instace: PaymentMapper;
+
+  static getInstance() {
+    if (!this.instace) {
+      this.instace = new PaymentMapper();
+    }
+
+    return this.instace;
+  }
+
   toDomain(persistenceObject: PrismaPayment): Payment {
     if (!persistenceObject) {
       return null;

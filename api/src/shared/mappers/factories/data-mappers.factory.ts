@@ -1,4 +1,3 @@
-import { Constructor } from 'src/shared/types';
 import { ClientMapper } from '../classes/client.mapper';
 import { ExpenseMapper } from '../classes/expense.mapper';
 import { FavoriteIngredientMapper } from '../classes/favorite-ingredient.mapper';
@@ -23,28 +22,30 @@ export enum DataMapperType {
 }
 
 export class DataMappersFactory implements IDataMappersFactory {
-  private dataMappers = new Map<
-    DataMapperType,
-    Constructor<IDataMapper<any, any>>
-  >();
+  private dataMappers = new Map<DataMapperType, IDataMapper<any, any>>();
 
   constructor() {
-    this.dataMappers.set(DataMapperType.SALE, SaleMapper);
-    this.dataMappers.set(DataMapperType.EXPENSE, ExpenseMapper);
-    this.dataMappers.set(DataMapperType.ORDER, OrderMapper);
-    this.dataMappers.set(DataMapperType.INCOME, IncomeMapper);
-    this.dataMappers.set(DataMapperType.CLIENT, ClientMapper);
-    this.dataMappers.set(DataMapperType.PAYMENT, PaymentMapper);
+    this.dataMappers.set(DataMapperType.CLIENT, ClientMapper.getInstance());
 
-    this.dataMappers.set(DataMapperType.PARTIAL_INCOME, PartialIncomeMapper);
-    this.dataMappers.set(DataMapperType.FAVORITE, FavoriteIngredientMapper);
+    this.dataMappers.set(DataMapperType.SALE, SaleMapper.getInstance());
+    this.dataMappers.set(DataMapperType.EXPENSE, ExpenseMapper.getInstance());
+    this.dataMappers.set(DataMapperType.ORDER, OrderMapper.getInstance());
+    this.dataMappers.set(DataMapperType.INCOME, IncomeMapper.getInstance());
+    this.dataMappers.set(DataMapperType.PAYMENT, PaymentMapper.getInstance());
+
+    this.dataMappers.set(
+      DataMapperType.PARTIAL_INCOME,
+      PartialIncomeMapper.getInstance(),
+    );
+    this.dataMappers.set(
+      DataMapperType.FAVORITE,
+      FavoriteIngredientMapper.getInstance(),
+    );
   }
 
   getInstance<TPersistenceObject, TDomainEntity>(
     token: DataMapperType,
   ): IDataMapper<TPersistenceObject, TDomainEntity> {
-    const implementation = this.dataMappers.get(token);
-
-    return new implementation();
+    return this.dataMappers.get(token);
   }
 }
