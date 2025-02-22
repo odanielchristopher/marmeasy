@@ -16,9 +16,13 @@ const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
     handleShowOrderData(order);
   };
 
+
   return (
     <>
       {orders.map((order) => {
+        const valor = order?.items.reduce((sum, item) => sum + item.total, 0);
+        if(order)
+          order.totalValue = valor || 0;
         const totalQuantity = order.items.reduce((sum, item) => sum + item.quantity, 0);
         return (
           <Container key={order.id} onClick={() => handleSelectOrder(order)} className={selectedOrderId === order.id ? 'selected' : ''}>

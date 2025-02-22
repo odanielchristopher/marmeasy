@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+  overflow-y: auto;
 
   header {
     display: flex;
@@ -78,4 +79,21 @@ export const Line = styled.div`
   height: 1px;
   background-color: #ccc;
   margin: 8px 0;
+`;
+
+export const ButtonDelete = styled.div`
+  background-color: ${({ theme }) => theme.colors.red.main};
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 15px;
+  text-align: center;
+  cursor: pointer;
+  opacity: 1;
+  transition: ease-in-out .2s;
+
+  &:hover {
+    opacity: .7;
+    transition: ease-in-out .2s;
+  }
 `;

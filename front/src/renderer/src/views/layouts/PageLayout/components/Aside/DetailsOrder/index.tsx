@@ -1,9 +1,8 @@
-import { Container } from './styles';
-
 import { Order } from '@renderer/app/entities/Order';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import edit from '@renderer/assets/Images/Edit.svg';
-import { ItemBox, Line } from './styles';
+import NewOrderModal from '../../../../../pages/Orders/components/Orders/NewOrderModal';
+import { ButtonDelete, Container, ItemBox, Line } from './styles';
 import useDetailsOrder from './useDetailsOrder';
 
 interface DetailsOrderProps {
@@ -11,12 +10,18 @@ interface DetailsOrderProps {
 }
 
 export default function DetailsOrder({ order }: DetailsOrderProps) {
-  const { handleEditOrder } = useDetailsOrder();
+  const {
+    isEditOrderModalOpen,
+    orderDetails,
+    handleEditOrder,
+    handleCloseEditOrderModal,
+  } = useDetailsOrder();
+
   return (
     <Container>
       <header>
         <p>Detalhes do pedido</p>
-        <img src={edit} alt="Edit" onClick={() => handleEditOrder()}/>
+        <img src={edit} alt="Edit" onClick={() => order && handleEditOrder(order)}/>
       </header>
       {order?.items.map((item) => {
         return (
@@ -55,6 +60,18 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
           <strong>R$ {formatCurrency(order?.totalValue || 0)}</strong>
         </div>
       </footer>
+
+      <ButtonDelete>
+        <strong>Deletar Pedido</strong>
+      </ButtonDelete>
+
+      {isEditOrderModalOpen && orderDetails && (
+        <NewOrderModal
+          isOpen={isEditOrderModalOpen}
+          onClose={handleCloseEditOrderModal}
+          order={orderDetails}
+        />
+      )}
     </Container>
   );
 }

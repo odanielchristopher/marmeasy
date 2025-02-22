@@ -13,13 +13,11 @@ import { useProductsQuery } from '@renderer/app/hooks/queries/useProductsQuery';
 
 import { queryClient } from '@renderer/App';
 import { Client } from '@renderer/app/entities/Client';
-import { Order } from '@renderer/app/entities/Order';
 import { clientsService } from '@renderer/app/services/clientsService';
 import { ordersService } from '@renderer/app/services/ordersService';
-import { UpdatedOrderParams } from '@renderer/app/services/ordersService/update';
 import { PaginatedResponse } from '@renderer/app/services/types';
 import toast from '@renderer/app/utils/toast';
-import { OrderDetail } from '../../Items/ItemForm/useItemForm';
+import { OrderDetail } from '../../../../../../pages/Orders/components/Items/ItemForm/useItemForm';
 
 export const orderFormSchema = z.object({
   clientName: z.string().min(1, 'O nome do cliente é obrigatório'),
@@ -39,7 +37,7 @@ export const orderFormSchema = z.object({
 
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
-export default function useNewOrderModal(isOpen: boolean, onClose: () => void, order?: Order) {
+export default function useOrderModal(isOpen: boolean, onClose: () => void) {
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
   const { products } = useProductsQuery();
@@ -55,24 +53,9 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
 
   const [index, setIndex] = useState<number | null>(null);
 
-  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>(order?.items.map(item => ({
-    quantity: item.quantity,
-    selectedIngredients: item.ingredients.map(ingredient => ({
-      name: ingredient,
-      id: '',
-      icon: '',
-    })),
-    productName: item.name,
-    productImage: '',
-    productPrice: item.unitPrice,
-    totalPrice: item.total,
-  })) || []);
+  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>([]);
 
   const [product, setProduct] = useState<Product | null>(null);
-
-  const valor = order?.items.reduce((sum, item) => sum + item.total, 0);
-  if(order)
-    order.totalValue = valor || 0;
 
   const {
     formState: { errors },
@@ -82,18 +65,16 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
   } = useForm<OrderFormSchema>({
     resolver: zodResolver(orderFormSchema),
     defaultValues: {
-      clientName: order ? findClientById(order?.clientId)?.name : '',
-      date: order ? new Date(order.date) : new Date(),
+      clientName: '',
+      date: new Date(),
       discount: 0,
-      items: order?.items || [],
+      items: [],
       totalValue: 0,
     },
   });
 
   useEffect(() => {
-    if (isOrderModalOpen !== isOpen) {
-      setIsOrderModalOpen(isOpen);
-    }
+    setIsOrderModalOpen(isOpen);
   }, [isOpen]);
 
   function handleCategorySelect(category: ProductCategory) {
@@ -119,14 +100,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     const productToEdit = products.find(
       (p) => p.name === orderDetails[index].productName,
     );
-    if (productToEdit) {
-      const updatedDetails = { ...orderDetails[index], totalPrice: productToEdit.price * orderDetails[index].quantity };
-      setOrderDetails((prevDetails) => [
-        ...prevDetails.slice(0, index),
-        updatedDetails,
-        ...prevDetails.slice(index + 1),
-      ]);
-    }
     setProduct(productToEdit ?? null);
     setIsEditItemModalOpen(true);
     setIsOrderModalOpen(false);
@@ -149,18 +122,12 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
   }
 
   function addProductToOrder(details: OrderDetail, product: Product) {
-    const totalPrice = details.productPrice * details.quantity;
-    const updatedDetails = { ...details, totalPrice };
-    setOrderDetails((prevDetails) => [...prevDetails, updatedDetails]);
+    setOrderDetails((prevDetails) => [...prevDetails, details]);
     setProduct(product);
   }
 
   function findClientByName(name: string) {
     return clients.find((client) => client.name === name);
-  }
-
-  function findClientById(id: string) {
-    return clients.find((client) => client.id === id);
   }
 
   const { mutateAsync: createOrder, isPending: isLoading } = useMutation({
@@ -188,39 +155,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     },
   });
 
-  const { mutateAsync: updateOrder, isPending: isUpdating } = useMutation({
-    mutationFn: async (data: OrderFormSchema) => {
-      const client = findClientByName(data.clientName);
-      if (!client) {
-        throw new Error('Client not found');
-      }
-
-      // Calcule o totalValue com base nos itens do pedido
-      const newTotalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
-
-      const orderData: UpdatedOrderParams = {
-        id: order?.id || '',
-        clientId: client.id,
-        date: data.date,
-        discount: data.discount,
-        items: orderDetails.map((item) => ({
-          name: item.productName,
-          ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
-          unitPrice: item.productPrice,
-          quantity: item.quantity,
-          total: item.totalPrice,
-        })),
-        totalValue: 0,
-      };
-
-      return ordersService.update(orderData);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      onClose();
-    },
-  });
-
   async function onSubmit(data: OrderFormSchema) {
     const client = findClientByName(data.clientName);
     if (!client) {
@@ -233,9 +167,8 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       return;
     }
 
-    const newTotalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
-
-    console.log('newTotalValue calculado:', newTotalValue); // Log para depuração
+    // Calcular o valor total do pedido
+    const totalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
 
     const orderData = {
       ...data,
@@ -247,88 +180,48 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         quantity: item.quantity,
         total: item.totalPrice,
       })),
-      totalValue: 0,
+      totalValue,
     };
 
-    console.log('orderData antes de enviar:', orderData); // Log para depuração
-
     try {
-      if (order) {
-        const oldTotalValue = order.totalValue || 0;
-        const difference = newTotalValue - oldTotalValue;
+      await createOrder(orderData);
 
-        await updateOrder(orderData);
+      const updatedBalance = Number(client.balance ?? 0) - totalValue;
+      await clientsService.update({
+        id: client.id,
+        name: client.name,
+        type: client.type,
+        balance: updatedBalance,
+      });
 
-        const updatedBalance = Number(client.balance ?? 0) - difference;
-        await clientsService.update({
-          id: client.id,
-          name: client.name,
-          type: client.type,
-          balance: updatedBalance,
-        });
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: page.data.map((oldClient) =>
+              oldClient.id === client.id
+                ? {
+                    ...oldClient,
+                    balance: updatedBalance,
+                  }
+                : oldClient,
+            ),
+          })),
+        };
+      });
 
-        queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page) => ({
-              ...page,
-              data: page.data.map((oldClient) =>
-                oldClient.id === client.id
-                  ? {
-                      ...oldClient,
-                      balance: updatedBalance,
-                    }
-                  : oldClient,
-              ),
-            })),
-          };
-        });
-
-        toast({
-          type: 'success',
-          text: 'Pedido atualizado com sucesso.',
-        });
-      } else {
-        await createOrder(orderData);
-
-        const updatedBalance = Number(client.balance ?? 0) - newTotalValue;
-        await clientsService.update({
-          id: client.id,
-          name: client.name,
-          type: client.type,
-          balance: updatedBalance,
-        });
-
-        queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page) => ({
-              ...page,
-              data: page.data.map((oldClient) =>
-                oldClient.id === client.id
-                  ? {
-                      ...oldClient,
-                      balance: updatedBalance,
-                    }
-                  : oldClient,
-              ),
-            })),
-          };
-        });
-
-        toast({
-          type: 'success',
-          text: 'Pedido criado com sucesso.',
-        });
-      }
+      toast({
+        type: 'success',
+        text: 'Pedido criado com sucesso.',
+      });
     } catch (error) {
       toast({
         type: 'danger',
-        text: order ? 'Ocorreu um erro ao atualizar o pedido!' : 'Ocorreu um erro ao criar o pedido!',
+        text: 'Ocorreu um erro ao criar o pedido!',
       });
     }
   }
-
 
   return {
     categories,
@@ -338,7 +231,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     control,
     handleSubmit,
     isLoading,
-    isUpdating,
     isLoadingCategories,
     isOrderModalOpen,
     isItemModalOpen,
@@ -355,7 +247,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     handleCloseEditItemModal,
     handleCloseDeleteItemModal,
     addProductToOrder,
-    findClientById,
     orderDetails,
     index,
     onSubmit,
