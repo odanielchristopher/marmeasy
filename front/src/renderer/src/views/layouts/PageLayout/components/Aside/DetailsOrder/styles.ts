@@ -10,6 +10,10 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 12px;
+
+    img {
+      cursor: pointer;
+    }
   }
 
   footer {
@@ -43,18 +47,11 @@ export const ItemBox = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   padding: 1.2rem;
 
-  /* .img {
-    min-height: 70px;
-    width: 20%;
-    background-color: grey;
-    border-radius: 8px 0 0 8px;
-  } */
-
   .right {
     display: flex;
     flex-direction: column;
     min-width: 100%;
-    /* padding: 10px 16px 10px 8px; */
+
     .top {
       display: flex;
       justify-content: space-between;
