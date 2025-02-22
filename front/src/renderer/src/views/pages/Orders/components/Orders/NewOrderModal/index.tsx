@@ -35,11 +35,10 @@ interface OrderModalProps {
   isOpen: boolean;
   onClose(): void;
   order?: Order;
+  handleHiddenOrderData(): void;
 }
 
-export default function NewOrderModal({ isOpen, onClose, order }: OrderModalProps) {
-  //! PRECISO CORRIGIR RE-RENDIRIZAÇÃO DE COMPONENTE - não sei como fazer isso
-  // console.log('renderizado');
+export default function NewOrderModal({ isOpen, onClose, order, handleHiddenOrderData }: OrderModalProps) {
 
   const {
     categories,
@@ -69,7 +68,7 @@ export default function NewOrderModal({ isOpen, onClose, order }: OrderModalProp
     orderDetails,
     index,
     onSubmit,
-  } = useOrderModal(isOpen, onClose, order);
+  } = useOrderModal(isOpen, onClose, order, handleHiddenOrderData);
 
   const allCategories = [
     { id: 'all', name: 'todos', icon: '🍽️' },

@@ -39,7 +39,7 @@ export const orderFormSchema = z.object({
 
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
-export default function useNewOrderModal(isOpen: boolean, onClose: () => void, order?: Order) {
+export default function useNewOrderModal(isOpen: boolean, onClose: () => void, order?: Order, handleHiddenOrderData?: () => void) {
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
   const { products } = useProductsQuery();
@@ -247,6 +247,9 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       });
 
       onClose();
+      if (handleHiddenOrderData) {
+        handleHiddenOrderData();
+      }
     },
   });
 

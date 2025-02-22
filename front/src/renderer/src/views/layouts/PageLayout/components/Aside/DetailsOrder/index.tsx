@@ -80,6 +80,7 @@ export default function DetailsOrder({ order, handleHiddenOrderData }: DetailsOr
           isOpen={isEditOrderModalOpen}
           onClose={handleCloseEditOrderModal}
           order={orderDetails}
+          handleHiddenOrderData={handleHiddenOrderData}
         />
       )}
 
