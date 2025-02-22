@@ -1,4 +1,5 @@
 import { Order } from '@renderer/app/entities/Order';
+import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import Button from '@renderer/views/components/Button';
 import Modal from '@renderer/views/components/Modal';
 import { Container } from './styles';
@@ -15,11 +16,31 @@ export default function DelteOrderModal({ isOpen, onClose, order, handleHiddenOr
     const {
       handleDeleteOrder,
       isDeleting,
+      findClientById,
      } = useDeleteOrderModal(onClose, handleHiddenOrderData);
     return (
         <Modal open={isOpen} title="Deletar pedido" onClose={onClose}>
             <Container>
-                <p>Tem certeza que deseja deletar o pedido?</p>
+                <p>Tem certeza que deseja <strong>deletar</strong> o pedido?</p>
+                <span>Aqui estão algumas informações úteis sobre o pedido:</span>
+                <div className='infoOrder'>
+                  <div className='left'>
+                    <p>Nome do cliente: </p>
+                    <p>Valor do pedido: </p>
+                    <p>Quantidade de itens: </p>
+                  </div>
+                  <div className='right'>
+                    <strong>
+                        {findClientById(order.clientId)?.name}
+                    </strong>
+                    <strong>
+                        R$ {formatCurrency(order.totalValue)}
+                    </strong>
+                    <strong>
+                        {order.items.length}
+                    </strong>
+                  </div>
+                </div>
                 <footer>
                     <Button
                       onClick={() => handleDeleteOrder(order.id)}
