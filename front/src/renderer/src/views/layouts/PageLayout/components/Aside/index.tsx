@@ -62,7 +62,7 @@ export default function Aside({ area }: AsideProps) {
         </Main>
       )}
 
-      {showOrderData && showOrders && <DetailsOrder order={selectedOrder} />}
+      {showOrderData && showOrders && <DetailsOrder order={selectedOrder} handleHiddenOrderData={handleHiddenOrderData}/>}
       {showClientData && showPayments && <Payments client={seletedClient} />}
     </Container>
   );

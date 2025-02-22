@@ -188,15 +188,14 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     },
   });
 
+
+  //EDIÇÃO DE PEDIDOS
   const { mutateAsync: updateOrder, isPending: isUpdating } = useMutation({
     mutationFn: async (data: OrderFormSchema) => {
       const client = findClientByName(data.clientName);
       if (!client) {
         throw new Error('Client not found');
       }
-
-      // Calcule o totalValue com base nos itens do pedido
-      const newTotalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
 
       const orderData: UpdatedOrderParams = {
         id: order?.id || '',
@@ -215,8 +214,38 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
 
       return ordersService.update(orderData);
     },
-    onSuccess: () => {
+    onSuccess: (updatedOrder) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+
+      const client = findClientById(updatedOrder.clientId);
+      const oldClient = order ? findClientById(order.clientId) : null;
+
+      queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+
+        const updatedData = {
+          ...oldData,
+          pages: oldData.pages.map((page) => ({
+            ...page,
+            data: page.data.map((oldClientData) => {
+              if (client && oldClientData.id === client.id) {
+                return {
+                  ...oldClientData,
+                  balance: Number(oldClientData.balance ?? 0) - updatedOrder.totalValue,
+                };
+              }
+              if (oldClient && oldClientData.id === oldClient.id) {
+                return {
+                  ...oldClientData,
+                  balance: Number(oldClientData.balance ?? 0) + (order?.totalValue || 0),
+                };
+              }
+              return oldClientData;
+            }),
+          })),
+        };
+        return updatedData;
+      });
+
       onClose();
     },
   });
@@ -235,8 +264,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
 
     const newTotalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
 
-    console.log('newTotalValue calculado:', newTotalValue); // Log para depuração
-
     const orderData = {
       ...data,
       clientId: client.id,
@@ -250,8 +277,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       totalValue: 0,
     };
 
-    console.log('orderData antes de enviar:', orderData); // Log para depuração
-
     try {
       if (order) {
         const oldTotalValue = order.totalValue || 0;
@@ -260,29 +285,89 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         await updateOrder(orderData);
 
         const updatedBalance = Number(client.balance ?? 0) - difference;
-        await clientsService.update({
-          id: client.id,
-          name: client.name,
-          type: client.type,
-          balance: updatedBalance,
-        });
 
-        queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page) => ({
-              ...page,
-              data: page.data.map((oldClient) =>
-                oldClient.id === client.id
-                  ? {
-                      ...oldClient,
-                      balance: updatedBalance,
-                    }
-                  : oldClient,
-              ),
-            })),
-          };
-        });
+        if (order.clientId !== client.id) {
+          const oldClient = findClientById(order.clientId);
+
+          const updatedBalancePlus = Number(oldClient?.balance ?? 0) + oldTotalValue;
+          const updatedBalanceLess = Number(client.balance ?? 0) - newTotalValue;
+
+          await clientsService.update({
+            id: oldClient?.id || '',
+            name: oldClient?.name || '',
+            type: oldClient?.type as 'FISICO' | 'JURIDICO',
+            balance: updatedBalancePlus,
+          });
+
+          await clientsService.update({
+            id: client.id,
+            name: client.name,
+            type: client.type,
+            balance: updatedBalanceLess,
+          });
+
+          // Atualizar o cache do cliente antigo
+          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+            return {
+              ...oldData,
+              pages: oldData.pages.map((page) => ({
+                ...page,
+                data: page.data.map((oldClientData) =>
+                  oldClientData.id === oldClient?.id
+                    ? {
+                        ...oldClientData,
+                        balance: updatedBalancePlus,
+                      }
+                    : oldClientData,
+                ),
+              })),
+            };
+          });
+
+          // Atualizar o cache do novo cliente
+          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+            return {
+              ...oldData,
+              pages: oldData.pages.map((page) => ({
+                ...page,
+                data: page.data.map((oldClientData) =>
+                  oldClientData.id === client.id
+                    ? {
+                        ...oldClientData,
+                        balance: updatedBalanceLess,
+                      }
+                    : oldClientData,
+                ),
+              })),
+            };
+          });
+
+        } else {
+          await clientsService.update({
+            id: client.id,
+            name: client.name,
+            type: client.type,
+            balance: updatedBalance,
+          });
+
+          // Atualizar o cache do cliente
+          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+            return {
+              ...oldData,
+              pages: oldData.pages.map((page) => ({
+                ...page,
+                data: page.data.map((oldClientData) =>
+                  oldClientData.id === client.id
+                    ? {
+                        ...oldClientData,
+                        balance: updatedBalance,
+                      }
+                    : oldClientData,
+                ),
+              })),
+            };
+          });
+        }
 
         toast({
           type: 'success',
@@ -299,18 +384,19 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
           balance: updatedBalance,
         });
 
+        // Atualizar o cache do cliente
         queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
           return {
             ...oldData,
             pages: oldData.pages.map((page) => ({
               ...page,
-              data: page.data.map((oldClient) =>
-                oldClient.id === client.id
+              data: page.data.map((oldClientData) =>
+                oldClientData.id === client.id
                   ? {
-                      ...oldClient,
+                      ...oldClientData,
                       balance: updatedBalance,
                     }
-                  : oldClient,
+                  : oldClientData,
               ),
             })),
           };

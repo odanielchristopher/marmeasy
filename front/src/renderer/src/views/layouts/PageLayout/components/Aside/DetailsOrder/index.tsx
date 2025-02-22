@@ -1,15 +1,19 @@
 import { Order } from '@renderer/app/entities/Order';
 import { formatCurrency } from '@renderer/app/utils/formatCurrency';
 import edit from '@renderer/assets/Images/Edit.svg';
+import { useState } from 'react';
 import NewOrderModal from '../../../../../pages/Orders/components/Orders/NewOrderModal';
+import DeleteOrderModal from '../DetailsOrder/Modals/DeleteOrderModal/index'; // Importe o modal de confirmação
 import { ButtonDelete, Container, ItemBox, Line } from './styles';
 import useDetailsOrder from './useDetailsOrder';
 
 interface DetailsOrderProps {
   order: Order | null;
+  handleHiddenOrderData(): void;
 }
 
-export default function DetailsOrder({ order }: DetailsOrderProps) {
+export default function DetailsOrder({ order, handleHiddenOrderData }: DetailsOrderProps) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Estado para controlar o modal de confirmação
   const {
     isEditOrderModalOpen,
     orderDetails,
@@ -17,16 +21,24 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
     handleCloseEditOrderModal,
   } = useDetailsOrder();
 
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+
   return (
     <Container>
       <header>
         <p>Detalhes do pedido</p>
-        <img src={edit} alt="Edit" onClick={() => order && handleEditOrder(order)}/>
+        <img src={edit} alt="Edit" onClick={() => order && handleEditOrder(order)} />
       </header>
       {order?.items.map((item) => {
         return (
           <ItemBox key={item.id}>
-            <div className='right'>
+            <div className="right">
               <div className="top">
                 <strong>{item.name}</strong>
                 <strong>R$ {formatCurrency(item.total)}</strong>
@@ -34,9 +46,7 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
               <div className="bottom">
                 <div className="ingredients">
                   {item.ingredients.map((ingrediente, index) => {
-                    return (
-                      <p key={index}>{ingrediente}</p>
-                    );
+                    return <p key={index}>{ingrediente}</p>;
                   })}
                 </div>
                 <p>{item.quantity}x</p>
@@ -53,7 +63,7 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
           <span>Desconto</span>
           <span>Valor total</span>
         </div>
-        <div className='right-footer'>
+        <div className="right-footer">
           <strong>R$ {formatCurrency(order?.totalValue || 0)}</strong>
           <strong>R$ {formatCurrency(0)}</strong>
           <strong>R$ {formatCurrency(0)}</strong>
@@ -61,7 +71,7 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
         </div>
       </footer>
 
-      <ButtonDelete>
+      <ButtonDelete onClick={handleOpenDeleteModal}>
         <strong>Deletar Pedido</strong>
       </ButtonDelete>
 
@@ -70,6 +80,15 @@ export default function DetailsOrder({ order }: DetailsOrderProps) {
           isOpen={isEditOrderModalOpen}
           onClose={handleCloseEditOrderModal}
           order={orderDetails}
+        />
+      )}
+
+      {isDeleteModalOpen && order && (
+        <DeleteOrderModal
+          isOpen={isDeleteModalOpen}
+          onClose={handleCloseDeleteModal}
+          order={order}
+          handleHiddenOrderData={handleHiddenOrderData}
         />
       )}
     </Container>
