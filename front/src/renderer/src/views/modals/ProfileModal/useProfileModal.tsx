@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -11,11 +11,9 @@ import useFindMeQuery from '@renderer/app/hooks/queries/useFindMeQuery';
 import { useModals } from '@renderer/app/hooks/useModals';
 import toast from '@renderer/app/utils/toast';
 
-import { useAuth } from '@renderer/app/hooks/useAuth';
 import { usersService } from '@renderer/app/services/usersService';
 import { EditMeParams } from '@renderer/app/services/usersService/editMe';
 import { FindMeResponse } from '@renderer/app/services/usersService/findme';
-import { useNavigate } from 'react-router-dom';
 
 const schema = z
   .object({
@@ -58,16 +56,8 @@ type FormData = z.infer<typeof schema>;
 
 export default function useProfileController() {
   const [wantChangePassword, setWantChangePassword] = useState(false);
-  const { signout } = useAuth();
-  const navigateTo = useNavigate();
 
-  const {
-    isProfileModalOpen: isOpen,
-    handleCloseProfileModal,
-    isDeleteUserModalOpen,
-    handleOpenDeleteUserModal,
-    handleCloseDeleteUserModal,
-  } = useModals();
+  const { isProfileModalOpen: isOpen, handleCloseProfileModal } = useModals();
 
   const {
     register,
@@ -100,22 +90,6 @@ export default function useProfileController() {
         exact: true,
         refetchType: 'all',
       });
-    },
-  });
-
-  const { mutateAsync: deleteUser } = useMutation({
-    mutationFn: async () => {
-      await usersService.deleteMe();
-    },
-    onSuccess: () => {
-      toast({
-        type: 'default',
-        text: 'Conta exluída',
-      });
-
-      navigateTo('/login', { replace: true });
-
-      signout();
     },
   });
 
@@ -166,29 +140,14 @@ export default function useProfileController() {
     }
   });
 
-  const handleDeleteUser = useCallback(async () => {
-    try {
-      await deleteUser();
-    } catch (error) {
-      toast({
-        type: 'danger',
-        text: 'Ocorreu um erro ao deletar o usuário.',
-      });
-    }
-  }, [deleteUser]);
-
   return {
     errors,
     isLoading,
     wantChangePassword,
     isOpen,
-    isDeleteModalOpen: isDeleteUserModalOpen,
-    handleDeleteUser,
     handleCloseProfileModal,
     register,
     handleSubmit,
     handleWannaChangePassword,
-    handleOpenDeleteModal: handleOpenDeleteUserModal,
-    handleCloseDeleteModal: handleCloseDeleteUserModal,
   };
 }

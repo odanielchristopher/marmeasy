@@ -22,21 +22,21 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory[] | null> {
     const { userId, order } = findManyDto;
 
-    const productCategories = await this.prismaService.productCategory.findMany(
-      {
-        where: { userId },
-        orderBy: {
-          name: order,
-        },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-        },
-      },
-    );
+    const productCategories = await this.prismaService.$queryRaw<
+      ProductCategory[]
+    >`
+      SELECT
+        id,
+        name,
+        icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid
+      ORDER BY
+        CASE WHEN ${order} = 'DESC' THEN name END DESC,
+        CASE WHEN ${order} = 'ASC' THEN name END ASC;
+    `;
 
-    return productCategories;
+    return productCategories.length > 0 ? productCategories : null;
   }
 
   async findFirstByUserId(
@@ -44,17 +44,14 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory | null> {
     const { userId, id } = findFirstByIdDto;
 
-    const findedProductCategory =
-      await this.prismaService.productCategory.findFirst({
-        where: { userId, id },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-        },
-      });
+    const result = await this.prismaService.$queryRaw<ProductCategory[]>`
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid AND id = ${id}::uuid
+      LIMIT 1
+    `;
 
-    return findedProductCategory;
+    return result.length > 0 ? result[0] : null;
   }
 
   async findFirstByName(
@@ -62,17 +59,14 @@ export class ProductCategoriesRepository
   ): Promise<ProductCategory | null> {
     const { userId, name } = findFirstByNameDto;
 
-    const findedProductCategory =
-      await this.prismaService.productCategory.findFirst({
-        where: { userId, name },
-        select: {
-          id: true,
-          name: true,
-          icon: true,
-        },
-      });
+    const result = await this.prismaService.$queryRaw<ProductCategory[]>`
+      SELECT id, name, icon
+      FROM product_category
+      WHERE user_id = ${userId}::uuid AND name = ${name}
+      LIMIT 1
+    `;
 
-    return findedProductCategory;
+    return result.length > 0 ? result[0] : null;
   }
 
   async create(

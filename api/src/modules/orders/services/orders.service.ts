@@ -12,12 +12,16 @@ import {
   IOrdersService,
 } from '../interfaces/orders-service.interface';
 import { IValidateOrderOwnershipService } from '../interfaces/validate-order-ownership-service.interface';
+import { Client } from 'src/modules/clients/entities/client.entity';
+import { IUpdateClientBalanceService } from 'src/modules/clients/interfaces/update-client-balance-service.interface';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
   constructor(
     @Inject(IOrdersRepository)
     private readonly ordersRepository: IOrdersRepository,
+    @Inject(IUpdateClientBalanceService)
+    private readonly updateClientBalanceService: IUpdateClientBalanceService,
     @Inject(IValidateUserOwnershipService)
     private readonly validateUserOwnershipService: IValidateUserOwnershipService,
     @Inject(IValidateOrderOwnershipService)
@@ -76,6 +80,12 @@ export class OrdersService implements IOrdersService {
 
     const totalValue =
       items.reduce((acc, item) => acc + item.total, 0) - (discount ?? 0);
+
+    await this.updateClientBalance({
+      userId,
+      clientId,
+      newValue: totalValue * -1,
+    });
 
     const createdOrder = await this.ordersRepository.create({
       userId,
@@ -136,5 +146,24 @@ export class OrdersService implements IOrdersService {
     await this.ordersRepository.delete({ id: orderId, userId });
 
     return { message: 'Pedido excluído com sucesso.' };
+  }
+
+  private async updateClientBalance({
+    userId,
+    clientId,
+    previousValue,
+    newValue,
+  }: {
+    userId: string;
+    clientId: string;
+    previousValue?: number;
+    newValue: number;
+  }): Promise<Client> {
+    return this.updateClientBalanceService.update({
+      userId,
+      clientId,
+      previousValue,
+      newValue,
+    });
   }
 }

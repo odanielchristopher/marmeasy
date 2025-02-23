@@ -36,6 +36,17 @@ export const orderFormSchema = z.object({
       }),
     )
     .min(0, 'O pedido deve conter pelo menos um item'),
+  items: z
+    .array(
+      z.object({
+        name: z.string(),
+        ingredients: z.array(z.string()),
+        unitPrice: z.number(),
+        quantity: z.number(),
+        total: z.number(),
+      }),
+    )
+    .min(0, 'O pedido deve conter pelo menos um item'),
   totalValue: z.number(),
 });
 
@@ -188,6 +199,9 @@ export default function useNewOrderModal(
           ingredients: item.selectedIngredients.map(
             (ingredient) => ingredient.name,
           ),
+          ingredients: item.selectedIngredients.map(
+            (ingredient) => ingredient.name,
+          ),
           unitPrice: item.productPrice,
           quantity: item.quantity,
           total: item.totalPrice,
@@ -280,10 +294,18 @@ export default function useNewOrderModal(
         type: 'manual',
         message: 'Cliente não encontrado',
       });
+      setError('clientName', {
+        type: 'manual',
+        message: 'Cliente não encontrado',
+      });
       return;
     }
 
     if (orderDetails.length === 0) {
+      setError('items', {
+        type: 'manual',
+        message: 'O pedido deve conter pelo menos um item',
+      });
       setError('items', {
         type: 'manual',
         message: 'O pedido deve conter pelo menos um item',
@@ -301,6 +323,9 @@ export default function useNewOrderModal(
       clientId: client.id,
       items: orderDetails.map((item) => ({
         name: item.productName,
+        ingredients: item.selectedIngredients.map(
+          (ingredient) => ingredient.name,
+        ),
         ingredients: item.selectedIngredients.map(
           (ingredient) => ingredient.name,
         ),
