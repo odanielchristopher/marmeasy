@@ -35,7 +35,7 @@ interface OrderModalProps {
   isOpen: boolean;
   onClose(): void;
   order?: Order;
-  handleHiddenOrderData(): void;
+  handleHiddenOrderData?(): void;
 }
 
 export default function NewOrderModal({

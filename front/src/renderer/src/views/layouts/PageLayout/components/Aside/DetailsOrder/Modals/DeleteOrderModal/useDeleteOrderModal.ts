@@ -14,7 +14,7 @@ export default function useDeleteOrderModal(
     mutationFn: async (orderId: string) => {
       await ordersService.remove({ id: orderId });
     },
-    onSuccess: (_, orderId) => {
+    onSuccess: (_) => {
       queryClient.invalidateQueries({ queryKey: ['orders'] });
 
       toast({
