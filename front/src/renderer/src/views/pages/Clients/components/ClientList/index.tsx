@@ -76,10 +76,6 @@ export default function ClientList({ clients }: ClientListProps) {
                     <strong>Endereço</strong>
                     <span>{client.address ?? 'Sem endereço'}</span>
                   </div>
-
-                  <div className="bottom">
-                    <span>Total de pedidos: {21}</span>
-                  </div>
                 </Main>
                 <Footer>
                   <span>Saldo</span>

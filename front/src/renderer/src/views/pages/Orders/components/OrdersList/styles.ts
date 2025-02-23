@@ -5,70 +5,40 @@ export const Container = styled.div`
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.1);
   border-radius: 1.6rem;
   margin-top: 1.6rem;
-  padding: 1.6rem;
+  padding: 2rem;
   width: 100%;
   max-width: 100rem;
-
+  position: relative;
   cursor: pointer;
   transition: all ease-in-out 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0.2rem solid transparent;
 
   &:hover {
     transform: translateY(-0.4rem);
   }
 
-  position: relative;
-
-  .deleteButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    height: 3.2rem;
-    width: 3.2rem;
-
-    position: absolute;
-    right: 1.6rem;
-    z-index: 2;
-
-    &:hover {
-      background: #f2f2f2;
-    }
+  &.selected {
+    border: 0.2rem solid orange;
   }
-`;
 
-export const Content = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const Left = styled.div`
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-  height: 5rem;
-  margin-bottom: 0.8rem;
-
-  .infos {
+  .left {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    color: ${({ theme }) => theme.colors.black};
+    gap: 10px;
+    span {
+      color: ${({ theme }) => theme.colors.gray.light};
+    }
 
-    .infos-left {
+    .clientsInfo {
       display: flex;
+      gap: 10px;
       align-items: center;
-      gap: 0.8rem;
-
-      strong {
-        font-size: 1.8rem;
-      }
 
       span {
-        background: ${({ theme }) => theme.colors.orange.lighter};
+        background: #e6b04e;
         color: #ffff;
         text-transform: uppercase;
         font-weight: 500;
@@ -78,46 +48,21 @@ export const Left = styled.div`
         border-radius: 0.2rem;
       }
     }
-
-    span {
-      font-size: 1.4rem;
-    }
   }
-`;
 
-export const Right = styled.div`
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-
-  .infos {
+  .right {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
-    color: ${({ theme }) => theme.colors.black.lighter};
+    align-items: flex-end;
+    gap: 10px;
 
-    .infos-right {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      color: ${({ theme }) => theme.colors.orange.lighter};
-
-      span.date {
-        font-size: 1.4rem;
-      }
+    span:first-child {
+      color: ${({ theme }) => theme.colors.gray.light};
     }
 
-    span.price {
-      font-size: 1.8rem;
-      font-weight: 500;
+    span:last-child {
+      color: ${({ theme }) => theme.colors.green.main};
+      font-weight: bold;
     }
   }
-`;
-
-export const details = styled.div`
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
-  margin-bottom: 2.5rem;
-  background-color: red;
 `;

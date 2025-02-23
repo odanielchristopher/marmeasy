@@ -19,6 +19,7 @@ import DeleteItemModal from '../../Items/DeleteItemModal';
 import EditItemModal from '../../Items/EditItemModal';
 import useOrderModal from './useNewOrderModal';
 
+import { Order } from '@renderer/app/entities/Order';
 import { CgCloseO } from 'react-icons/cg';
 import {
   BoxCategories,
@@ -33,9 +34,16 @@ import {
 interface OrderModalProps {
   isOpen: boolean;
   onClose(): void;
+  order?: Order;
+  handleHiddenOrderData?(): void;
 }
 
-export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
+export default function NewOrderModal({
+  isOpen,
+  onClose,
+  order,
+  handleHiddenOrderData,
+}: OrderModalProps) {
   const {
     categories,
     products,
@@ -44,6 +52,7 @@ export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
     errors,
     handleSubmit,
     isLoading,
+    isUpdating,
     isLoadingCategories,
     isOrderModalOpen,
     isItemModalOpen,
@@ -63,7 +72,7 @@ export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
     orderDetails,
     index,
     onSubmit,
-  } = useOrderModal(isOpen, onClose);
+  } = useOrderModal(isOpen, onClose, order, handleHiddenOrderData);
 
   const allCategories = [
     { id: 'all', name: 'todos', icon: '🍽️' },
@@ -177,8 +186,9 @@ export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
                   const imagePath = order.productImage
                     ? `${import.meta.env.VITE_API_URL}/${order.productImage}`
                     : noImage;
+                  // console.log(`${order.productName}-${index}`);
                   return (
-                    <OrderItemsList key={index}>
+                    <OrderItemsList key={`${order.productName}-${index}`}>
                       <img
                         className="smallImg"
                         src={imagePath}
@@ -222,7 +232,10 @@ export default function NewOrderModal({ isOpen, onClose }: OrderModalProps) {
               </div>
             )}
 
-            <Button onClick={handleSubmit(onSubmit)} isLoading={isLoading}>
+            <Button
+              onClick={handleSubmit(onSubmit)}
+              isLoading={isLoading || isUpdating}
+            >
               Fazer Pedido
             </Button>
           </Container>
