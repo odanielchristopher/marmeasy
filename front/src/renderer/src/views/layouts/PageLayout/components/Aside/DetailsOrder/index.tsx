@@ -12,7 +12,10 @@ interface DetailsOrderProps {
   handleHiddenOrderData(): void;
 }
 
-export default function DetailsOrder({ order, handleHiddenOrderData }: DetailsOrderProps) {
+export default function DetailsOrder({
+  order,
+  handleHiddenOrderData,
+}: DetailsOrderProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // Estado para controlar o modal de confirmação
   const {
     isEditOrderModalOpen,
@@ -33,7 +36,11 @@ export default function DetailsOrder({ order, handleHiddenOrderData }: DetailsOr
     <Container>
       <header>
         <p>Detalhes do pedido</p>
-        <img src={edit} alt="Edit" onClick={() => order && handleEditOrder(order)} />
+        <img
+          src={edit}
+          alt="Edit"
+          onClick={() => order && handleEditOrder(order)}
+        />
       </header>
       {order?.items.map((item) => {
         return (

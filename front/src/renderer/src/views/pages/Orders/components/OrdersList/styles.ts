@@ -38,7 +38,7 @@ export const Container = styled.div`
       align-items: center;
 
       span {
-        background: #E6B04E;
+        background: #e6b04e;
         color: #ffff;
         text-transform: uppercase;
         font-weight: 500;
@@ -64,6 +64,5 @@ export const Container = styled.div`
       color: ${({ theme }) => theme.colors.green.main};
       font-weight: bold;
     }
-
   }
 `;

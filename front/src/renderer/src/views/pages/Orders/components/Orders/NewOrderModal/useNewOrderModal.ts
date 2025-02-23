@@ -25,21 +25,28 @@ export const orderFormSchema = z.object({
   clientName: z.string().min(1, 'O nome do cliente é obrigatório'),
   date: z.date(),
   discount: z.number(),
-  items: z.array(
-    z.object({
-      name: z.string(),
-      ingredients: z.array(z.string()),
-      unitPrice: z.number(),
-      quantity: z.number(),
-      total: z.number(),
-    }),
-  ).min(0, 'O pedido deve conter pelo menos um item'),
+  items: z
+    .array(
+      z.object({
+        name: z.string(),
+        ingredients: z.array(z.string()),
+        unitPrice: z.number(),
+        quantity: z.number(),
+        total: z.number(),
+      }),
+    )
+    .min(0, 'O pedido deve conter pelo menos um item'),
   totalValue: z.number(),
 });
 
 export type OrderFormSchema = z.infer<typeof orderFormSchema>;
 
-export default function useNewOrderModal(isOpen: boolean, onClose: () => void, order?: Order, handleHiddenOrderData?: () => void) {
+export default function useNewOrderModal(
+  isOpen: boolean,
+  onClose: () => void,
+  order?: Order,
+  handleHiddenOrderData?: () => void,
+) {
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
   const { products } = useProductsQuery();
@@ -55,24 +62,25 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
 
   const [index, setIndex] = useState<number | null>(null);
 
-  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>(order?.items.map(item => ({
-    quantity: item.quantity,
-    selectedIngredients: item.ingredients.map(ingredient => ({
-      name: ingredient,
-      id: '',
-      icon: '',
-    })),
-    productName: item.name,
-    productImage: '',
-    productPrice: item.unitPrice,
-    totalPrice: item.total,
-  })) || []);
+  const [orderDetails, setOrderDetails] = useState<OrderDetail[]>(
+    order?.items.map((item) => ({
+      quantity: item.quantity,
+      selectedIngredients: item.ingredients.map((ingredient) => ({
+        name: ingredient,
+        id: '',
+        icon: '',
+      })),
+      productName: item.name,
+      productImage: '',
+      productPrice: item.unitPrice,
+      totalPrice: item.total,
+    })) || [],
+  );
 
   const [product, setProduct] = useState<Product | null>(null);
 
   const valor = order?.items.reduce((sum, item) => sum + item.total, 0);
-  if(order)
-    order.totalValue = valor || 0;
+  if (order) order.totalValue = valor || 0;
 
   const {
     formState: { errors },
@@ -120,7 +128,10 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       (p) => p.name === orderDetails[index].productName,
     );
     if (productToEdit) {
-      const updatedDetails = { ...orderDetails[index], totalPrice: productToEdit.price * orderDetails[index].quantity };
+      const updatedDetails = {
+        ...orderDetails[index],
+        totalPrice: productToEdit.price * orderDetails[index].quantity,
+      };
       setOrderDetails((prevDetails) => [
         ...prevDetails.slice(0, index),
         updatedDetails,
@@ -174,7 +185,9 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         clientId: client.id,
         items: orderDetails.map((item) => ({
           name: item.productName,
-          ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
+          ingredients: item.selectedIngredients.map(
+            (ingredient) => ingredient.name,
+          ),
           unitPrice: item.productPrice,
           quantity: item.quantity,
           total: item.totalPrice,
@@ -187,7 +200,6 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       onClose();
     },
   });
-
 
   //EDIÇÃO DE PEDIDOS
   const { mutateAsync: updateOrder, isPending: isUpdating } = useMutation({
@@ -204,7 +216,9 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         discount: data.discount,
         items: orderDetails.map((item) => ({
           name: item.productName,
-          ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
+          ingredients: item.selectedIngredients.map(
+            (ingredient) => ingredient.name,
+          ),
           unitPrice: item.productPrice,
           quantity: item.quantity,
           total: item.totalPrice,
@@ -220,31 +234,37 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
       const client = findClientById(updatedOrder.clientId);
       const oldClient = order ? findClientById(order.clientId) : null;
 
-      queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-
-        const updatedData = {
-          ...oldData,
-          pages: oldData.pages.map((page) => ({
-            ...page,
-            data: page.data.map((oldClientData) => {
-              if (client && oldClientData.id === client.id) {
-                return {
-                  ...oldClientData,
-                  balance: Number(oldClientData.balance ?? 0) - updatedOrder.totalValue,
-                };
-              }
-              if (oldClient && oldClientData.id === oldClient.id) {
-                return {
-                  ...oldClientData,
-                  balance: Number(oldClientData.balance ?? 0) + (order?.totalValue || 0),
-                };
-              }
-              return oldClientData;
-            }),
-          })),
-        };
-        return updatedData;
-      });
+      queryClient.setQueryData(
+        ['clients', 'getAll'],
+        (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+          const updatedData = {
+            ...oldData,
+            pages: oldData.pages.map((page) => ({
+              ...page,
+              data: page.data.map((oldClientData) => {
+                if (client && oldClientData.id === client.id) {
+                  return {
+                    ...oldClientData,
+                    balance:
+                      Number(oldClientData.balance ?? 0) -
+                      updatedOrder.totalValue,
+                  };
+                }
+                if (oldClient && oldClientData.id === oldClient.id) {
+                  return {
+                    ...oldClientData,
+                    balance:
+                      Number(oldClientData.balance ?? 0) +
+                      (order?.totalValue || 0),
+                  };
+                }
+                return oldClientData;
+              }),
+            })),
+          };
+          return updatedData;
+        },
+      );
 
       onClose();
       if (handleHiddenOrderData) {
@@ -256,23 +276,34 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
   async function onSubmit(data: OrderFormSchema) {
     const client = findClientByName(data.clientName);
     if (!client) {
-      setError('clientName', { type: 'manual', message: 'Cliente não encontrado' });
+      setError('clientName', {
+        type: 'manual',
+        message: 'Cliente não encontrado',
+      });
       return;
     }
 
     if (orderDetails.length === 0) {
-      setError('items', { type: 'manual', message: 'O pedido deve conter pelo menos um item' });
+      setError('items', {
+        type: 'manual',
+        message: 'O pedido deve conter pelo menos um item',
+      });
       return;
     }
 
-    const newTotalValue = orderDetails.reduce((total, item) => total + item.totalPrice, 0);
+    const newTotalValue = orderDetails.reduce(
+      (total, item) => total + item.totalPrice,
+      0,
+    );
 
     const orderData = {
       ...data,
       clientId: client.id,
       items: orderDetails.map((item) => ({
         name: item.productName,
-        ingredients: item.selectedIngredients.map((ingredient) => ingredient.name),
+        ingredients: item.selectedIngredients.map(
+          (ingredient) => ingredient.name,
+        ),
         unitPrice: item.productPrice,
         quantity: item.quantity,
         total: item.totalPrice,
@@ -292,8 +323,10 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         if (order.clientId !== client.id) {
           const oldClient = findClientById(order.clientId);
 
-          const updatedBalancePlus = Number(oldClient?.balance ?? 0) + oldTotalValue;
-          const updatedBalanceLess = Number(client.balance ?? 0) - newTotalValue;
+          const updatedBalancePlus =
+            Number(oldClient?.balance ?? 0) + oldTotalValue;
+          const updatedBalanceLess =
+            Number(client.balance ?? 0) - newTotalValue;
 
           await clientsService.update({
             id: oldClient?.id || '',
@@ -310,41 +343,46 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
           });
 
           // Atualizar o cache do cliente antigo
-          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-            return {
-              ...oldData,
-              pages: oldData.pages.map((page) => ({
-                ...page,
-                data: page.data.map((oldClientData) =>
-                  oldClientData.id === oldClient?.id
-                    ? {
-                        ...oldClientData,
-                        balance: updatedBalancePlus,
-                      }
-                    : oldClientData,
-                ),
-              })),
-            };
-          });
+          queryClient.setQueryData(
+            ['clients', 'getAll'],
+            (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+              return {
+                ...oldData,
+                pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((oldClientData) =>
+                    oldClientData.id === oldClient?.id
+                      ? {
+                          ...oldClientData,
+                          balance: updatedBalancePlus,
+                        }
+                      : oldClientData,
+                  ),
+                })),
+              };
+            },
+          );
 
           // Atualizar o cache do novo cliente
-          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-            return {
-              ...oldData,
-              pages: oldData.pages.map((page) => ({
-                ...page,
-                data: page.data.map((oldClientData) =>
-                  oldClientData.id === client.id
-                    ? {
-                        ...oldClientData,
-                        balance: updatedBalanceLess,
-                      }
-                    : oldClientData,
-                ),
-              })),
-            };
-          });
-
+          queryClient.setQueryData(
+            ['clients', 'getAll'],
+            (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+              return {
+                ...oldData,
+                pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((oldClientData) =>
+                    oldClientData.id === client.id
+                      ? {
+                          ...oldClientData,
+                          balance: updatedBalanceLess,
+                        }
+                      : oldClientData,
+                  ),
+                })),
+              };
+            },
+          );
         } else {
           await clientsService.update({
             id: client.id,
@@ -354,22 +392,25 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
           });
 
           // Atualizar o cache do cliente
-          queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-            return {
-              ...oldData,
-              pages: oldData.pages.map((page) => ({
-                ...page,
-                data: page.data.map((oldClientData) =>
-                  oldClientData.id === client.id
-                    ? {
-                        ...oldClientData,
-                        balance: updatedBalance,
-                      }
-                    : oldClientData,
-                ),
-              })),
-            };
-          });
+          queryClient.setQueryData(
+            ['clients', 'getAll'],
+            (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+              return {
+                ...oldData,
+                pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((oldClientData) =>
+                    oldClientData.id === client.id
+                      ? {
+                          ...oldClientData,
+                          balance: updatedBalance,
+                        }
+                      : oldClientData,
+                  ),
+                })),
+              };
+            },
+          );
         }
 
         toast({
@@ -388,22 +429,25 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
         });
 
         // Atualizar o cache do cliente
-        queryClient.setQueryData(['clients', 'getAll'], (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page) => ({
-              ...page,
-              data: page.data.map((oldClientData) =>
-                oldClientData.id === client.id
-                  ? {
-                      ...oldClientData,
-                      balance: updatedBalance,
-                    }
-                  : oldClientData,
-              ),
-            })),
-          };
-        });
+        queryClient.setQueryData(
+          ['clients', 'getAll'],
+          (oldData: InfiniteData<PaginatedResponse<Client[]>>) => {
+            return {
+              ...oldData,
+              pages: oldData.pages.map((page) => ({
+                ...page,
+                data: page.data.map((oldClientData) =>
+                  oldClientData.id === client.id
+                    ? {
+                        ...oldClientData,
+                        balance: updatedBalance,
+                      }
+                    : oldClientData,
+                ),
+              })),
+            };
+          },
+        );
 
         toast({
           type: 'success',
@@ -413,11 +457,12 @@ export default function useNewOrderModal(isOpen: boolean, onClose: () => void, o
     } catch (error) {
       toast({
         type: 'danger',
-        text: order ? 'Ocorreu um erro ao atualizar o pedido!' : 'Ocorreu um erro ao criar o pedido!',
+        text: order
+          ? 'Ocorreu um erro ao atualizar o pedido!'
+          : 'Ocorreu um erro ao criar o pedido!',
       });
     }
   }
-
 
   return {
     categories,

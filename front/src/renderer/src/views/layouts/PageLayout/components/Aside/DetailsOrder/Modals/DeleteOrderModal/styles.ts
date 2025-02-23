@@ -29,10 +29,9 @@ export const Container = styled.div`
       gap: 0.8rem;
       text-align: right;
     }
-
   }
 
-  footer{
+  footer {
     width: 100%;
 
     button {
@@ -46,8 +45,6 @@ export const Container = styled.div`
         transition: opacity 0.2s;
         background-color: ${({ theme }) => theme.colors.red.main};
       }
+    }
   }
-
-  }
-
-  `;
+`;

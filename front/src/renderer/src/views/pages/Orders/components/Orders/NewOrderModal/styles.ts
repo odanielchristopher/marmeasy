@@ -7,13 +7,13 @@ export const Container = styled.div`
 `;
 
 export const ErrorMessage = styled.span`
-    color: ${({ theme }) => theme.colors.red.main};
-    font-size: 1.2rem;
-    margin-top: 0.4rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+  color: ${({ theme }) => theme.colors.red.main};
+  font-size: 1.2rem;
+  margin-top: 0.4rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 `;
 
 export const BoxCategories = styled.div`

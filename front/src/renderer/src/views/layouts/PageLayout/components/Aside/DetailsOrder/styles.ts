@@ -87,10 +87,10 @@ export const ButtonDelete = styled.div`
   text-align: center;
   cursor: pointer;
   opacity: 1;
-  transition: ease-in-out .2s;
+  transition: ease-in-out 0.2s;
 
   &:hover {
-    opacity: .7;
-    transition: ease-in-out .2s;
+    opacity: 0.7;
+    transition: ease-in-out 0.2s;
   }
 `;

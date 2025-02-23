@@ -38,8 +38,12 @@ interface OrderModalProps {
   handleHiddenOrderData(): void;
 }
 
-export default function NewOrderModal({ isOpen, onClose, order, handleHiddenOrderData }: OrderModalProps) {
-
+export default function NewOrderModal({
+  isOpen,
+  onClose,
+  order,
+  handleHiddenOrderData,
+}: OrderModalProps) {
   const {
     categories,
     products,
@@ -101,7 +105,6 @@ export default function NewOrderModal({ isOpen, onClose, order, handleHiddenOrde
               render={({ field: { onChange, value } }) => (
                 <DatePickerInput
                   onChange={onChange}
-
                   value={value}
                   placeholder="Data*"
                   $error={errors.date?.message}
@@ -183,7 +186,7 @@ export default function NewOrderModal({ isOpen, onClose, order, handleHiddenOrde
                   const imagePath = order.productImage
                     ? `${import.meta.env.VITE_API_URL}/${order.productImage}`
                     : noImage;
-                    // console.log(`${order.productName}-${index}`);
+                  // console.log(`${order.productName}-${index}`);
                   return (
                     <OrderItemsList key={`${order.productName}-${index}`}>
                       <img
@@ -231,7 +234,7 @@ export default function NewOrderModal({ isOpen, onClose, order, handleHiddenOrde
 
             <Button
               onClick={handleSubmit(onSubmit)}
-              isLoading={isLoading || isUpdating }
+              isLoading={isLoading || isUpdating}
             >
               Fazer Pedido
             </Button>

@@ -52,9 +52,7 @@ export default function Orders() {
 
       {!isLoading && (
         <Content>
-          {hasOrders && (
-            <OrdersList orders={ordersToRender}/>
-          )}
+          {hasOrders && <OrdersList orders={ordersToRender} />}
 
           {isSearchEmpty && (
             <NotFoundContainer>

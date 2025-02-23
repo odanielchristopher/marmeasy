@@ -4,10 +4,11 @@ import { ordersService } from '@renderer/app/services/ordersService';
 import toast from '@renderer/app/utils/toast';
 import { useMutation } from '@tanstack/react-query';
 
-export default function useDeleteOrderModal(onClose: () => void, handleHiddenOrderData: () => void) {
-
+export default function useDeleteOrderModal(
+  onClose: () => void,
+  handleHiddenOrderData: () => void,
+) {
   const { clients } = useClientsQuery();
-
 
   const { mutateAsync: deleteOrder, isPending: isDeleting } = useMutation({
     mutationFn: async (orderId: string) => {

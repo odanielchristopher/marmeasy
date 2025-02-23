@@ -13,11 +13,11 @@ export default function useOrdersList() {
   };
 
   const findClient = (clientId: string) => {
-    const client =  clients.find((client) => client.id === clientId);
+    const client = clients.find((client) => client.id === clientId);
     return client;
   };
 
-  return  {
+  return {
     findClient,
     handleOrderClick,
     selectedOrderId,
