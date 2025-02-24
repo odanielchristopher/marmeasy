@@ -35,7 +35,11 @@ const OrdersList: React.FC<OrdersListProps> = ({ orders }) => {
             <div className="left">
               <div className="clientsInfo">
                 <strong>{findClient(order.clientId)?.name}</strong>
-                <span>{findClient(order.clientId)?.type}</span>
+                <span>
+                  {findClient(order.clientId)?.type === 'FISICO'
+                    ? 'CLIENTE'
+                    : 'EMPRESA'}
+                </span>
               </div>
               <span>Quantidade: {totalQuantity}</span>
             </div>

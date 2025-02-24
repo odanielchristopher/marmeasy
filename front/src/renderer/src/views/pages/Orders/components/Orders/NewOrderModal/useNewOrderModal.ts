@@ -49,7 +49,7 @@ export default function useNewOrderModal(
 ) {
   const { categories, isLoading: isLoadingCategories } =
     useProductCategoriesQuery();
-  const { products } = useProductsQuery();
+  const { products, isLoading: isLoadingProducts } = useProductsQuery();
   const { clients } = useClientsQuery();
 
   const [selectedCategory, setSelectedCategory] = useState<ProductCategory>();
@@ -61,6 +61,15 @@ export default function useNewOrderModal(
   const [isDeleteItemModalOpen, setIsDeleteItemModalOpen] = useState(false);
 
   const [index, setIndex] = useState<number | null>(null);
+
+
+  const filteredProducts = products
+    .filter((prod) => {
+      if (!selectedCategory || selectedCategory.id === 'all') return true;
+      return prod.category?.id === selectedCategory.id;
+    });
+
+  const hasProducts = filteredProducts.length > 0;
 
   const [orderDetails, setOrderDetails] = useState<OrderDetail[]>(
     order?.items.map((item) => ({
@@ -473,6 +482,9 @@ export default function useNewOrderModal(
   }
 
   return {
+    isLoadingProducts,
+    filteredProducts,
+    hasProducts,
     categories,
     products,
     product,

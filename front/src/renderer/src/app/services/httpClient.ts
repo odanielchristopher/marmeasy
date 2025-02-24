@@ -1,5 +1,4 @@
 import { localStorageKeys } from '@renderer/app/config/localStorageKeys';
-import delay from '@renderer/app/utils/delay';
 import axios from 'axios';
 
 export const httpClient = axios.create({
@@ -34,7 +33,5 @@ httpClient.interceptors.request.use((config) => {
 });
 
 httpClient.interceptors.response.use(async (data) => {
-  await delay(1500);
-
   return data;
 });

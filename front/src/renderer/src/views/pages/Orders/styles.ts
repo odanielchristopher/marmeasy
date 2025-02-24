@@ -25,8 +25,14 @@ export const Container = styled.div`
   .filters {
     display: flex;
     align-items: center;
+    gap: .8rem;
     width: 100%;
     justify-content: space-between;
+
+    @media (max-width: 1060px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 `;
 

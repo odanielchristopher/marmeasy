@@ -7,7 +7,6 @@ export const Container = styled.div`
   margin-top: 1.6rem;
   padding: 2rem;
   width: 100%;
-  max-width: 100rem;
   position: relative;
   cursor: pointer;
   transition: all ease-in-out 0.2s;

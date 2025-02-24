@@ -20,10 +20,13 @@ import EditItemModal from '../../Items/EditItemModal';
 import useOrderModal from './useNewOrderModal';
 
 import { Order } from '@renderer/app/entities/Order';
+import { capitalizeFirstLetter } from '@renderer/app/utils/capitalizeFirstLetter';
+import emptyImage from '@renderer/assets/Images/eating.svg';
 import { CgCloseO } from 'react-icons/cg';
 import {
   BoxCategories,
   Container,
+  EmptyImageContainer,
   ErrorMessage,
   IconCategory,
   Line,
@@ -45,21 +48,24 @@ export default function NewOrderModal({
   handleHiddenOrderData,
 }: OrderModalProps) {
   const {
-    categories,
-    products,
-    product,
-    control,
+    index,
     errors,
-    handleSubmit,
+    control,
+    product,
+    isLoadingProducts,
+    filteredProducts,
     isLoading,
+    categories,
     isUpdating,
-    isLoadingCategories,
-    isOrderModalOpen,
+    hasProducts,
     isItemModalOpen,
+    isOrderModalOpen,
+    selectedCategory,
     isEditItemModalOpen,
     isDeleteItemModalOpen,
-    selectedCategory,
+    isLoadingCategories,
     selectedProduct,
+    orderDetails,
     setOrderDetails,
     handleCategorySelect,
     handleOpenItemModal,
@@ -69,9 +75,8 @@ export default function NewOrderModal({
     handleCloseEditItemModal,
     handleCloseDeleteItemModal,
     addProductToOrder,
-    orderDetails,
-    index,
     onSubmit,
+    handleSubmit,
   } = useOrderModal(isOpen, onClose, order, handleHiddenOrderData);
 
   const allCategories = [
@@ -91,7 +96,7 @@ export default function NewOrderModal({
                 <Input
                   {...field}
                   type="text"
-                  placeholder="Nome do cliente"
+                  placeholder="Nome do cliente*"
                   maxLength={15}
                   $error={errors.clientName?.message}
                 />
@@ -128,20 +133,15 @@ export default function NewOrderModal({
                     }
                   >
                     <div className="circle">{category.icon}</div>
-                    <p>{category.name}</p>
+                    <p>{capitalizeFirstLetter(category.name)}</p>
                   </IconCategory>
                 ))
               )}
             </BoxCategories>
 
             <ul className="productsOptions">
-              {products
-                .filter((product) => {
-                  if (!selectedCategory || selectedCategory.id === 'all')
-                    return true;
-                  return product.category?.id === selectedCategory.id;
-                })
-                .map((product) => {
+              {hasProducts &&
+                filteredProducts.map((product) => {
                   const imagePath =
                     product.imagePath &&
                     `${import.meta.env.VITE_API_URL}/${product.imagePath}`;
@@ -154,7 +154,7 @@ export default function NewOrderModal({
                         <img src={noImage} alt="Sem imagem" />
                       )}
                       <div className="infos">
-                        <strong>{product.name}</strong>
+                        <strong>{capitalizeFirstLetter(product.name)}</strong>
                         <span>{product.description}</span>
                         <div className="footer">
                           <strong>R$ {formatCurrency(product.price)}</strong>
@@ -168,6 +168,13 @@ export default function NewOrderModal({
                     </ProductList>
                   );
                 })}
+
+              {!hasProducts && !isLoadingProducts && (
+                <EmptyImageContainer>
+                  <img src={emptyImage} alt="Sem favoritos nesse período" />
+                  <p>Não encontramos nenhum produto nessa categoria.</p>
+                </EmptyImageContainer>
+              )}
             </ul>
 
             <ErrorMessage>
@@ -236,7 +243,7 @@ export default function NewOrderModal({
               onClick={handleSubmit(onSubmit)}
               isLoading={isLoading || isUpdating}
             >
-              Fazer Pedido
+              Fechar pedido
             </Button>
           </Container>
         </Modal>

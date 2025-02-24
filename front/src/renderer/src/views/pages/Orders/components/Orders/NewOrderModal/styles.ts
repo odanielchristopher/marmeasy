@@ -4,6 +4,32 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+
+  .productsOptions {
+    min-height: 20rem;
+  }
+`;
+
+export const EmptyImageContainer = styled.div`
+  width: 250px;
+  margin-inline: auto;
+  height: 200px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.2rem;
+
+  img {
+    border-radius: 0.4rem;
+    width: 200px;
+    object-fit: cover;
+  }
+
+  p {
+    text-align: center;
+  }
 `;
 
 export const ErrorMessage = styled.span`

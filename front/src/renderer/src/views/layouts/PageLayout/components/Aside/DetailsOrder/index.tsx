@@ -66,14 +66,10 @@ export default function DetailsOrder({
       <footer>
         <div className="left-footer">
           <span>Itens({order?.items.length})</span>
-          <span>Taxa de entrega</span>
-          <span>Desconto</span>
           <span>Valor total</span>
         </div>
         <div className="right-footer">
           <strong>R$ {formatCurrency(order?.totalValue || 0)}</strong>
-          <strong>R$ {formatCurrency(0)}</strong>
-          <strong>R$ {formatCurrency(0)}</strong>
           <strong>R$ {formatCurrency(order?.totalValue || 0)}</strong>
         </div>
       </footer>
