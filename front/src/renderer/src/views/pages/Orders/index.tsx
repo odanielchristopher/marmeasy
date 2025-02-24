@@ -54,12 +54,13 @@ export default function Orders() {
         <Content>
           {hasOrders && <OrdersList orders={ordersToRender} />}
 
-          {isSearchEmpty || !hasOrders && (
-            <NotFoundContainer>
-              <img src={notFoundImage} alt="Clientes não encontrados" />
-              <p>Não encontramos nenhum pedido!</p>
-            </NotFoundContainer>
-          )}
+          {isSearchEmpty ||
+            (!hasOrders && (
+              <NotFoundContainer>
+                <img src={notFoundImage} alt="Clientes não encontrados" />
+                <p>Não encontramos nenhum pedido!</p>
+              </NotFoundContainer>
+            ))}
         </Content>
       )}
     </Container>

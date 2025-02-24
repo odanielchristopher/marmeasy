@@ -25,19 +25,16 @@ export default function useDeleteOrderModal(
       onClose();
       handleHiddenOrderData();
     },
-    onError: () => {
-      toast({
-        type: 'danger',
-        text: 'Ocorreu um erro ao deletar o pedido.',
-      });
-    },
   });
 
   const handleDeleteOrder = async (orderId: string) => {
     try {
       await deleteOrder(orderId);
     } catch (error) {
-      console.error('Erro ao deletar pedido:', error);
+      toast({
+        type: 'danger',
+        text: 'Ocorreu um erro ao deletar o pedido.',
+      });
     }
   };
 

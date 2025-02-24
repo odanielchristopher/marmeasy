@@ -62,12 +62,10 @@ export default function useNewOrderModal(
 
   const [index, setIndex] = useState<number | null>(null);
 
-
-  const filteredProducts = products
-    .filter((prod) => {
-      if (!selectedCategory || selectedCategory.id === 'all') return true;
-      return prod.category?.id === selectedCategory.id;
-    });
+  const filteredProducts = products.filter((prod) => {
+    if (!selectedCategory || selectedCategory.id === 'all') return true;
+    return prod.category?.id === selectedCategory.id;
+  });
 
   const hasProducts = filteredProducts.length > 0;
 

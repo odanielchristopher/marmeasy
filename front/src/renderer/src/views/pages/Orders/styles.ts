@@ -25,7 +25,7 @@ export const Container = styled.div`
   .filters {
     display: flex;
     align-items: center;
-    gap: .8rem;
+    gap: 0.8rem;
     width: 100%;
     justify-content: space-between;
 
