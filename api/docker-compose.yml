@@ -3,10 +3,8 @@ services:
   postgres:
     image: postgres:latest
     container_name: marmeasy_db
-    environment:
-      POSTGRES_USER: 'root'
-      POSTGRES_PASSWORD: 'root'
-      POSTGRES_DB: 'marmeasy'
+    env_file:
+      - .env
     ports:
       - '5432:5432'
     volumes:
@@ -27,7 +25,7 @@ services:
       - /usr/src/app/uploads
     depends_on:
       - postgres
-    command: npm run start:dev # Comando automatizado
+    command: npm run start:prod # Comando automatizado
 
 volumes:
   postgres_data:
