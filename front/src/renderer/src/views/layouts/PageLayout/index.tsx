@@ -13,7 +13,7 @@ import { Container, Main } from './styles';
 export default function NavLayout() {
   const location = useLocation();
 
-  const showAside = ['/', '/orders'].includes(location.pathname);
+  const showAside = ['/', '/clients'].includes(location.pathname);
 
   return (
     <ModalsProvider>
