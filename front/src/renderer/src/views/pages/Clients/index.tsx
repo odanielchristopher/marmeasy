@@ -3,57 +3,38 @@ import { TbUsers } from 'react-icons/tb';
 import Fab from '@renderer/views/components/Fab';
 import SearchInput from '@renderer/views/components/SearchInput';
 
-import { Container, Content, Header, NotFoundContainer } from './styles';
+import { Container, LoaderContainer, NotFoundContainer } from './styles';
 
 import ClientList from './components/ClientList';
 
 import notFoundImage from '@renderer/assets/Images/NotFound.svg';
 import Loader from '@renderer/views/components/Loader';
-import DeleteModal from '@renderer/views/modals/DeleteModal';
+import { SectionHeader } from '@renderer/views/components/SectionHeader';
 import useClients from './useClients';
 
 export default function Clients() {
   const {
-    handleOnConfirmDeleteClient,
-    handleCloseDeleteClientModal,
-    handleDeleteClient,
-    handleChangeSearchTerm,
     hasClient,
-    isDeleteClientModalVisible,
-    clientBeingDeleted,
-    isFetching,
+    isLoading,
     isSearchEmpty,
     searchTerm,
-    filteredClients,
+    clientsToRender,
+    finalPageLoaderRef,
+    isFetchingNextPage,
+    handleChangeSearchTerm,
   } = useClients();
 
   return (
     <Container>
-      <DeleteModal
-        onConfirm={handleOnConfirmDeleteClient}
-        open={isDeleteClientModalVisible}
-        onClose={handleCloseDeleteClientModal}
-        answer={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Tem certeza que deseja excluir esse cliente?'
-            : 'Tem certeza que deseja excluir essa empresa?'
-        }
-        description={
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Todos os dados relacionados a esse cliente serão apagados e não poderão ser recuperados.'
-            : 'Todos os dados relacionados a essa empresa serão apagados e não poderão ser recuperados.'
-        }
-      />
-
       <Fab />
 
-      <Header>
+      <SectionHeader>
         <div>
           <TbUsers size={32} />
           <h1>Clientes</h1>
         </div>
         <p>Gerencie os clientes do seu estabelecimento</p>
-      </Header>
+      </SectionHeader>
 
       <SearchInput
         placeholder="Pesquisa por nome..."
@@ -61,12 +42,20 @@ export default function Clients() {
         onValueChange={handleChangeSearchTerm}
       />
 
-      {isFetching && <Loader $isLoading size={50} />}
+      {isLoading && <Loader $isLoading size={50} />}
 
-      {!isFetching && (
-        <Content>
+      {!isLoading && (
+        <>
           {hasClient && (
-            <ClientList onDeleteClient={handleDeleteClient} clients={filteredClients} />
+            <>
+              <ClientList clients={clientsToRender} />
+              <LoaderContainer
+                ref={finalPageLoaderRef}
+                $isFetchingNextPage={isFetchingNextPage}
+              >
+                <Loader $isLoading size={32} />
+              </LoaderContainer>
+            </>
           )}
 
           {isSearchEmpty && (
@@ -75,7 +64,7 @@ export default function Clients() {
               <p>Não encontramos nenhum cliente!</p>
             </NotFoundContainer>
           )}
-        </Content>
+        </>
       )}
     </Container>
   );

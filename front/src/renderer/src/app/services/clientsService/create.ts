@@ -7,7 +7,7 @@ export interface CreateClientParams {
   phone?: string;
   address?: string;
   document?: string;
-  balance?: number | string;
+  initialBalance: number | string;
 }
 
 export async function create(params: CreateClientParams) {

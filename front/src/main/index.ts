@@ -3,12 +3,11 @@ import { app, BrowserWindow, shell } from 'electron';
 import { join } from 'path';
 import icon from '../../resources/icon.png?asset';
 
-
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 1300,
-    height: 800,
+    height: 920,
     show: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),

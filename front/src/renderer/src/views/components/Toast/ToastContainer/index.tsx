@@ -17,10 +17,9 @@ export default function ToastContainer() {
     function handleAddToast({ type, text, duration }: IMessage) {
       setMessages((prevState) => [
         ...prevState,
-        {id: Math.random(), type, text, duration},
+        { id: Math.random(), type, text, duration },
       ]);
     }
-
 
     toastEventManager.on('addtoast', handleAddToast);
 
@@ -32,14 +31,14 @@ export default function ToastContainer() {
   return (
     <Container>
       {renderList((message, { isLeaving, animatedRef }) => (
-      <ToastMessage
-        key={message.id}
-        message={message}
-        onRemoveMessage={handleRemoveItem}
-        isLeaving={isLeaving}
-        animatedRef={animatedRef}
-      />
-    ))}
+        <ToastMessage
+          key={message.id}
+          message={message}
+          onRemoveMessage={handleRemoveItem}
+          isLeaving={isLeaving}
+          animatedRef={animatedRef}
+        />
+      ))}
     </Container>
   );
 }

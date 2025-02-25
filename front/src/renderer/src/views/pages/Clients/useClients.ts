@@ -1,102 +1,81 @@
-import { queryClient } from '@renderer/App';
-import { Client } from '@renderer/app/entities/Client';
-import { clientsService } from '@renderer/app/services/clientsService';
-import { RemoveClientParams } from '@renderer/app/services/clientsService/remove';
-import toast from '@renderer/app/utils/toast';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useEffect, useMemo, useState } from 'react';
+import { useClientsQuery } from '@renderer/app/hooks/queries/useClientsQuery';
+import { useSearchClientsQuery } from '@renderer/app/hooks/queries/useSearchClientsQuery';
+import { useDebounce } from '@renderer/app/hooks/useDebounce';
+import { useEffect, useRef, useState } from 'react';
 
 export default function useClient() {
-  const [clients, setClients] = useState<Client[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedValue = useDebounce(searchTerm, 400);
 
-  const [isDeleteClientModalVisible, setIsDeleteClientModalVisible] = useState(false);
-  const [clientBeingDeleted, setClientBeingDeleted] = useState<Client | null>(null);
+  // Se searchTerm estiver vazio, usamos useClientsQuery, senão usamos useSearchClientsQuery
+  const {
+    clients: normalClients,
+    isLoading: isClientsLoading,
+    nextPage: nextNormalPage,
+    hasNextPage: hasNextNormalPage,
+    isFetchingNextPage: isFetchingNextNormalPage,
+  } = useClientsQuery(20);
 
-  function handleDeleteClient(client: Client) {
-    setClientBeingDeleted(client);
-    setIsDeleteClientModalVisible(true);
-  }
+  const {
+    findedClients: searchedClients,
+    isLoading: isSearchLoading,
+    nextPage: nextSearchPage,
+    hasNextPage: hasNextSearchPage,
+    isFetchingNextPage: isFetchingNextSearchPage,
+  } = useSearchClientsQuery(debouncedValue, 20);
 
-  function handleCloseDeleteClientModal() {
-    setIsDeleteClientModalVisible(false);
-  }
+  // Escolher qual lista de clientes usar
+  const clientsToRender = debouncedValue ? searchedClients : normalClients;
 
-  async function handleOnConfirmDeleteClient() {
-    try {
-      await deleteClient({id: clientBeingDeleted!.id});
+  // Controle de páginação
+  const hasNextPage = debouncedValue ? hasNextSearchPage : hasNextNormalPage;
+  const nextPage = debouncedValue ? nextSearchPage : nextNormalPage;
+  const isFetchingNextPage = debouncedValue
+    ? isFetchingNextSearchPage
+    : isFetchingNextNormalPage;
 
-      toast({
-        type: 'success',
-        text: (
-          clientBeingDeleted?.type === 'FISICO'
-            ? 'Cliente removido'
-            : 'Empresa removida'
-        ),
-      });
-    } catch {
-      toast({
-        type: 'danger',
-        text: 'Ocorreu um erro ao tentar remover o cliente.',
-      });
-    }
-  }
+  const finalPageLoaderRef = useRef<null | HTMLDivElement>(null);
 
-  const { mutateAsync: deleteClient } = useMutation({
-    mutationFn: async (data: RemoveClientParams) => {
-      return clientsService.remove(data);
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ['clients', 'getAll'],
-        type: 'active',
-        exact: true,
-      });
-    },
-  });
+  // Configurar o IntersectionObserver para carregar mais páginas quando o usuário rolar
+  useEffect(() => {
+    if (!finalPageLoaderRef.current) return;
 
+    const observer = new IntersectionObserver((entries, obs) => {
+      const { isIntersecting } = entries[0];
 
-  const { data, isFetching } = useQuery({
-    queryKey: ['clients', 'getAll'],
-    queryFn: async () => {
-      return await clientsService.getAll();
-    },
-    staleTime: 60000,
-  });
+      if (!hasNextPage) {
+        obs.disconnect();
+        return;
+      }
 
-  function loadClient() {
-    setClients(data ?? []);
-  }
+      if (isIntersecting && hasNextPage) {
+        nextPage();
+      }
+    });
 
-  // @ts-ignore
-  function handleChangeSearchTerm(event) {
+    observer.observe(finalPageLoaderRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, nextPage]);
+
+  function handleChangeSearchTerm(event: React.ChangeEvent<HTMLInputElement>) {
     setSearchTerm(event.target.value);
   }
 
-  const filteredClients = useMemo(
-    () =>
-      clients.filter((contact) => contact.name.toLowerCase().includes(searchTerm.toLowerCase())),
-    [clients, searchTerm],
-  );
-
-  const isSearchEmpty = filteredClients.length < 1;
-  const hasClient = filteredClients.length > 0;
-
-  useEffect(() => {
-    loadClient();
-  }, [data]);
+  const isLoading = isSearchLoading || isClientsLoading;
+  const isSearchEmpty = clientsToRender.length < 1 && !isLoading;
+  const hasClient = clientsToRender.length > 0;
 
   return {
-    isDeleteClientModalVisible,
-    isFetching,
+    isLoading,
     isSearchEmpty,
     hasClient,
     searchTerm,
-    filteredClients,
-    clientBeingDeleted,
+    clientsToRender,
+    finalPageLoaderRef,
     handleChangeSearchTerm,
-    handleCloseDeleteClientModal,
-    handleDeleteClient,
-    handleOnConfirmDeleteClient,
+    isFetchingNextPage,
   };
 }

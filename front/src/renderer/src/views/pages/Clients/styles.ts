@@ -1,41 +1,35 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Container = styled.div`
   position: relative;
-  grid-area: main;
   margin-top: 1.6rem;
   width: 100%;
   height: 100%;
-`;
 
-export const Header = styled.header`
-  margin-bottom: 3.6rem;
-  div {
-    align-items: center;
+  .list-container {
+    width: 100%;
     display: flex;
-
-    h1 {
-      color: ${({ theme }) => theme.colors.black.light};
-      font-size: 2.8rem;
-      font-weight: 600;
-      margin-left: 1rem;
-    }
-  }
-
-  p {
-    color: ${({ theme }) => theme.colors.gray.light};
-    margin-top: 0.4rem;
+    flex-direction: column;
+    align-items: center;
   }
 `;
 
-export const Content = styled.div`
-  overflow-y: auto;
+interface LoaderContainerProps {
+  $isFetchingNextPage?: boolean;
+}
+
+export const LoaderContainer = styled.div<LoaderContainerProps>`
+  height: 70px;
   width: 100%;
-  padding-bottom: 2.4rem;
-  padding-left: 0.8rem;
-  display: flex;
-  gap: 1.6rem;
-  flex-wrap: wrap;
+
+  ${({ $isFetchingNextPage }) =>
+    !$isFetchingNextPage &&
+    css`
+      width: 0;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    `}
 `;
 
 export const NotFoundContainer = styled.div`

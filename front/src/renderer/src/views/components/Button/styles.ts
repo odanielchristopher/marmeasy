@@ -2,30 +2,30 @@ import { ComponentProps } from 'react';
 import styled, { css } from 'styled-components';
 
 export interface StyledButtonProps extends ComponentProps<'button'> {
-  $danger?: boolean
+  $danger?: boolean;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
   align-items: center;
-  background: ${({ theme }) => theme.colors.orange.main};
+  background: ${({ theme }) => theme.colors.orange.light};
   border: none;
   border-radius: ${({ theme }) => theme.borderRadius};
-  box-shadow: 0rem .4rem 1.0rem 0rem #0000000A;
-  color: #FFF;
+  box-shadow: 0rem 0.4rem 1rem 0rem #0000000a;
+  color: #fff;
   display: flex;
   font-size: 1.6rem;
   font-weight: 600;
   justify-content: center;
   height: 4.2rem;
   padding: 0 1.4rem;
-  transition: background .2s ease-in;
+  transition: background 0.2s ease-in;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.orange.light};
+    background: ${({ theme }) => theme.colors.orange.main};
   }
 
   &:focus {
-    outline: .1rem solid ${({ theme }) => theme.colors.green.main};
+    outline: 0.1rem solid ${({ theme }) => theme.colors.green.main};
   }
 
   &:active {
@@ -38,15 +38,17 @@ export const StyledButton = styled.button<StyledButtonProps>`
     cursor: default !important;
   }
 
-  ${({ theme, $danger }) => $danger && css`
-    background: ${theme.colors.red.main};
+  ${({ theme, $danger }) =>
+    $danger &&
+    css`
+      background: ${theme.colors.red.main};
 
-    &:hover {
-      background: ${theme.colors.red.light};
-    }
+      &:hover {
+        background: ${theme.colors.red.light};
+      }
 
-    &:active {
-      background: ${theme.colors.red.dark};
-    }
-  `};
+      &:active {
+        background: ${theme.colors.red.dark};
+      }
+    `};
 `;

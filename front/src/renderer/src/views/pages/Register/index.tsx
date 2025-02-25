@@ -1,25 +1,30 @@
-import { Link } from 'react-router-dom';
-
 import Button from '@renderer/views/components/Button';
 import { Input } from '@renderer/views/components/Input';
 
 import useRegister from './useRegister';
 
-import { Container, Description, Title } from './styles';
+import {
+  Container,
+  Description,
+  Header,
+  StyledLink,
+  TextContainer,
+  Title,
+} from './styles';
 
 export default function Register() {
-const {
-    errors,
-    isLoading,
-    register,
-    handleSubmit,
-  } = useRegister();
+  const { errors, isLoading, register, handleSubmit } = useRegister();
 
   return (
     <Container>
-      <Title>Seja bem-vindo à Marmeasy</Title>
+      <Header>
+        <Title>Crie sua conta</Title>
 
-      <Description>Digite um email e senha de sua preferência</Description>
+        <TextContainer>
+          <Description>Já possui uma conta?</Description>
+          <StyledLink to="/login">Fazer login</StyledLink>
+        </TextContainer>
+      </Header>
 
       <form onSubmit={handleSubmit}>
         <Input
@@ -31,13 +36,12 @@ const {
         />
 
         <Input
-          type="email"
+          type="text"
           placeholder="E-mail"
           isLoading={isLoading}
           $error={errors.email?.message}
           {...register('email')}
         />
-
 
         <Input
           type="password"
@@ -47,20 +51,18 @@ const {
           {...register('password')}
         />
 
-        <Button
-          type="submit"
+        <Input
+          type="password"
+          placeholder="Confirme sua senha"
           isLoading={isLoading}
-        >
-          Registrar conta
+          $error={errors.confirmPassword?.message}
+          {...register('confirmPassword')}
+        />
+
+        <Button type="submit" isLoading={isLoading}>
+          Criar conta
         </Button>
-
-    </form>
-
-      <Link
-        to='/login'
-      >
-        Já possuo uma conta.
-      </Link>
+      </form>
     </Container>
   );
 }

@@ -36,7 +36,8 @@ const round = keyframes`
 `;
 
 export const StyledSpinner = styled.div<SpinnerProps>`
-  color: ${({ theme, color }) => color ? theme.colors[color].dark : theme.colors.orange.main};
+  color: ${({ theme, color }) =>
+    color ? theme.colors[color].dark : theme.colors.orange.main};
   font-size: ${({ size }) => `${size}px`};
   width: 1em;
   height: 1em;
@@ -44,6 +45,10 @@ export const StyledSpinner = styled.div<SpinnerProps>`
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-animation: ${load} 1.7s infinite ease, ${round} 1.7s infinite ease;
-  animation: ${load} 1.7s infinite ease, ${round} 1.7s infinite ease;
+  -webkit-animation:
+    ${load} 1.7s infinite ease,
+    ${round} 1.7s infinite ease;
+  animation:
+    ${load} 1.7s infinite ease,
+    ${round} 1.7s infinite ease;
 `;

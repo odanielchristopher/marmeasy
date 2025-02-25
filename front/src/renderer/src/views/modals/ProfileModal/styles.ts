@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components';
 
-
 const scoleIn = keyframes`
   from {
     opacity: 0;
@@ -36,7 +35,7 @@ export const InfoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block: 1.2rem .6rem;
+  margin-block: 1.2rem 0.6rem;
 
   span {
     color: ${({ theme }) => theme.colors.gray.main};
@@ -55,14 +54,14 @@ export const NewPasswordButton = styled.button`
   display: inline;
 
   b {
-    color: #528AB2;
+    color: #528ab2;
     font-weight: 500;
   }
 `;
 
 export const NewPasswordContainer = styled.div`
   margin-top: 1.2rem;
-  animation: ${scoleIn} ease-in .15s forwards;
+  animation: ${scoleIn} ease-in 0.15s forwards;
 `;
 
 export const DeleteButton = styled.button`

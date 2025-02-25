@@ -7,6 +7,7 @@ import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 import {
   Container,
   SelectContainer,
+  SelectTriggerProps,
   StyledLabel,
   StyledRdxSelectContent,
   StyledRdxSelectDownButton,
@@ -17,7 +18,7 @@ import {
   StyledRdxSelectViewport,
 } from './styles';
 
-interface SelectProps {
+interface SelectProps extends SelectTriggerProps {
   $error?: string;
   placeholder?: string;
   options: {
@@ -28,7 +29,14 @@ interface SelectProps {
   onChange?(value: string): void;
 }
 
-export default function Select({ $error, options, onChange, placeholder, value }: SelectProps) {
+export default function Select({
+  $error,
+  options,
+  onChange,
+  placeholder,
+  value,
+  ...props
+}: SelectProps) {
   const [selectedValue, setSelectedValue] = useState(value ?? '');
 
   function handleSelect(value: string) {
@@ -38,13 +46,13 @@ export default function Select({ $error, options, onChange, placeholder, value }
 
   return (
     <Container>
-      <SelectContainer>
+      <SelectContainer {...props}>
         <StyledLabel $error={$error} $isSeleted={!!selectedValue}>
           {placeholder}
         </StyledLabel>
 
         <RdxSelect.Root value={value} onValueChange={handleSelect}>
-          <StyledRdxSelectTrigger $error={$error}>
+          <StyledRdxSelectTrigger $error={$error} {...props} type="button">
             <RdxSelect.Value />
 
             <StyledRdxSelectIcon>
@@ -59,10 +67,10 @@ export default function Select({ $error, options, onChange, placeholder, value }
               </StyledRdxSelectUpButton>
 
               <StyledRdxSelectViewport>
-                {options.map(option => (
-                  <StyledRdxSelectItem  key={option.value} value={option.value}>
-                  <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
-                </StyledRdxSelectItem>
+                {options.map((option) => (
+                  <StyledRdxSelectItem key={option.value} value={option.value}>
+                    <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
+                  </StyledRdxSelectItem>
                 ))}
               </StyledRdxSelectViewport>
 

@@ -1,0 +1,75 @@
+{
+  "sales": {
+    "total": 2,
+    "history": {
+      "2024-12": {
+        "31": [
+          { "id": "1", "clientName": "João", "quantity": 3, "value": 90.0 },
+          { "id": "2", "clientName": "Maria", "quantity": 5, "value": 150.0 }
+        ]
+      }
+    }
+  },
+  "incomes": {
+    "total": 250,
+    "history": {
+      "2024-12": {
+        "31": [
+          { "id": "1", "clientName": "João", "type": "CREDIT_CARD", "value": 90.0 },
+          { "id": "2", "clientName": "Maria", "type": "CASH", "value": 150.0 }
+        ]
+      },
+      "2024-11": {
+        "22": [
+          { "id": "3", "clientName": "João", "type": "DEBIT_CARD", "value": 10.0 }
+        ]
+      }
+    }
+  },
+  "expenses": {
+    "total": 150,
+    "history": {
+      "2024-12": {
+        "31": [
+          { "id": "1", "type": "MEATS", "value": 40.0 },
+          { "id": "2", "type": "DELIVERY", "value": 10.0 }
+        ],
+        "28": [
+          { "id": "1", "type": "MEATS", "value": 40.0 },
+          { "id": "2", "type": "DELIVERY", "value": 10.0 }
+        ]
+      },
+      "2024-11": {
+        "29": [
+          { "id": "1", "type": "GUARISSONS", "value": 40.0 },
+          { "id": "2", "type": "DELIVERY", "value": 10.0 }
+        ]
+      }
+    }
+  },
+  "categories": {
+    "incomes": [
+      { "id": "1", "type": "CREDIT_CARD", "value": 1200.0 },
+      { "id": "2", "type": "CASH", "value": 800.0 }
+    ],
+    "expenses": [
+      { "id": "1", "type": "MEATS", "value": 500.0 },
+      { "id": "2", "type": "DELIVERY", "value": 200.0 }
+    ]
+  },
+  "favorites": [
+    { "title": "Strogonoff de Frango", "quantity": 54 },
+    { "title": "Frango ao Molho", "quantity": 41 },
+    { "title": "Picadinho de Carne", "quantity": 36 }
+  ],
+  "graph": {
+    "incomes": [
+      { "id": "1", "type": "CREDIT_CARD", "value": 1200.0, "date": "2024-11-24" },
+      { "id": "2", "type": "CASH", "value": 800.0, "date": "2024-11-25" }
+    ],
+    "expenses": [
+      { "id": "1", "type": "MEATS", "value": 500.0, "date": "2024-11-24" },
+      { "id": "2", "type": "DELIVERY", "value": 200.0, "date": "2024-11-25" }
+    ]
+  }
+}

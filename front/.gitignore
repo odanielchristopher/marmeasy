@@ -1,5 +1,35 @@
-node_modules
-dist
-out
+# Diretórios de dependências
+node_modules/
+dist/
+out/
+
+# Arquivos do sistema
 .DS_Store
-*.log*
+
+# Logs e depurações
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos do JSON Server
+db.json
+
+# Arquivos de ambiente e configurações sensíveis
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Cache do editor e IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Cache do TypeScript
+*.tsbuildinfo
+
+# Dependências do Electron (se aplicável)
+electron-builder-cache/

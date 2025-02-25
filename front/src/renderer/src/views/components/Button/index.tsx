@@ -2,7 +2,7 @@ import { ComponentProps } from 'react';
 import Spinner from '../Spinner';
 import { StyledButton } from './styles';
 
-interface ButtonProps extends ComponentProps<'button'> {
+export interface ButtonProps extends ComponentProps<'button'> {
   isLoading?: boolean;
   danger?: boolean;
 }
@@ -14,6 +14,7 @@ export default function Button({
   children,
   danger,
   onClick,
+  ...props
 }: ButtonProps) {
   return (
     <StyledButton
@@ -21,6 +22,7 @@ export default function Button({
       disabled={disabled || isLoading}
       $danger={danger}
       onClick={onClick}
+      {...props}
     >
       {!isLoading && children}
       {isLoading && <Spinner size={16} />}

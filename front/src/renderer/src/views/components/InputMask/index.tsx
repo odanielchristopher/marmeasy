@@ -16,9 +16,18 @@ export interface InputProps {
   mask?: string;
 }
 
-export default function InputMask(
-  { type, placeholder, name, id, $error, isLoading, value, format, mask, onChangeValue } : InputProps,
-) {
+export default function InputMask({
+  type,
+  placeholder,
+  name,
+  id,
+  $error,
+  isLoading,
+  value,
+  format,
+  mask,
+  onChangeValue,
+}: InputProps) {
   const inputId = id ?? name;
 
   return (
@@ -31,7 +40,7 @@ export default function InputMask(
         type={type}
         value={value}
         placeholder=" "
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChangeValue?.(event.target.value)}
+        onValueChange={({ value }) => onChangeValue?.(value)}
         $error={$error}
         disabled={isLoading}
       />
