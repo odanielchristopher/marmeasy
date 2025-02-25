@@ -30,7 +30,7 @@ export default function Aside({ area }: AsideProps) {
 
   useEffect(() => {
     function handleAsideData(pathname: string) {
-      if (pathname == '/orders') {
+      if (pathname == '/') {
         setShowOrders(true);
         setShowPayments(false);
         return;
