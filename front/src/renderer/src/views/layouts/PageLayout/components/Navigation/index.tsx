@@ -31,18 +31,18 @@ export default function Navigation({ $area }: NavigationProps) {
       </LogoContainer>
 
       <MainContainer>
-        <StyledLink type="button" to={'/'} $active={pathname === '/'}>
-          <TbUsers size={32} />
-          <span>Clientes</span>
+        <StyledLink type="button" to={'/'} $active={pathname == '/'}>
+          <OrdersIcon />
+          <span>Pedidos</span>
         </StyledLink>
 
         <StyledLink
           type="button"
-          to={'/orders'}
-          $active={pathname == '/orders'}
+          to={'/clients'}
+          $active={pathname === '/clients'}
         >
-          <OrdersIcon />
-          <span>Pedidos</span>
+          <TbUsers size={32} />
+          <span>Clientes</span>
         </StyledLink>
 
         <StyledLink type="button" to={'/menu'} $active={pathname === '/menu'}>
