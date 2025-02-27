@@ -9,7 +9,7 @@ export function useExpensesQuery() {
   });
 
   return {
-    expenses: data ?? { total: 0, history: {} },
+    expenses: data ?? { total: 0, history: [] },
     isLoading: isFetching,
   };
 }

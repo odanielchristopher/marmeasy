@@ -4,7 +4,9 @@ export interface PaginatedResponse<TData> {
 }
 
 export interface History<TEntity> {
-  [monthYear: string]: {
-    [day: string]: TEntity[];
-  };
+  monthYear: string;
+  days: {
+    day: string;
+    items: TEntity[];
+  }[];
 }

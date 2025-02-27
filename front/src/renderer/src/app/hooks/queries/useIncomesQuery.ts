@@ -9,7 +9,7 @@ export function useIncomesQuery() {
   });
 
   return {
-    incomes: data ?? { total: 0, history: {} },
+    incomes: data ?? { total: 0, history: [] },
     isLoading: isFetching,
   };
 }

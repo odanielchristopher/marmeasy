@@ -10,7 +10,7 @@ export function useIncomesByTypeQuery(enabled = true, type?: string) {
   });
 
   return {
-    incomes: data ?? { total: 0, history: {} },
+    incomes: data ?? { total: 0, history: [] },
     isLoading: isFetching,
   };
 }

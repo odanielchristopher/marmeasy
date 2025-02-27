@@ -4,7 +4,7 @@ import { History } from '../../types';
 
 export type GetExpensesResponse = {
   total: number;
-  history: History<Expense>;
+  history: History<Expense>[];
 };
 
 export async function getAll(type?: string) {

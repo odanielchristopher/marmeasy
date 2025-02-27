@@ -9,7 +9,7 @@ export function useSalesQuery() {
   });
 
   return {
-    sales: data ?? { total: 0, history: {} },
+    sales: data ?? { total: 0, history: [] },
     isLoading: isFetching,
   };
 }
