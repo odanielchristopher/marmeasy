@@ -43,7 +43,7 @@ export default function SalesModal({
             text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />
 
-          {days.map(({day, items: sales}, index) => (
+          {days.map(({ day, items: sales }, index) => (
             <div key={index}>
               <Modal.Description
                 text={capitalizeFirstLetter(formatDay(day, monthYear))}

@@ -55,13 +55,13 @@ export default function IncomesModal({
 
       {hasIncomes &&
         !isLoading &&
-        incomesHistory.map(({monthYear, days}) => (
+        incomesHistory.map(({ monthYear, days }) => (
           <ListPerDate key={monthYear}>
             <Modal.Label
               text={capitalizeFirstLetter(formatMonthYear(monthYear))}
             />
 
-            {days.map(({day, items: incomes}, index) => (
+            {days.map(({ day, items: incomes }, index) => (
               <div key={index}>
                 <Modal.Description
                   text={capitalizeFirstLetter(formatDay(day, monthYear))}

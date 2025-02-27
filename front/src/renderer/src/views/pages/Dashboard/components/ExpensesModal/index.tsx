@@ -119,13 +119,13 @@ export default function ExpensesModal({
 
       {!isLoading &&
         hasExpenses &&
-        expensesHistory.map(({monthYear, days}) => (
+        expensesHistory.map(({ monthYear, days }) => (
           <ListPerDate key={monthYear}>
             <Modal.Label
               text={capitalizeFirstLetter(formatMonthYear(monthYear))}
             />
 
-            {days.map(({day, items: expenses}, index) => (
+            {days.map(({ day, items: expenses }, index) => (
               <div key={index}>
                 <Modal.Description
                   text={capitalizeFirstLetter(formatDay(day, monthYear))}
