@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { IHistory, IHistoryResponse, IIncomesANDExpenses } from './types';
+import { IHistoryResponse, IIncomesANDExpenses } from './types';
 
 import { IExpensesRepository } from 'src/shared/database/interfaces/expenses-repository.interface';
 import { IDashboardService } from './interfaces/dashboard-service.interface';
@@ -62,7 +62,10 @@ export class DashboardService implements IDashboardService {
       dateRange,
     });
 
-    return this.formatHistoryResponse({ data: sales, type: 'length' });
+    return this.formatHistoryResponse({
+      data: sales,
+      type: 'quantity',
+    });
   }
 
   getFavoritesIngredients(
@@ -113,42 +116,51 @@ export class DashboardService implements IDashboardService {
   }
 
   private formatHistoryResponse<
-    TEntity extends { date: string; value: number },
+    TEntity extends { date: string; value: number; quantity?: number },
   >({
     data,
     type = 'amount',
   }: {
     data: TEntity[];
-    type?: 'amount' | 'length';
+    type?: 'amount' | 'quantity';
   }): IHistoryResponse<TEntity> {
-    const history: IHistory<TEntity> = {};
-
-    let total = 0;
+    const history = new Map<string, Map<string, TEntity[]>>();
+    let amount = 0;
+    let quantity = 0;
 
     data.forEach((item) => {
       const dateObj = new Date(item.date);
-
-      const monthYear = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1)
-        .toString()
-        .padStart(2, '0')}`;
-
+      const monthYear = `${dateObj.getFullYear()}-${(dateObj.getMonth() + 1).toString().padStart(2, '0')}`;
       const day = dateObj.getDate().toString().padStart(2, '0');
 
-      if (!history[monthYear]) {
-        history[monthYear] = {};
+      if (!history.has(monthYear)) {
+        history.set(monthYear, new Map());
       }
 
-      if (!history[monthYear][day]) {
-        history[monthYear][day] = [];
+      const monthMap = history.get(monthYear)!;
+      if (!monthMap.has(day)) {
+        monthMap.set(day, []);
       }
 
-      total += item.value;
-      history[monthYear][day].push(item);
+      amount += item.value;
+      quantity += item.quantity ?? 0;
+      monthMap.get(day)!.push(item);
     });
 
+    // Converter Map para array de objetos mantendo a ordem
+    const orderedHistory = Array.from(history.entries()).map(
+      ([monthYear, daysMap]) => ({
+        monthYear,
+        days: Array.from(daysMap.entries()).map(([day, items]) => ({
+          day,
+          items,
+        })),
+      }),
+    );
+
     return {
-      total: type === 'amount' ? total : data.length,
-      history,
+      total: type === 'amount' ? amount : quantity,
+      history: orderedHistory,
     };
   }
 }
