@@ -4,7 +4,7 @@ import { Expense } from '@renderer/app/entities/Expense';
 import { History } from '@renderer/app/services/types';
 
 interface UseExpensesModalProps {
-  expensesHistory: History<Expense>;
+  expensesHistory: History<Expense>[];
 }
 
 export default function useExpensesModal({
@@ -31,7 +31,7 @@ export default function useExpensesModal({
     setIsOpenEditExpenseModal(false);
   }, []);
 
-  const hasExpenses = Object.entries(expensesHistory).length > 0;
+  const hasExpenses = expensesHistory.length > 0;
 
   return {
     hasExpenses,

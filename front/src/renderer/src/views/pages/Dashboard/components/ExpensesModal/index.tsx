@@ -27,7 +27,7 @@ interface ExpensesModalProps {
   title?: string;
   isLoading?: boolean;
   hasAction?: boolean;
-  expensesHistory: History<Expense>;
+  expensesHistory: History<Expense>[];
   onClose(): void;
 }
 
@@ -119,13 +119,13 @@ export default function ExpensesModal({
 
       {!isLoading &&
         hasExpenses &&
-        Object.entries(expensesHistory).map(([monthYear, days]) => (
+        expensesHistory.map(({monthYear, days}) => (
           <ListPerDate key={monthYear}>
             <Modal.Label
               text={capitalizeFirstLetter(formatMonthYear(monthYear))}
             />
 
-            {Object.entries(days).map(([day, expenses], index) => (
+            {days.map(({day, items: expenses}, index) => (
               <div key={index}>
                 <Modal.Description
                   text={capitalizeFirstLetter(formatDay(day, monthYear))}

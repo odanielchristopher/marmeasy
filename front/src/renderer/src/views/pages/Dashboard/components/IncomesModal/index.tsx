@@ -25,7 +25,7 @@ interface IncomesModalProps {
   open: boolean;
   title?: string;
   isLoading?: boolean;
-  incomesHistory: History<Income>;
+  incomesHistory: History<Income>[];
   onClose(): void;
 }
 
@@ -55,13 +55,13 @@ export default function IncomesModal({
 
       {hasIncomes &&
         !isLoading &&
-        Object.entries(incomesHistory).map(([monthYear, days]) => (
+        incomesHistory.map(({monthYear, days}) => (
           <ListPerDate key={monthYear}>
             <Modal.Label
               text={capitalizeFirstLetter(formatMonthYear(monthYear))}
             />
 
-            {Object.entries(days).map(([day, incomes], index) => (
+            {days.map(({day, items: incomes}, index) => (
               <div key={index}>
                 <Modal.Description
                   text={capitalizeFirstLetter(formatDay(day, monthYear))}

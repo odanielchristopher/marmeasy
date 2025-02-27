@@ -18,7 +18,7 @@ import { ListPerDate } from './styles';
 interface SalesModalProps {
   open: boolean;
   onClose(): void;
-  salesHistory: History<Sale>;
+  salesHistory: History<Sale>[];
 }
 
 export default function SalesModal({
@@ -37,13 +37,13 @@ export default function SalesModal({
         </EmptyImageContainer>
       )}
 
-      {Object.entries(salesHistory).map(([monthYear, days]) => (
+      {salesHistory.map(({ monthYear, days }) => (
         <ListPerDate key={monthYear}>
           <Modal.Label
             text={capitalizeFirstLetter(formatMonthYear(monthYear))}
           />
 
-          {Object.entries(days).map(([day, sales], index) => (
+          {days.map(({day, items: sales}, index) => (
             <div key={index}>
               <Modal.Description
                 text={capitalizeFirstLetter(formatDay(day, monthYear))}
