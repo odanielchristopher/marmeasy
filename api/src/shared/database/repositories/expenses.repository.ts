@@ -36,6 +36,9 @@ export class ExpensesRepository implements IExpensesRepository {
           lte: toDate,
         },
       },
+      orderBy: {
+        date: 'desc',
+      },
     });
 
     return incomes.map((expense) => this.parser(expense));
@@ -78,6 +81,9 @@ export class ExpensesRepository implements IExpensesRepository {
           lte: toDate,
         },
         type,
+      },
+      orderBy: {
+        date: 'desc',
       },
     });
 

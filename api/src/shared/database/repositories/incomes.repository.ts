@@ -34,6 +34,9 @@ export class IncomesRepository implements IIncomesRepository {
           lte: toDate,
         },
       },
+      orderBy: {
+        date: 'desc',
+      },
     });
 
     return incomes.map((income) => this.partialParser(income));
@@ -62,7 +65,7 @@ export class IncomesRepository implements IIncomesRepository {
       AND p.date BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
       ${queryType}
     GROUP BY c.name, p.type, DATE(p.date)
-    ORDER BY value DESC;
+    ORDER BY date DESC;
   `;
 
     return incomes.map((income) => this.parser(income));
@@ -86,7 +89,7 @@ export class IncomesRepository implements IIncomesRepository {
     WHERE p.user_id = ${userId}::uuid
       AND p.date BETWEEN ${fromDate}::timestamp AND ${toDate}::timestamp
     GROUP BY p.type, p.user_id
-    ORDER BY value DESC;
+    ORDER BY date DESC;
     `;
 
     return incomes.map((income) => this.partialParser(income));
