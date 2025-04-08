@@ -2,6 +2,9 @@ export const routes = {
   index: '/',
   users: {
     prefix: '/users',
-    new: 'new',
+    new: {
+      index: 'new',
+      row: '/users/new',
+    },
   },
 };
