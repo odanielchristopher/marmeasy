@@ -1,5 +1,6 @@
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
+import { Spinner } from '@views/components/ui/Spinner';
 
 import { useCreateUserController } from './useCreateUserController';
 
@@ -20,11 +21,7 @@ export function CreateUser() {
         className="w-full p-6 rounded-xl mx-auto bg-accent mt-3 relative"
         onSubmit={handleSubmit}
       >
-        {formState.isLoading && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-10 rounded-full border-4 border-r-white animate-spin" />
-          </div>
-        )}
+        {formState.isLoading && <Spinner />}
 
         <div className="space-y-3">
           <Input
