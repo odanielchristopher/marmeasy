@@ -61,7 +61,7 @@
   --background: oklch(0.17 0.0185 80.52);
   --foreground: oklch(0.93 0.0029 84.56);
 
-  --card: oklch(0 0 0);
+  --card: oklch(0.23 0.0298 72.17);
   --card-foreground: oklch(0.93 0.0029 84.56);
 
   --popover: oklch(0.17 0.0185 80.52);

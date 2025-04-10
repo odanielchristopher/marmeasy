@@ -9,7 +9,7 @@ export function NotFoundPage() {
         alt="404"
       />
 
-      <span className="text-gray-800 tracking-[-0.5px]">
+      <span className="text-gray-800 dark:text-foreground tracking-[-0.5px]">
         Página não encontrada!
       </span>
     </div>
