@@ -13,19 +13,21 @@ export function AppHeader() {
   const isMobile = useIsMobile();
 
   return (
-    <header className="fixed z-10 top-0 w-full px-4 md:px-6 py-4 f flex border-b mb-4 items-center justify-between bg-primary-400 dark:bg-background">
-      <div className="flex gap-2 items-center">
-        <Logo className="text-teal-950 dark:text-foreground" />
+    <header className="fixed z-10 top-0 w-full px-4 md:px-6 py-4 border-b mb-4 bg-primary-400 dark:bg-background">
+      <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
+        <div className="flex gap-4 items-center">
+          <Logo className="text-teal-950 dark:text-foreground" />
 
-        <AppNavigation currentPathname={currentPathname} />
-      </div>
+          <AppNavigation currentPathname={currentPathname} />
+        </div>
 
-      <div className="flex flex-1 justify-end items-center gap-2">
-        <ThemeSwitcher className="bg-transparent text-white hover:!bg-[#DEE2E6]/20  hover:text-white" />
+        <div className="flex flex-1 justify-end items-center gap-2">
+          <ThemeSwitcher className="bg-transparent text-white hover:!bg-[#DEE2E6]/20  hover:text-white" />
 
-        {isMobile && <UserMobileMenu currentPathname={currentPathname} />}
+          {isMobile && <UserMobileMenu currentPathname={currentPathname} />}
 
-        {!isMobile && <UserMenu />}
+          {!isMobile && <UserMenu />}
+        </div>
       </div>
     </header>
   );
