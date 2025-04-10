@@ -19,7 +19,7 @@ export const navItems = [
     pathname: routes.form,
     icon: BookText,
   },
-] as const;
+];
 
 export function AppNavigation({ currentPathname }: IAppNavigationProps) {
   return (
