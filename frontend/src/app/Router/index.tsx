@@ -24,10 +24,7 @@ export function Router() {
     >
       <Routes>
         <Route path={routes.index} element={<Home />} />
-
-        <Route path={routes.users.prefix}>
-          <Route path={routes.users.new.index} element={<CreateUser />} />
-        </Route>
+        <Route path={routes.form} element={<CreateUser />} />
       </Routes>
     </Suspense>
   );
