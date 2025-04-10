@@ -11,7 +11,7 @@ export function App() {
         <div className="flex flex-col h-full">
           <AppHeader />
 
-          <main className="flex-1 pt-25 pb-4 min-[742px]:pb-6">
+          <main className="flex-1 pt-20">
             <Router />
           </main>
         </div>
