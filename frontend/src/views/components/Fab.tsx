@@ -45,7 +45,7 @@ export function Fab() {
 
       <DropdownMenuContent
         align="end"
-        className="!shadow-default space-y-2 px-2 py-2.5 border-transparent dark:border-muted max-md:dark:bg-muted"
+        className="!shadow-default space-y-2 px-2 py-2.5 bg-white dark:bg-popover border-transparent dark:border-accent"
       >
         {fapItems.map(({ label, icon: Icon, bgIcon, colorIcon }) => (
           <DropdownMenuItem key={label} className="cursor-pointer">
