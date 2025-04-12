@@ -1,3 +1,4 @@
+import { Order } from '@views/components/Order';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 import { Spinner } from '@views/components/ui/Spinner';
@@ -12,13 +13,13 @@ export function CreateUser() {
   }
 
   return (
-    <main className="w-full max-w-[532px] mx-auto px-4">
+    <main className="w-full max-w-[532px] mx-auto px-4 pt-10">
       <h2 className="text-2xl font-semibold tracking-[-1px]">
         Crie seu usuário
       </h2>
 
       <form
-        className="w-full p-6 rounded-xl mx-auto bg-accent mt-3 relative"
+        className="w-full p-6 rounded-xl mx-auto border bg-accent dark:bg-card mt-3 relative"
         onSubmit={handleSubmit}
       >
         {formState.isLoading && <Spinner />}
@@ -89,8 +90,48 @@ export function CreateUser() {
           >
             Validar campos
           </Button>
+
+          <Button
+            type="button"
+            onClick={() => form.setFocus('name')}
+            size="sm"
+            variant="destructive"
+          >
+            teste
+          </Button>
+          <Button
+            type="button"
+            onClick={() => form.setFocus('name')}
+            size="sm"
+            variant="secondary"
+          >
+            teste
+          </Button>
+          <Button
+            type="button"
+            onClick={() => form.setFocus('name')}
+            size="sm"
+            variant="ghost"
+          >
+            teste
+          </Button>
         </div>
       </form>
+
+      <div className="mt-10">
+        <Order
+          order={{
+            date: '12/12/12',
+            quantity: 2,
+            total: 40,
+            customer: {
+              id: '123',
+              name: 'Daniel',
+              type: 'BUSINESS',
+            },
+          }}
+        />
+      </div>
     </main>
   );
 }

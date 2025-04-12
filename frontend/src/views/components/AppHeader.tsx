@@ -13,7 +13,7 @@ export function AppHeader() {
   const isMobile = useIsMobile();
 
   return (
-    <header className="fixed z-10 top-0 w-full px-4 md:px-6 py-4 border-b mb-4 bg-primary-400 dark:bg-background">
+    <header className="fixed z-10 top-0 w-full px-4 md:px-6 py-4 border-b mb-4 bg-primary dark:bg-background">
       <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
         <div className="flex gap-4 items-center">
           <Logo className="text-teal-950 dark:text-foreground" />

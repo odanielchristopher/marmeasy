@@ -1,4 +1,5 @@
-import { Factory, User } from 'lucide-react';
+import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
+import { customerIconsMap } from '@views/assets/icons/customers/customerIconsMap';
 
 import {
   Accordion,
@@ -14,7 +15,7 @@ interface IOrderProps {
     total: number;
     customer: {
       id: string;
-      type: string;
+      type: 'BUSINESS' | 'INDIVIDUAL';
       name: string;
     };
   };
@@ -23,18 +24,17 @@ interface IOrderProps {
 export function Order({
   order: { customer, date, quantity, total },
 }: IOrderProps) {
-  const Icon = customer.type === 'INDIVIDUAL' ? User : Factory;
-
-  // --card: 34 50% 10%;
-  // --card-foreground: 34 5% 100%;
-
   return (
     <Accordion type="single" collapsible>
-      <AccordionItem value="item-1" className="rounded-md">
-        <AccordionTrigger className="flex bg-white p-4 items-center data-[state=open]:rounded-b-none !no-underline dark:bg-card">
+      <AccordionItem value="item-1" className="!border rounded-xl">
+        <AccordionTrigger className="flex bg-white p-4 items-center data-[state=open]:rounded-b-none !no-underline dark:bg-card rounded-2xl">
           <div className="flex flex-1 items-center gap-3">
             <div className="p-2 bg-violet-100 text-violet-950 rounded-full">
-              <Icon className="size-6" strokeWidth={1.5} />
+              <CustomerIcon
+                type={
+                  customer.type.toLocaleLowerCase() as keyof typeof customerIconsMap
+                }
+              />
             </div>
             <div className="flex flex-1 items-center gap-2">
               <div className="flex flex-col">
@@ -59,7 +59,7 @@ export function Order({
             </div>
           </div>
         </AccordionTrigger>
-        <AccordionContent className="bg-white rounded-b-md dark:bg-accent">
+        <AccordionContent className="bg-white rounded-b-xl dark:bg-card">
           Aqui aparece o conteúdo dos pedido.
         </AccordionContent>
       </AccordionItem>

@@ -5,7 +5,7 @@ interface ICustomerIconProps {
   className?: string;
 }
 
-export function CategoryIcon({
+export function CustomerIcon({
   type = 'default',
   className,
 }: ICustomerIconProps) {
