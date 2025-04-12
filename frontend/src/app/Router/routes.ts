@@ -1,8 +1,8 @@
 export const routes = {
-  index: '/',
+  home: '/',
   orders: '/orders',
   form: '/form',
-} as const;
+};
 
 export type RoutePathKey = keyof typeof routes;
 

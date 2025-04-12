@@ -11,7 +11,7 @@ interface IAppNavigationProps {
 export const navItems = [
   {
     label: 'Clientes',
-    pathname: routes.index,
+    pathname: routes.home,
     icon: Users,
   },
   {

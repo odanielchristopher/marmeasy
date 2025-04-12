@@ -1,23 +1,18 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router';
 
 import { ThemeProvider } from '@app/contexts/ThemeContext';
+import { queryClient } from '@app/lib/queryClient';
 import { Router } from '@app/Router';
-import { AppHeader } from '@views/components/AppHeader';
-import { Fab } from '@views/components/Fab';
 
 export function App() {
   return (
-    <ThemeProvider defaultTheme="light">
-      <BrowserRouter>
-        <div className="flex flex-col h-full">
-          <AppHeader />
-
-          <main className="flex-1 pt-20 w-full max-w-[1440px] mx-auto">
-            <Router />
-            <Fab />
-          </main>
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light">
+        <BrowserRouter>
+          <Router />
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
