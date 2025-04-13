@@ -19,7 +19,7 @@ export function Fab() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-4 right-4 text-white bg-teal-900 rounded-full p-3 outline-none"
+          className="absolute bottom-4 right-4 text-white bg-teal-900 rounded-full p-3 outline-none"
           onClick={() => setIsDropdownOpen(true)}
         >
           <Plus className="size-6" />

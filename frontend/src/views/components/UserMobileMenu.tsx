@@ -62,9 +62,9 @@ export function UserMobileMenu({ currentPathname }: IUserMobileMenuProps) {
             <DropdownMenuItem asChild key={pathname}>
               <Link
                 className={cn(
-                  'border border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20',
+                  'border outline-none border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20',
                   currentPathname === pathname &&
-                    'border !border-white bg-[#DEE2E6]/20',
+                    'border !border-white bg-[#DEE2E6]/20 hover:!border-white',
                 )}
                 to={pathname}
               >
@@ -75,7 +75,7 @@ export function UserMobileMenu({ currentPathname }: IUserMobileMenuProps) {
           ))}
         </DropdownMenuGroup>
 
-        <DropdownMenuItem className="cursor-pointer border border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20">
+        <DropdownMenuItem className="cursor-pointer outline-none border border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20">
           <LogOut />
           <span>Sair</span>
         </DropdownMenuItem>

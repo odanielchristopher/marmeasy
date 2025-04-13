@@ -7,17 +7,8 @@ import { Individual } from '@views/assets/icons/customers/options/Individual';
 export function useFabController() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const {
-    isOpenNewCustomerModal,
-    isOpenNewOrderModal,
-    isOpenNewPaymentModal,
-    openNewPaymentModal,
-    closeNewPaymentModal,
-    openNewOrderModal,
-    closeNewOrderModal,
-    closeNewCustomerModal,
-    openNewCustomerModal,
-  } = useFab();
+  const { openNewPaymentModal, openNewOrderModal, openNewCustomerModal } =
+    useFab();
 
   function handleNewCustomerModal() {
     setIsDropdownOpen(false);
@@ -61,12 +52,6 @@ export function useFabController() {
   return {
     fabItems,
     isDropdownOpen,
-    isOpenNewCustomerModal,
-    isOpenNewPaymentModal,
-    isOpenNewOrderModal,
-    closeNewPaymentModal,
-    closeNewOrderModal,
     setIsDropdownOpen,
-    closeNewCustomerModal,
   };
 }

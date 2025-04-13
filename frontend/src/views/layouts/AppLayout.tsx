@@ -55,10 +55,11 @@ export function AppLayout() {
         </div>
       </header>
 
-      <main className="flex-1 pt-20 w-full max-w-[1440px] mx-auto">
+      <main className="flex-1 pt-20 w-full max-w-[1440px] mx-auto relative">
         <Outlet />
+
+        <Fab />
       </main>
-      <Fab />
     </div>
   );
 }
