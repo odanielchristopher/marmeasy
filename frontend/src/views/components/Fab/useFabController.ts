@@ -9,13 +9,29 @@ export function useFabController() {
 
   const {
     isOpenNewCustomerModal,
+    isOpenNewOrderModal,
+    isOpenNewPaymentModal,
+    openNewPaymentModal,
+    closeNewPaymentModal,
+    openNewOrderModal,
+    closeNewOrderModal,
     closeNewCustomerModal,
     openNewCustomerModal,
   } = useFab();
 
-  function handleNewCustomer() {
+  function handleNewCustomerModal() {
     setIsDropdownOpen(false);
     openNewCustomerModal();
+  }
+
+  function handleNewOrderModal() {
+    setIsDropdownOpen(false);
+    openNewOrderModal();
+  }
+
+  function handleNewPaymentModal() {
+    setIsDropdownOpen(false);
+    openNewPaymentModal();
   }
 
   const fabItems = [
@@ -24,25 +40,21 @@ export function useFabController() {
       icon: Individual,
       colorIcon: 'text-gray-800',
       bgIcon: 'bg-gray-200',
-      handler: handleNewCustomer,
+      handler: handleNewCustomerModal,
     },
     {
       label: 'Novo pedido',
       icon: SoupIcon,
       colorIcon: 'text-primary-500',
       bgIcon: 'bg-primary-100',
-      handler: () => {
-        console.log('Open NewOrder Modal');
-      },
+      handler: handleNewOrderModal,
     },
     {
       label: 'Novo pagamento',
       icon: HandCoinsIcon,
       colorIcon: 'text-teal-900',
       bgIcon: 'bg-teal-50',
-      handler: () => {
-        console.log('Open NewPayment Modal');
-      },
+      handler: handleNewPaymentModal,
     },
   ];
 
@@ -50,6 +62,10 @@ export function useFabController() {
     fabItems,
     isDropdownOpen,
     isOpenNewCustomerModal,
+    isOpenNewPaymentModal,
+    isOpenNewOrderModal,
+    closeNewPaymentModal,
+    closeNewOrderModal,
     setIsDropdownOpen,
     closeNewCustomerModal,
   };

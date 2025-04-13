@@ -14,15 +14,13 @@ import { routes } from './routes';
 // Com lazy loading (baixa só quando precisa);
 const { Customers } = lazyLoad(() => import('@views/pages/Customers'));
 const { CreateUser } = lazyLoad(() => import('@views/pages/CreateUser'));
-const { AppHeaderLayout } = lazyLoad(
-  () => import('@views/layouts/AppHeaderLayout'),
-);
+const { AppLayout } = lazyLoad(() => import('@views/layouts/AppLayout'));
 
 export function Router() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        <Route element={<AppHeaderLayout />}>
+        <Route element={<AppLayout />}>
           <Route path={routes.home} element={<Customers />} />
           <Route path={routes.form} element={<CreateUser />} />
         </Route>
