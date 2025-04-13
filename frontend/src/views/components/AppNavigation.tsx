@@ -1,4 +1,9 @@
-import { BookText, Users } from 'lucide-react';
+import {
+  ChartBarIncreasingIcon,
+  NotebookTextIcon,
+  ReceiptTextIcon,
+  UsersIcon,
+} from 'lucide-react';
 import { Link } from 'react-router';
 
 import { cn } from '@app/lib/utils';
@@ -11,13 +16,23 @@ interface IAppNavigationProps {
 export const navItems = [
   {
     label: 'Clientes',
-    pathname: routes.home,
-    icon: Users,
+    pathname: routes.customers,
+    icon: UsersIcon,
   },
   {
-    label: 'Formulário',
-    pathname: routes.form,
-    icon: BookText,
+    label: 'Pedidos',
+    pathname: routes.orders,
+    icon: ReceiptTextIcon,
+  },
+  {
+    label: 'Cardápio',
+    pathname: routes.menu,
+    icon: NotebookTextIcon,
+  },
+  {
+    label: 'Relatórios',
+    pathname: routes.dashboard,
+    icon: ChartBarIncreasingIcon,
   },
 ];
 
@@ -28,7 +43,7 @@ export function AppNavigation({ currentPathname }: IAppNavigationProps) {
         <Link
           key={pathname}
           className={cn(
-            'border border-transparent px-3 py-1.5 rounded-full text-white text-sm tracking-[-0.5px] flex items-center gap-2 hover:bg-[#DEE2E6]/20 hover:border-[#DEE2E6]/20',
+            '!border border-transparent px-3 py-1.5 rounded-full text-white text-sm tracking-[-0.5px] flex items-center gap-2 hover:bg-[#DEE2E6]/20 hover:border-[#DEE2E6]/20',
             currentPathname === pathname &&
               'border !border-white bg-[#DEE2E6]/20',
           )}

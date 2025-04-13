@@ -20,7 +20,7 @@ export function NotFoundPage() {
       </span>
 
       <Button variant="link" asChild>
-        <Link to={routes.home}>
+        <Link to={routes.customers}>
           <ChevronLeft />
           <span>Volta para a página inicial</span>
         </Link>
