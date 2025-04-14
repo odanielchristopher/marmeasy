@@ -3,8 +3,7 @@ import { Link } from 'react-router';
 
 import { routes } from '@app/Router/routes';
 import notFoundImage from '@views/assets/imgs/notFoundImage.svg';
-
-import { Button } from './ui/Button';
+import { Button } from '@views/components/ui/Button';
 
 export function NotFoundPage() {
   return (

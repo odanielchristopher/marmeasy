@@ -1,13 +1,12 @@
 import { ChevronDown, LogOut } from 'lucide-react';
 
 import { SVG_STROKE } from '@app/config/constants';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from './ui/DropdownMenu';
+} from '@views/components/ui/DropdownMenu';
 
 export function UserMenu() {
   return (

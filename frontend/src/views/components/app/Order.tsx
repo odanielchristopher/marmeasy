@@ -1,12 +1,11 @@
 import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
 import { customerIconsMap } from '@views/assets/icons/customers/customerIconsMap';
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from './ui/Accordion';
+} from '@views/components/ui/Accordion';
 
 interface IOrderProps {
   order: {

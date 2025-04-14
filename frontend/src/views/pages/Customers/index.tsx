@@ -1,6 +1,6 @@
 import { UsersIcon } from 'lucide-react';
 
-import { PageHeader } from '@views/components/PageHeader';
+import { PageHeader } from '@views/components/app/PageHeader';
 
 export function Customers() {
   return (

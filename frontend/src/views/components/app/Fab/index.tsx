@@ -1,13 +1,12 @@
 import { Plus } from 'lucide-react';
 
 import { cn } from '@app/lib/utils';
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '../ui/DropdownMenu';
+} from '@views/components/ui/DropdownMenu';
 
 import { useFabController } from './useFabController';
 

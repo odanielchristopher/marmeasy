@@ -1,6 +1,6 @@
 import { NotebookTextIcon } from 'lucide-react';
 
-import { PageHeader } from '@views/components/PageHeader';
+import { PageHeader } from '@views/components/app/PageHeader';
 
 export function Orders() {
   return (
