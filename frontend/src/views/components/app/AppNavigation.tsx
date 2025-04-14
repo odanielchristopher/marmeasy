@@ -4,14 +4,10 @@ import {
   ReceiptTextIcon,
   UsersIcon,
 } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { cn } from '@app/lib/utils';
 import { routes } from '@app/Router/routes';
-
-interface IAppNavigationProps {
-  currentPathname: string;
-}
 
 export const navItems = [
   {
@@ -36,7 +32,9 @@ export const navItems = [
   },
 ];
 
-export function AppNavigation({ currentPathname }: IAppNavigationProps) {
+export function AppNavigation() {
+  const { pathname: currentPathname } = useLocation();
+
   return (
     <nav className="hidden md:flex gap-2.5">
       {navItems.map(({ label, pathname, icon: Icon }) => (

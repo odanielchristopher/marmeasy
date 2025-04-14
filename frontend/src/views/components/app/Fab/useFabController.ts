@@ -1,28 +1,34 @@
 import { HandCoinsIcon, SoupIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useShallow } from 'zustand/shallow';
 
-import { useFab } from '@app/hooks/useFab';
+import { useGlobalStore } from '@app/store';
 import { Individual } from '@views/assets/icons/customers/options/Individual';
 
 export function useFabController() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const { openNewPaymentModal, openNewOrderModal, openNewCustomerModal } =
-    useFab();
+  const globalModals = useGlobalStore(
+    useShallow((store) => ({
+      openNewCustomerModal: store.globalModals.openNewCustomerModal,
+      openNewOrderModal: store.globalModals.openNewOrderModal,
+      openNewPaymentModal: store.globalModals.openNewPaymentModal,
+    })),
+  );
 
   function handleNewCustomerModal() {
     setIsDropdownOpen(false);
-    openNewCustomerModal();
+    globalModals.openNewCustomerModal();
   }
 
   function handleNewOrderModal() {
     setIsDropdownOpen(false);
-    openNewOrderModal();
+    globalModals.openNewOrderModal();
   }
 
   function handleNewPaymentModal() {
     setIsDropdownOpen(false);
-    openNewPaymentModal();
+    globalModals.openNewPaymentModal();
   }
 
   const fabItems = [

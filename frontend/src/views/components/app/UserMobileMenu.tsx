@@ -6,18 +6,16 @@ import {
   DropdownMenuTrigger,
 } from '@radix-ui/react-dropdown-menu';
 import { LogOut, Menu, X } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 import { SVG_STROKE } from '@app/config/constants';
 import { cn } from '@app/lib/utils';
 
 import { navItems } from './AppNavigation';
 
-interface IUserMobileMenuProps {
-  currentPathname: string;
-}
+export function UserMobileMenu() {
+  const { pathname: currentPathname } = useLocation();
 
-export function UserMobileMenu({ currentPathname }: IUserMobileMenuProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="outline-none min-md:hidden">
