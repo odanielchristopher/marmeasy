@@ -1,19 +1,21 @@
+import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { BrowserRouter } from 'react-router';
 
 import { ThemeProvider } from '@app/contexts/ThemeContext';
+import { queryClient } from '@app/lib/queryClient';
 import { Router } from '@app/Router';
-import { HeaderApp } from '@views/components/HeaderApp';
 
 export function App() {
   return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <div className="flex flex-col h-full">
-          <HeaderApp />
-
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider defaultTheme="light">
+        <BrowserRouter>
           <Router />
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
+
+          <ReactQueryDevtools position="bottom" buttonPosition="bottom-left" />
+        </BrowserRouter>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
