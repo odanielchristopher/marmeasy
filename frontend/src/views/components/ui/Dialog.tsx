@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 
@@ -124,5 +125,6 @@ export {
   DialogOverlay,
   DialogPortal,
   DialogTitle,
-  DialogTrigger,
+  DialogTrigger
 };
+
