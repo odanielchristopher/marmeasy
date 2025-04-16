@@ -1,22 +1,16 @@
 import { Controller } from 'react-hook-form';
-import { z } from 'zod';
 
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
+import { InputCurrency } from '@views/components/ui/InputCurrency';
 import { Select } from '@views/components/ui/Select';
 
 import { ColorsDropdownInput } from '../../ColorsDropdownInput';
 
-import { useCustomerFormController } from './useCustomerFormController';
-
-const customerSchema = z.object({
-  name: z.string().nonempty(),
-  type: z.enum(['INDIVIDUAL', 'BUSINESS']),
-  color: z.string().nonempty(),
-  phone: z.string().or(z.number()).optional(),
-});
-
-export type CustomerFormData = z.infer<typeof customerSchema>;
+import {
+  CustomerFormData,
+  useCustomerFormController,
+} from './useCustomerFormController';
 
 interface ICustomerFormProps {
   defaultValues?: CustomerFormData;
@@ -31,7 +25,29 @@ export function CustomerForm({ defaultValues, onSubmit }: ICustomerFormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="space-y-3">
+      <div className="w-ful flex flex-col items-center">
+        <span className="text-gray-600 text-sm tracking-[-0.5px]">
+          Saldo inicial
+        </span>
+        <div className="flex items-center gap-2  max-w-[182px] border-b-2 border-gray-600">
+          <span className="text-primary text-xl font-semibold tracking-[-0.5px]">
+            R$
+          </span>
+          <Controller
+            control={form.control}
+            name="initialBalance"
+            defaultValue="0"
+            render={({ field: { onChange, value } }) => (
+              <InputCurrency
+                value={value}
+                onChange={onChange}
+                error={form.formState.errors.initialBalance?.message}
+              />
+            )}
+          />
+        </div>
+      </div>
+      <div className="space-y-3 mt-6">
         <Input
           placeholder="Nome*"
           {...form.register('name')}

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const customerSchema = z.object({
+  initialBalance: z.number().or(z.string().nonempty('O saldo é obrigatório')),
   name: z.string().nonempty('O nome do cliente é obrigatório'),
   type: z.enum(['INDIVIDUAL', 'BUSINESS'], {
     message: 'O tipo do cliente é obrigatório',
