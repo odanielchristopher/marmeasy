@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { DatePicker } from '@views/components/app/DatePicker';
+import { DatePickerInput } from '@views/components/app/DatePickerInput';
 import { StepperPreviousButton } from '@views/components/app/Stepper';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
@@ -47,10 +47,16 @@ export function DataStep() {
           )}
         />
 
-        <DatePicker />
+        <Controller
+          control={form.control}
+          name="dataStep.date"
+          render={({ field: { onChange, value } }) => (
+            <DatePickerInput onChange={onChange} value={value} />
+          )}
+        />
       </div>
 
-      <footer className="flex justify-between items-center gap-3 mt-6">
+      <footer className="flex justify-between items-center gap-3 mt-10">
         <StepperPreviousButton
           size="default"
           className="flex-1/2 bg-transparent border border-foreground"

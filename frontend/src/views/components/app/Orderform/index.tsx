@@ -24,7 +24,7 @@ export function OrderForm() {
       },
       dataStep: {
         customer: { id: '', name: '' },
-        date: new Date().toISOString(),
+        date: new Date(),
       },
     },
     resolver: zodResolver(orderSchema),

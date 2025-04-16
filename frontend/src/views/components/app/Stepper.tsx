@@ -45,7 +45,7 @@ export function StepperPreviousButton({
       onClick={onClick ?? previousStep}
       {...props}
     >
-      Anterior
+      Voltar
     </Button>
   );
 }
