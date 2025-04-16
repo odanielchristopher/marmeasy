@@ -1,6 +1,5 @@
 import { UsersIcon } from 'lucide-react';
 
-import { DatePickerInput } from '@views/components/app/DatePickerInput';
 import { PageHeader } from '@views/components/app/PageHeader';
 
 export function Customers() {
@@ -12,11 +11,7 @@ export function Customers() {
         icon={UsersIcon}
       />
 
-      <main>
-        <div>
-          <DatePickerInput />
-        </div>
-      </main>
+      <main />
     </div>
   );
 }
