@@ -1,5 +1,7 @@
 import { Modal } from '@views/components/ui/Modal';
 
+import { OrderForm } from '../../Orderform';
+
 interface INewOrderModalProps {
   open: boolean;
   onClose(): void;
@@ -8,7 +10,7 @@ interface INewOrderModalProps {
 export function NewOrderModal({ open, onClose }: INewOrderModalProps) {
   return (
     <Modal open={open} title="Novo pedido" onClose={onClose}>
-      <div>Content</div>
+      <OrderForm />
     </Modal>
   );
 }
