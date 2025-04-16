@@ -6,10 +6,10 @@ import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 import { Select } from '@views/components/ui/Select';
 
-import { FormData } from '../..';
+import { OrderFormData } from '../../useOrderFormController';
 
 export function DataStep() {
-  const form = useFormContext<FormData>();
+  const form = useFormContext<OrderFormData>();
 
   return (
     <div>
@@ -51,7 +51,11 @@ export function DataStep() {
           control={form.control}
           name="dataStep.date"
           render={({ field: { onChange, value } }) => (
-            <DatePickerInput onChange={onChange} value={value} />
+            <DatePickerInput
+              onChange={onChange}
+              value={value}
+              error={form.formState.errors.dataStep?.date?.message}
+            />
           )}
         />
       </div>
