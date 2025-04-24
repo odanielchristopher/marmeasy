@@ -3,6 +3,8 @@ export const routes = {
   orders: '/orders',
   menu: '/menu',
   dashboard: '/dashboard',
+  login: '/login',
+  register: '/register',
 };
 
 export type RoutePathKey = keyof typeof routes;

@@ -14,19 +14,29 @@ import { routes } from './routes';
 // Com lazy loading (baixa só quando precisa);
 const { Customers } = lazyLoad(() => import('@views/pages/Customers'));
 const { Orders } = lazyLoad(() => import('@views/pages/Orders'));
+const { AuthLayout } = lazyLoad(() => import('@views/layouts/AuthLayout'));
 const { Menu } = lazyLoad(() => import('@views/pages/Menu'));
 const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
 const { AppLayout } = lazyLoad(() => import('@views/layouts/AppLayout'));
+const { Register } = lazyLoad(() => import('@views/pages/Register'));
+const { Login } = lazyLoad(() => import('@views/pages/Login'));
 
 export function Router() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        <Route element={<AppLayout />}>
-          <Route path={routes.customers} element={<Customers />} />
-          <Route path={routes.orders} element={<Orders />} />
-          <Route path={routes.menu} element={<Menu />} />
-          <Route path={routes.dashboard} element={<Dashboard />} />
+        <Route element={<AuthLayout isPrivate />}>
+          <Route element={<AppLayout />}>
+            <Route path={routes.customers} element={<Customers />} />
+            <Route path={routes.orders} element={<Orders />} />
+            <Route path={routes.menu} element={<Menu />} />
+            <Route path={routes.dashboard} element={<Dashboard />} />
+          </Route>
+        </Route>
+
+        <Route element={<AuthLayout isPrivate={false} />}>
+          <Route path={routes.login} element={<Login />} />
+          <Route path={routes.register} element={<Register />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
