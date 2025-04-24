@@ -292,3 +292,28 @@
     @apply cursor-pointer;
   }
 }
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(6,6, 6, 0.2); /* clara no dark */
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4); /* mais visível */
+}
+
+.scrollbar-hover::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scrollbar-hover:hover::-webkit-scrollbar {
+  opacity: 1;
+}

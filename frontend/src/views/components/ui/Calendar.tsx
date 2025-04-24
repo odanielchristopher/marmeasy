@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-unstable-nested-components */
+import { ptBR } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
 import { DayPicker } from 'react-day-picker';
@@ -8,14 +9,22 @@ import { DayPicker } from 'react-day-picker';
 import { cn } from '@app/lib/utils';
 import { buttonVariants } from '@views/components/ui/Button';
 
+interface ICalendarProps {
+  value: Date;
+  onChange?(date: Date): void;
+}
+
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  value,
+  onChange,
   ...props
-}: React.ComponentProps<typeof DayPicker>) {
+}: React.ComponentProps<typeof DayPicker> & ICalendarProps) {
   return (
     <DayPicker
+      locale={ptBR}
       showOutsideDays={showOutsideDays}
       className={cn('p-3', className)}
       classNames={{
