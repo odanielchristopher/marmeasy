@@ -1,7 +1,7 @@
 import { cn } from '@app/lib/utils';
 
 interface ILogoProps {
-  size?: 'default' | 'large';
+  size?: 'default' | 'large' | 'medium';
   className?: string;
 }
 
@@ -15,6 +15,7 @@ export function Logo({ size, className }: ILogoProps) {
         'w-[70px] h-12',
         className,
         size === 'large' && 'w-[120px] h-[82px]',
+        size === 'medium' && 'w-[100px] h-[62px]',
       )}
     >
       <path

@@ -5,6 +5,7 @@ import { lazyLoad } from '@app/utils/lazyLoad';
 import { NotFoundPage } from '@views/components/app/NotFoundPage';
 import { Spinner } from '@views/components/ui/Spinner';
 
+import { AuthGuard } from './AuthGuard';
 import { routes } from './routes';
 
 // Sem lazy loading (baixa tudo de uma vez);
@@ -25,7 +26,7 @@ export function Router() {
   return (
     <Suspense fallback={<Spinner />}>
       <Routes>
-        <Route element={<AuthLayout isPrivate />}>
+        <Route element={<AuthGuard isPrivate />}>
           <Route element={<AppLayout />}>
             <Route path={routes.customers} element={<Customers />} />
             <Route path={routes.orders} element={<Orders />} />
@@ -34,9 +35,11 @@ export function Router() {
           </Route>
         </Route>
 
-        <Route element={<AuthLayout isPrivate={false} />}>
-          <Route path={routes.login} element={<Login />} />
-          <Route path={routes.register} element={<Register />} />
+        <Route element={<AuthGuard isPrivate={false} />}>
+          <Route element={<AuthLayout />}>
+            <Route path={routes.login} element={<Login />} />
+            <Route path={routes.register} element={<Register />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
