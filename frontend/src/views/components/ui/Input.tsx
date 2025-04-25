@@ -40,7 +40,7 @@ export function Input({
 
       <label
         htmlFor={inputId}
-        className="absolute text-xs left-[13px] top-2 pointer-events-none text-muted-foreground peer-placeholder-shown:text-base peer-placeholder-shown:top-3.5 transition-all"
+        className="absolute text-xs left-[13px] top-2 pointer-events-none text-muted-foreground peer-placeholder-shown:text-sm peer-placeholder-shown:top-4 transition-all"
       >
         {placeholder}
       </label>

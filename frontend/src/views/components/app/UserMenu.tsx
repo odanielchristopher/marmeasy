@@ -1,6 +1,7 @@
 import { ChevronDown, LogOut } from 'lucide-react';
 
 import { SVG_STROKE } from '@app/config/constants';
+import { useAuth } from '@app/hooks/useAuth';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +10,8 @@ import {
 } from '@views/components/ui/DropdownMenu';
 
 export function UserMenu() {
+  const { signout } = useAuth();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="outline-none max-md:hidden">
@@ -27,7 +30,10 @@ export function UserMenu() {
         align="end"
         className="!shadow-default space-y-2 px-2 py-2.5 border-transparent dark:border-muted max-md:dark:bg-muted"
       >
-        <DropdownMenuItem className="cursor-pointer !text-gray-800 dark:!text-foreground flex justify-between">
+        <DropdownMenuItem
+          className="cursor-pointer !text-gray-800 dark:!text-foreground flex justify-between"
+          onSelect={signout}
+        >
           <span className="text-base text-gray-800 dark:text-foreground tracking-[-0.5px]">
             Sair
           </span>

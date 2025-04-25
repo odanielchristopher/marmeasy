@@ -9,12 +9,14 @@ import { LogOut, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
 import { SVG_STROKE } from '@app/config/constants';
+import { useAuth } from '@app/hooks/useAuth';
 import { cn } from '@app/lib/utils';
 
 import { navItems } from './AppNavigation';
 
 export function UserMobileMenu() {
   const { pathname: currentPathname } = useLocation();
+  const { signout } = useAuth();
 
   return (
     <DropdownMenu>
@@ -73,7 +75,10 @@ export function UserMobileMenu() {
           ))}
         </DropdownMenuGroup>
 
-        <DropdownMenuItem className="cursor-pointer outline-none border border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20">
+        <DropdownMenuItem
+          className="cursor-pointer outline-none border border-transparent px-6 py-4 !rounded-full w-full !text-white !text-base tracking-[-0.5px] flex items-center gap-2 hover:!bg-[#DEE2E6]/20 hover:!border-[#DEE2E6]/20"
+          onSelect={signout}
+        >
           <LogOut />
           <span>Sair</span>
         </DropdownMenuItem>
