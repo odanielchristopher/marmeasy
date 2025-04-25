@@ -7,15 +7,16 @@ import { AuthProvider } from '@app/contexts/AuthContext';
 import { ThemeProvider } from '@app/contexts/ThemeContext';
 import { queryClient } from '@app/lib/queryClient';
 import { Router } from '@app/Router';
+import { usersService } from '@app/services/usersService';
 
 export function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <AuthProvider usersService={usersService}>
         <ThemeProvider defaultTheme="light">
           <BrowserRouter>
             <Router />
-            <Toaster position="top-left" />
+            <Toaster position="top-right" />
 
             <ReactQueryDevtools
               position="bottom"
