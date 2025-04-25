@@ -21,7 +21,10 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="outline-none max-md:hidden">
+      <DropdownMenuTrigger
+        asChild
+        className="outline-none max-md:hidden border-2 border-transparent focus:border-ring"
+      >
         <button
           type="button"
           className="flex items-center text-white p-1 rounded-full hover:bg-[#DEE2E6]/20 gap-2 md:gap-0 peer"
