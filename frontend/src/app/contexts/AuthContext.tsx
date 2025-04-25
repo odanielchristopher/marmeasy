@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 
 import { localStorageKeys } from '@app/config/localStorageKeys';
 import { IUser } from '@app/entities/User';
+import { usersService } from '@app/services/usersService';
 
 // import { usersService } from '../services/usersService';
 
@@ -29,10 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const { isError, isFetching, isSuccess, data } = useQuery({
     queryKey: ['auth', 'me'],
-    queryFn: async () => ({
-      name: 'daniel',
-      email: 'dani@mail.com',
-    }),
+    queryFn: usersService.me,
     staleTime: Infinity,
     enabled: signedIn,
   });
