@@ -24,9 +24,10 @@ export function CustomerCard({ customer, onClick }: ICustomerProps) {
       tabIndex={0}
     >
       <div className="flex flex-col gap-2.5">
-        <div>
-          <CustomerIcon type={customer.type.toLowerCase()} />
-        </div>
+        <CustomerIcon
+          type={customer.type.toLowerCase()}
+          color={customer.color}
+        />
 
         <span className="text-lg font-medium tracking-[-0.5px]">
           {capitalizeFirstLetter(customer.name)}

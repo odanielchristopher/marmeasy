@@ -2,9 +2,10 @@ import { cn } from '@app/lib/utils';
 
 interface IBusinessProps {
   className?: string;
+  color?: string;
 }
 
-export function Business({ className }: IBusinessProps) {
+export function Business({ className, color }: IBusinessProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +14,7 @@ export function Business({ className }: IBusinessProps) {
       viewBox="0 0 28 28"
     >
       <g
-        stroke="currentColor"
+        stroke={color ?? 'currentColor'}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.4"

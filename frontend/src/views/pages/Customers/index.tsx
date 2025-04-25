@@ -10,7 +10,7 @@ const customers: ICustomer[] = [
     id: '#1',
     name: 'daniel',
     type: 'INDIVIDUAL',
-    color: '#5F3DC4',
+    color: '#BE4BDB',
     balance: 17.5,
   },
   {
@@ -24,14 +24,14 @@ const customers: ICustomer[] = [
     id: '#123',
     name: 'plataforma',
     type: 'BUSINESS',
-    color: '#1971C2',
+    color: '#4C6EF5',
     balance: 236.5,
   },
   {
     id: '#1234',
     name: 'lucas',
     type: 'INDIVIDUAL',
-    color: '#2B8A3E',
+    color: '#82C91E',
     balance: 40,
   },
 ];
