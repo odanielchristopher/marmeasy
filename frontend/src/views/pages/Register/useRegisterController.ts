@@ -1,14 +1,17 @@
-// import { randomUUID } from 'node:crypto';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
 
-import { useAuth } from '../../../app/hooks/useAuth';
+import { useAuth } from '@app/hooks/useAuth';
+import { authService } from '@app/services/authService';
 
-const loginSchema = z.object({
+const registerSchema = z.object({
+  name: z
+    .string()
+    .nonempty('O nome é obrigatório.')
+    .min(2, 'O nome deve ter pelo menos 2 caracteres.'),
   email: z
     .string()
     .nonempty('O e-mail é obrigatório.')
@@ -19,39 +22,30 @@ const loginSchema = z.object({
     .min(6, 'A senha deve ter pelo menos 6 dígitos.'),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
+type RegisterFormData = z.infer<typeof registerSchema>;
 
-interface IUseLoginControllerProps {
-  authService: {
-    signin(data: {
-      email: string;
-      password: string;
-    }): Promise<{ accessToken: string }>;
-  };
-}
-
-export function useLoginController({ authService }: IUseLoginControllerProps) {
+export function useRegisterController() {
   const {
     handleSubmit: hookFormHandleSubmit,
     register,
     formState: { errors },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
   });
 
-  const { mutateAsync: login, isPending: isLoading } = useMutation({
-    mutationFn: authService.signin,
+  const { mutateAsync: signup, isPending: isLoading } = useMutation({
+    mutationFn: authService.signup,
   });
 
   const { signin } = useAuth();
 
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
-      const { accessToken } = await login(data);
+      const { accessToken } = await signup(data);
 
       signin(accessToken);
     } catch {
-      toast.error('Credenciais inválidas!');
+      toast.error('Ocorreu um erro ao cria a sua conta!');
     }
   });
 

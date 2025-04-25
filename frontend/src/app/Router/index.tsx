@@ -2,8 +2,8 @@ import { Suspense } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { lazyLoad } from '@app/utils/lazyLoad';
+import { LaunchScreen } from '@views/components/app/LaunchScreen';
 import { NotFoundPage } from '@views/components/app/NotFoundPage';
-import { Spinner } from '@views/components/ui/Spinner';
 
 import { AuthGuard } from './AuthGuard';
 import { routes } from './routes';
@@ -24,7 +24,7 @@ const { Login } = lazyLoad(() => import('@views/pages/Login'));
 
 export function Router() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<LaunchScreen isLoading />}>
       <Routes>
         <Route element={<AuthGuard isPrivate />}>
           <Route element={<AppLayout />}>

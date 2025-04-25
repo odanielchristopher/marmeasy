@@ -1,15 +1,14 @@
 import { Link } from 'react-router';
 
+import { authService } from '@app/services/authService';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 
 import { useLoginController } from './useLoginController';
 
 export function Login() {
-  const { errors, register, handleSubmit } = useLoginController({
-    usersService: {
-      signin: async (data) => ({ accessToken: data.email + data.password }),
-    },
+  const { errors, isLoading, register, handleSubmit } = useLoginController({
+    authService,
   });
 
   return (
@@ -47,7 +46,7 @@ export function Login() {
           {...register('password')}
         />
 
-        <Button type="submit" className="mt-2">
+        <Button type="submit" className="mt-2" isLoading={isLoading}>
           Entrar
         </Button>
       </form>
