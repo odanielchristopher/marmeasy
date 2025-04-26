@@ -6,6 +6,7 @@ export function useCustomers() {
   const { data, isFetching } = useQuery({
     queryKey: ['customers'],
     queryFn: customersService.getAll,
+    staleTime: Infinity,
   });
 
   return {

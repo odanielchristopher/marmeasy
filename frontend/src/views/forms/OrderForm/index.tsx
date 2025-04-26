@@ -1,10 +1,13 @@
 import { FormProvider } from 'react-hook-form';
 
-import { Stepper } from '../../Stepper';
+import { Stepper } from '@views/components/app/Stepper';
 
 import { DataStep } from './steps/DataStep';
 import { ProductsStep } from './steps/ProductsStep';
-import { OrderFormData, useOrderFormController } from './useOrderFormController';
+import {
+  OrderFormData,
+  useOrderFormController,
+} from './useOrderFormController';
 
 interface IOrderFormProps {
   defaultValues?: OrderFormData;

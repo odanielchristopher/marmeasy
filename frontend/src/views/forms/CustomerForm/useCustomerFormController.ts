@@ -9,7 +9,7 @@ const customerSchema = z.object({
     message: 'O tipo do cliente é obrigatório',
   }),
   color: z.string().nonempty('Escolha uma cor para o cliente'),
-  phone: z.string().or(z.number()).optional(),
+  phone: z.string().optional(),
 });
 
 export type CustomerFormData = z.infer<typeof customerSchema>;

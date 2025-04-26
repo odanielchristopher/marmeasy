@@ -1,11 +1,10 @@
 import { Controller } from 'react-hook-form';
 
+import { ColorsDropdownInput } from '@views/components/app/ColorsDropdownInput';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 import { InputCurrency } from '@views/components/ui/InputCurrency';
 import { Select } from '@views/components/ui/Select';
-
-import { ColorsDropdownInput } from '../../ColorsDropdownInput';
 
 import {
   CustomerFormData,
@@ -15,9 +14,14 @@ import {
 interface ICustomerFormProps {
   defaultValues?: CustomerFormData;
   onSubmit(formData: CustomerFormData): Promise<void> | void;
+  isLoading?: boolean;
 }
 
-export function CustomerForm({ defaultValues, onSubmit }: ICustomerFormProps) {
+export function CustomerForm({
+  defaultValues,
+  isLoading,
+  onSubmit,
+}: ICustomerFormProps) {
   const { form, handleSubmit } = useCustomerFormController({
     defaultValues,
     onSubmit,
@@ -97,7 +101,12 @@ export function CustomerForm({ defaultValues, onSubmit }: ICustomerFormProps) {
         />
       </div>
 
-      <Button type="submit" className="mt-6 w-full">
+      <Button
+        type="submit"
+        className="mt-6 w-full"
+        isLoading={isLoading}
+        disabled={isLoading}
+      >
         Criar cliente
       </Button>
     </form>

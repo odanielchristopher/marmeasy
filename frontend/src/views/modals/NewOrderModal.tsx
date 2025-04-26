@@ -1,5 +1,5 @@
-import { OrderForm } from '@views/components/app/forms/OrderForm';
 import { Modal } from '@views/components/ui/Modal';
+import { OrderForm } from '@views/forms/OrderForm';
 
 interface INewOrderModalProps {
   open: boolean;
