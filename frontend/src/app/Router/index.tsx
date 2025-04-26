@@ -21,6 +21,7 @@ const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
 const { AppLayout } = lazyLoad(() => import('@views/layouts/AppLayout'));
 const { Register } = lazyLoad(() => import('@views/pages/Register'));
 const { Login } = lazyLoad(() => import('@views/pages/Login'));
+const { Customer } = lazyLoad(() => import('@views/pages/Customer'));
 
 export function Router() {
   return (
@@ -29,6 +30,11 @@ export function Router() {
         <Route element={<AuthGuard isPrivate />}>
           <Route element={<AppLayout />}>
             <Route path={routes.customers} element={<Customers />} />
+
+            <Route path={routes.customer}>
+              <Route path=":id" element={<Customer />} />
+            </Route>
+
             <Route path={routes.orders} element={<Orders />} />
             <Route path={routes.menu} element={<Menu />} />
             <Route path={routes.dashboard} element={<Dashboard />} />

@@ -6,22 +6,13 @@ import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
 
 interface ICustomerProps {
   customer: ICustomer;
-  onClick?(customer: ICustomer): void;
 }
 
-export function CustomerCard({ customer, onClick }: ICustomerProps) {
+export function CustomerCard({ customer }: ICustomerProps) {
   return (
     <div
       className="bg-white dark:bg-card border-2 border-accent p-3 rounded-md min-h-44 flex flex-col justify-between hover:border-primary hover:scale-[102%] transition-all outline-none focus:border-ring cursor-pointer border-b-4"
-      role="button"
       style={{ borderBottomColor: customer.color }}
-      onClick={() => onClick?.(customer)}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          onClick?.(customer);
-        }
-      }}
-      tabIndex={0}
     >
       <div className="flex flex-col gap-2.5">
         <CustomerIcon

@@ -5,6 +5,7 @@ export const routes = {
   dashboard: '/dashboard',
   login: '/login',
   register: '/register',
+  customer: '/customer',
 };
 
 export type RoutePathKey = keyof typeof routes;

@@ -1,34 +1,36 @@
 import { UsersIcon } from 'lucide-react';
+import { Link } from 'react-router';
 
 import { ICustomer } from '@app/entities/Customer';
+import { routes } from '@app/Router/routes';
 import { PageHeader } from '@views/components/app/PageHeader';
 
 import { CustomerCard } from './components/CustomerCard';
 
 const customers: ICustomer[] = [
   {
-    id: '#1',
+    id: '1',
     name: 'daniel',
     type: 'INDIVIDUAL',
     color: '#BE4BDB',
     balance: 17.5,
   },
   {
-    id: '#12',
+    id: '12',
     name: 'oficina',
     type: 'BUSINESS',
     color: '#FAB005',
     balance: -123.5,
   },
   {
-    id: '#123',
+    id: '123',
     name: 'plataforma',
     type: 'BUSINESS',
     color: '#4C6EF5',
     balance: 236.5,
   },
   {
-    id: '#1234',
+    id: '1234',
     name: 'lucas',
     type: 'INDIVIDUAL',
     color: '#82C91E',
@@ -37,10 +39,6 @@ const customers: ICustomer[] = [
 ];
 
 export function Customers() {
-  function handleCustomer(customer: ICustomer) {
-    console.log({ customer });
-  }
-
   return (
     <div className="h-full pt-7 px-4 md:px-6">
       <PageHeader
@@ -57,11 +55,9 @@ export function Customers() {
 
         <div className="mt-7 grid gap-4 grid-cols-1 min-[510px]:grid-cols-2 lg:grid-cols-4 pb-6">
           {customers.map((customer) => (
-            <CustomerCard
-              key={customer.id}
-              customer={customer}
-              onClick={handleCustomer}
-            />
+            <Link key={customer.id} to={`${routes.customer}/${customer.id}`}>
+              <CustomerCard customer={customer} />
+            </Link>
           ))}
         </div>
       </main>
