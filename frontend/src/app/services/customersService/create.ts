@@ -13,10 +13,10 @@ export interface ICreateCustomerParams {
 type CreateCustomerResponse = ICustomer;
 
 export async function create(params: ICreateCustomerParams) {
-  const { data } = await httpClient.post<CreateCustomerResponse>('/customers', {
-    ...params,
-    balance: params.initialBalance,
-  });
+  const { data } = await httpClient.post<CreateCustomerResponse>(
+    '/customers',
+    params,
+  );
 
   return data;
 }
