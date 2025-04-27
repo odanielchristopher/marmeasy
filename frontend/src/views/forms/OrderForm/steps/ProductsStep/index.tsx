@@ -76,6 +76,7 @@ export function ProductsStep() {
           </div>
 
           <StepperNextButton
+            type="button"
             className="flex-1/2 h-12"
             onClick={handleNextStep}
           />

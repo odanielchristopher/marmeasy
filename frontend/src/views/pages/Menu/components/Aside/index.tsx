@@ -11,18 +11,20 @@ export function Aside({ currentSession }: IAsideProps) {
   const { sessions } = useAsideController();
 
   return (
-    <aside className="h-full bg-white dark:bg-card flex-shrink-0 rounded-2xl border-border-muted md:sticky md:top-[120px] md:w-80 md:border md:p-5">
-      <span className="font-medium text-muted-foreground">Sessões</span>
+    <aside className="h-full bg-white dark:bg-card overflow-auto max-md:rounded-md flex-shrink-0 rounded-2xl border-border-muted md:sticky md:top-[120px] md:w-80 md:border md:p-5">
+      <span className="font-medium text-muted-foreground max-md:hidden">
+        Sessões
+      </span>
 
-      <div className="my-4 h-px w-8 bg-border" />
+      <div className="my-4 h-px w-8 bg-border max-md:hidden" />
 
-      <div className="flex gap-2 overflow-visible md:flex-col">
+      <div className="flex gap-2 overflow-visible max-md:justify-around md:flex-col">
         {sessions.map(({ id, label, icon: Icon, handler }) => (
           <Button
             key={id}
             type="button"
             className={cn(
-              'justify-start h-12 border border-transparent',
+              'md:justify-start h-12 border border-transparent max-md:flex-1',
               currentSession === id &&
                 'bg-accent border border-gray-300 dark:border-white',
             )}
