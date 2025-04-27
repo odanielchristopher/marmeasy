@@ -6,6 +6,7 @@ import { Individual } from '@views/assets/icons/customers/options/Individual';
 import { PageHeader } from '@views/components/app/PageHeader';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
+import { NotFoundCustomer } from './components/NotFoundCustomer';
 import { useCustomerController } from './useCustomerController';
 
 type Params = {
@@ -18,6 +19,10 @@ export function Customer() {
   const { customer, isLoading } = useCustomerController({ customerId: id! });
 
   const isBusiness = customer?.type === 'BUSINESS';
+
+  if (!isLoading && !customer) {
+    return <NotFoundCustomer />;
+  }
 
   return (
     <div className="h-full pt-7 px-4 md:px-6">

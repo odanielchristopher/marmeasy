@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
-import { Route, Routes } from 'react-router';
+import { Navigate, Route, Routes } from 'react-router';
 
 import { lazyLoad } from '@app/utils/lazyLoad';
 import { LaunchScreen } from '@views/components/app/LaunchScreen';
-import { NotFoundPage } from '@views/components/app/NotFoundPage';
 
 import { AuthGuard } from './AuthGuard';
 import { routes } from './routes';
@@ -23,15 +22,21 @@ const { Register } = lazyLoad(() => import('@views/pages/Register'));
 const { Login } = lazyLoad(() => import('@views/pages/Login'));
 const { Customer } = lazyLoad(() => import('@views/pages/Customer'));
 
+// 404 -> rotas não encontradas;
+const { NotFoundPage } = lazyLoad(
+  () => import('@views/components/app/NotFoundPage'),
+);
+
 export function Router() {
   return (
     <Suspense fallback={<LaunchScreen isLoading />}>
       <Routes>
         <Route element={<AuthGuard isPrivate />}>
           <Route element={<AppLayout />}>
-            <Route path={routes.customers} element={<Customers />} />
+            <Route path="/" element={<Navigate to={routes.customers} />} />
 
-            <Route path={routes.customer}>
+            <Route path={routes.customers}>
+              <Route index element={<Customers />} />
               <Route path=":id" element={<Customer />} />
             </Route>
 
@@ -48,7 +53,7 @@ export function Router() {
           </Route>
         </Route>
 
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="*?" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

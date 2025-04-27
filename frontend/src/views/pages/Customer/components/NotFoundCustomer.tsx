@@ -5,7 +5,7 @@ import { routes } from '@app/Router/routes';
 import notFoundImage from '@views/assets/imgs/notFoundImage.svg';
 import { Button } from '@views/components/ui/Button';
 
-export function NotFoundPage() {
+export function NotFoundCustomer() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
       <img
@@ -15,13 +15,13 @@ export function NotFoundPage() {
       />
 
       <span className="text-gray-800 dark:text-foreground tracking-[-0.5px]">
-        Página não encontrada!
+        Cliente não encontrado!
       </span>
 
       <Button variant="link" type="button" asChild>
-        <Link to={routes.login}>
+        <Link to={routes.customers}>
           <ChevronLeft />
-          <span>Volta para a página inicial</span>
+          <span>Volta para a página de clientes</span>
         </Link>
       </Button>
     </div>

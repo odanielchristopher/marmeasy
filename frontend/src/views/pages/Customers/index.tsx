@@ -45,6 +45,7 @@ export function Customers() {
 
           <Button
             variant="outline"
+            type="button"
             className="bg-white"
             onClick={handleOpenFiltersModal}
           >
@@ -70,7 +71,7 @@ export function Customers() {
             customers.map((customer) => (
               <Link
                 key={customer.id}
-                to={`${routes.customer}/${customer.id}`}
+                to={`${routes.customers}/${customer.id}`}
                 className="rounded-md"
               >
                 <CustomerCard customer={customer} />
