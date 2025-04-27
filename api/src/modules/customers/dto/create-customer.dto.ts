@@ -22,11 +22,11 @@ export class CreateCustomerDto {
   @IsNotEmpty()
   color: string;
 
-  @IsOptional()
   @IsPhoneNumber('BR')
+  @IsOptional()
   phone?: string;
 
   @IsNotEmpty()
   @IsNumber()
-  balance: number;
+  initialBalance: number;
 }

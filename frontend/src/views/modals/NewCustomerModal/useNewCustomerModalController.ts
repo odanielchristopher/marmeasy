@@ -30,6 +30,7 @@ export function useNewCustomerModalController({
     try {
       await createCustomer({
         ...formData,
+        phone: formData.phone || undefined,
         initialBalance: Number(formData.initialBalance),
       });
       onSuccess();

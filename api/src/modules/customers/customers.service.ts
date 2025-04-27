@@ -13,8 +13,12 @@ export class CustomersService {
     return this.customersRepository.findManyByUserId({ userId, order: 'asc' });
   }
 
+  findOne(userId: string, customerId: string) {
+    return this.customersRepository.findFirstById({ userId, customerId });
+  }
+
   create(userId: string, createCustomerDto: CreateCustomerDto) {
-    const { name, color, type, phone, balance } = createCustomerDto;
+    const { name, color, type, phone, initialBalance } = createCustomerDto;
 
     return this.customersRepository.create({
       userId,
@@ -23,7 +27,7 @@ export class CustomersService {
         color,
         type,
         phone,
-        balance,
+        balance: initialBalance,
       },
     });
   }

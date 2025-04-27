@@ -5,6 +5,7 @@ import {
 } from 'src/modules/customers/entities/customer.entity';
 import {
   CreateCustomerDto,
+  FindFirstByIdDto,
   FindManyByUserIdDto,
   ICustomersRepository,
 } from '../interfaces/customers-repository.interface';
@@ -38,6 +39,27 @@ export class CustomersRepository implements ICustomersRepository {
       ...customer,
       type: CustomerType[customer.type],
     }));
+  }
+
+  async findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer> {
+    const { userId, customerId } = findFirstByIdDto;
+
+    const customer = await this.prismaService.customer.findFirst({
+      where: { userId, id: customerId },
+      select: {
+        id: true,
+        name: true,
+        type: true,
+        phone: true,
+        color: true,
+        balance: true,
+      },
+    });
+
+    return {
+      ...customer,
+      type: CustomerType[customer.type],
+    };
   }
 
   async create(createDto: CreateCustomerDto): Promise<Customer> {

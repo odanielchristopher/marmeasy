@@ -10,6 +10,8 @@ export interface ICustomersRepository {
     findManyByUserIdDto: FindManyByUserIdDto,
   ): Promise<Customer[]>;
 
+  findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer>;
+
   create(createDto: CreateCustomerDto): Promise<Customer>;
 }
 
@@ -24,6 +26,11 @@ export interface ICustomersRepository {
 export type FindManyByUserIdDto = {
   userId: string;
   order: 'asc' | 'desc';
+};
+
+export type FindFirstByIdDto = {
+  userId: string;
+  customerId: string;
 };
 
 // export type FindFirstCustomerByIdDto = {
