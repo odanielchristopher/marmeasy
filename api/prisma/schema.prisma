@@ -111,8 +111,8 @@ model Payment {
 }
 
 enum PaymentType {
-  CREDIT_CARD
-  DEBIT_CARD
+  CREDIT
+  DEBIT
   CASH
 
   @@map("payment_type")

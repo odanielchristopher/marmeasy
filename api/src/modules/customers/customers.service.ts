@@ -1,26 +1,30 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { ICustomersRepository } from 'src/shared/database/interfaces/customers-repository.interface';
 import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Injectable()
 export class CustomersService {
-  create(createCustomerDto: CreateCustomerDto) {
-    return 'This action adds a new customer';
+  constructor(
+    @Inject(ICustomersRepository)
+    private readonly customersRepository: ICustomersRepository,
+  ) {}
+
+  findAll(userId: string) {
+    return this.customersRepository.findManyByUserId({ userId, order: 'asc' });
   }
 
-  findAll() {
-    return `This action returns all customers`;
-  }
+  create(userId: string, createCustomerDto: CreateCustomerDto) {
+    const { name, color, type, phone, balance } = createCustomerDto;
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
-  }
-
-  update(id: number, updateCustomerDto: UpdateCustomerDto) {
-    return `This action updates a #${id} customer`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} customer`;
+    return this.customersRepository.create({
+      userId,
+      data: {
+        name,
+        color,
+        type,
+        phone,
+        balance,
+      },
+    });
   }
 }
