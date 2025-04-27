@@ -13,6 +13,7 @@ model User {
   email    String @unique
   password String
 
+  customers         Customer[]
   products          Product[]
   productCategories ProductCategory[]
   ingredients       Ingredient[]
@@ -20,6 +21,28 @@ model User {
   expenses          Expense[]
 
   @@map("users")
+}
+
+model Customer {
+  id       String       @id @default(uuid()) @db.Uuid
+  userId   String       @map("user_id") @db.Uuid
+  name     String
+  type     CustomerType
+  color    String
+  phone    String?
+  balance  Float
+  isActive Boolean      @default(true) @map("is_active")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("customers")
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  BUSINESS
+
+  @@map("customer_type")
 }
 
 model Product {
@@ -91,6 +114,8 @@ enum PaymentType {
   CREDIT_CARD
   DEBIT_CARD
   CASH
+
+  @@map("payment_type")
 }
 
 model Expense {
@@ -114,4 +139,6 @@ enum ExpenseType {
   MEATS
   GARRISONS
   OTHERS
+
+  @@map("expense_type")
 }

@@ -12,6 +12,7 @@ import { ProductsModule } from './modules/products/products.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './shared/database/database.module';
 import { MappersModule } from './shared/mappers/mappers.module';
+import { CustomersModule } from './modules/customers/customers.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MappersModule } from './shared/mappers/mappers.module';
     DashboardModule,
     ExpensesModule,
     MappersModule,
+    CustomersModule,
   ],
   controllers: [],
   providers: [
