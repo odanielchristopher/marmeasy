@@ -2,6 +2,7 @@ import { ICustomer } from '@app/entities/Customer';
 import { cn } from '@app/lib/utils';
 import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { formatCurrency } from '@app/utils/formatCurrency';
+import { formatPhone } from '@app/utils/formatPhone';
 import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
 
 interface ICustomerProps {
@@ -14,14 +15,20 @@ export function CustomerCard({ customer }: ICustomerProps) {
       className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-md min-h-44 flex flex-col justify-between hover:border-primary hover:scale-[102%] transition-all outline-none focus:border-ring cursor-pointer border-b-4"
       style={{ borderBottomColor: customer.color }}
     >
-      <div className="flex flex-col gap-2.5">
-        <CustomerIcon
-          type={customer.type.toLowerCase()}
-          color={customer.color}
-        />
+      <div className="flex w-full justify-between">
+        <div className="flex flex-col gap-2.5">
+          <CustomerIcon
+            type={customer.type.toLowerCase()}
+            color={customer.color}
+          />
 
-        <span className="text-lg font-medium tracking-[-0.5px]">
-          {capitalizeFirstLetter(customer.name)}
+          <span className="text-lg font-medium tracking-[-0.5px]">
+            {capitalizeFirstLetter(customer.name)}
+          </span>
+        </div>
+
+        <span className="text-muted-foreground text-sm tracking-[-0.5px]">
+          {formatPhone(customer.phone ?? '')}
         </span>
       </div>
 
