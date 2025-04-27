@@ -12,7 +12,7 @@ interface ICustomerProps {
 export function CustomerCard({ customer }: ICustomerProps) {
   return (
     <div
-      className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-md min-h-44 flex flex-col justify-between hover:border-primary hover:scale-[102%] transition-all outline-none focus:border-ring cursor-pointer border-b-4"
+      className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-md min-h-44 flex flex-col justify-between hover:border-primary dark:hover:border-primary hover:scale-[102%] transition-all outline-none focus:border-ring cursor-pointer border-b-4"
       style={{ borderBottomColor: customer.color }}
     >
       <div className="flex w-full justify-between">

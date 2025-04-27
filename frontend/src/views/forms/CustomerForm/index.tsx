@@ -4,6 +4,7 @@ import { ColorsDropdownInput } from '@views/components/app/ColorsDropdownInput';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 import { InputCurrency } from '@views/components/ui/InputCurrency';
+import { InputFormatted } from '@views/components/ui/InputFormatted';
 import { Select } from '@views/components/ui/Select';
 
 import {
@@ -58,10 +59,20 @@ export function CustomerForm({
           error={form.formState.errors.name?.message}
         />
 
-        <Input
-          placeholder="Telefone"
-          {...form.register('phone')}
-          error={form.formState.errors.phone?.message}
+        <Controller
+          control={form.control}
+          name="phone"
+          render={({ field: { value, onChange } }) => (
+            <InputFormatted
+              placeholder="Telefone"
+              type="tel"
+              name="phone"
+              value={value}
+              format="(##) #####-####"
+              onValueChange={(event) => onChange(event.value)}
+              error={form.formState.errors.phone?.message}
+            />
+          )}
         />
 
         <Controller

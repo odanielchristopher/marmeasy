@@ -46,10 +46,11 @@ export function Select({
           {placeholder}
         </label>
 
-        <RdxSelect.Root value={value} onValueChange={handleSelect}>
+        <RdxSelect.Root value={selectedValue} onValueChange={handleSelect}>
           <RdxSelect.Trigger
             className={cn(
               'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input flex min-w-0 rounded-md px-3 py-1 text-sm transition-all outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pt-5',
+              'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
               'bg-white w-full rounded-lg border border-gray-500 dark:border-accent h-[52px] text-gray-700 dark:text-foreground',
               error && '!border-red-900',
               className,
@@ -62,7 +63,12 @@ export function Select({
           </RdxSelect.Trigger>
 
           <RdxSelect.Portal>
-            <RdxSelect.Content className="z-[99] overflow-hidden bg-white dark:bg-accent rounded-md border shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
+            <RdxSelect.Content
+              className={cn(
+                'z-[99] overflow-hidden bg-white dark:bg-popover rounded-md border shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]',
+                'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95',
+              )}
+            >
               <RdxSelect.ScrollUpButton className="flex h-[25px] cursor-default items-center justify-center bg-white text-gray-800">
                 <ChevronUpIcon />
               </RdxSelect.ScrollUpButton>
@@ -72,9 +78,10 @@ export function Select({
                   <RdxSelect.Item
                     key={option.value}
                     value={option.value}
+                    data-slot="select-item"
                     className={cn(
                       'p-2 text-gray-800 dark:text-popover-foreground text-sm outline-none rounded-lg',
-                      'data-[state=checked]:font-bold',
+                      'data-[state=checked]:font-bold cursor-pointer hover:bg-accent focus:bg-accent focus:text-accent-foreground',
                       'data-[highlighted]:bg-gray-50',
                     )}
                   >

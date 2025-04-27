@@ -68,7 +68,11 @@ export function Customers() {
 
           {!isLoading &&
             customers.map((customer) => (
-              <Link key={customer.id} to={`${routes.customer}/${customer.id}`}>
+              <Link
+                key={customer.id}
+                to={`${routes.customer}/${customer.id}`}
+                className="rounded-md"
+              >
                 <CustomerCard customer={customer} />
               </Link>
             ))}
