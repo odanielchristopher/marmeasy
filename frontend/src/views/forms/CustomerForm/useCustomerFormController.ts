@@ -9,7 +9,19 @@ const customerSchema = z.object({
     message: 'O tipo do cliente é obrigatório',
   }),
   color: z.string().nonempty('Escolha uma cor para o cliente'),
-  phone: z.string().optional(),
+  phone: z
+    .string()
+    .optional()
+    .refine(
+      (value) => {
+        if (!value) return true;
+
+        return value.length === 11 && value[2] === '9';
+      },
+      {
+        message: 'O telefone precisa ser válido ou estar vazio',
+      },
+    ),
 });
 
 export type CustomerFormData = z.infer<typeof customerSchema>;
