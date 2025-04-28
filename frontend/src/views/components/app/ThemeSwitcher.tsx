@@ -1,13 +1,17 @@
+import { VariantProps } from 'class-variance-authority';
 import { Moon, Sun } from 'lucide-react';
 
 import { useTheme } from '@app/contexts/ThemeContext';
-import { Button } from '@views/components/ui/Button';
+import { Button, buttonVariants } from '@views/components/ui/Button';
 
 interface IThemeSwitcherProps {
   className?: string;
 }
 
-export function ThemeSwitcher({ className }: IThemeSwitcherProps) {
+export function ThemeSwitcher({
+  className,
+  variant = 'link',
+}: IThemeSwitcherProps & VariantProps<typeof buttonVariants>) {
   const { setTheme, theme } = useTheme();
 
   function handleTheme() {
@@ -16,7 +20,8 @@ export function ThemeSwitcher({ className }: IThemeSwitcherProps) {
 
   return (
     <Button
-      variant="link"
+      type="button"
+      variant={variant}
       size="icon"
       className={className}
       onClick={handleTheme}
