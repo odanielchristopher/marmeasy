@@ -13,13 +13,23 @@ interface IProductCardProps {
   price: number;
   description?: string;
   imagePath?: string;
-  isDisabled?: boolean;
+  onClick(): void;
 }
 
-export function ProductCard({ isDisabled, ...product }: IProductCardProps) {
+export function ProductCard({ onClick, ...product }: IProductCardProps) {
   return (
-    <div className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-sm flex gap-3 flex-col lg:flex-row">
-      <div className="h-40 lg:min-h-30 lg:min-w-34 xl:min-w-44">
+    <div
+      role="button"
+      className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-xl flex gap-3 sm:flex-col lg:flex-row cursor-pointer hover:!border-primary hover:scale-[102%] transition-all"
+      onClick={onClick}
+      tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter') {
+          onClick();
+        }
+      }}
+    >
+      <div className="max-sm:min-w-34 max-sm:h-28 h-40 lg:h-34 lg:min-w-34 xl:min-w-44">
         <Avatar className="size-full rounded-sm">
           <AvatarImage src={product.imagePath} className="object-cover" />
           <AvatarFallback className="bg-teal-900 rounded-sm">
@@ -28,14 +38,20 @@ export function ProductCard({ isDisabled, ...product }: IProductCardProps) {
         </Avatar>
       </div>
 
-      <div className="min-h-24 flex flex-col justify-between">
+      <div className="min-h-24 flex flex-col justify-between max-sm:py-3 lg:py-3">
         <div>
-          <strong>{product.name}</strong>
+          <strong className="text-base font-semibold tracking-[-0.5px]">
+            {product.name}
+          </strong>
 
-          <p>{product.description}</p>
+          <p className="text-sm text-muted-foreground tracking-[-0.5px]">
+            {product.description}
+          </p>
         </div>
 
-        <strong>{formatCurrency(product.price)}</strong>
+        <strong className="text-base font-semibold tracking-[-0.5px]">
+          {formatCurrency(product.price)}
+        </strong>
       </div>
     </div>
   );

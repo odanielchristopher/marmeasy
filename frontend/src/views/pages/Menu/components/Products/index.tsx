@@ -22,9 +22,13 @@ export function Products() {
         </Button>
       </div>
 
-      <div className="mt-6 grid gap-4 grid-cols-2 ">
+      <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 ">
         {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+          <ProductCard
+            key={product.id}
+            {...product}
+            onClick={() => console.log({ product })}
+          />
         ))}
       </div>
     </div>
