@@ -1,4 +1,4 @@
-import { BoxIcon, ChefHatIcon, SoupIcon } from 'lucide-react';
+import { BoxIcon, SoupIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
 export function useAsideController() {
@@ -16,12 +16,6 @@ export function useAsideController() {
       label: 'Categorias',
       icon: BoxIcon,
       handler: () => setSearchParams({ session: 'categories' }),
-    },
-    {
-      id: 'ingredients',
-      label: 'Ingredientes',
-      icon: ChefHatIcon,
-      handler: () => setSearchParams({ session: 'ingredients' }),
     },
   ];
 

@@ -1,7 +1,7 @@
 import { StepperNextButton } from '@views/components/app/Stepper';
 import { FieldError } from '@views/components/ui/FieldError';
 
-import { Item } from './components/Item';
+import { Cart } from './components/Cart';
 import { Product } from './components/Product';
 import { useProductsStepController } from './useProductsStepController';
 
@@ -14,8 +14,6 @@ export function ProductsStep() {
     hasItems,
     cartItems,
     handleNextStep,
-    handleDecrementItem,
-    handleIncrementItem,
     handleAddToCart,
   } = useProductsStepController();
 
@@ -40,20 +38,7 @@ export function ProductsStep() {
       )}
 
       <footer className="mt-5">
-        <ul className="space-y-4 max-h-[130px] overflow-y-auto scrollbar-thin animate-in scale-95 transition-all">
-          {cartItems.map((item, index) => (
-            <li
-              key={item.id}
-              className="py-3 flex justify-between items-center"
-            >
-              <Item
-                {...item}
-                onAdd={() => handleIncrementItem(index, item)}
-                onSub={() => handleDecrementItem(index, item)}
-              />
-            </li>
-          ))}
-        </ul>
+        <Cart items={cartItems} />
 
         <div className="flex justify-between gap-4 items-center pt-6">
           <div className="flex-1/2">

@@ -4,12 +4,10 @@ import { lazyLoad } from '@app/utils/lazyLoad';
 
 const { Categories } = lazyLoad(() => import('./components/Categories'));
 const { Products } = lazyLoad(() => import('./components/Products'));
-const { Ingredients } = lazyLoad(() => import('./components/Ingredients'));
 
 const sessions = [
   { name: 'products', comp: Products },
   { name: 'categories', comp: Categories },
-  { name: 'ingredients', comp: Ingredients },
 ];
 
 export function useMenuController() {
