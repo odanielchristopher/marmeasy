@@ -12,15 +12,20 @@ import { routes } from './routes';
 // import { Home } from '@views/pages/Home';
 
 // Com lazy loading (baixa só quando precisa);
-const { Customers } = lazyLoad(() => import('@views/pages/Customers'));
-const { Orders } = lazyLoad(() => import('@views/pages/Orders'));
 const { AuthLayout } = lazyLoad(() => import('@views/layouts/AuthLayout'));
-const { Menu } = lazyLoad(() => import('@views/pages/Menu'));
-const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
 const { AppLayout } = lazyLoad(() => import('@views/layouts/AppLayout'));
-const { Register } = lazyLoad(() => import('@views/pages/Register'));
-const { Login } = lazyLoad(() => import('@views/pages/Login'));
+
+const { Customers } = lazyLoad(() => import('@views/pages/Customers'));
 const { Customer } = lazyLoad(() => import('@views/pages/Customer'));
+
+const { Orders } = lazyLoad(() => import('@views/pages/Orders'));
+const { NewOrder } = lazyLoad(() => import('@views/pages/Orders/NewOrder'));
+
+const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
+const { Menu } = lazyLoad(() => import('@views/pages/Menu'));
+
+const { Login } = lazyLoad(() => import('@views/pages/Login'));
+const { Register } = lazyLoad(() => import('@views/pages/Register'));
 
 // 404 -> rotas não encontradas;
 const { NotFoundPage } = lazyLoad(
@@ -40,7 +45,10 @@ export function Router() {
               <Route path=":id" element={<Customer />} />
             </Route>
 
-            <Route path={routes.orders} element={<Orders />} />
+            <Route path={routes.orders}>
+              <Route index element={<Orders />} />
+              <Route path="new" element={<NewOrder />} />
+            </Route>
             <Route path={routes.menu} element={<Menu />} />
             <Route path={routes.dashboard} element={<Dashboard />} />
           </Route>

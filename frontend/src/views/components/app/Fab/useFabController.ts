@@ -1,12 +1,15 @@
 import { HandCoinsIcon, SoupIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import { useShallow } from 'zustand/shallow';
 
+import { routes } from '@app/Router/routes';
 import { useGlobalStore } from '@app/store';
 import { Individual } from '@views/assets/icons/customers/options/Individual';
 
 export function useFabController() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const globalModals = useGlobalStore(
     useShallow((store) => ({
@@ -21,9 +24,13 @@ export function useFabController() {
     globalModals.openNewCustomerModal();
   }
 
-  function handleNewOrderModal() {
-    setIsDropdownOpen(false);
-    globalModals.openNewOrderModal();
+  // function handleNewOrderModal() {
+  //   setIsDropdownOpen(false);
+  //   globalModals.openNewOrderModal();
+  // }
+
+  function handleNavigateNewCustomerPage() {
+    navigate(routes.newOrder);
   }
 
   function handleNewPaymentModal() {
@@ -44,7 +51,7 @@ export function useFabController() {
       icon: SoupIcon,
       colorIcon: 'text-primary-500',
       bgIcon: 'bg-primary-100',
-      handler: handleNewOrderModal,
+      handler: handleNavigateNewCustomerPage,
     },
     {
       label: 'Novo pagamento',

@@ -1,12 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
+import { useMemo } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { IProduct } from '@app/entities/IProduct';
+import { products } from '@app/mocks/products';
+
+import { cartStepSchema } from './steps/CartStep/schema';
 import { dataStepSchema } from './steps/DataStep/schema';
-import { productsStepSchema } from './steps/ProductsStep/schema';
 
 const orderSchema = z.object({
-  productsStep: productsStepSchema,
+  cartStep: cartStepSchema,
   dataStep: dataStepSchema,
 });
 
@@ -23,8 +27,8 @@ export function useOrderFormController({
 }: IUseOrderFormController) {
   const form = useForm<OrderFormData>({
     defaultValues: {
-      productsStep: {
-        items: defaultValues?.productsStep.items ?? [],
+      cartStep: {
+        items: defaultValues?.cartStep.items ?? [],
       },
       dataStep: {
         customer: defaultValues?.dataStep.customer ?? { id: '', name: '' },
@@ -39,8 +43,31 @@ export function useOrderFormController({
     await onSubmit(formData);
   });
 
+  const cartControl = useFieldArray({
+    control: form.control,
+    name: 'cartStep.items',
+  });
+
+  function handleAddToCart({ id, ...product }: IProduct) {
+    cartControl.append({
+      ...product,
+      quantity: 1,
+      productId: id,
+      unitPrice: product.price,
+    });
+  }
+
+  const addedProductIds = useMemo(
+    () => new Set(cartControl.fields.map((p) => p.productId)),
+    [cartControl.fields],
+  );
+
   return {
     form,
+    products,
+    cartControl,
+    addedProductIds,
+    handleAddToCart,
     handleSubmit,
   };
 }
