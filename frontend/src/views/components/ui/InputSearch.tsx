@@ -4,9 +4,10 @@ import { cn } from '@app/lib/utils';
 
 interface IInputSearchProps {
   placeholder?: string;
+  className?: string;
 }
 
-export function InputSearch({ placeholder }: IInputSearchProps) {
+export function InputSearch({ placeholder, className }: IInputSearchProps) {
   return (
     <div className="relative flex items-center">
       <Search className="absolute left-3" />
@@ -19,6 +20,7 @@ export function InputSearch({ placeholder }: IInputSearchProps) {
           'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
           'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
           'bg-white w-full rounded-lg border border-gray-300 dark:border-accent h-[52px] text-gray-700 dark:text-foreground',
+          className,
         )}
       />
     </div>
