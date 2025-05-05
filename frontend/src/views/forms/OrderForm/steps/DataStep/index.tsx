@@ -8,11 +8,17 @@ import { Select } from '@views/components/ui/Select';
 
 import { OrderFormData } from '../../useOrderFormController';
 
-export function DataStep() {
+export function DataStep({ buttonLabel }: { buttonLabel: string }) {
   const form = useFormContext<OrderFormData>();
 
   return (
     <div>
+      <div className="px-3 mt-4 mb-8">
+        <strong className="font-medium text-muted-foreground">
+          Mais informações
+        </strong>
+      </div>
+
       <div className="space-y-3">
         <Input
           placeholder="Nome do cliente*"
@@ -62,12 +68,13 @@ export function DataStep() {
 
       <footer className="flex justify-between items-center gap-3 mt-10">
         <StepperPreviousButton
+          type="button"
           size="default"
           className="flex-1/2 bg-transparent border border-foreground"
         />
 
         <Button className="flex-1/2" type="submit">
-          Fechar pedido
+          {buttonLabel}
         </Button>
       </footer>
     </div>
