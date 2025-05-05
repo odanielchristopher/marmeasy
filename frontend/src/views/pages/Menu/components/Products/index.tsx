@@ -22,7 +22,7 @@ export function Products() {
         </Button>
       </div>
 
-      <div className="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 ">
+      <div className="mt-6 flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4">
         {products.map((product) => (
           <ProductCard
             key={product.id}

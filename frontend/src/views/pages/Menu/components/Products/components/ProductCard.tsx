@@ -1,5 +1,6 @@
 import { SoupIcon } from 'lucide-react';
 
+import { cn } from '@app/lib/utils';
 import { formatCurrency } from '@app/utils/formatCurrency';
 import {
   Avatar,
@@ -20,7 +21,10 @@ export function ProductCard({ onClick, ...product }: IProductCardProps) {
   return (
     <div
       role="button"
-      className="bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-xl flex gap-3 sm:flex-col lg:flex-row cursor-pointer hover:!border-primary hover:scale-[102%] transition-all"
+      className={cn(
+        'bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-xl flex gap-3 cursor-pointer hover:!border-primary hover:scale-[102%] transition-all',
+        'relative flex gap-4 h-30 bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-2xl',
+      )}
       onClick={onClick}
       tabIndex={0}
       onKeyDown={(event) => {
@@ -29,27 +33,27 @@ export function ProductCard({ onClick, ...product }: IProductCardProps) {
         }
       }}
     >
-      <div className="max-sm:min-w-34 max-sm:h-28 h-40 lg:h-34 lg:min-w-34 xl:min-w-44">
-        <Avatar className="size-full rounded-sm">
-          <AvatarImage src={product.imagePath} className="object-cover" />
-          <AvatarFallback className="bg-teal-900 rounded-sm">
-            <SoupIcon />
-          </AvatarFallback>
-        </Avatar>
-      </div>
+      <Avatar className="!rounded-md w-[120px] h-full">
+        <AvatarImage src={product.imagePath} className="object-cover" />
+        <AvatarFallback className="w-full h-full flex items-center justify-center bg-teal-900 !rounded-md">
+          <SoupIcon className="size-7 text-gray-800" />
+        </AvatarFallback>
+      </Avatar>
 
-      <div className="min-h-24 flex flex-col justify-between max-sm:py-3 lg:py-3">
+      <div className="flex flex-1 flex-col justify-between gap-1">
         <div>
-          <strong className="text-base font-semibold tracking-[-0.5px]">
+          <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px] line-clamp-1">
             {product.name}
           </strong>
 
-          <p className="text-sm text-muted-foreground tracking-[-0.5px]">
-            {product.description}
-          </p>
+          {product.description && (
+            <p className="text-gray-600 dark:text-gray-300 m-0 text-sm max-md:line-clamp-2 line-clamp-1 xl:line-clamp-2">
+              {product.description}
+            </p>
+          )}
         </div>
 
-        <strong className="text-base font-semibold tracking-[-0.5px]">
+        <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px]">
           {formatCurrency(product.price)}
         </strong>
       </div>
