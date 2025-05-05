@@ -82,7 +82,7 @@ export function Select({
                     className={cn(
                       'p-2 text-gray-800 dark:text-popover-foreground text-sm outline-none rounded-lg',
                       'data-[state=checked]:font-bold cursor-pointer hover:bg-accent focus:bg-accent focus:text-accent-foreground',
-                      'data-[highlighted]:bg-gray-50',
+                      'data-[highlighted]:bg-gray-50 dark:data-[highlighted]:bg-accent',
                     )}
                   >
                     <RdxSelect.ItemText>{option.label}</RdxSelect.ItemText>
