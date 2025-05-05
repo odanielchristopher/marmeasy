@@ -18,10 +18,7 @@ export function App() {
             <Router />
             <Toaster position="top-right" />
 
-            <ReactQueryDevtools
-              position="bottom"
-              buttonPosition="bottom-left"
-            />
+            <ReactQueryDevtools position="bottom" buttonPosition="top-left" />
           </BrowserRouter>
         </ThemeProvider>
       </AuthProvider>
