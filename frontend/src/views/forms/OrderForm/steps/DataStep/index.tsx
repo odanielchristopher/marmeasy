@@ -13,7 +13,7 @@ export function DataStep({ buttonLabel }: { buttonLabel: string }) {
 
   return (
     <div>
-      <div className="px-3 mt-4 mb-8">
+      <div className="px-3 mt-4 mb-8 md:hidden">
         <strong className="font-medium text-muted-foreground">
           Mais informações
         </strong>
