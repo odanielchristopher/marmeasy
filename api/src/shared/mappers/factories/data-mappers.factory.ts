@@ -6,6 +6,7 @@ import { PartialIncomeMapper } from '../classes/partial-income.mapper';
 import { PaymentMapper } from '../classes/payment.mapper';
 import { IDataMapper } from '../interfaces/data-mapper.interface';
 
+import { CustomerMapper } from '../classes/customer.mapper';
 import { IDataMappersFactory } from '../interfaces/data-mappers-factory.interface';
 
 export enum DataMapperType {
@@ -15,6 +16,7 @@ export enum DataMapperType {
   PAYMENT = 'PaymentMapper',
   FAVORITE = 'FavoriteIngredientMapper',
   PARTIAL_INCOME = 'PartialIncomeMapper',
+  CUSTOMER = 'CustomerMapper',
 }
 
 export class DataMappersFactory implements IDataMappersFactory {
@@ -30,6 +32,7 @@ export class DataMappersFactory implements IDataMappersFactory {
 
     this.dataMappers.set(DataMapperType.PARTIAL_INCOME, PartialIncomeMapper);
     this.dataMappers.set(DataMapperType.FAVORITE, FavoriteIngredientMapper);
+    this.dataMappers.set(DataMapperType.CUSTOMER, CustomerMapper);
   }
 
   getInstance<TPersistenceObject, TDomainEntity>(

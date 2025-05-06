@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import {
-  Customer,
-  CustomerType,
-} from 'src/modules/customers/entities/customer.entity';
+import { Inject, Injectable } from '@nestjs/common';
+import { Customer as PrismaCustomer } from '@prisma/client';
+import { Customer } from 'src/modules/customers/entities/customer.entity';
+import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
+import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
 import {
   CreateCustomerDto,
   FindFirstByIdDto,
@@ -13,7 +13,11 @@ import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class CustomersRepository implements ICustomersRepository {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(IDataMappersFactory)
+    private readonly dataMappersFactory: IDataMappersFactory,
+  ) {}
 
   async findManyByUserId(
     findManyByUserIdDto: FindManyByUserIdDto,
@@ -25,20 +29,9 @@ export class CustomersRepository implements ICustomersRepository {
       orderBy: {
         name: order,
       },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        phone: true,
-        color: true,
-        balance: true,
-      },
     });
 
-    return customers.map((customer) => ({
-      ...customer,
-      type: CustomerType[customer.type],
-    }));
+    return customers.map((customer) => this.parser(customer));
   }
 
   async findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer> {
@@ -46,20 +39,9 @@ export class CustomersRepository implements ICustomersRepository {
 
     const customer = await this.prismaService.customer.findFirst({
       where: { userId, id: customerId },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        phone: true,
-        color: true,
-        balance: true,
-      },
     });
 
-    return {
-      ...customer,
-      type: CustomerType[customer.type],
-    };
+    return this.parser(customer);
   }
 
   async create(createDto: CreateCustomerDto): Promise<Customer> {
@@ -76,19 +58,14 @@ export class CustomersRepository implements ICustomersRepository {
         phone,
         balance,
       },
-      select: {
-        id: true,
-        name: true,
-        type: true,
-        phone: true,
-        color: true,
-        balance: true,
-      },
     });
 
-    return {
-      ...createdCustomer,
-      type: CustomerType[createdCustomer.type],
-    };
+    return this.parser(createdCustomer);
+  }
+
+  private parser(prismaCustomer: PrismaCustomer) {
+    return this.dataMappersFactory
+      .getInstance<PrismaCustomer, Customer>(DataMapperType.CUSTOMER)
+      .toDomain(prismaCustomer);
   }
 }

@@ -18,7 +18,7 @@ export class IncomeMapper
 
     return {
       id,
-      value,
+      value: value.toNumber(),
       clientName,
       date: date.toISOString(),
       type: PaymentType[type],

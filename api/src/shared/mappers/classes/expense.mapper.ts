@@ -15,7 +15,7 @@ export class ExpenseMapper implements IDataMapper<PrismaExpense, Expense> {
 
     return {
       id,
-      value,
+      value: value.toNumber(),
       date: date.toISOString(),
       type: ExpenseType[type],
     };

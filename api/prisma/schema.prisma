@@ -30,7 +30,7 @@ model Customer {
   type     CustomerType
   color    String
   phone    String?
-  balance  Float
+  balance  Decimal
   isActive Boolean      @default(true) @map("is_active")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -51,7 +51,7 @@ model Product {
   name        String
   description String?
   imagePath   String?
-  price       Float
+  price       Decimal
   categoryId  String?               @map("product_category_id") @db.Uuid
   ingredients IngredientsProducts[]
 
@@ -103,7 +103,7 @@ model Payment {
   clientId String      @map("client_id") @db.Uuid
   type     PaymentType
   date     DateTime    @default(now())
-  value    Float
+  value    Decimal
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -123,7 +123,7 @@ model Expense {
   userId String       @map("user_id") @db.Uuid
   type   ExpenseType? @default(OTHERS)
   date   DateTime     @default(now())
-  value  Float
+  value  Decimal
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
