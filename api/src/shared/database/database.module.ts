@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common';
 
-import { IIngredientsRepository } from './interfaces/ingredients-repository.interface';
 import { IProductCategoriesRepository } from './interfaces/product-categories-repository.interface';
 import { IProductsRepository } from './interfaces/products-repository.interface';
 import { IUsersRepository } from './interfaces/users-repository.interface';
@@ -14,7 +13,6 @@ import { PrismaService } from './prisma.service';
 import { CustomersRepository } from './repositories/customers.repository';
 import { ExpensesRepository } from './repositories/expenses.repository';
 import { IncomesRepository } from './repositories/incomes.repository';
-import { IngredientsRepository } from './repositories/ingredients.repository';
 import { PaymentsRepository } from './repositories/payments.repository';
 import { ProductCategoriesRepository } from './repositories/product-categories.repository';
 import { ProductsRepository } from './repositories/products.repository';
@@ -38,10 +36,6 @@ import { UsersRepository } from './repositories/users.repository';
       useClass: ProductCategoriesRepository,
     },
     {
-      provide: IIngredientsRepository,
-      useClass: IngredientsRepository,
-    },
-    {
       provide: IPaymentsRepository,
       useClass: PaymentsRepository,
     },
@@ -63,7 +57,6 @@ import { UsersRepository } from './repositories/users.repository';
     IProductsRepository,
     IUsersRepository,
     IProductCategoriesRepository,
-    IIngredientsRepository,
     IPaymentsRepository,
     IExpensesRepository,
     IIncomesRepository,

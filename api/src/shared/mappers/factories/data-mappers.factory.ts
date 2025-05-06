@@ -1,6 +1,5 @@
 import { Constructor } from 'src/shared/types';
 import { ExpenseMapper } from '../classes/expense.mapper';
-import { FavoriteIngredientMapper } from '../classes/favorite-ingredient.mapper';
 import { IncomeMapper } from '../classes/income.mapper';
 import { PartialIncomeMapper } from '../classes/partial-income.mapper';
 import { PaymentMapper } from '../classes/payment.mapper';
@@ -14,7 +13,6 @@ export enum DataMapperType {
   EXPENSE = 'ExpenseMapper',
   INCOME = 'IncomeMapper',
   PAYMENT = 'PaymentMapper',
-  FAVORITE = 'FavoriteIngredientMapper',
   PARTIAL_INCOME = 'PartialIncomeMapper',
   CUSTOMER = 'CustomerMapper',
 }
@@ -31,7 +29,6 @@ export class DataMappersFactory implements IDataMappersFactory {
     this.dataMappers.set(DataMapperType.PAYMENT, PaymentMapper);
 
     this.dataMappers.set(DataMapperType.PARTIAL_INCOME, PartialIncomeMapper);
-    this.dataMappers.set(DataMapperType.FAVORITE, FavoriteIngredientMapper);
     this.dataMappers.set(DataMapperType.CUSTOMER, CustomerMapper);
   }
 

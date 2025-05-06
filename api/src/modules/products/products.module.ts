@@ -2,7 +2,6 @@ import { memoryStorage } from 'multer';
 
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { IngredientsModule } from '../ingredients/ingredients.module';
 import { ProductCategoriesModule } from '../product-categories/product-categories.module';
 import { UsersModule } from '../users/users.module';
 import { IProducImagesService } from './interfaces/product-images-service.interface';
@@ -20,7 +19,6 @@ import { ValidateProductOwnershipService } from './services/validate-product-own
     }),
     UsersModule,
     ProductCategoriesModule,
-    IngredientsModule,
   ],
   controllers: [ProductsController],
   providers: [
