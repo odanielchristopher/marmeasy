@@ -1,0 +1,63 @@
+{
+  "me": {
+    "name": "Daniel",
+    "email": "dani@mail.com"
+  },
+  "customers": [
+    {
+      "id": "1",
+      "name": "daniel",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": 17.5
+    },
+    {
+      "id": "12",
+      "name": "oficina",
+      "type": "BUSINESS",
+      "color": "#FAB005",
+      "balance": -123.5
+    },
+    {
+      "id": "123",
+      "name": "plataforma",
+      "type": "BUSINESS",
+      "color": "#4C6EF5",
+      "balance": 236.5
+    },
+    {
+      "id": "1234",
+      "name": "lucas",
+      "type": "INDIVIDUAL",
+      "color": "#82C91E",
+      "balance": 40
+    },
+    {
+      "id": "7bf3",
+      "initialBalance": 140.7,
+      "name": "Ellen",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "phone": "",
+      "balance": 140.7
+    },
+    {
+      "id": "d834",
+      "initialBalance": -3000,
+      "name": "Monte Negro",
+      "type": "BUSINESS",
+      "color": "#FA5252",
+      "phone": "",
+      "balance": -3000
+    },
+    {
+      "id": "b001",
+      "initialBalance": 0,
+      "name": "Pedro",
+      "type": "INDIVIDUAL",
+      "color": "#E64980",
+      "phone": "",
+      "balance": 0
+    }
+  ]
+}

@@ -29,5 +29,3 @@ dist-ssr
 /build
 
 .env
-
-database.json
