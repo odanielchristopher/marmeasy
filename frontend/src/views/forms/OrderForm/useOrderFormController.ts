@@ -31,7 +31,7 @@ export function useOrderFormController({
         items: defaultValues?.cartStep.items ?? [],
       },
       dataStep: {
-        customer: defaultValues?.dataStep.customer ?? { id: '', name: '' },
+        customerId: defaultValues?.dataStep.customerId ?? '',
         orderType: defaultValues?.dataStep.orderType,
         date: defaultValues?.dataStep.date ?? new Date(),
       },

@@ -1,15 +1,18 @@
 import { Controller, useFormContext } from 'react-hook-form';
 
+import { useCustomers } from '@app/hooks/useCustomers';
+import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
+import { Combobox } from '@views/components/app/ComboBox';
 import { DatePickerInput } from '@views/components/app/DatePickerInput';
 import { StepperPreviousButton } from '@views/components/app/Stepper';
 import { Button } from '@views/components/ui/Button';
-import { Input } from '@views/components/ui/Input';
 import { Select } from '@views/components/ui/Select';
 
 import { OrderFormData } from '../../useOrderFormController';
 
 export function DataStep({ buttonLabel }: { buttonLabel: string }) {
   const form = useFormContext<OrderFormData>();
+  const { customers, isLoading: isLoadingCustomers } = useCustomers();
 
   return (
     <div>
@@ -20,10 +23,27 @@ export function DataStep({ buttonLabel }: { buttonLabel: string }) {
       </div>
 
       <div className="space-y-3">
-        <Input
-          placeholder="Nome do cliente*"
-          {...form.register('dataStep.customer.name')}
-          error={form.formState.errors.dataStep?.customer?.name?.message}
+        <Controller
+          control={form.control}
+          name="dataStep.customerId"
+          render={({ field: { onChange, value } }) => (
+            <Combobox
+              options={customers.map((customer) => ({
+                value: customer.id,
+                label: capitalizeFirstLetter(customer.name),
+              }))}
+              onSelect={onChange}
+              isLoading={isLoadingCustomers}
+              buttonLabel="Selecione um cliente"
+              defaultValue={value}
+              placeholder="Procure pelo cliente"
+              notFoundMessage="Cliente não encontrado"
+              classNames={{
+                trigger: 'w-full bg-white dark:bg-accent',
+              }}
+              error={form.formState.errors.dataStep?.customerId?.message}
+            />
+          )}
         />
 
         <Controller

@@ -25,15 +25,17 @@ export function DatePickerInput({
   onChange,
 }: IDatePickerInputProps) {
   const [selectedDate, setSelectedDate] = useState(value ?? new Date());
+  const [open, setOpen] = useState(false);
 
   function handleChangeDate(date: Date) {
     setSelectedDate(date);
     onChange?.(date);
+    setOpen(false);
   }
 
   return (
     <div>
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
@@ -48,7 +50,9 @@ export function DatePickerInput({
               Data
             </span>
 
-            <span>{formatDate(selectedDate)}</span>
+            <span className="text-sm tracking-[-0.5px]">
+              {formatDate(selectedDate)}
+            </span>
           </button>
         </PopoverTrigger>
 

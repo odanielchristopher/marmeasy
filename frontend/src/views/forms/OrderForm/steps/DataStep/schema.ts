@@ -5,8 +5,5 @@ export const dataStepSchema = z.object({
     message: 'Escolha um tipo para o pedido',
   }),
   date: z.date({ message: 'Selecione uma data' }),
-  customer: z.object({
-    id: z.string().optional(),
-    name: z.string().nonempty('Nome do cliente é obrigatório'),
-  }),
+  customerId: z.string().nonempty('Cliente é obrigatório'),
 });
