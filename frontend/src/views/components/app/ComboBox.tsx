@@ -100,7 +100,10 @@ export function Combobox({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className={cn('p-0 w-full', classNames?.popoverContent)}
+          className={cn(
+            'p-0 w-full scrollbar-thin',
+            classNames?.popoverContent,
+          )}
         >
           <Command className="bg-white dark:bg-card w-full">
             <CommandInput
@@ -108,7 +111,7 @@ export function Combobox({
               onValueChange={onSearch}
               placeholder={placeholder ?? 'Pequise pela opção...'}
             />
-            <CommandList>
+            <CommandList className="scrollbar-thin">
               <CommandEmpty>
                 {isLoading && (
                   <div className="w-full h-20 grid place-items-center">

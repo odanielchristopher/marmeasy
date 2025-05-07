@@ -1,11 +1,9 @@
 import { useState } from 'react';
 
-import { ICustomer } from '@app/entities/Customer';
-
-type LoadCustomersResponse = { customers: ICustomer[]; isLoading: boolean };
+import { ILoadCustomers } from '@app/types/ILoadCustomers';
 
 interface IUseCustomersController {
-  loadCustomers(): LoadCustomersResponse;
+  loadCustomers: ILoadCustomers;
 }
 
 export function useCustomersController({
@@ -13,7 +11,7 @@ export function useCustomersController({
 }: IUseCustomersController) {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
 
-  const { customers, isLoading } = useCustomers();
+  const { customers, isLoading, pagination } = useCustomers();
 
   function handleOpenFiltersModal() {
     setIsFiltersModalOpen(true);
@@ -29,5 +27,6 @@ export function useCustomersController({
     handleCloseFiltersModal,
     isLoading,
     customers,
+    pagination,
   };
 }
