@@ -2,10 +2,10 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { useDebounce } from '@app/hooks/useDebounce';
-import { ILoadCustomers } from '@app/types/ILoadCustomers';
+import { CustomersLoaderFn } from '@app/types/CustomersLoaderFn';
 
 interface IUseCustomersController {
-  loadCustomers: ILoadCustomers;
+  loadCustomers: CustomersLoaderFn;
 }
 
 export function useCustomersController({

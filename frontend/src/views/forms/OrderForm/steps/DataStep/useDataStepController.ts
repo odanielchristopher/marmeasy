@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { useDebounce } from '@app/hooks/useDebounce';
-import { ILoadCustomers } from '@app/types/ILoadCustomers';
+import { CustomersLoaderFn } from '@app/types/CustomersLoaderFn';
 
 import { OrderFormData } from '../../useOrderFormController';
 
 interface IUseDataStepControllerProps {
-  loadCustomers: ILoadCustomers;
+  loadCustomers: CustomersLoaderFn;
 }
 
 export function useDataStepController({

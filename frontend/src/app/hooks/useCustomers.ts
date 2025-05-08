@@ -1,15 +1,17 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { customersService } from '@app/services/customersService';
+import {
+  CustomersLoaderParams,
+  CustomersLoaderResponse,
+} from '@app/types/CustomersLoaderFn';
 
 import { useInfiniteScroll } from './useInfiniteScroll';
 
-export interface IUseCustomersParams {
-  search?: string;
-  perPage?: number;
-}
-
-export function useCustomers({ perPage = 24, search }: IUseCustomersParams) {
+export function useCustomers({
+  perPage = 24,
+  search,
+}: CustomersLoaderParams): CustomersLoaderResponse {
   const {
     data: infiniteData,
     isLoading: isLoadingInfiniteData,

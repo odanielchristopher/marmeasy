@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type IUsePaginationResponse = {
+export type UsePaginationResponse = {
   currentPage: number;
   nextPage: () => void;
   previousPage: () => void;
@@ -11,4 +11,4 @@ export type IUsePaginationResponse = {
   hasPreviousPage: boolean;
 };
 
-export type IUsePagination = (perPage: number) => IUsePaginationResponse;
+export type UsePaginationFn = (perPage: number) => UsePaginationResponse;

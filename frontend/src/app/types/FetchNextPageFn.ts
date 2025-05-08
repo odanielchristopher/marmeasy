@@ -4,6 +4,6 @@ import {
   InfiniteQueryObserverResult,
 } from '@tanstack/react-query';
 
-export type IFetchNextPage<TData> = (
+export type FetchNextPageFn<TData> = (
   options?: FetchNextPageOptions,
 ) => Promise<InfiniteQueryObserverResult<InfiniteData<TData, unknown>, Error>>;

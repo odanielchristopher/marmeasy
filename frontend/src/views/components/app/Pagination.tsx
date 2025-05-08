@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 
-import { IUsePaginationResponse } from '@app/types/IUsePagination';
+import { UsePaginationResponse } from '@app/types/IUsePagination';
 import { generateElipsisPagination } from '@app/utils/generateElipsisPagination';
 
 import * as Primitive from '../ui/Pagination';
 
 interface IPaginationProps {
-  control: IUsePaginationResponse;
+  control: UsePaginationResponse;
 }
 
 export function Pagination({ control }: IPaginationProps) {
