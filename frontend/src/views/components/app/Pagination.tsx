@@ -3,64 +3,63 @@ import { useMemo } from 'react';
 import { IUsePaginationResponse } from '@app/types/IUsePagination';
 import { generateElipsisPagination } from '@app/utils/generateElipsisPagination';
 
-import * as Comp from '../ui/Pagination';
+import * as Primitive from '../ui/Pagination';
 
 interface IPaginationProps {
-  pagination: IUsePaginationResponse;
+  control: IUsePaginationResponse;
 }
 
-export function Pagination({ pagination }: IPaginationProps) {
+export function Pagination({ control }: IPaginationProps) {
   const pages = useMemo(
-    () =>
-      generateElipsisPagination(pagination.currentPage, pagination.totalPages),
-    [pagination.currentPage, pagination.totalPages],
+    () => generateElipsisPagination(control.currentPage, control.totalPages),
+    [control.currentPage, control.totalPages],
   );
 
   return (
-    <Comp.Pagination>
-      <Comp.PaginationContent>
-        <Comp.PaginationItem>
-          <Comp.PaginationPrevious
+    <Primitive.Pagination>
+      <Primitive.PaginationContent>
+        <Primitive.PaginationItem>
+          <Primitive.PaginationPrevious
             type="button"
-            onClick={pagination.previousPage}
-            disabled={!pagination.hasPreviousPage}
+            onClick={control.previousPage}
+            disabled={!control.hasPreviousPage}
           />
-        </Comp.PaginationItem>
+        </Primitive.PaginationItem>
 
         {pages.map(({ value: page, id }) => {
           const isElipisPosition = typeof page === 'string';
 
           if (isElipisPosition) {
             return (
-              <Comp.PaginationItem key={id}>
-                <Comp.PaginationButton type="button" disabled>
-                  <Comp.PaginationEllipsis />
-                </Comp.PaginationButton>
-              </Comp.PaginationItem>
+              <Primitive.PaginationItem key={id}>
+                <Primitive.PaginationButton type="button" disabled>
+                  <Primitive.PaginationEllipsis />
+                </Primitive.PaginationButton>
+              </Primitive.PaginationItem>
             );
           }
 
           return (
-            <Comp.PaginationItem key={id}>
-              <Comp.PaginationButton
+            <Primitive.PaginationItem key={id}>
+              <Primitive.PaginationButton
                 type="button"
-                isActive={pagination.currentPage === page}
-                onClick={() => pagination.setPage(page)}
+                isActive={control.currentPage === page}
+                onClick={() => control.setPage(page)}
               >
                 {page}
-              </Comp.PaginationButton>
-            </Comp.PaginationItem>
+              </Primitive.PaginationButton>
+            </Primitive.PaginationItem>
           );
         })}
 
-        <Comp.PaginationItem>
-          <Comp.PaginationNext
+        <Primitive.PaginationItem>
+          <Primitive.PaginationNext
             type="button"
-            onClick={pagination.nextPage}
-            disabled={!pagination.hasNextPage}
+            onClick={control.nextPage}
+            disabled={!control.hasNextPage}
           />
-        </Comp.PaginationItem>
-      </Comp.PaginationContent>
-    </Comp.Pagination>
+        </Primitive.PaginationItem>
+      </Primitive.PaginationContent>
+    </Primitive.Pagination>
   );
 }

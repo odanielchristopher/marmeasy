@@ -1,30 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { customersService } from '@app/services/customersService';
 
-import { usePagination } from './usePagination';
+export function useCustomers(perPage = 24) {
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['customers'],
+      initialPageParam: 1,
+      queryFn: ({ pageParam }) => customersService.getAll(pageParam, perPage),
+      getNextPageParam: (lastPage, allPages, lastPageParam) => {
+        const totalPages = Math.ceil(lastPage.items / perPage);
+        const isLastPage = allPages.length >= totalPages;
 
-export function useCustomers(perPage = 1) {
-  const pagination = usePagination(perPage);
+        if (isLastPage) return null;
 
-  const { data, isFetching } = useQuery({
-    queryKey: ['customers', { currentPage: pagination.currentPage, perPage }],
-    staleTime: Infinity,
-    queryFn: async () => {
-      const response = await customersService.getAll(
-        pagination.currentPage,
-        perPage,
-      );
+        return lastPageParam + 1;
+      },
+    });
 
-      pagination.setTotalItems(response.items);
-
-      return response;
-    },
-  });
+  const customers = data?.pages.flatMap((page) => page.data);
 
   return {
-    customers: data ?? { data: [], items: 0 },
-    isLoading: isFetching,
-    pagination,
+    customers: customers ?? [],
+    isLoading,
+    nextPage: fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   };
 }

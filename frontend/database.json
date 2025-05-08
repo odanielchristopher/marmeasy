@@ -5,59 +5,704 @@
   },
   "customers": [
     {
-      "id": "1",
-      "name": "daniel",
+      "id": "c001",
+      "name": "Olivia Martins",
+      "type": "INDIVIDUAL",
+      "color": "#FA5252",
+      "balance": 1405.59
+    },
+    {
+      "id": "c002",
+      "name": "Sra. Maria Farias",
+      "type": "INDIVIDUAL",
+      "color": "#63E6BE",
+      "balance": 630.51
+    },
+    {
+      "id": "c003",
+      "name": "Srta. Gabriela da Rosa",
       "type": "INDIVIDUAL",
       "color": "#BE4BDB",
-      "balance": 17.5
+      "balance": -438.6
     },
     {
-      "id": "12",
-      "name": "oficina",
-      "type": "BUSINESS",
-      "color": "#FAB005",
-      "balance": -123.5
-    },
-    {
-      "id": "123",
-      "name": "plataforma",
-      "type": "BUSINESS",
-      "color": "#4C6EF5",
-      "balance": 236.5
-    },
-    {
-      "id": "1234",
-      "name": "lucas",
-      "type": "INDIVIDUAL",
-      "color": "#82C91E",
-      "balance": 40
-    },
-    {
-      "id": "7bf3",
-      "initialBalance": 140.7,
-      "name": "Ellen",
-      "type": "INDIVIDUAL",
-      "color": "#7950F2",
-      "phone": "",
-      "balance": 140.7
-    },
-    {
-      "id": "d834",
-      "initialBalance": -3000,
-      "name": "Monte Negro",
+      "id": "c004",
+      "name": "Ferreira Martins S/A",
       "type": "BUSINESS",
       "color": "#FA5252",
-      "phone": "",
-      "balance": -3000
+      "balance": 716.61
     },
     {
-      "id": "b001",
-      "initialBalance": 0,
-      "name": "Pedro",
+      "id": "c005",
+      "name": "Bruna da Mota",
       "type": "INDIVIDUAL",
-      "color": "#E64980",
-      "phone": "",
-      "balance": 0
+      "color": "#D6336C",
+      "balance": -1089.97
+    },
+    {
+      "id": "c006",
+      "name": "Dra. Clara Martins",
+      "type": "INDIVIDUAL",
+      "color": "#FA5252",
+      "balance": 373.98
+    },
+    {
+      "id": "c007",
+      "name": "Luiz Henrique Gonçalves",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": -256.69
+    },
+    {
+      "id": "c008",
+      "name": "Lopes e Filhos",
+      "type": "BUSINESS",
+      "color": "#4C6EF5",
+      "balance": -84.22
+    },
+    {
+      "id": "c009",
+      "name": "Nina Silva",
+      "type": "INDIVIDUAL",
+      "color": "#FF6B6B",
+      "balance": 910.56
+    },
+    {
+      "id": "c010",
+      "name": "Pedro Cardoso",
+      "type": "INDIVIDUAL",
+      "color": "#339AF0",
+      "balance": -1336.29
+    },
+    {
+      "id": "c011",
+      "name": "Thales Correia",
+      "type": "INDIVIDUAL",
+      "color": "#FA5252",
+      "balance": 1357.7
+    },
+    {
+      "id": "c012",
+      "name": "Cardoso S.A.",
+      "type": "BUSINESS",
+      "color": "#FA5252",
+      "balance": -198.17
+    },
+    {
+      "id": "c013",
+      "name": "Matheus Moreira",
+      "type": "INDIVIDUAL",
+      "color": "#1C7ED6",
+      "balance": -1343.71
+    },
+    {
+      "id": "c014",
+      "name": "Marcela Cardoso",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": 122.68
+    },
+    {
+      "id": "c015",
+      "name": "Srta. Stella Azevedo",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": -1201.48
+    },
+    {
+      "id": "c016",
+      "name": "Cavalcanti",
+      "type": "BUSINESS",
+      "color": "#A29BFE",
+      "balance": -34.23
+    },
+    {
+      "id": "c017",
+      "name": "Letícia Almeida",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 777.94
+    },
+    {
+      "id": "c018",
+      "name": "Bryan Souza",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": -73.47
+    },
+    {
+      "id": "c019",
+      "name": "Heloísa Lima",
+      "type": "INDIVIDUAL",
+      "color": "#FF922B",
+      "balance": -1423.76
+    },
+    {
+      "id": "c020",
+      "name": "Mendes",
+      "type": "BUSINESS",
+      "color": "#A29BFE",
+      "balance": -1323.58
+    },
+    {
+      "id": "c021",
+      "name": "Luigi Aragão",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": -774.14
+    },
+    {
+      "id": "c022",
+      "name": "Dr. Joaquim da Rosa",
+      "type": "INDIVIDUAL",
+      "color": "#40C057",
+      "balance": -381.41
+    },
+    {
+      "id": "c023",
+      "name": "Sra. Cecília Costela",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": 87.14
+    },
+    {
+      "id": "c024",
+      "name": "Castro da Rocha - ME",
+      "type": "BUSINESS",
+      "color": "#BE4BDB",
+      "balance": -593.5
+    },
+    {
+      "id": "c025",
+      "name": "Dr. Thiago Jesus",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": -1350.82
+    },
+    {
+      "id": "c026",
+      "name": "Felipe Novaes",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": 19.07
+    },
+    {
+      "id": "c027",
+      "name": "Luiz Gustavo Melo",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": -451.45
+    },
+    {
+      "id": "c028",
+      "name": "Melo",
+      "type": "BUSINESS",
+      "color": "#FAB005",
+      "balance": -836.55
+    },
+    {
+      "id": "c029",
+      "name": "Maria Eduarda Melo",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 456.45
+    },
+    {
+      "id": "c030",
+      "name": "Pietro Cavalcanti",
+      "type": "INDIVIDUAL",
+      "color": "#1C7ED6",
+      "balance": -891.31
+    },
+    {
+      "id": "c031",
+      "name": "Sra. Maria Dias",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": 1483.67
+    },
+    {
+      "id": "c032",
+      "name": "Gonçalves e Filhos",
+      "type": "BUSINESS",
+      "color": "#BE4BDB",
+      "balance": 702.67
+    },
+    {
+      "id": "c033",
+      "name": "Dra. Letícia Moreira",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": -428.43
+    },
+    {
+      "id": "c034",
+      "name": "Henrique da Paz",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 226.41
+    },
+    {
+      "id": "c035",
+      "name": "Pedro Pinto",
+      "type": "INDIVIDUAL",
+      "color": "#FF922B",
+      "balance": -118.28
+    },
+    {
+      "id": "c036",
+      "name": "Carvalho Pinto - ME",
+      "type": "BUSINESS",
+      "color": "#D6336C",
+      "balance": -701.77
+    },
+    {
+      "id": "c037",
+      "name": "Sr. Thomas Teixeira",
+      "type": "INDIVIDUAL",
+      "color": "#5C7CFA",
+      "balance": 1401.39
+    },
+    {
+      "id": "c038",
+      "name": "Nicolas da Luz",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 765.2
+    },
+    {
+      "id": "c039",
+      "name": "Henrique Fernandes",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": -1200.87
+    },
+    {
+      "id": "c040",
+      "name": "da Cunha Ltda.",
+      "type": "BUSINESS",
+      "color": "#A29BFE",
+      "balance": -1011.48
+    },
+    {
+      "id": "c041",
+      "name": "Dr. Lucas Araújo",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": -1108.32
+    },
+    {
+      "id": "c042",
+      "name": "Ana Beatriz Nunes",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": 526.07
+    },
+    {
+      "id": "c043",
+      "name": "Mirella Cavalcanti",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": -1155.39
+    },
+    {
+      "id": "c044",
+      "name": "Cardoso",
+      "type": "BUSINESS",
+      "color": "#40C057",
+      "balance": 535.4
+    },
+    {
+      "id": "c045",
+      "name": "Theo da Mota",
+      "type": "INDIVIDUAL",
+      "color": "#FCC419",
+      "balance": 1382.9
+    },
+    {
+      "id": "c046",
+      "name": "Maria Julia da Conceição",
+      "type": "INDIVIDUAL",
+      "color": "#845EF7",
+      "balance": 1120.04
+    },
+    {
+      "id": "c047",
+      "name": "Cauê Aragão",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": 127.49
+    },
+    {
+      "id": "c048",
+      "name": "Pinto da Luz S/A",
+      "type": "BUSINESS",
+      "color": "#D6336C",
+      "balance": 1276.72
+    },
+    {
+      "id": "c049",
+      "name": "Dr. Renan Rezende",
+      "type": "INDIVIDUAL",
+      "color": "#D6336C",
+      "balance": -169.84
+    },
+    {
+      "id": "c050",
+      "name": "Gustavo Henrique Silveira",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": 218.59
+    },
+    {
+      "id": "c051",
+      "name": "Heloísa Martins",
+      "type": "INDIVIDUAL",
+      "color": "#FCC419",
+      "balance": -1374.32
+    },
+    {
+      "id": "c052",
+      "name": "Teixeira",
+      "type": "BUSINESS",
+      "color": "#FAB005",
+      "balance": -895.08
+    },
+    {
+      "id": "c053",
+      "name": "Vitor das Neves",
+      "type": "INDIVIDUAL",
+      "color": "#22B8CF",
+      "balance": -1110.7
+    },
+    {
+      "id": "c054",
+      "name": "Maria Vitória Gomes",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": -73.49
+    },
+    {
+      "id": "c055",
+      "name": "Srta. Sabrina Freitas",
+      "type": "INDIVIDUAL",
+      "color": "#63E6BE",
+      "balance": -3.36
+    },
+    {
+      "id": "c056",
+      "name": "Cavalcanti",
+      "type": "BUSINESS",
+      "color": "#BE4BDB",
+      "balance": -200.65
+    },
+    {
+      "id": "c057",
+      "name": "Kamilly Costela",
+      "type": "INDIVIDUAL",
+      "color": "#FF6B6B",
+      "balance": 537.95
+    },
+    {
+      "id": "c058",
+      "name": "Luiza Cardoso",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": 531.76
+    },
+    {
+      "id": "c059",
+      "name": "Milena Martins",
+      "type": "INDIVIDUAL",
+      "color": "#5C7CFA",
+      "balance": 459.97
+    },
+    {
+      "id": "c060",
+      "name": "Fogaça Moreira - EI",
+      "type": "BUSINESS",
+      "color": "#63E6BE",
+      "balance": -1147.29
+    },
+    {
+      "id": "c061",
+      "name": "Leandro da Luz",
+      "type": "INDIVIDUAL",
+      "color": "#22B8CF",
+      "balance": 1024.1
+    },
+    {
+      "id": "c062",
+      "name": "Sr. Leonardo Teixeira",
+      "type": "INDIVIDUAL",
+      "color": "#339AF0",
+      "balance": -218.47
+    },
+    {
+      "id": "c063",
+      "name": "Alícia Ramos",
+      "type": "INDIVIDUAL",
+      "color": "#22B8CF",
+      "balance": -975.36
+    },
+    {
+      "id": "c064",
+      "name": "Oliveira Pinto S.A.",
+      "type": "BUSINESS",
+      "color": "#FF6B6B",
+      "balance": 531.59
+    },
+    {
+      "id": "c065",
+      "name": "Thomas Duarte",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": -1056.52
+    },
+    {
+      "id": "c066",
+      "name": "Leonardo Aragão",
+      "type": "INDIVIDUAL",
+      "color": "#22B8CF",
+      "balance": 1428.49
+    },
+    {
+      "id": "c067",
+      "name": "Dr. Kaique Aragão",
+      "type": "INDIVIDUAL",
+      "color": "#FCC419",
+      "balance": 1283.93
+    },
+    {
+      "id": "c068",
+      "name": "Cardoso S.A.",
+      "type": "BUSINESS",
+      "color": "#63E6BE",
+      "balance": 1302.79
+    },
+    {
+      "id": "c069",
+      "name": "Luiza Fernandes",
+      "type": "INDIVIDUAL",
+      "color": "#FF922B",
+      "balance": -92.08
+    },
+    {
+      "id": "c070",
+      "name": "Daniela Viana",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": 258.02
+    },
+    {
+      "id": "c071",
+      "name": "Ana Sophia da Conceição",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": -71.66
+    },
+    {
+      "id": "c072",
+      "name": "da Mata Silveira - ME",
+      "type": "BUSINESS",
+      "color": "#BE4BDB",
+      "balance": 1482.54
+    },
+    {
+      "id": "c073",
+      "name": "Luiz Fernando Ferreira",
+      "type": "INDIVIDUAL",
+      "color": "#7950F2",
+      "balance": 554.68
+    },
+    {
+      "id": "c074",
+      "name": "Lucas Gabriel Mendes",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 699.73
+    },
+    {
+      "id": "c075",
+      "name": "Eloah da Cruz",
+      "type": "INDIVIDUAL",
+      "color": "#5C7CFA",
+      "balance": 604.75
+    },
+    {
+      "id": "c076",
+      "name": "da Cunha",
+      "type": "BUSINESS",
+      "color": "#339AF0",
+      "balance": -1342.73
+    },
+    {
+      "id": "c077",
+      "name": "Alexandre Fernandes",
+      "type": "INDIVIDUAL",
+      "color": "#FA5252",
+      "balance": 1442.64
+    },
+    {
+      "id": "c078",
+      "name": "Yuri Lopes",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": 210.23
+    },
+    {
+      "id": "c079",
+      "name": "Laura Cavalcanti",
+      "type": "INDIVIDUAL",
+      "color": "#FF6B6B",
+      "balance": -449.96
+    },
+    {
+      "id": "c080",
+      "name": "Gomes - ME",
+      "type": "BUSINESS",
+      "color": "#FA5252",
+      "balance": -1357.91
+    },
+    {
+      "id": "c081",
+      "name": "Vitória Santos",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": -966.92
+    },
+    {
+      "id": "c082",
+      "name": "Alexandre Fernandes",
+      "type": "INDIVIDUAL",
+      "color": "#63E6BE",
+      "balance": -1419.39
+    },
+    {
+      "id": "c083",
+      "name": "Sr. Paulo das Neves",
+      "type": "INDIVIDUAL",
+      "color": "#BE4BDB",
+      "balance": -552.98
+    },
+    {
+      "id": "c084",
+      "name": "Rezende Lima - EI",
+      "type": "BUSINESS",
+      "color": "#82C91E",
+      "balance": -1369.66
+    },
+    {
+      "id": "c085",
+      "name": "Alice Ferreira",
+      "type": "INDIVIDUAL",
+      "color": "#4C6EF5",
+      "balance": 18.86
+    },
+    {
+      "id": "c086",
+      "name": "Benjamin Ramos",
+      "type": "INDIVIDUAL",
+      "color": "#339AF0",
+      "balance": -919.29
+    },
+    {
+      "id": "c087",
+      "name": "Felipe Ramos",
+      "type": "INDIVIDUAL",
+      "color": "#40C057",
+      "balance": -697.83
+    },
+    {
+      "id": "c088",
+      "name": "da Conceição",
+      "type": "BUSINESS",
+      "color": "#BE4BDB",
+      "balance": 281.24
+    },
+    {
+      "id": "c089",
+      "name": "Emilly Campos",
+      "type": "INDIVIDUAL",
+      "color": "#FAB005",
+      "balance": 249.44
+    },
+    {
+      "id": "c090",
+      "name": "Eduardo Vieira",
+      "type": "INDIVIDUAL",
+      "color": "#63E6BE",
+      "balance": 1409.07
+    },
+    {
+      "id": "c091",
+      "name": "Heloísa Oliveira",
+      "type": "INDIVIDUAL",
+      "color": "#339AF0",
+      "balance": 910.16
+    },
+    {
+      "id": "c092",
+      "name": "Moura Cunha S.A.",
+      "type": "BUSINESS",
+      "color": "#22B8CF",
+      "balance": 657.01
+    },
+    {
+      "id": "c093",
+      "name": "Pietra da Rosa",
+      "type": "INDIVIDUAL",
+      "color": "#D6336C",
+      "balance": -644.52
+    },
+    {
+      "id": "c094",
+      "name": "Henrique Vieira",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": -1447.08
+    },
+    {
+      "id": "c095",
+      "name": "Sr. Vitor Hugo Pereira",
+      "type": "INDIVIDUAL",
+      "color": "#1C7ED6",
+      "balance": -586.24
+    },
+    {
+      "id": "c096",
+      "name": "Melo Peixoto - EI",
+      "type": "BUSINESS",
+      "color": "#845EF7",
+      "balance": 1395.74
+    },
+    {
+      "id": "c097",
+      "name": "Davi Lucas Gomes",
+      "type": "INDIVIDUAL",
+      "color": "#845EF7",
+      "balance": 472.32
+    },
+    {
+      "id": "c098",
+      "name": "Júlia da Conceição",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": 1026.19
+    },
+    {
+      "id": "c099",
+      "name": "Pedro Rocha",
+      "type": "INDIVIDUAL",
+      "color": "#A29BFE",
+      "balance": -759.96
+    },
+    {
+      "id": "c100",
+      "name": "Pires Moraes - ME",
+      "type": "BUSINESS",
+      "color": "#A29BFE",
+      "balance": 385.67
     }
   ]
 }

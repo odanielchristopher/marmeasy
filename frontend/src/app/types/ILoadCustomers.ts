@@ -1,10 +1,8 @@
 import { ICustomer } from '@app/entities/Customer';
 
-import { IPaginatedResponse } from './IPaginatedResponse';
-import { IUsePaginationResponse } from './IUsePagination';
+import { IInfiniteQueryResponse } from './IInfiniteQueryResponse';
 
 export type ILoadCustomers = (perPage?: number) => {
-  customers: IPaginatedResponse<ICustomer[]>;
+  customers: ICustomer[];
   isLoading: boolean;
-  pagination: IUsePaginationResponse;
-};
+} & IInfiniteQueryResponse<ICustomer[]>;

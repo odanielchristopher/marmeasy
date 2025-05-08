@@ -2,13 +2,14 @@ import { UsersIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { useCustomers } from '@app/hooks/useCustomers';
+import { cn } from '@app/lib/utils';
 import { routes } from '@app/Router/routes';
 import { FilterIcon } from '@views/assets/icons/FilterIcon';
 import { PageHeader } from '@views/components/app/PageHeader';
-import { Pagination } from '@views/components/app/Pagination';
 import { Button } from '@views/components/ui/Button';
 import { InputSearch } from '@views/components/ui/InputSearch';
 import { Skeleton } from '@views/components/ui/Skeleton';
+import { Spinner } from '@views/components/ui/Spinner';
 
 import { CustomerCard } from './components/CustomerCard';
 import { FiltersModal } from './components/FiltersModal';
@@ -18,7 +19,8 @@ export function Customers() {
   const {
     customers,
     isLoading,
-    pagination,
+    spinnerRef,
+    isFetchingNextPage,
     isFiltersModalOpen,
     handleCloseFiltersModal,
     handleOpenFiltersModal,
@@ -55,8 +57,8 @@ export function Customers() {
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col justify-between pb-4 md:pb-6">
-          <div className="mt-7 grid items-start gap-4 grid-cols-1 min-[510px]:grid-cols-2 lg:grid-cols-4 pb-6">
+        <div className="flex-1 flex flex-col justify-between gap-4 pb-4 md:pb-6">
+          <div className="mt-7 grid items-start gap-4 grid-cols-1 min-[510px]:grid-cols-2 lg:grid-cols-4">
             {isLoading && (
               <>
                 <Skeleton className="min-h-44" />
@@ -71,7 +73,7 @@ export function Customers() {
             )}
 
             {!isLoading &&
-              customers.data.map((customer) => (
+              customers.map((customer) => (
                 <Link
                   key={customer.id}
                   to={`${routes.customers}/${customer.id}`}
@@ -82,7 +84,15 @@ export function Customers() {
               ))}
           </div>
 
-          <Pagination pagination={pagination} />
+          <div
+            className={cn(
+              'w-full grid place-items-center',
+              !isFetchingNextPage && 'size-0',
+            )}
+            ref={spinnerRef}
+          >
+            <Spinner className={cn(!isFetchingNextPage && 'size-0')} />
+          </div>
         </div>
       </main>
     </div>
