@@ -16,10 +16,10 @@ export function useDataStepController({
   const form = useFormContext<OrderFormData>();
   const [searchCustomerTerm, setSearchCustomerTerm] = useState('');
   const debouncedValue = useDebounce(searchCustomerTerm);
-  const { customers, isLoading: isLoadingCustomers } = useCustomers(
-    debouncedValue,
-    6,
-  );
+  const { customers, isLoading: isLoadingCustomers } = useCustomers({
+    perPage: 10,
+    search: debouncedValue,
+  });
 
   function handleSearchCustomerTerm(search: string) {
     setSearchCustomerTerm(search);

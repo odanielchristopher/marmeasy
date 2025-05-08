@@ -16,13 +16,14 @@ export function useCustomersController({
   const [searchCustomerTerm, setSearchCustomerTerm] = useState('');
   const deboundedTerm = useDebounce(searchCustomerTerm);
 
-  const { customers, isLoading, nextPage, hasNextPage, isFetchingNextPage } =
-    useCustomers(deboundedTerm);
+  const { customers, isLoading, infiniteScroll } = useCustomers({
+    search: deboundedTerm,
+  });
 
   const spinnerRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!spinnerRef.current) {
+    if (!spinnerRef.current || !infiniteScroll) {
       return;
     }
 
@@ -30,17 +31,18 @@ export function useCustomersController({
       (entries, obs) => {
         const { isIntersecting } = entries[0];
 
-        if (!hasNextPage) {
+        if (!infiniteScroll.hasNextPage) {
           obs.disconnect();
           return;
         }
 
-        if (isIntersecting && !isFetchingNextPage) {
-          nextPage();
+        if (isIntersecting && !infiniteScroll.isFetchingNextPage) {
+          infiniteScroll.nextPage();
         }
       },
       {
-        rootMargin: '20%',
+        root: null,
+        rootMargin: '40%',
       },
     );
 
@@ -49,7 +51,7 @@ export function useCustomersController({
     return () => {
       observer.disconnect();
     };
-  }, [isLoading, hasNextPage, isFetchingNextPage, nextPage]);
+  }, [isLoading, infiniteScroll]);
 
   function handleOpenFiltersModal() {
     setIsFiltersModalOpen(true);
@@ -69,10 +71,10 @@ export function useCustomersController({
     handleCloseFiltersModal,
     handleSearchCustomerTerm,
     searchCustomerTerm,
-    hasNextPage,
+    hasNextPage: infiniteScroll?.hasNextPage,
     spinnerRef,
     isLoading,
-    isFetchingNextPage,
+    isFetchingNextPage: infiniteScroll?.isFetchingNextPage,
     customers,
   };
 }

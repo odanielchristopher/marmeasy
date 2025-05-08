@@ -1,11 +1,10 @@
 import { ICustomer } from '@app/entities/Customer';
+import { IUseCustomersParams } from '@app/hooks/useCustomers';
 
 import { IInfiniteQueryResponse } from './IInfiniteQueryResponse';
 
-export type ILoadCustomers = (
-  search?: string,
-  perPage?: number,
-) => {
+export type ILoadCustomers = (params: IUseCustomersParams) => {
   customers: ICustomer[];
   isLoading: boolean;
-} & IInfiniteQueryResponse<ICustomer[]>;
+  infiniteScroll?: IInfiniteQueryResponse<ICustomer[]>;
+};

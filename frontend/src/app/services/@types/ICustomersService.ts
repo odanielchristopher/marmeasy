@@ -8,6 +8,7 @@ export interface ICustomersService {
   getAll(
     params: GetAllCustomersParams,
   ): Promise<IPaginatedResponse<ICustomer[]>>;
+  getAllBySearch(search?: string): Promise<ICustomer[]>;
   getOne(customerId: string): Promise<ICustomer>;
   create(params: ICreateCustomerParams): Promise<ICustomer>;
 }

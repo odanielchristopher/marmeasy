@@ -1,32 +1,47 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { customersService } from '@app/services/customersService';
 
-export function useCustomers(search?: string, perPage = 24) {
-  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ['customers', { search, perPage }],
-      staleTime: Infinity,
-      initialPageParam: 1,
-      queryFn: ({ pageParam }) =>
-        customersService.getAll({ page: pageParam, perPage, search }),
-      getNextPageParam: (lastPage, allPages, lastPageParam) => {
-        const totalPages = Math.ceil(lastPage.items / perPage);
-        const isLastPage = allPages.length >= totalPages;
+import { useInfiniteScroll } from './useInfiniteScroll';
 
-        if (isLastPage) return null;
+export interface IUseCustomersParams {
+  search?: string;
+  perPage?: number;
+}
 
-        return lastPageParam + 1;
-      },
-    });
+export function useCustomers({ perPage = 24, search }: IUseCustomersParams) {
+  const {
+    data: infiniteData,
+    isLoading: isLoadingInfiniteData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteScroll({
+    perPage,
+    queryKey: ['customers', { perPage }],
+    infiniteLoader: customersService.getAll,
+    enabled: !search,
+  });
 
-  const customers = data?.pages.flatMap((page) => page.data);
+  const { data, isLoading } = useQuery({
+    queryKey: ['customers', { search }],
+    queryFn: () => customersService.getAllBySearch(search),
+    enabled: !!search,
+  });
+
+  const customers = search
+    ? data
+    : infiniteData?.pages.flatMap((page) => page.data);
 
   return {
     customers: customers ?? [],
-    isLoading,
-    nextPage: fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
+    isLoading: search ? isLoading : isLoadingInfiniteData,
+    infiniteScroll: search
+      ? undefined
+      : {
+          nextPage: fetchNextPage,
+          hasNextPage,
+          isFetchingNextPage,
+        },
   };
 }

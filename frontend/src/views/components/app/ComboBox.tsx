@@ -1,7 +1,5 @@
-'use client';
-
 import { Check, ChevronsUpDown } from 'lucide-react';
-import * as React from 'react';
+import { useState } from 'react';
 
 import { cn } from '@app/lib/utils';
 import { Button } from '@views/components/ui/Button';
@@ -55,8 +53,8 @@ export function Combobox({
   onSelect,
   onSearch,
 }: IComboBoxProps) {
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(defaultValue ?? '');
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(defaultValue ?? '');
 
   function handleValue(newValue: string) {
     setValue(newValue === value ? '' : newValue);
