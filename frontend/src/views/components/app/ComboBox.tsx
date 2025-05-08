@@ -130,8 +130,8 @@ export function Combobox({
                 {options.map((option) => (
                   <CommandItem
                     key={option.value}
-                    value={option.value}
-                    onSelect={handleValue}
+                    value={option.label}
+                    onSelect={() => handleValue(option.value)}
                     className={cn('h-12 text-sm', classNames?.item)}
                   >
                     <Check

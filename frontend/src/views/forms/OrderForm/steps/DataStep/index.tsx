@@ -1,18 +1,19 @@
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 
 import { useCustomers } from '@app/hooks/useCustomers';
-import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Combobox } from '@views/components/app/ComboBox';
 import { DatePickerInput } from '@views/components/app/DatePickerInput';
 import { StepperPreviousButton } from '@views/components/app/Stepper';
 import { Button } from '@views/components/ui/Button';
 import { Select } from '@views/components/ui/Select';
 
-import { OrderFormData } from '../../useOrderFormController';
+import { useDataStepController } from './useDataStepController';
 
 export function DataStep({ buttonLabel }: { buttonLabel: string }) {
-  const form = useFormContext<OrderFormData>();
-  const { customers, isLoading: isLoadingCustomers } = useCustomers();
+  const { customers, form, isLoadingCustomers, handleSearchCustomerTerm } =
+    useDataStepController({
+      loadCustomers: useCustomers,
+    });
 
   return (
     <div>
@@ -30,9 +31,10 @@ export function DataStep({ buttonLabel }: { buttonLabel: string }) {
             <Combobox
               options={customers.map((customer) => ({
                 value: customer.id,
-                label: capitalizeFirstLetter(customer.name),
+                label: customer.name,
               }))}
               onSelect={onChange}
+              onSearch={handleSearchCustomerTerm}
               isLoading={isLoadingCustomers}
               buttonLabel="Selecione um cliente"
               defaultValue={value}

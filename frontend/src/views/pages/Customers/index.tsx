@@ -22,6 +22,8 @@ export function Customers() {
     spinnerRef,
     isFetchingNextPage,
     isFiltersModalOpen,
+    searchCustomerTerm,
+    handleSearchCustomerTerm,
     handleCloseFiltersModal,
     handleOpenFiltersModal,
   } = useCustomersController({
@@ -45,7 +47,11 @@ export function Customers() {
 
       <main className="mt-8 flex flex-col flex-1">
         <div className="flex gap-4 h-[52px] items-center">
-          <InputSearch placeholder="Encontre o cliente pelo nome" />
+          <InputSearch
+            placeholder="Encontre o cliente pelo nome"
+            value={searchCustomerTerm}
+            onChange={(event) => handleSearchCustomerTerm(event.target.value)}
+          />
 
           <Button
             variant="outline"

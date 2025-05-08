@@ -1,6 +1,7 @@
 /* eslint-disable consistent-return */
 import { useEffect, useRef, useState } from 'react';
 
+import { useDebounce } from '@app/hooks/useDebounce';
 import { ILoadCustomers } from '@app/types/ILoadCustomers';
 
 interface IUseCustomersController {
@@ -11,8 +12,13 @@ export function useCustomersController({
   loadCustomers: useCustomers,
 }: IUseCustomersController) {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+
+  const [searchCustomerTerm, setSearchCustomerTerm] = useState('');
+  const deboundedTerm = useDebounce(searchCustomerTerm);
+
   const { customers, isLoading, nextPage, hasNextPage, isFetchingNextPage } =
-    useCustomers();
+    useCustomers(deboundedTerm);
+
   const spinnerRef = useRef<null | HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,10 +59,16 @@ export function useCustomersController({
     setIsFiltersModalOpen(false);
   }
 
+  function handleSearchCustomerTerm(searchTerm: string) {
+    setSearchCustomerTerm(searchTerm);
+  }
+
   return {
     isFiltersModalOpen,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
+    handleSearchCustomerTerm,
+    searchCustomerTerm,
     hasNextPage,
     spinnerRef,
     isLoading,

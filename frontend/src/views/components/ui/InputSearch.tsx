@@ -1,13 +1,18 @@
 import { Search } from 'lucide-react';
+import React from 'react';
 
 import { cn } from '@app/lib/utils';
 
-interface IInputSearchProps {
+interface IInputSearchProps extends React.ComponentProps<'input'> {
   placeholder?: string;
   className?: string;
 }
 
-export function InputSearch({ placeholder, className }: IInputSearchProps) {
+export function InputSearch({
+  placeholder,
+  className,
+  ...props
+}: IInputSearchProps) {
   return (
     <div className="relative flex items-center">
       <Search className="absolute left-3" />
@@ -22,6 +27,7 @@ export function InputSearch({ placeholder, className }: IInputSearchProps) {
           'bg-white w-full rounded-lg border border-gray-300 dark:border-accent h-[52px] text-gray-700 dark:text-foreground',
           className,
         )}
+        {...props}
       />
     </div>
   );
