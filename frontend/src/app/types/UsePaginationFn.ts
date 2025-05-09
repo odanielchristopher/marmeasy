@@ -11,4 +11,7 @@ export type UsePaginationResponse = {
   hasPreviousPage: boolean;
 };
 
-export type UsePaginationFn = (perPage: number) => UsePaginationResponse;
+export type UsePaginationFn = (
+  perPage: number,
+  initalPage?: number,
+) => UsePaginationResponse;

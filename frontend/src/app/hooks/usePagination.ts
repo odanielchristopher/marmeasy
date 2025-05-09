@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
-export function usePagination(perPage: number, initialPage = 1) {
+import { UsePaginationFn } from '@app/types/UsePaginationFn';
+
+export const usePagination: UsePaginationFn = (
+  perPage: number,
+  initialPage = 1,
+) => {
   const [totalItems, setTotalItems] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentPage, setCurrentPage] = useState(() => {
@@ -40,4 +45,4 @@ export function usePagination(perPage: number, initialPage = 1) {
     hasNextPage,
     hasPreviousPage,
   };
-}
+};
