@@ -65,8 +65,11 @@ export function useCustomersController({
     setSearchCustomerTerm(searchTerm);
   }
 
+  const hasCustomers = customers.length > 0;
+
   return {
     isFiltersModalOpen,
+    hasCustomers,
     handleOpenFiltersModal,
     handleCloseFiltersModal,
     handleSearchCustomerTerm,

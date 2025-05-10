@@ -5,6 +5,7 @@ import { useCustomers } from '@app/hooks/useCustomers';
 import { cn } from '@app/lib/utils';
 import { routes } from '@app/Router/routes';
 import { FilterIcon } from '@views/assets/icons/FilterIcon';
+import { NotFoundError } from '@views/components/app/NotFoundError';
 import { PageHeader } from '@views/components/app/PageHeader';
 import { Button } from '@views/components/ui/Button';
 import { InputSearch } from '@views/components/ui/InputSearch';
@@ -20,6 +21,7 @@ export function Customers() {
     customers,
     isLoading,
     spinnerRef,
+    hasCustomers,
     isFetchingNextPage,
     isFiltersModalOpen,
     searchCustomerTerm,
@@ -64,6 +66,10 @@ export function Customers() {
         </div>
 
         <div className="flex-1 flex flex-col justify-between gap-4 pb-4 md:pb-6">
+          {!isLoading && !hasCustomers && (
+            <NotFoundError message="Não encontramos nenhum cliente!" />
+          )}
+
           <div className="mt-7 grid items-start gap-4 grid-cols-1 min-[510px]:grid-cols-2 lg:grid-cols-4">
             {isLoading && (
               <>
@@ -79,6 +85,7 @@ export function Customers() {
             )}
 
             {!isLoading &&
+              hasCustomers &&
               customers.map((customer) => (
                 <Link
                   key={customer.id}

@@ -2,15 +2,14 @@ import { ChevronLeft } from 'lucide-react';
 import { Link } from 'react-router';
 
 import { routes } from '@app/Router/routes';
-import notFoundImage from '@views/assets/imgs/notFoundImage.svg';
+import { NotFoundImage } from '@views/assets/imgs/NotFoundImage';
 import { Button } from '@views/components/ui/Button';
 
 export function NotFoundCustomer() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-      <img
+      <NotFoundImage
         className="w-full max-w-[300px] md:max-w-[400px]"
-        src={notFoundImage}
         alt="404"
       />
 
