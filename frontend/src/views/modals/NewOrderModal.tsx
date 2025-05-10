@@ -9,7 +9,10 @@ interface INewOrderModalProps {
 export function NewOrderModal({ open, onClose }: INewOrderModalProps) {
   return (
     <Modal open={open} title="Novo pedido" onClose={onClose}>
-      <OrderForm onSubmit={(formData) => console.log(formData)} />
+      <OrderForm
+        onSubmit={(formData) => console.log(formData)}
+        submitButtonLabel="Fechar pedido"
+      />
     </Modal>
   );
 }

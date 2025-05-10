@@ -29,7 +29,7 @@ export function UserMenu() {
           type="button"
           className="flex items-center text-white p-1 rounded-full hover:bg-[#DEE2E6]/20 gap-2 md:gap-0 peer"
         >
-          <span className="font-medium tracking-[-0.5px] p-2 bg-teal-900 rounded-full text-[10px]">
+          <span className="font-medium tracking-[-0.5px] p-2 bg-teal-900 dark:bg-primary rounded-full text-[10px] transition-colors">
             {user?.name.slice(0, 2).toUpperCase()}
           </span>
 

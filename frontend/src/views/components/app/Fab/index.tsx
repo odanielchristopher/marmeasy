@@ -18,7 +18,7 @@ export function Fab() {
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 text-white bg-teal-900 rounded-full p-3 outline-none"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 text-white bg-teal-900 dark:bg-primary transition-colors rounded-full p-3 outline-none"
         >
           <Plus className="size-6" />
         </button>

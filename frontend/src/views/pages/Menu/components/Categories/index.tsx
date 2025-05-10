@@ -14,7 +14,7 @@ import {
 
 export function Categories() {
   return (
-    <div className="pt-3 w-full">
+    <div className="pt-3 md:pl-8 w-full">
       <header className="mb-5 flex gap-3 items-center">
         <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
           <BoxIcon />
