@@ -1,30 +1,21 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { ICustomer } from '@app/entities/Customer';
-import { ICustomersService } from '@app/services/@types/ICustomersService';
+import { ICreateCustomerParams } from '@app/services/customersService/create';
 import { CustomerFormData } from '@views/forms/CustomerForm/useCustomerFormController';
 
-interface IUseNewCustomerModalControllerProps {
-  customersService: ICustomersService;
+interface IUseNewCustomerModalControllerProps<TResponse> {
+  createCustomerHook: () => {
+    createCustomer: (params: ICreateCustomerParams) => Promise<TResponse>;
+    isLoading: boolean;
+  };
   onSuccess(): void;
 }
 
-export function useNewCustomerModalController({
-  customersService,
+export function useNewCustomerModalController<T>({
+  createCustomerHook: useCreateCustomer,
   onSuccess,
-}: IUseNewCustomerModalControllerProps) {
-  const queryClient = useQueryClient();
-
-  const { mutateAsync: createCustomer, isPending } = useMutation({
-    mutationFn: customersService.create,
-    onSuccess: (newCustomer) => {
-      queryClient.setQueryData(
-        ['customers'],
-        (currentCustomers: ICustomer[]) => [...currentCustomers, newCustomer],
-      );
-    },
-  });
+}: IUseNewCustomerModalControllerProps<T>) {
+  const { createCustomer, isLoading } = useCreateCustomer();
 
   async function handleSubmit(formData: CustomerFormData) {
     try {
@@ -41,7 +32,7 @@ export function useNewCustomerModalController({
   }
 
   return {
-    isLoading: isPending,
+    isLoading,
     handleSubmit,
   };
 }

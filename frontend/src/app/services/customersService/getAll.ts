@@ -16,8 +16,8 @@ export async function getAll({
     '/customers',
     {
       params: {
-        _page: page,
-        _per_page: perPage,
+        page,
+        perPage,
       },
     },
   );

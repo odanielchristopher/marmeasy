@@ -6,7 +6,7 @@ import {
   CustomersLoaderResponse,
 } from '@app/types/CustomersLoaderFn';
 
-import { useInfiniteScroll } from './useInfiniteScroll';
+import { useInfiniteScroll } from '../useInfiniteScroll';
 
 export function useCustomers({
   perPage = 24,

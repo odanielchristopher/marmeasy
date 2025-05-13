@@ -17,6 +17,7 @@ const bgsMap = {
   '#228BE6': 'bg-blue-100',
   '#15AABF': 'bg-cyan-100',
   '#12B886': 'bg-teal-100',
+  '#40C057': 'bg-green-100',
   '#82C91E': 'bg-green-50',
   '#FAB005': 'bg-yellow-100',
   '#FD7E14': 'bg-orange-100',

@@ -1,6 +1,6 @@
 import { Controller } from 'react-hook-form';
 
-import { useCustomers } from '@app/hooks/useCustomers';
+import { useCustomers } from '@app/hooks/customers/useCustomers';
 import { Combobox } from '@views/components/app/ComboBox';
 import { DatePickerInput } from '@views/components/app/DatePickerInput';
 import { StepperPreviousButton } from '@views/components/app/Stepper';

@@ -1,4 +1,4 @@
-import { customersService } from '@app/services/customersService';
+import { useCreateCustomer } from '@app/hooks/customers/useCreateCustomer';
 import { Modal } from '@views/components/ui/Modal';
 import { CustomerForm } from '@views/forms/CustomerForm';
 
@@ -11,8 +11,8 @@ interface INewCustomerModalProps {
 
 export function NewCustomerModal({ open, onClose }: INewCustomerModalProps) {
   const { handleSubmit, isLoading } = useNewCustomerModalController({
-    customersService,
     onSuccess: onClose,
+    createCustomerHook: useCreateCustomer,
   });
 
   return (

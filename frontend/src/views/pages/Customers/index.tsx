@@ -1,7 +1,7 @@
 import { UsersIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { useCustomers } from '@app/hooks/useCustomers';
+import { useCustomers } from '@app/hooks/customers/useCustomers';
 import { cn } from '@app/lib/utils';
 import { routes } from '@app/Router/routes';
 import { FilterIcon } from '@views/assets/icons/FilterIcon';
