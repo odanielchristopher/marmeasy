@@ -1,6 +1,7 @@
-import { Outlet } from 'react-router';
+import { Link, Outlet } from 'react-router';
 
 import { useIsMobile } from '@app/hooks/useIsMobile';
+import { routes } from '@app/Router/routes';
 import { Logo } from '@views/assets/Logo';
 import { AppNavigation } from '@views/components/app/AppNavigation';
 import { Fab } from '@views/components/app/Fab';
@@ -19,7 +20,9 @@ export function AppLayout() {
       <header className="fixed z-10 top-0 w-full px-4 md:px-6 py-4 border-b mb-4 bg-primary dark:bg-background">
         <div className="flex items-center justify-between w-full max-w-[1440px] mx-auto">
           <div className="flex gap-4 items-center">
-            <Logo className="text-teal-950 dark:text-foreground" />
+            <Link to={routes.customers}>
+              <Logo className="text-teal-950 dark:text-foreground" />
+            </Link>
 
             <AppNavigation />
           </div>

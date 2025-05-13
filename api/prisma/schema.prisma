@@ -13,24 +13,47 @@ model User {
   email    String @unique
   password String
 
+  customers         Customer[]
   products          Product[]
   productCategories ProductCategory[]
-  ingredients       Ingredient[]
   payments          Payment[]
   expenses          Expense[]
 
   @@map("users")
 }
 
+model Customer {
+  id       String       @id @default(uuid()) @db.Uuid
+  userId   String       @map("user_id") @db.Uuid
+  name     String
+  type     CustomerType
+  color    String
+  phone    String?
+  balance  Decimal
+  isActive Boolean      @default(true) @map("is_active")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("customers")
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  BUSINESS
+
+  @@map("customer_type")
+}
+
 model Product {
-  id          String                @id @default(uuid()) @db.Uuid
-  userId      String                @map("user_id") @db.Uuid
+  id          String  @id @default(uuid()) @db.Uuid
+  userId      String  @map("user_id") @db.Uuid
   name        String
   description String?
   imagePath   String?
-  price       Float
-  categoryId  String?               @map("product_category_id") @db.Uuid
-  ingredients IngredientsProducts[]
+  price       Decimal
+  categoryId  String? @map("product_category_id") @db.Uuid
+
+  orderItems OrderItem[]
 
   user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   category ProductCategory? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
@@ -38,40 +61,52 @@ model Product {
   @@map("products")
 }
 
-model IngredientsProducts {
-  ingredientId String @map("ingredient_id") @db.Uuid
-  productId    String @map("product_id") @db.Uuid
-
-  product    Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
-  ingredient Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
-
-  @@id([ingredientId, productId])
-  @@map("ingredients_products")
-}
-
 model ProductCategory {
-  id       String    @id @default(uuid()) @db.Uuid
-  userId   String    @map("user_id") @db.Uuid
-  name     String
-  icon     String
+  id     String @id @default(uuid()) @db.Uuid
+  userId String @map("user_id") @db.Uuid
+  name   String
+  icon   String
+
   products Product[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, name]) // Adicionando a restrição de unicidade composta
+  @@unique([userId, name])
   @@map("product_category")
 }
 
-model Ingredient {
-  id       String                @id @default(uuid()) @db.Uuid
-  userId   String                @map("user_id") @db.Uuid
-  name     String
-  icon     String
-  products IngredientsProducts[]
+enum OrderType {
+  BREAKFAST
+  LUNCH
+  DINNER
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("order_type")
+}
 
-  @@map("ingredients")
+model Order {
+  id         String    @id @default(uuid()) @db.Uuid
+  customerId String    @map("customer_id")
+  date       DateTime  @default(now())
+  type       OrderType
+  amount     Decimal
+
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid()) @db.Uuid
+  orderId   String  @map("order_id") @db.Uuid
+  productId String  @map("product_id") @db.Uuid
+  quantity  Int
+  unitPrice Decimal
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([productId, orderId])
+  @@map("order_items")
 }
 
 model Payment {
@@ -80,7 +115,7 @@ model Payment {
   clientId String      @map("client_id") @db.Uuid
   type     PaymentType
   date     DateTime    @default(now())
-  value    Float
+  value    Decimal
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -88,9 +123,11 @@ model Payment {
 }
 
 enum PaymentType {
-  CREDIT_CARD
-  DEBIT_CARD
+  CREDIT
+  DEBIT
   CASH
+
+  @@map("payment_type")
 }
 
 model Expense {
@@ -98,7 +135,7 @@ model Expense {
   userId String       @map("user_id") @db.Uuid
   type   ExpenseType? @default(OTHERS)
   date   DateTime     @default(now())
-  value  Float
+  value  Decimal
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -114,4 +151,6 @@ enum ExpenseType {
   MEATS
   GARRISONS
   OTHERS
+
+  @@map("expense_type")
 }

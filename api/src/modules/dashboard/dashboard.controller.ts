@@ -50,18 +50,6 @@ export class DashboardController {
     );
   }
 
-  @Get('/favorites')
-  getFavorites(
-    @ActiveUserId() userId: string,
-    @Query('from') from: string,
-    @Query('to') to: string,
-  ) {
-    return this.dashboardService.getFavoritesIngredients(
-      userId,
-      makeDateRangeDto({ from, to }),
-    );
-  }
-
   @Get('/categories')
   getCategories(
     @ActiveUserId() userId: string,

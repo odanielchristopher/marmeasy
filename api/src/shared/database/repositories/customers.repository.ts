@@ -1,162 +1,104 @@
-// import { Inject, Injectable } from '@nestjs/common';
-// import { Client as PrismaClient } from '@prisma/client';
+import { Inject, Injectable } from '@nestjs/common';
+import { Customer as PrismaCustomer } from '@prisma/client';
+import { Customer } from 'src/modules/customers/entities/customer.entity';
+import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
+import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IPaginatedResponse } from 'src/shared/types';
+import {
+  CreateCustomerDto,
+  FindFirstByIdDto,
+  FindManyByTermDto,
+  FindManyByUserIdDto,
+  ICustomersRepository,
+} from '../interfaces/customers-repository.interface';
+import { PrismaService } from '../prisma.service';
 
-// import { Client } from 'src/modules/clients/entities/client.entity';
-// import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
-// import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
-// import { IPaginatedResponse } from 'src/shared/types';
-// import {
-//   CreateClientDto,
-//   DeleteClientDto,
-//   FindFirstClientByDocumentDto,
-//   FindFirstClientByIdDto,
-//   FindManyBySearchTermDto,
-//   FindManyByUserIdDto,
-//   IClientsRepository,
-//   UpdateClientDto,
-// } from '../interfaces/clients-repository.interface';
-// import { PrismaService } from '../prisma.service';
+@Injectable()
+export class CustomersRepository implements ICustomersRepository {
+  constructor(
+    private readonly prismaService: PrismaService,
+    @Inject(IDataMappersFactory)
+    private readonly dataMappersFactory: IDataMappersFactory,
+  ) {}
 
-// @Injectable()
-// export class ClientsRepository implements IClientsRepository {
-//   constructor(
-//     private readonly prismaService: PrismaService,
-//     @Inject(IDataMappersFactory)
-//     private readonly dataMappersFactory: IDataMappersFactory,
-//   ) {}
+  async findManyByTerm(
+    findManyByTermDto: FindManyByTermDto,
+  ): Promise<Customer[]> {
+    const { userId, order, searchTerm } = findManyByTermDto;
 
-//   async findManyBySearchTerm(
-//     findManyBySearchTermDto: FindManyBySearchTermDto,
-//   ): Promise<IPaginatedResponse<Client[]>> {
-//     const { userId, order, searchTerm, page, perPage } =
-//       findManyBySearchTermDto;
+    const customers = await this.prismaService.customer.findMany({
+      where: {
+        userId,
+        isActive: true,
+        name: { contains: searchTerm, mode: 'insensitive' },
+      },
+      orderBy: {
+        name: order,
+      },
+    });
 
-//     const skip = (page - 1) * perPage;
+    return customers.map((customer) => this.parser(customer));
+  }
 
-//     const { query } = searchTerm;
+  async findManyByUserId(
+    findManyByUserIdDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Customer[]>> {
+    const { userId, order, page, perPage } = findManyByUserIdDto;
 
-//     const clients = await this.prismaService.client.findMany({
-//       where: {
-//         userId,
-//         active: true,
-//         name: {
-//           contains: query,
-//           mode: 'insensitive',
-//         },
-//       },
-//       orderBy: { name: order },
-//       take: perPage,
-//       skip,
-//     });
+    // Calcula a posição inicial
+    const skip = (page - 1) * perPage;
 
-//     const totalItems = await this.prismaService.client.count({
-//       where: {
-//         userId,
-//         active: true,
-//         name: {
-//           contains: query,
-//           mode: 'insensitive',
-//         },
-//       },
-//     });
+    const customers = await this.prismaService.customer.findMany({
+      where: { userId, isActive: true },
+      orderBy: {
+        name: order,
+      },
+      take: perPage,
+      skip,
+    });
 
-//     return {
-//       data: clients.map((client) => this.parser(client)),
-//       items: totalItems,
-//     };
-//   }
+    const items = await this.prismaService.customer.count({
+      where: { userId, isActive: true },
+    });
 
-//   async findManyByUserId(
-//     findManyDto: FindManyByUserIdDto,
-//   ): Promise<IPaginatedResponse<Client[]>> {
-//     const { userId, order, page, perPage } = findManyDto;
+    return {
+      data: customers.map((customer) => this.parser(customer)),
+      items,
+    };
+  }
 
-//     // Calcula a posição inicial
-//     const skip = (page - 1) * perPage;
+  async findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer> {
+    const { userId, customerId } = findFirstByIdDto;
 
-//     const clients = await this.prismaService.client.findMany({
-//       where: { userId, active: true },
-//       orderBy: { name: order },
-//       take: perPage,
-//       skip,
-//     });
+    const customer = await this.prismaService.customer.findFirst({
+      where: { userId, id: customerId },
+    });
 
-//     // Conta o total de registros
-//     const totalItems = await this.prismaService.client.count({
-//       where: { userId, active: true },
-//     });
+    return this.parser(customer);
+  }
 
-//     return {
-//       data: clients.map((client) => this.parser(client)),
-//       items: totalItems,
-//     };
-//   }
+  async create(createDto: CreateCustomerDto): Promise<Customer> {
+    const { data, userId } = createDto;
 
-//   async findFirstById(
-//     findFirstByIdDto: FindFirstClientByIdDto,
-//   ): Promise<Client> {
-//     const { userId, id } = findFirstByIdDto;
+    const { name, type, color, phone, balance } = data;
 
-//     const client = await this.prismaService.client.findFirst({
-//       where: { userId, id },
-//     });
+    const createdCustomer = await this.prismaService.customer.create({
+      data: {
+        userId,
+        name,
+        type,
+        color,
+        phone,
+        balance,
+      },
+    });
 
-//     return this.parser(client);
-//   }
+    return this.parser(createdCustomer);
+  }
 
-//   async findFirstByDocument(
-//     findFirstByDocumentDto: FindFirstClientByDocumentDto,
-//   ): Promise<Client> {
-//     const { userId, document } = findFirstByDocumentDto;
-
-//     const client = await this.prismaService.client.findFirst({
-//       where: { userId, document },
-//     });
-
-//     return this.parser(client);
-//   }
-
-//   async create(createDto: CreateClientDto): Promise<Client> {
-//     const { data, userId } = createDto;
-
-//     const createdClient = await this.prismaService.client.create({
-//       data: {
-//         userId,
-//         ...data,
-//       },
-//     });
-
-//     return this.parser(createdClient);
-//   }
-
-//   async update(updateDto: UpdateClientDto): Promise<Client> {
-//     const { data, userId } = updateDto;
-
-//     const updatedClient = await this.prismaService.client.update({
-//       where: { id: data.id, userId },
-//       data: {
-//         ...data,
-//         active: true,
-//       },
-//     });
-
-//     return this.parser(updatedClient);
-//   }
-
-//   async delete(deleteDto: DeleteClientDto): Promise<void> {
-//     const { userId, id } = deleteDto;
-
-//     await this.prismaService.client.update({
-//       where: { userId, id },
-//       data: {
-//         active: false,
-//       },
-//     });
-//   }
-
-//   private parser(prismaClient: PrismaClient): Client {
-//     return this.dataMappersFactory
-//       .getInstance<PrismaClient, Client>(DataMapperType.CLIENT)
-//       .toDomain(prismaClient);
-//   }
-// }
+  private parser(prismaCustomer: PrismaCustomer) {
+    return this.dataMappersFactory
+      .getInstance<PrismaCustomer, Customer>(DataMapperType.CUSTOMER)
+      .toDomain(prismaCustomer);
+  }
+}

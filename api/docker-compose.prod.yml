@@ -1,0 +1,30 @@
+name: marmeasy_prod
+services:
+  postgres:
+    image: postgres:latest
+    container_name: marmeasy_db
+    env_file:
+      - .env.prod
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: marmeasy_api
+    ports:
+      - '3001:3001'
+    env_file:
+      - .env.prod
+    volumes:
+      - /usr/src/app/uploads
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    command: yarn start:prod # Comando automatizado
+
+volumes:
+  postgres_data:

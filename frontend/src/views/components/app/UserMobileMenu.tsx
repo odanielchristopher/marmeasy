@@ -7,26 +7,36 @@ import {
 } from '@radix-ui/react-dropdown-menu';
 import { LogOut, Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
+import { useShallow } from 'zustand/shallow';
 
 import { SVG_STROKE } from '@app/config/constants';
 import { useAuth } from '@app/hooks/useAuth';
 import { cn } from '@app/lib/utils';
+import { useGlobalStore } from '@app/store';
 
 import { navItems } from './AppNavigation';
 
 export function UserMobileMenu() {
   const { pathname: currentPathname } = useLocation();
   const { signout } = useAuth();
+  const { user } = useGlobalStore(
+    useShallow((store) => ({
+      user: store.user.data,
+    })),
+  );
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="outline-none min-md:hidden">
+      <DropdownMenuTrigger
+        asChild
+        className="outline-none min-md:hidden border-2 border-transparent focus:border-ring"
+      >
         <button
           type="button"
           className="group flex items-center text-white p-1 rounded-full hover:bg-[#DEE2E6]/20 gap-2 min-md:hidden"
         >
-          <span className="font-medium tracking-[-0.5px] p-2 bg-teal-900 rounded-full text-[10px]">
-            DC
+          <span className="font-medium tracking-[-0.5px] p-2 bg-teal-900 dark:bg-primary rounded-full text-[10px] transition-colors">
+            {user?.name.slice(0, 2).toUpperCase()}
           </span>
 
           <div className="relative grid size-7 place-items-center">

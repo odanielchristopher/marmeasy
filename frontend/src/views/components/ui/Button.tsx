@@ -42,24 +42,38 @@ function Button({
   size,
   asChild = false,
   isLoading,
+  type,
   children,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean;
     isLoading?: boolean;
+    type: 'button' | 'submit' | 'reset';
   }) {
-  const Comp = asChild ? Slot : 'button';
+  if (asChild) {
+    return (
+      <Slot
+        data-slot="button"
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...props}
+      >
+        {children}
+      </Slot>
+    );
+  }
 
   return (
-    <Comp
+    <button
+      // eslint-disable-next-line react/button-has-type
+      type={type}
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     >
       {!isLoading && children}
       {isLoading && <Spinner className="w-6 h-6" />}
-    </Comp>
+    </button>
   );
 }
 

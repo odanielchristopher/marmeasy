@@ -2,13 +2,14 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import { useShallow } from 'zustand/shallow';
 
 import { localStorageKeys } from '@app/config/localStorageKeys';
 import { IUser } from '@app/entities/User';
-import { usersService } from '@app/services/usersService';
+import { IUsersService } from '@app/services/@types/IUsersService';
+import { useGlobalStore } from '@app/store';
+import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { LaunchScreen } from '@views/components/app/LaunchScreen';
-
-// import { usersService } from '../services/usersService';
 
 interface IAuthContextValue {
   signedIn: boolean;
@@ -19,7 +20,13 @@ interface IAuthContextValue {
 
 export const AuthContext = createContext({} as IAuthContextValue);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({
+  children,
+  usersService,
+}: {
+  children: React.ReactNode;
+  usersService: IUsersService;
+}) {
   const [signedIn, setSignedIn] = useState<boolean>(() => {
     const storagedAccessToken = localStorage.getItem(
       localStorageKeys.ACCESS_TOKEN,
@@ -28,6 +35,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return !!storagedAccessToken;
   });
   const queryClient = useQueryClient();
+  const { setUser } = useGlobalStore(
+    useShallow((store) => ({
+      setUser: store.user.setUser,
+    })),
+  );
 
   const { isError, isFetching, isSuccess, data } = useQuery({
     queryKey: ['auth', 'me'],
@@ -49,6 +61,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setSignedIn(false);
   }, [queryClient]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      setUser(data);
+      toast.success(`Bem-vindo, ${capitalizeFirstLetter(data.name)}!`);
+    }
+  }, [isSuccess, data, setUser]);
 
   useEffect(() => {
     if (isError) {

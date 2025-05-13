@@ -23,7 +23,7 @@ export class PartialIncomeMapper
       id,
       date: date.toISOString(),
       type: PaymentType[type],
-      value: Number(value),
+      value: value.toNumber(),
     };
   }
 }

@@ -1,6 +1,7 @@
-import { NewCustomerModal } from './modals/NewCustomerModal';
-import { NewOrderModal } from './modals/NewOrderModal';
-import { NewPaymentModal } from './modals/NewPaymentModal';
+import { NewCustomerModal } from '@views/modals/NewCustomerModal';
+import { NewOrderModal } from '@views/modals/NewOrderModal';
+import { NewPaymentModal } from '@views/modals/NewPaymentModal';
+
 import { useGlobalModalsController } from './useGlobalModalsController';
 
 export function GlobalModals() {

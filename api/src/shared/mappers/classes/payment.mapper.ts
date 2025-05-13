@@ -16,7 +16,7 @@ export class PaymentMapper implements IDataMapper<PrismaPayment, Payment> {
 
     return {
       id,
-      value,
+      value: value.toNumber(),
       clientId,
       userId,
       date: date.toISOString(),

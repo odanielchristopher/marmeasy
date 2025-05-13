@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { Product } from 'src/modules/products/entities/product.entity';
 import {
   CreateProductOnDBDto,
@@ -10,19 +11,12 @@ import {
 } from '../interfaces/products-repository.interface';
 import { PrismaService } from '../prisma.service';
 
-const prismaResponse = {
+const prismaResponse: Prisma.ProductSelect = {
   id: true,
   name: true,
   description: true,
   price: true,
   imagePath: true,
-  ingredients: {
-    select: {
-      id: true,
-      name: true,
-      icon: true,
-    },
-  },
   category: {
     select: {
       id: true,
@@ -35,9 +29,13 @@ const prismaResponse = {
 @Injectable()
 export class ProductsRepository implements IProductsRepository {
   constructor(private readonly prismaService: PrismaService) {}
-  findManyByFilters(
+  async findManyByFilters(
     findManyByUserIdDto: FindManyProductsByFiltersDto,
   ): Promise<Product[]> {
+    const products = await this.prismaService.product.findMany({
+      select: {},
+    });
+
     throw new Error('Method not implemented.');
   }
   findFirstByUserId(

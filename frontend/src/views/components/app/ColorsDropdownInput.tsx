@@ -63,7 +63,7 @@ export function ColorsDropdownInput({
           <button
             type="button"
             className={cn(
-              'bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-700 outline-none focus:border-gray-800 transition-all text-left relative',
+              'bg-white w-full rounded-lg border border-gray-500 px-3 h-[52px] text-gray-700 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all text-left relative',
               'dark:bg-input/30 dark:border-accent dark:text-muted-foreground',
               error && '!border-red-900',
               selectedColor && 'dark:text-foreground',
@@ -87,7 +87,7 @@ export function ColorsDropdownInput({
           <RdxDropdownMenu.Content
             className={cn(
               'z-[99] grid grid-cols-4',
-              'rounded-2xl p-2 bg-white z-[99] border border-white space-y-1 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]',
+              'rounded-2xl p-2 bg-popover z-[99] border border-white space-y-1 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]',
               'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
               'dark:bg-card dark:border-accent',
             )}
@@ -96,7 +96,7 @@ export function ColorsDropdownInput({
               <RdxDropdownMenu.Item
                 key={color.color}
                 onSelect={() => handleSelect(color)}
-                className="min-h-11 outline-none flex items-center py-2 px-4 text-gray-800 data-[highlighted]:bg-gray-100 rounded-xl transition-colors cursor-pointer"
+                className="min-h-11 outline-none flex items-center py-2 px-4 text-gray-800 data-[highlighted]:bg-gray-100 rounded-xl transition-colors cursor-pointer hover:bg-accent focus:bg-accent focus:text-accent-foreground"
               >
                 <ColorIcon bg={color.bg} color={color.color} />
               </RdxDropdownMenu.Item>

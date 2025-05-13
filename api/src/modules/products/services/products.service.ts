@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateProductDto } from '../dto/create-product.dto';
 import { UpdateProductDto } from '../dto/update-product.dto';
 
-import { IValidateIngredientOwnershipService } from 'src/modules/ingredients/interfaces/validate-ingredient-ownership-service.interface';
 import { IValidateProductCategoryOwnershipService } from 'src/modules/product-categories/interfaces/validate-product-category-ownership-service.interface';
 import { IProductsRepository } from 'src/shared/database/interfaces/products-repository.interface';
 import { IProducImagesService } from '../interfaces/product-images-service.interface';
@@ -20,8 +19,6 @@ export class ProductsService implements IProductsService {
     private readonly validateProductOwnershipService: IValidateProductOwnershipService,
     @Inject(IValidateProductCategoryOwnershipService)
     private readonly validateProductCategorieOwnershipService: IValidateProductCategoryOwnershipService,
-    @Inject(IValidateIngredientOwnershipService)
-    private readonly validadeIngredientsOwnershipService: IValidateIngredientOwnershipService,
   ) {}
 
   findAllByUserId(userId: string, categoryName: string) {
@@ -131,7 +128,6 @@ export class ProductsService implements IProductsService {
     userId,
     productId,
     productCategoryId,
-    ingredientIds,
   }: {
     userId: string;
     productId?: string;
@@ -145,13 +141,6 @@ export class ProductsService implements IProductsService {
         this.validateProductCategorieOwnershipService.validate(
           userId,
           productCategoryId,
-        ),
-      ingredientIds &&
-        ingredientIds.forEach((ingredientId) =>
-          this.validadeIngredientsOwnershipService.validate(
-            userId,
-            ingredientId,
-          ),
         ),
     ]);
 

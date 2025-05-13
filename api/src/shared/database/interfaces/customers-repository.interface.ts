@@ -1,29 +1,22 @@
 // import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 // import { IPaginatedResponse } from 'src/shared/types';
 
-// export const ICustomersRepository = Symbol('ICustomersRepository');
+import { Customer } from 'src/modules/customers/entities/customer.entity';
+import { IPaginatedResponse } from 'src/shared/types';
 
-// export interface ICustomersRepository {
-//   findManyByUserId(
-//     findManyDto: FindManyByUserIdDto,
-//   ): Promise<IPaginatedResponse<Customer[]>>;
+export const ICustomersRepository = Symbol('ICustomersRepository');
 
-//   findManyBySearchTerm(
-//     findManyBySearchTermDto: FindManyBySearchTermDto,
-//   ): Promise<IPaginatedResponse<Customer[]>>;
+export interface ICustomersRepository {
+  findManyByUserId(
+    findManyByUserIdDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Customer[]>>;
 
-//   findFirstById(findFirstByIdDto: FindFirstCustomerByIdDto): Promise<Customer>;
+  findManyByTerm(findManyByUserIdDto: FindManyByTermDto): Promise<Customer[]>;
 
-//   findFirstByDocument(
-//     findFirstByDocumentDto: FindFirstCustomerByDocumentDto,
-//   ): Promise<Customer>;
+  findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer>;
 
-//   create(createDto: CreateCustomerDto): Promise<Customer>;
-
-//   update(updateDto: UpdateCustomerDto): Promise<Customer>;
-
-//   delete(deleteDto: DeleteCustomerDto): Promise<void>;
-// }
+  create(createDto: CreateCustomerDto): Promise<Customer>;
+}
 
 // export type FindManyBySearchTermDto = {
 //   userId: string;
@@ -33,12 +26,23 @@
 //   perPage: number;
 // };
 
-// export type FindManyByUserIdDto = {
-//   userId: string;
-//   order: 'asc' | 'desc';
-//   page: number;
-//   perPage: number;
-// };
+export type FindManyByUserIdDto = {
+  userId: string;
+  order: 'asc' | 'desc';
+  page: number;
+  perPage: number;
+};
+
+export type FindManyByTermDto = {
+  userId: string;
+  order: 'asc' | 'desc';
+  searchTerm: string;
+};
+
+export type FindFirstByIdDto = {
+  userId: string;
+  customerId: string;
+};
 
 // export type FindFirstCustomerByIdDto = {
 //   userId: string;
@@ -50,10 +54,10 @@
 //   document: string;
 // };
 
-// export type CreateCustomerDto = {
-//   data: Customer | Omit<Customer, 'id'>;
-//   userId: string;
-// };
+export type CreateCustomerDto = {
+  data: Omit<Customer, 'id'>;
+  userId: string;
+};
 
 // export type UpdateCustomerDto = {
 //   userId: string;

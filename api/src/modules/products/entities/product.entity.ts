@@ -1,12 +1,10 @@
 import {
-  IsArray,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
-import { Ingredient } from 'src/modules/ingredients/entities/ingredient.entity';
 import { ProductCategory } from 'src/modules/product-categories/entities/product-category.entity';
 
 export class Product {
@@ -28,10 +26,6 @@ export class Product {
 
   @IsNotEmpty()
   category?: ProductCategory;
-
-  @IsArray()
-  @IsNotEmpty()
-  ingredients: Ingredient[];
 
   @IsNumber()
   @IsNotEmpty()

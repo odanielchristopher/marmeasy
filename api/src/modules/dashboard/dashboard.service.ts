@@ -9,7 +9,6 @@ import { IIncomesRepository } from 'src/shared/database/interfaces/incomes-repos
 import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { Expense, ExpenseType } from '../expenses/entities/expense.entity';
 import { PaymentType } from '../payments/entities/payment.entity';
-import { FavoriteIngredient } from './entities/favorite.entity';
 import { Income } from './entities/income.entity';
 import { Sale } from './entities/sale.entity';
 
@@ -23,16 +22,11 @@ export class DashboardService implements IDashboardService {
     // @Inject(IOrdersRepository)
     // private readonly ordersRepository: IOrdersRepository,
   ) {}
+
   getSales(
     userId: string,
     dateRangeDto: DateRangeDto,
   ): Promise<IHistoryResponse<Sale>> {
-    throw new Error('Method not implemented.');
-  }
-  getFavoritesIngredients(
-    userId: string,
-    dateRangeDto: DateRangeDto,
-  ): Promise<FavoriteIngredient[]> {
     throw new Error('Method not implemented.');
   }
 

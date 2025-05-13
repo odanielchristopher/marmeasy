@@ -1,10 +1,16 @@
 import { Outlet } from 'react-router';
 
 import { Logo } from '@views/assets/Logo';
+import { ThemeSwitcher } from '@views/components/app/ThemeSwitcher';
 
 export function AuthLayout() {
   return (
-    <div className="flex w-full h-full">
+    <div className="flex w-full h-full relative">
+      <ThemeSwitcher
+        className="!text-primary dark:!text-white absolute top-4 right-4 md:right-6"
+        variant="outline"
+      />
+
       <div className="w-full h-full flex flex-col justify-center items-center gap-16 ">
         <Logo className="text-primary dark:text-foreground" size="medium" />
 
