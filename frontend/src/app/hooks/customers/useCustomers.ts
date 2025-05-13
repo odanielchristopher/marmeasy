@@ -14,7 +14,7 @@ export function useCustomers({
 }: CustomersLoaderParams): CustomersLoaderResponse {
   const {
     data: infiniteData,
-    isLoading: isLoadingInfiniteData,
+    isFetching: isLoadingInfiniteData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
