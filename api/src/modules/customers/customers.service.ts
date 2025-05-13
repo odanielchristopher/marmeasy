@@ -9,8 +9,38 @@ export class CustomersService {
     private readonly customersRepository: ICustomersRepository,
   ) {}
 
-  findAll(userId: string) {
-    return this.customersRepository.findManyByUserId({ userId, order: 'asc' });
+  findAll(
+    userId: string,
+    filters: {
+      order: string;
+      page: number;
+      perPage: number;
+    },
+  ) {
+    const { order, page, perPage } = filters;
+
+    return this.customersRepository.findManyByUserId({
+      userId,
+      order: order === 'asc' ? 'asc' : 'desc',
+      page,
+      perPage,
+    });
+  }
+
+  findAllBySeachTerm(
+    userId: string,
+    filters: {
+      order: string;
+      searchTerm: string;
+    },
+  ) {
+    const { order, searchTerm } = filters;
+
+    return this.customersRepository.findManyByTerm({
+      userId,
+      order: order === 'asc' ? 'asc' : 'desc',
+      searchTerm,
+    });
   }
 
   findOne(userId: string, customerId: string) {

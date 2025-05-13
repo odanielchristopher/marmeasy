@@ -2,13 +2,16 @@
 // import { IPaginatedResponse } from 'src/shared/types';
 
 import { Customer } from 'src/modules/customers/entities/customer.entity';
+import { IPaginatedResponse } from 'src/shared/types';
 
 export const ICustomersRepository = Symbol('ICustomersRepository');
 
 export interface ICustomersRepository {
   findManyByUserId(
     findManyByUserIdDto: FindManyByUserIdDto,
-  ): Promise<Customer[]>;
+  ): Promise<IPaginatedResponse<Customer[]>>;
+
+  findManyByTerm(findManyByUserIdDto: FindManyByTermDto): Promise<Customer[]>;
 
   findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer>;
 
@@ -26,6 +29,14 @@ export interface ICustomersRepository {
 export type FindManyByUserIdDto = {
   userId: string;
   order: 'asc' | 'desc';
+  page: number;
+  perPage: number;
+};
+
+export type FindManyByTermDto = {
+  userId: string;
+  order: 'asc' | 'desc';
+  searchTerm: string;
 };
 
 export type FindFirstByIdDto = {

@@ -3,9 +3,11 @@ import { Customer as PrismaCustomer } from '@prisma/client';
 import { Customer } from 'src/modules/customers/entities/customer.entity';
 import { DataMapperType } from 'src/shared/mappers/factories/data-mappers.factory';
 import { IDataMappersFactory } from 'src/shared/mappers/interfaces/data-mappers-factory.interface';
+import { IPaginatedResponse } from 'src/shared/types';
 import {
   CreateCustomerDto,
   FindFirstByIdDto,
+  FindManyByTermDto,
   FindManyByUserIdDto,
   ICustomersRepository,
 } from '../interfaces/customers-repository.interface';
@@ -19,19 +21,50 @@ export class CustomersRepository implements ICustomersRepository {
     private readonly dataMappersFactory: IDataMappersFactory,
   ) {}
 
-  async findManyByUserId(
-    findManyByUserIdDto: FindManyByUserIdDto,
+  async findManyByTerm(
+    findManyByTermDto: FindManyByTermDto,
   ): Promise<Customer[]> {
-    const { userId, order } = findManyByUserIdDto;
+    const { userId, order, searchTerm } = findManyByTermDto;
 
     const customers = await this.prismaService.customer.findMany({
-      where: { userId },
+      where: {
+        userId,
+        isActive: true,
+        name: { contains: searchTerm, mode: 'insensitive' },
+      },
       orderBy: {
         name: order,
       },
     });
 
     return customers.map((customer) => this.parser(customer));
+  }
+
+  async findManyByUserId(
+    findManyByUserIdDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Customer[]>> {
+    const { userId, order, page, perPage } = findManyByUserIdDto;
+
+    // Calcula a posição inicial
+    const skip = (page - 1) * perPage;
+
+    const customers = await this.prismaService.customer.findMany({
+      where: { userId, isActive: true },
+      orderBy: {
+        name: order,
+      },
+      take: perPage,
+      skip,
+    });
+
+    const items = await this.prismaService.customer.count({
+      where: { userId, isActive: true },
+    });
+
+    return {
+      data: customers.map((customer) => this.parser(customer)),
+      items,
+    };
   }
 
   async findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer> {
