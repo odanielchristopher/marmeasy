@@ -28,7 +28,13 @@ export function Menu() {
       <main className="w-full pb-6 flex gap-4 md:gap-0 pt-11 md:pt-8 max-md:flex-col">
         <Aside currentSession={currentSession} />
 
-        <Suspense fallback={<Skeleton className="w-full h-[500px]" />}>
+        <Suspense
+          fallback={
+            <div className="w-full max-md:pt-4 md:pl-8">
+              <Skeleton className="w-full md:pl8 h-[500px] rounded-xl" />
+            </div>
+          }
+        >
           <Session />
         </Suspense>
       </main>
