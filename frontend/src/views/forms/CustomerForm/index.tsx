@@ -7,10 +7,8 @@ import { InputCurrency } from '@views/components/ui/InputCurrency';
 import { InputFormatted } from '@views/components/ui/InputFormatted';
 import { Select } from '@views/components/ui/Select';
 
-import {
-  CustomerFormData,
-  useCustomerFormController,
-} from './useCustomerFormController';
+import { CustomerFormData } from './schema';
+import { useCustomerFormController } from './useCustomerFormController';
 
 interface ICustomerFormProps {
   defaultValues?: CustomerFormData;
