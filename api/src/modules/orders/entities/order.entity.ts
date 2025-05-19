@@ -1,10 +1,10 @@
 export enum OrderType {
-    BREAKFAST = 'BREAKFAST',
-    LUNCH = 'LUNCH',
-    DINNER = 'DINNER',
+  BREAKFAST = 'BREAKFAST',
+  LUNCH = 'LUNCH',
+  DINNER = 'DINNER',
 }
 
-export class Order{
+export class Order {
   id: string;
   userId: string;
   customerId: string;

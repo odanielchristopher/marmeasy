@@ -1,18 +1,23 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsUUID } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  IsDateString,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsUUID,
+} from 'class-validator';
 
 export class CreateOrderDto {
-    
   @ApiProperty({
     description: 'Id do cliente',
-    example: "a0e1c2d3-e4f5-6789-abcd-ef0123456789",
+    example: 'a0e1c2d3-e4f5-6789-abcd-ef0123456789',
     type: String,
-    format: "uuid",
+    format: 'uuid',
     required: true,
     nullable: false,
   })
-  @IsNotEmpty({message: 'O id do cliente é obrigatório.'})
-  @IsUUID('4', {message: 'O id do cliente deve ser um UUID válido.'})
+  @IsNotEmpty({ message: 'O id do cliente é obrigatório.' })
+  @IsUUID('4', { message: 'O id do cliente deve ser um UUID válido.' })
   customerId: string;
 
   @ApiProperty({
