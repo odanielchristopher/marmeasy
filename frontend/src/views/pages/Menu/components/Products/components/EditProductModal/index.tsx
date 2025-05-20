@@ -31,7 +31,10 @@ export function EditProductModal({
         }}
         buttonLabel="Editar produto"
         onSubmit={(formData) => {
-          console.log(formData);
+          console.log({
+            ...formData,
+            removeImage: product.imagePath && !formData.imagePath && true,
+          });
           onClose();
         }}
       />
