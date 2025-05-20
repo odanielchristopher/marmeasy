@@ -1,4 +1,4 @@
-import { IProduct } from '@app/entities/IProduct';
+import { IProduct } from '@app/entities/Product';
 
 export const products: IProduct[] = [
   {

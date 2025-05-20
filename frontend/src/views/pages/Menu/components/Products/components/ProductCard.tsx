@@ -34,7 +34,10 @@ export function ProductCard({ onClick, ...product }: IProductCardProps) {
       }}
     >
       <Avatar className="!rounded-md w-[120px] h-full">
-        <AvatarImage src={product.imagePath} className="object-cover" />
+        <AvatarImage
+          src={`${import.meta.env.VITE_API_URL}/${product.imagePath}`}
+          className="object-cover"
+        />
         <AvatarFallback className="w-full h-full flex items-center justify-center bg-teal-900 !rounded-md">
           <SoupIcon className="size-7 text-gray-800" />
         </AvatarFallback>

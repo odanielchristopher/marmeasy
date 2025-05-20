@@ -1,4 +1,4 @@
-import { IProduct } from '@app/entities/IProduct';
+import { IProduct } from '@app/entities/Product';
 import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Modal } from '@views/components/ui/Modal';
 import { ProductForm } from '@views/forms/ProductForm';
@@ -25,7 +25,10 @@ export function EditProductModal({
       onClose={onClose}
     >
       <ProductForm
-        defaultValues={product}
+        defaultValues={{
+          ...product,
+          categoryId: product.category?.id,
+        }}
         buttonLabel="Editar produto"
         onSubmit={(formData) => {
           console.log(formData);

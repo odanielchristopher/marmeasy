@@ -1,8 +1,9 @@
 import { BoxIcon, PencilIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
-import { productCategories } from '@app/mocks/productCategories';
+import { useProductCategories } from '@app/hooks/productCategories/useProductCategories';
 import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Button } from '@views/components/ui/Button';
+import { Skeleton } from '@views/components/ui/Skeleton';
 import {
   Table,
   TableBody,
@@ -13,6 +14,10 @@ import {
 } from '@views/components/ui/Table';
 
 export function Categories() {
+  const { categories, isLoading } = useProductCategories();
+
+  const hasCategories = categories.length > 0;
+
   return (
     <div className="pt-3 md:pl-8 w-full">
       <header className="mb-5 flex gap-3 items-center">
@@ -38,30 +43,61 @@ export function Categories() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productCategories.map((category) => (
-            <TableRow key={category.id}>
-              <TableCell className="text-center">{category.icon}</TableCell>
-              <TableCell>{capitalizeFirstLetter(category.name)}</TableCell>
-              <TableCell className="flex gap-1">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="p-3 size-12"
-                  onClick={() => console.log('Editar', category)}
-                >
-                  <PencilIcon className="size-4.5 text-primary" />
-                </Button>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="p-3 size-12"
-                  onClick={() => console.log('Remover', category)}
-                >
-                  <Trash2Icon className="size-4.5 text-destructive" />
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
+          {isLoading && (
+            <>
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-10" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-10 w-100" />
+                </TableCell>
+                <TableCell className="flex gap-3">
+                  <Skeleton className="size-10" />
+                  <Skeleton className="size-10" />
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-10" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-10 w-100" />
+                </TableCell>
+                <TableCell className="flex gap-3">
+                  <Skeleton className="size-10" />
+                  <Skeleton className="size-10" />
+                </TableCell>
+              </TableRow>
+            </>
+          )}
+
+          {hasCategories &&
+            categories.map((category) => (
+              <TableRow key={category.id}>
+                <TableCell className="text-center">{category.icon}</TableCell>
+                <TableCell>{capitalizeFirstLetter(category.name)}</TableCell>
+                <TableCell className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="p-3 size-12"
+                    onClick={() => console.log('Editar', category)}
+                  >
+                    <PencilIcon className="size-4.5 text-primary" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="p-3 size-12"
+                    onClick={() => console.log('Remover', category)}
+                  >
+                    <Trash2Icon className="size-4.5 text-destructive" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </div>

@@ -10,7 +10,18 @@ export const productSchema = z.object({
     .string()
     .max(110, { message: 'Máximo 110 caracteres' })
     .optional(),
-  price: z.number().or(z.string().nonempty('Valor do produto é obrigatório')),
+  price: z
+    .number()
+    .or(z.string().nonempty('Valor do produto é obrigatório'))
+    .refine(
+      (value) => {
+        const price = typeof value === 'string' ? Number(value) : value;
+
+        return price > 0;
+      },
+      { message: 'Valor deve ser maior que zero' },
+    ),
+  categoryId: z.string().uuid('A categoria deve ser válida').optional(),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

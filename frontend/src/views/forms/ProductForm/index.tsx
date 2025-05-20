@@ -1,8 +1,10 @@
 import { Controller } from 'react-hook-form';
 
+import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Button } from '@views/components/ui/Button';
 import { Input } from '@views/components/ui/Input';
 import { InputCurrency } from '@views/components/ui/InputCurrency';
+import { Select } from '@views/components/ui/Select';
 import { Textarea } from '@views/components/ui/Textarea';
 import { InputImage } from '@views/pages/Menu/components/Products/components/InputImage';
 
@@ -22,10 +24,11 @@ export function ProductForm({
   isLoading,
   onSubmit,
 }: IProductFormProps) {
-  const { form, formState, handleSubmit } = useProductFormController({
-    defaultValues,
-    onSubmit,
-  });
+  const { form, formState, categories, handleSubmit } =
+    useProductFormController({
+      defaultValues,
+      onSubmit,
+    });
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -54,14 +57,6 @@ export function ProductForm({
           error={formState.errors.name?.message}
         />
 
-        <Textarea
-          placeholder="Descrição"
-          className="resize-none max-h-[52px]"
-          maxLength={90}
-          {...form.register('description')}
-          error={formState.errors.description?.message}
-        />
-
         <Controller
           control={form.control}
           name="price"
@@ -72,6 +67,38 @@ export function ProductForm({
               value={value}
               onChange={onChange}
               error={formState.errors.price?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={form.control}
+          name="description"
+          render={({ field: { onChange, value } }) => (
+            <Textarea
+              placeholder="Descrição"
+              className="resize-none max-h-[52px]"
+              maxLength={90}
+              onChange={onChange}
+              value={value}
+              error={formState.errors.description?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={form.control}
+          name="categoryId"
+          render={({ field: { onChange, value } }) => (
+            <Select
+              placeholder="Categoria"
+              options={categories.map((category) => ({
+                value: category.id,
+                label: `${category.icon} ${capitalizeFirstLetter(category.name)}`,
+              }))}
+              onChange={onChange}
+              value={value}
+              error={formState.errors.description?.message}
             />
           )}
         />

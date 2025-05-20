@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { IProduct } from '@app/entities/IProduct';
-import { products } from '@app/mocks/products';
+import { IProduct } from '@app/entities/Product';
+import { useProducts } from '@app/hooks/products/useProducts';
 
 export function useProductsController() {
   const [isOpenNewProductModal, setIsOpenNewProductModal] = useState(false);
@@ -9,6 +9,8 @@ export function useProductsController() {
   const [productBeenEdited, setProductBeenEdited] = useState<IProduct | null>(
     null,
   );
+
+  const { products, isLoading } = useProducts();
 
   function handleOpenNewProductModal() {
     setIsOpenNewProductModal(true);
@@ -33,6 +35,8 @@ export function useProductsController() {
     isOpenNewProductModal,
     productBeenEdited,
     products,
+    isLoading,
+    hasProducts: products.length > 0,
     handleOpenEditProductModal,
     handleOpenNewProductModal,
     handleCloseEditProductModal,
