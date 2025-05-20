@@ -24,8 +24,8 @@ export class CustomersController {
   ) {
     return this.customersService.findAll(userId, {
       order,
-      page,
-      perPage,
+      page: page || 1,
+      perPage: perPage || 24,
     });
   }
 

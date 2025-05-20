@@ -2,7 +2,6 @@ import { BadRequestException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import {
-  IsArray,
   IsNotEmpty,
   IsNumber,
   IsOptional,
@@ -55,28 +54,6 @@ export class CreateProductDto {
     description: 'ID da categoria do produto.',
   })
   categoryId?: string;
-
-  @IsOptional()
-  @Transform(({ value }) => {
-    // Converte o valor enviado (string JSON) para array
-    try {
-      return JSON.parse(value); // Converte o JSON stringificado em array
-    } catch {
-      throw new BadRequestException(
-        'Os ingredientes devem ser passados como um array válido.',
-      );
-    }
-  })
-  @IsArray({ message: 'Os ingredientes devem ser passados como um array.' })
-  @IsUUID('4', {
-    each: true,
-    message: 'Cada ingrediente precisa ter um UUID válido.',
-  })
-  @ApiProperty({
-    example: ['b4e8ed1b-95c8-4bff-b28c-e4fd14ac4b9c'],
-    description: 'Lista de IDs de ingredientes relacionados ao produto.',
-  })
-  ingredientsIds?: string[];
 
   @IsString()
   @IsOptional()
