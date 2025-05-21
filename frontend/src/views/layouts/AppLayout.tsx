@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Link, Outlet } from 'react-router';
 
 import { useIsMobile } from '@app/hooks/useIsMobile';
@@ -9,6 +10,7 @@ import { GlobalModals } from '@views/components/app/GlobalModals';
 import { ThemeSwitcher } from '@views/components/app/ThemeSwitcher';
 import { UserMenu } from '@views/components/app/UserMenu';
 import { UserMobileMenu } from '@views/components/app/UserMobileMenu';
+import { PageSkeleton } from '@views/components/ui/PageSkeleton';
 
 export function AppLayout() {
   const isMobile = useIsMobile();
@@ -38,7 +40,9 @@ export function AppLayout() {
       </header>
 
       <main className="flex-1 pt-20 w-full max-w-[1440px] mx-auto relative">
-        <Outlet />
+        <Suspense fallback={<PageSkeleton />}>
+          <Outlet />
+        </Suspense>
 
         <Fab />
       </main>

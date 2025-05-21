@@ -1,19 +1,24 @@
+import React from 'react';
+
 import { cn } from '@app/lib/utils';
 import { Button } from '@views/components/ui/Button';
 
-import { useAsideController } from './useAsideController';
-
 interface IAsideProps {
   currentSession: string;
+  title: string;
+  sessions: {
+    id: string;
+    label: string;
+    icon: React.ElementType;
+    handler: () => void | Promise<void>;
+  }[];
 }
 
-export function Aside({ currentSession }: IAsideProps) {
-  const { sessions } = useAsideController();
-
+export function Aside({ title, currentSession, sessions }: IAsideProps) {
   return (
     <aside className="h-full bg-white dark:bg-card overflow-auto max-md:rounded-md flex-shrink-0 rounded-2xl border-border-muted md:sticky md:top-[120px] md:w-80 md:border md:p-5">
       <span className="font-medium text-muted-foreground max-md:hidden">
-        Sessões
+        {title}
       </span>
 
       <div className="my-4 h-px w-8 bg-border max-md:hidden" />

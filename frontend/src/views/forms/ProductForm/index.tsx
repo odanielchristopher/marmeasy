@@ -6,7 +6,7 @@ import { Input } from '@views/components/ui/Input';
 import { InputCurrency } from '@views/components/ui/InputCurrency';
 import { Select } from '@views/components/ui/Select';
 import { Textarea } from '@views/components/ui/Textarea';
-import { InputImage } from '@views/pages/Menu/components/Products/components/InputImage';
+import { InputImage } from '@views/pages/Products/components/InputImage';
 
 import { ProductFormData } from './schema';
 import { useProductFormController } from './useProductFormController';

@@ -50,7 +50,7 @@ export function Categories() {
                   <Skeleton className="h-10" />
                 </TableCell>
                 <TableCell>
-                  <Skeleton className="h-10 w-100" />
+                  <Skeleton className="h-10 w-2/3" />
                 </TableCell>
                 <TableCell className="flex gap-3">
                   <Skeleton className="size-10" />
@@ -63,7 +63,7 @@ export function Categories() {
                   <Skeleton className="h-10" />
                 </TableCell>
                 <TableCell>
-                  <Skeleton className="h-10 w-100" />
+                  <Skeleton className="h-10 w-2/3" />
                 </TableCell>
                 <TableCell className="flex gap-3">
                   <Skeleton className="size-10" />

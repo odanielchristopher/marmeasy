@@ -14,6 +14,7 @@ import { routes } from './routes';
 // Com lazy loading (baixa só quando precisa);
 const { AuthLayout } = lazyLoad(() => import('@views/layouts/AuthLayout'));
 const { AppLayout } = lazyLoad(() => import('@views/layouts/AppLayout'));
+const { MenuLayout } = lazyLoad(() => import('@views/layouts/MenuLayout'));
 
 const { Customers } = lazyLoad(() => import('@views/pages/Customers'));
 const { Customer } = lazyLoad(() => import('@views/pages/Customer'));
@@ -22,7 +23,9 @@ const { Orders } = lazyLoad(() => import('@views/pages/Orders'));
 const { NewOrder } = lazyLoad(() => import('@views/pages/Orders/NewOrder'));
 
 const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
-const { Menu } = lazyLoad(() => import('@views/pages/Menu'));
+
+const { Categories } = lazyLoad(() => import('@views/pages/Categories'));
+const { Products } = lazyLoad(() => import('@views/pages/Products'));
 
 const { Login } = lazyLoad(() => import('@views/pages/Login'));
 const { Register } = lazyLoad(() => import('@views/pages/Register'));
@@ -49,7 +52,12 @@ export function Router() {
               <Route index element={<Orders />} />
               <Route path="new" element={<NewOrder />} />
             </Route>
-            <Route path={routes.menu} element={<Menu />} />
+
+            <Route path={routes.menu} element={<MenuLayout />}>
+              <Route path="products" element={<Products />} />
+              <Route path="categories" element={<Categories />} />
+            </Route>
+
             <Route path={routes.dashboard} element={<Dashboard />} />
           </Route>
         </Route>
