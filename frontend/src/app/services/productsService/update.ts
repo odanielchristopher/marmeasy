@@ -1,16 +1,18 @@
 import { httpClient } from '../httpClient';
 
 import {
-  CreateProductFn,
-  CreateProductResponse,
-} from './@types/CreateProductFn';
+  UpdateProductFn,
+  UpdateProductResponse,
+} from './@types/UpdateProductFn';
 
-export const create: CreateProductFn = async ({
+export const update: UpdateProductFn = async ({
+  id,
   imagePath,
   name,
   price,
   categoryId,
   description,
+  removeImage,
 }) => {
   const formData = new FormData();
 
@@ -26,11 +28,15 @@ export const create: CreateProductFn = async ({
     formData.append('categoryId', categoryId);
   }
 
+  if (removeImage) {
+    formData.append('removeImage', String(removeImage));
+  }
+
   formData.append('name', name);
   formData.append('price', price.toString());
 
-  const { data } = await httpClient.post<CreateProductResponse>(
-    '/products',
+  const { data } = await httpClient.put<UpdateProductResponse>(
+    `/products/${id}`,
     formData,
   );
 

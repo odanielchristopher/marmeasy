@@ -1,4 +1,4 @@
-import { ICustomer } from '@app/entities/Customer';
+import { IProduct } from '@app/entities/Product';
 
 export type CreateProductParams = {
   name: string;
@@ -8,7 +8,7 @@ export type CreateProductParams = {
   description?: string;
 };
 
-export type CreateProductResponse = Promise<ICustomer>;
+export type CreateProductResponse = Promise<IProduct>;
 
 export type CreateProductFn = (
   params: CreateProductParams,
