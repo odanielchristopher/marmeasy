@@ -6,6 +6,7 @@ export function useProductCategories() {
   const { data, isLoading } = useQuery({
     queryKey: ['product-categories'],
     queryFn: productCategoriesService.getAll,
+    staleTime: Infinity,
   });
 
   return {

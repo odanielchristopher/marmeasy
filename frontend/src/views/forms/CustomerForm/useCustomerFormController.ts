@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { CustomerFormData, customerSchema } from './schema';
 
-interface IUseCustomerFormControllerProps {
+interface IUseCustomerFormController {
   defaultValues?: CustomerFormData;
   onSubmit(formData: CustomerFormData): Promise<void> | void;
 }
@@ -11,7 +11,7 @@ interface IUseCustomerFormControllerProps {
 export function useCustomerFormController({
   defaultValues,
   onSubmit,
-}: IUseCustomerFormControllerProps) {
+}: IUseCustomerFormController) {
   const form = useForm<CustomerFormData>({
     defaultValues: {
       name: defaultValues?.name ?? '',

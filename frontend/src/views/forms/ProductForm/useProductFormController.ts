@@ -5,7 +5,7 @@ import { useProductCategories } from '@app/hooks/productCategories/useProductCat
 
 import { ProductFormData, productSchema } from './schema';
 
-interface IUseProductFormControllerProps {
+interface IUseProductFormController {
   defaultValues?: ProductFormData;
   onSubmit(formData: ProductFormData): Promise<void> | void;
 }
@@ -13,7 +13,7 @@ interface IUseProductFormControllerProps {
 export function useProductFormController({
   defaultValues,
   onSubmit,
-}: IUseProductFormControllerProps) {
+}: IUseProductFormController) {
   const { formState, ...form } = useForm<ProductFormData>({
     defaultValues: {
       imagePath: defaultValues?.imagePath

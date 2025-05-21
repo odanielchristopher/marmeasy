@@ -3,6 +3,8 @@ import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Modal } from '@views/components/ui/Modal';
 import { ProductForm } from '@views/forms/ProductForm';
 
+import { useEditProductModalController } from './useEditProductModalController';
+
 interface IEditProductModalProps {
   open: boolean;
   onClose(): void;
@@ -14,6 +16,11 @@ export function EditProductModal({
   product,
   onClose,
 }: IEditProductModalProps) {
+  const { handleSubmit, isLoading } = useEditProductModalController({
+    product,
+    onSuccess: onClose,
+  });
+
   if (!product) {
     return null;
   }
@@ -30,13 +37,8 @@ export function EditProductModal({
           categoryId: product.category?.id,
         }}
         buttonLabel="Editar produto"
-        onSubmit={(formData) => {
-          console.log({
-            ...formData,
-            removeImage: product.imagePath && !formData.imagePath && true,
-          });
-          onClose();
-        }}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
       />
     </Modal>
   );

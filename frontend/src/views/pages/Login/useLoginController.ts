@@ -4,24 +4,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 import { useAuth } from '../../../app/hooks/useAuth';
 
-const loginSchema = z.object({
-  email: z
-    .string()
-    .nonempty('O e-mail é obrigatório.')
-    .email('O e-mail deve ser válido.'),
-  password: z
-    .string()
-    .nonempty('A senha é obrigatória.')
-    .min(6, 'A senha deve ter pelo menos 6 dígitos.'),
-});
+import { LoginFormData, loginSchema } from './schema';
 
-type LoginFormData = z.infer<typeof loginSchema>;
-
-interface IUseLoginControllerProps {
+interface IUseLoginController {
   authService: {
     signin(data: {
       email: string;
@@ -30,7 +18,7 @@ interface IUseLoginControllerProps {
   };
 }
 
-export function useLoginController({ authService }: IUseLoginControllerProps) {
+export function useLoginController({ authService }: IUseLoginController) {
   const {
     handleSubmit: hookFormHandleSubmit,
     register,

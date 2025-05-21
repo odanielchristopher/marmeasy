@@ -2,13 +2,11 @@ import { useQuery } from '@tanstack/react-query';
 
 import { customersService } from '@app/services/customersService';
 
-interface IUseCustomerControllerProps {
+interface IUseCustomerController {
   customerId: string;
 }
 
-export function useCustomerController({
-  customerId,
-}: IUseCustomerControllerProps) {
+export function useCustomerController({ customerId }: IUseCustomerController) {
   const { data, isFetching } = useQuery({
     queryKey: ['customer', customerId],
     queryFn: () => customersService.getOne(customerId),
