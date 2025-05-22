@@ -3,7 +3,7 @@ import { Global, Module } from '@nestjs/common';
 import { IProductCategoriesRepository } from './interfaces/product-categories-repository.interface';
 import { IProductsRepository } from './interfaces/products-repository.interface';
 import { IUsersRepository } from './interfaces/users-repository.interface';
-
+import { IOrdersRepository } from './interfaces/orders-repository.interface';
 import { MappersModule } from '../mappers/mappers.module';
 import { ICustomersRepository } from './interfaces/customers-repository.interface';
 import { IExpensesRepository } from './interfaces/expenses-repository.interface';
@@ -17,6 +17,7 @@ import { PaymentsRepository } from './repositories/payments.repository';
 import { ProductCategoriesRepository } from './repositories/product-categories.repository';
 import { ProductsRepository } from './repositories/products.repository';
 import { UsersRepository } from './repositories/users.repository';
+import { OrderRepository } from './repositories/orders.repository';
 
 @Global()
 @Module({
@@ -51,6 +52,10 @@ import { UsersRepository } from './repositories/users.repository';
       provide: ICustomersRepository,
       useClass: CustomersRepository,
     },
+    {
+      provide: IOrdersRepository,
+      useClass: OrderRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -61,6 +66,7 @@ import { UsersRepository } from './repositories/users.repository';
     IExpensesRepository,
     IIncomesRepository,
     ICustomersRepository,
+    IOrdersRepository,
   ],
 })
 export class DatabaseModule {}

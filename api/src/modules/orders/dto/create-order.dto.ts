@@ -56,4 +56,43 @@ export class CreateOrderDto {
   @IsNumber()
   @IsNotEmpty()
   amount: number;
+
+  @ApiProperty({
+    description: 'Itens do pedido',
+    type: 'array',
+    items: {
+      type: 'object',
+      properties: {
+        productId: {
+          type: 'string',
+          format: 'uuid',
+        },
+        quantity: {
+          type: 'number',
+        },
+        unitPrice: {
+          type: 'number',
+        },
+      },
+    },
+  })
+  @IsNotEmpty({ message: 'Os itens do pedido são obrigatórios.' })
+  @IsUUID('4', {
+    each: true,
+    message: 'O id do produto deve ser um UUID válido.',
+  })
+  @IsNumber()
+  @IsNotEmpty({ message: 'A quantidade do produto é obrigatória.' })
+  @IsNumber(
+    { maxDecimalPlaces: 2 },
+    {
+      message: 'O valor unitário deve ser um número com até 2 casas decimais.',
+    },
+  )
+  @IsNotEmpty({ message: 'O valor unitário do produto é obrigatório.' })
+  items: {
+    productId: string;
+    quantity: number;
+    unitPrice: number;
+  }[];
 }

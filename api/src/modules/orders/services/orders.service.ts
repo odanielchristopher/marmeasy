@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IOrdersService } from '../interfaces/orders-service.interface';
-import { CreateOrderDto } from '../dto/create-order';
+import { CreateOrderDto } from '../dto/create-order.dto';
 import { Order } from '../entities/order.entity';
+import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
-  constructor() {}
+  constructor(
+    @Inject(IOrdersRepository)
+    private readonly ordersRepository: IOrdersRepository,
+  ) {}
 
-  async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
-    return null;
+  async create(createOrderDto: CreateOrderDto): Promise<Order> {
+    return this.ordersRepository.create({ data: createOrderDto });
   }
 }
