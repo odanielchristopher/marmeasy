@@ -28,16 +28,17 @@ export const update: UpdateProductFn = async ({
     formData.append('categoryId', categoryId);
   }
 
-  if (removeImage) {
-    formData.append('removeImage', String(removeImage));
-  }
-
   formData.append('name', name);
   formData.append('price', price.toString());
 
   const { data } = await httpClient.put<UpdateProductResponse>(
     `/products/${id}`,
     formData,
+    {
+      params: {
+        removeImage,
+      },
+    },
   );
 
   return data;
