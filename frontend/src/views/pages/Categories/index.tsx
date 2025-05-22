@@ -28,7 +28,7 @@ export function Categories() {
       </header>
 
       <div>
-        <Button type="button" variant="outline" className="h-[42px] bg-white">
+        <Button type="button" variant="outline" className="h-[42px]">
           <PlusCircleIcon />
           Nova categoria
         </Button>

@@ -21,7 +21,7 @@ export const productSchema = z.object({
       },
       { message: 'Valor deve ser maior que zero' },
     ),
-  categoryId: z.string().uuid('A categoria deve ser válida').optional(),
+  categoryId: z.string().optional().or(z.string().uuid()),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

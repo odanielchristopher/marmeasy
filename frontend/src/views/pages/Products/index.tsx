@@ -49,7 +49,7 @@ export function Products() {
         <Button
           type="button"
           variant="outline"
-          className="h-[42px] bg-white"
+          className="h-[42px]"
           onClick={handleOpenNewProductModal}
         >
           <PlusCircleIcon />
