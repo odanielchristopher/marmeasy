@@ -24,7 +24,9 @@ const { NewOrder } = lazyLoad(() => import('@views/pages/Orders/NewOrder'));
 
 const { Dashboard } = lazyLoad(() => import('@views/pages/Dashboard'));
 
-const { Categories } = lazyLoad(() => import('@views/pages/Categories'));
+const { ProductCategories } = lazyLoad(
+  () => import('@views/pages/ProductCategories'),
+);
 const { Products } = lazyLoad(() => import('@views/pages/Products'));
 
 const { Login } = lazyLoad(() => import('@views/pages/Login'));
@@ -55,7 +57,7 @@ export function Router() {
 
             <Route path={routes.menu} element={<MenuLayout />}>
               <Route path="products" element={<Products />} />
-              <Route path="categories" element={<Categories />} />
+              <Route path="categories" element={<ProductCategories />} />
             </Route>
 
             <Route path={routes.dashboard} element={<Dashboard />} />

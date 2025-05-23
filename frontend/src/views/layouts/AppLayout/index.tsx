@@ -6,11 +6,12 @@ import { routes } from '@app/Router/routes';
 import { Logo } from '@views/assets/Logo';
 import { AppNavigation } from '@views/components/app/AppNavigation';
 import { Fab } from '@views/components/app/Fab';
-import { GlobalModals } from '@views/components/app/GlobalModals';
 import { ThemeSwitcher } from '@views/components/app/ThemeSwitcher';
 import { UserMenu } from '@views/components/app/UserMenu';
 import { UserMobileMenu } from '@views/components/app/UserMobileMenu';
-import { PageSkeleton } from '@views/components/ui/PageSkeleton';
+
+import { GlobalModals } from './components/GlobalModals';
+import { PageSkeleton } from './components/PageSkeleton';
 
 export function AppLayout() {
   const isMobile = useIsMobile();

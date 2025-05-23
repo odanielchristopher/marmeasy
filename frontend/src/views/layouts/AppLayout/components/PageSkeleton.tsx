@@ -1,4 +1,4 @@
-import { Skeleton } from './Skeleton';
+import { Skeleton } from '@views/components/ui/Skeleton';
 
 export function PageSkeleton() {
   return (

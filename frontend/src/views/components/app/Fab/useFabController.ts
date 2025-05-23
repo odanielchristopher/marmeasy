@@ -24,11 +24,6 @@ export function useFabController() {
     globalModals.openNewCustomerModal();
   }
 
-  // function handleNewOrderModal() {
-  //   setIsDropdownOpen(false);
-  //   globalModals.openNewOrderModal();
-  // }
-
   function handleNavigateNewCustomerPage() {
     navigate(routes.newOrder);
   }

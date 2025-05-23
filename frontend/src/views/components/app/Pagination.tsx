@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { UsePaginationResponse } from '@app/types/IUsePagination';
+import { UsePaginationResponse } from '@app/types/UsePaginationFn';
 import { generateElipsisPagination } from '@app/utils/generateElipsisPagination';
 
 import * as Primitive from '../ui/Pagination';

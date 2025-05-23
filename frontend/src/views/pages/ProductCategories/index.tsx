@@ -1,6 +1,5 @@
 import { BoxIcon, PencilIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
 
-import { useProductCategories } from '@app/hooks/productCategories/useProductCategories';
 import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
 import { Button } from '@views/components/ui/Button';
 import { Skeleton } from '@views/components/ui/Skeleton';
@@ -13,13 +12,48 @@ import {
   TableRow,
 } from '@views/components/ui/Table';
 
-export function Categories() {
-  const { categories, isLoading } = useProductCategories();
+import { EditCategoryModal } from './components/EditCategoryModal';
+import { NewCategoryModal } from './components/NewCategoryModal';
+import { RemoveCategoryModal } from './components/RemoveCategoryModal';
+import { useProductCategoriesController } from './useProductCategoriesController';
 
-  const hasCategories = categories.length > 0;
+export function ProductCategories() {
+  const {
+    categories,
+    isLoading,
+    hasCategories,
+    selectedCategory,
+    isOpenNewCategoryModal,
+    isOpenEditCategoryModal,
+    isOpenRemoveCategoryModal,
+    handleOpenNewCategoryModal,
+    handleOpenEditCategoryModal,
+    handleCloseNewCategoryModal,
+    handleCloseEditCategoryModal,
+    handleOpenRemoveCategoryModal,
+    handleCloseRemoveCategoryModal,
+  } = useProductCategoriesController();
 
   return (
     <div className="pt-3 md:pl-8 w-full">
+      {isOpenNewCategoryModal && (
+        <NewCategoryModal open onClose={handleCloseNewCategoryModal} />
+      )}
+      {isOpenEditCategoryModal && (
+        <EditCategoryModal
+          category={selectedCategory}
+          open
+          onClose={handleCloseEditCategoryModal}
+        />
+      )}
+      {isOpenRemoveCategoryModal && (
+        <RemoveCategoryModal
+          category={selectedCategory}
+          open
+          onClose={handleCloseRemoveCategoryModal}
+        />
+      )}
+
       <header className="mb-5 flex gap-3 items-center">
         <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
           <BoxIcon />
@@ -28,7 +62,12 @@ export function Categories() {
       </header>
 
       <div>
-        <Button type="button" variant="outline" className="h-[42px]">
+        <Button
+          type="button"
+          variant="outline"
+          className="h-[42px]"
+          onClick={handleOpenNewCategoryModal}
+        >
           <PlusCircleIcon />
           Nova categoria
         </Button>
@@ -83,7 +122,7 @@ export function Categories() {
                     type="button"
                     variant="ghost"
                     className="p-3 size-12"
-                    onClick={() => console.log('Editar', category)}
+                    onClick={() => handleOpenEditCategoryModal(category)}
                   >
                     <PencilIcon className="size-4.5 text-primary" />
                   </Button>
@@ -91,7 +130,7 @@ export function Categories() {
                     type="button"
                     variant="ghost"
                     className="p-3 size-12"
-                    onClick={() => console.log('Remover', category)}
+                    onClick={() => handleOpenRemoveCategoryModal(category)}
                   >
                     <Trash2Icon className="size-4.5 text-destructive" />
                   </Button>

@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@views/components/ui/Accordion';
 
-interface IOrderProps {
+interface IOrderCardProps {
   order: {
     date: string;
     quantity: number;
@@ -20,9 +20,9 @@ interface IOrderProps {
   };
 }
 
-export function Order({
+export function OrderCard({
   order: { customer, date, quantity, total },
-}: IOrderProps) {
+}: IOrderCardProps) {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="!border rounded-xl">

@@ -10,34 +10,60 @@ interface IAsideProps {
     id: string;
     label: string;
     icon: React.ElementType;
+    iconType?: string;
     handler: () => void | Promise<void>;
   }[];
+  classNames?: {
+    root?: string;
+    button?: string;
+    icon?: string;
+    label?: string;
+    title?: string;
+  };
 }
 
-export function Aside({ title, currentSession, sessions }: IAsideProps) {
+export function Aside({
+  title,
+  currentSession,
+  sessions,
+  classNames,
+}: IAsideProps) {
   return (
-    <aside className="h-full bg-white dark:bg-card overflow-auto max-md:rounded-md flex-shrink-0 rounded-2xl border-border-muted md:sticky md:top-[120px] md:w-80 md:border md:p-5">
-      <span className="font-medium text-muted-foreground max-md:hidden">
+    <aside
+      className={cn(
+        'h-full bg-white dark:bg-card overflow-auto max-md:rounded-md flex-shrink-0 rounded-2xl border-border-muted md:sticky md:top-[120px] md:w-80 md:border md:p-5',
+        classNames?.root,
+      )}
+    >
+      <span
+        className={cn(
+          'font-medium text-muted-foreground max-md:hidden',
+          classNames?.title,
+        )}
+      >
         {title}
       </span>
 
       <div className="my-4 h-px w-8 bg-border max-md:hidden" />
 
       <div className="flex gap-2 overflow-visible max-md:justify-around md:flex-col">
-        {sessions.map(({ id, label, icon: Icon, handler }) => (
+        {sessions.map(({ id, label, icon: Icon, iconType, handler }) => (
           <Button
             key={id}
             type="button"
             className={cn(
               'md:justify-start h-12 border border-transparent max-md:flex-1',
+              classNames?.button,
               currentSession === id &&
                 'bg-accent border border-gray-300 dark:border-white',
             )}
             variant="ghost"
             onClick={handler}
           >
-            <Icon className="size-5" />
-            <span className="font-medium text-sm">{label}</span>
+            <Icon className={cn('size-5', classNames?.icon)} type={iconType} />
+            <span className={cn('font-medium text-sm', classNames?.label)}>
+              {label}
+            </span>
           </Button>
         ))}
       </div>
