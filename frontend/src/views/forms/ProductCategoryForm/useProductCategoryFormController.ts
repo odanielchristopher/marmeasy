@@ -5,12 +5,12 @@ import { ProductCategoryForm, productCategorySchema } from './schema';
 
 export interface IUseProductCategoryFormController {
   defaultValues?: ProductCategoryForm;
-  onConfirm(formData: ProductCategoryForm): void | Promise<void>;
+  onSubmit(formData: ProductCategoryForm): void | Promise<void>;
 }
 
 export function useProductCategoryFormController({
   defaultValues,
-  onConfirm,
+  onSubmit,
 }: IUseProductCategoryFormController) {
   const { formState, ...form } = useForm<ProductCategoryForm>({
     defaultValues: {
@@ -21,7 +21,7 @@ export function useProductCategoryFormController({
   });
 
   const handleSubmit = form.handleSubmit((formData) => {
-    onConfirm(formData);
+    onSubmit(formData);
   });
 
   return {

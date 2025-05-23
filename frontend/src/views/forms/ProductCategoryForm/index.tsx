@@ -15,11 +15,11 @@ export function ProductCategoryForm({
   buttonLabel,
   isLoading,
   defaultValues,
-  onConfirm,
+  onSubmit,
 }: IProductCategoryFormProps) {
   const { form, formState, handleSubmit } = useProductCategoryFormController({
     defaultValues,
-    onConfirm,
+    onSubmit,
   });
 
   return (

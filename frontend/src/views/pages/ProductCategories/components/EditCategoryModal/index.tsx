@@ -2,6 +2,8 @@ import { IProductCategory } from '@app/entities/ProductCategories';
 import { Modal } from '@views/components/ui/Modal';
 import { ProductCategoryForm } from '@views/forms/ProductCategoryForm';
 
+import { useEditCategoryModalController } from './useEditCategoryModalController';
+
 interface IEditCategoryModalProps {
   open: boolean;
   category: IProductCategory | null;
@@ -13,6 +15,11 @@ export function EditCategoryModal({
   category,
   onClose,
 }: IEditCategoryModalProps) {
+  const { handleSubmit, isLoading } = useEditCategoryModalController({
+    category,
+    onSuccess: onClose,
+  });
+
   if (!category) {
     return null;
   }
@@ -21,7 +28,8 @@ export function EditCategoryModal({
     <Modal open={open} onClose={onClose} title="Editar categoria">
       <ProductCategoryForm
         buttonLabel="Salvar alterações"
-        onConfirm={(form) => console.log({ form })}
+        onSubmit={handleSubmit}
+        isLoading={isLoading}
         defaultValues={category}
       />
     </Modal>
