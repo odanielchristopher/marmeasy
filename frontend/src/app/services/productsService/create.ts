@@ -1,9 +1,6 @@
 import { httpClient } from '../httpClient';
 
-import {
-  CreateProductFn,
-  CreateProductResponse,
-} from './@types/CreateProductFn';
+import { CreateProductFn } from './@types/CreateProductFn';
 
 export const create: CreateProductFn = async ({
   imagePath,
@@ -29,10 +26,7 @@ export const create: CreateProductFn = async ({
   formData.append('name', name);
   formData.append('price', price.toString());
 
-  const { data } = await httpClient.post<CreateProductResponse>(
-    '/products',
-    formData,
-  );
+  const { data } = await httpClient.post('/products', formData);
 
   return data;
 };
