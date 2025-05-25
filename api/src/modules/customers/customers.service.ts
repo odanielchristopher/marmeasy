@@ -1,12 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ICustomersRepository } from 'src/shared/database/interfaces/customers-repository.interface';
 import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
+import { ValidateCustomerOwnershipService } from './validate-customer-ownership.service';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @Inject(ICustomersRepository)
     private readonly customersRepository: ICustomersRepository,
+    private readonly validateCustomerOwnershipService: ValidateCustomerOwnershipService,
   ) {}
 
   findAll(
@@ -60,5 +63,32 @@ export class CustomersService {
         balance: initialBalance,
       },
     });
+  }
+
+  async update(
+    userId: string,
+    customerId: string,
+    updateCustomerDto: UpdateCustomerDto,
+  ) {
+    await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    const { name, type, color, initialBalance, phone } = updateCustomerDto;
+
+    return this.customersRepository.update({
+      customerId,
+      data: {
+        name,
+        type,
+        color,
+        balance: initialBalance,
+        phone,
+      },
+    });
+  }
+
+  async delete(userId: string, customerId: string) {
+    await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    await this.customersRepository.delete(customerId);
   }
 }
