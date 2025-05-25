@@ -14,11 +14,13 @@ interface ICustomerFormProps {
   defaultValues?: CustomerFormData;
   onSubmit(formData: CustomerFormData): Promise<void> | void;
   isLoading?: boolean;
+  buttonLabel: string;
 }
 
 export function CustomerForm({
   defaultValues,
   isLoading,
+  buttonLabel,
   onSubmit,
 }: ICustomerFormProps) {
   const { form, handleSubmit } = useCustomerFormController({
@@ -114,9 +116,9 @@ export function CustomerForm({
         type="submit"
         className="mt-6 w-full"
         isLoading={isLoading}
-        disabled={isLoading}
+        disabled={isLoading || (defaultValues && !form.formState.isDirty)}
       >
-        Criar cliente
+        {buttonLabel}
       </Button>
     </form>
   );

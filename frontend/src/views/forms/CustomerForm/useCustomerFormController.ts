@@ -18,6 +18,7 @@ export function useCustomerFormController({
       color: defaultValues?.color ?? '',
       type: defaultValues?.type ?? undefined,
       phone: defaultValues?.phone ?? '',
+      initialBalance: defaultValues?.initialBalance,
     },
     resolver: zodResolver(customerSchema),
   });
