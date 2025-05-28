@@ -16,6 +16,10 @@ export interface ICustomersRepository {
   findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer>;
 
   create(createDto: CreateCustomerDto): Promise<Customer>;
+
+  update(updateDto: UpdateCustomerDto): Promise<Customer>;
+
+  delete(customerId: string): Promise<void>;
 }
 
 // export type FindManyBySearchTermDto = {
@@ -59,10 +63,10 @@ export type CreateCustomerDto = {
   userId: string;
 };
 
-// export type UpdateCustomerDto = {
-//   userId: string;
-//   data: Customer;
-// };
+export type UpdateCustomerDto = {
+  customerId: string;
+  data: Omit<Customer, 'id'>;
+};
 
 // export type DeleteCustomerDto = {
 //   userId: string;

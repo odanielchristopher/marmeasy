@@ -7,7 +7,7 @@ export function AuthLayout() {
   return (
     <div className="flex w-full h-full relative">
       <ThemeSwitcher
-        className="!text-primary dark:!text-white absolute top-4 right-4 md:right-6"
+        className="!text-primary dark:!text-white absolute top-4 right-4 md:right-6 bg-white"
         variant="outline"
       />
 

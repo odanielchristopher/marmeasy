@@ -7,9 +7,8 @@ export function useCreateCustomer() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: customersService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      queryClient.resetQueries({
         queryKey: ['customers'],
-        refetchType: 'all',
       });
     },
   });

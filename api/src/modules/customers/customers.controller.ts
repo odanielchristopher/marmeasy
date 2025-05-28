@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseUUIDPipe,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
+import { UpdateCustomerDto } from './dto/update-customer.dto';
 
 @Controller('customers')
 export class CustomersController {
@@ -24,8 +27,8 @@ export class CustomersController {
   ) {
     return this.customersService.findAll(userId, {
       order,
-      page,
-      perPage,
+      page: page || 1,
+      perPage: perPage || 24,
     });
   }
 
@@ -55,5 +58,22 @@ export class CustomersController {
     @Body() createCustomerDto: CreateCustomerDto,
   ) {
     return this.customersService.create(userId, createCustomerDto);
+  }
+
+  @Put(':customerId')
+  update(
+    @ActiveUserId() userId: string,
+    @Param('customerId', ParseUUIDPipe) customerId: string,
+    @Body() updateCustomerDto: UpdateCustomerDto,
+  ) {
+    return this.customersService.update(userId, customerId, updateCustomerDto);
+  }
+
+  @Delete(':customerId')
+  delete(
+    @ActiveUserId() userId: string,
+    @Param('customerId', ParseUUIDPipe) customerId: string,
+  ) {
+    return this.customersService.delete(userId, customerId);
   }
 }

@@ -7,20 +7,20 @@ import { InputCurrency } from '@views/components/ui/InputCurrency';
 import { InputFormatted } from '@views/components/ui/InputFormatted';
 import { Select } from '@views/components/ui/Select';
 
-import {
-  CustomerFormData,
-  useCustomerFormController,
-} from './useCustomerFormController';
+import { CustomerFormData } from './schema';
+import { useCustomerFormController } from './useCustomerFormController';
 
 interface ICustomerFormProps {
   defaultValues?: CustomerFormData;
   onSubmit(formData: CustomerFormData): Promise<void> | void;
   isLoading?: boolean;
+  buttonLabel: string;
 }
 
 export function CustomerForm({
   defaultValues,
   isLoading,
+  buttonLabel,
   onSubmit,
 }: ICustomerFormProps) {
   const { form, handleSubmit } = useCustomerFormController({
@@ -116,9 +116,9 @@ export function CustomerForm({
         type="submit"
         className="mt-6 w-full"
         isLoading={isLoading}
-        disabled={isLoading}
+        disabled={isLoading || (defaultValues && !form.formState.isDirty)}
       >
-        Criar cliente
+        {buttonLabel}
       </Button>
     </form>
   );

@@ -58,7 +58,6 @@ export function Customers() {
           <Button
             variant="outline"
             type="button"
-            className="bg-white"
             onClick={handleOpenFiltersModal}
           >
             <FilterIcon className="text-gray-800 dark:text-foreground" />

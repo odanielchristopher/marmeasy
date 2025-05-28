@@ -52,6 +52,7 @@ model Product {
   imagePath   String?
   price       Decimal
   categoryId  String? @map("product_category_id") @db.Uuid
+  isActive    Boolean @default(true)
 
   orderItems OrderItem[]
 

@@ -1,32 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
-const customerSchema = z.object({
-  initialBalance: z.number().or(z.string().nonempty('O saldo é obrigatório')),
-  name: z.string().nonempty('O nome do cliente é obrigatório'),
-  type: z.enum(['INDIVIDUAL', 'BUSINESS'], {
-    message: 'O tipo do cliente é obrigatório',
-  }),
-  color: z.string().nonempty('Escolha uma cor para o cliente'),
-  phone: z
-    .string()
-    .optional()
-    .refine(
-      (value) => {
-        if (!value) return true;
+import { CustomerFormData, customerSchema } from './schema';
 
-        return value.length === 11 && value[2] === '9';
-      },
-      {
-        message: 'O telefone precisa ser válido ou estar vazio',
-      },
-    ),
-});
-
-export type CustomerFormData = z.infer<typeof customerSchema>;
-
-interface IUseCustomerFormControllerProps {
+interface IUseCustomerFormController {
   defaultValues?: CustomerFormData;
   onSubmit(formData: CustomerFormData): Promise<void> | void;
 }
@@ -34,13 +11,14 @@ interface IUseCustomerFormControllerProps {
 export function useCustomerFormController({
   defaultValues,
   onSubmit,
-}: IUseCustomerFormControllerProps) {
+}: IUseCustomerFormController) {
   const form = useForm<CustomerFormData>({
     defaultValues: {
       name: defaultValues?.name ?? '',
       color: defaultValues?.color ?? '',
       type: defaultValues?.type ?? undefined,
       phone: defaultValues?.phone ?? '',
+      initialBalance: defaultValues?.initialBalance,
     },
     resolver: zodResolver(customerSchema),
   });

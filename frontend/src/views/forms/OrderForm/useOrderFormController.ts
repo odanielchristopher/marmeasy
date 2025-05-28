@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { IProduct } from '@app/entities/IProduct';
+import { IProduct } from '@app/entities/Product';
 import { products } from '@app/mocks/products';
 
 import { cartStepSchema } from './steps/CartStep/schema';

@@ -35,11 +35,10 @@ export type FindManyProductsByFiltersDto = {
 };
 
 export type UpdateProductOnDBDto = {
-  userId: string;
+  productId: string;
   data: UpdateProductDto;
 };
 
 export type DeleteProductDto = {
-  userId: string;
-  id: string;
+  productId: string;
 };
