@@ -1,11 +1,46 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsUUID,
+  Min,
+  Validate,
+  ValidateNested,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
 } from 'class-validator';
+
+@ValidatorConstraint({ name: 'maxTwoDecimalPlaces', async: false })
+export class MaxTwoDecimalPlaces implements ValidatorConstraintInterface {
+  validate(value: number, _args: ValidationArguments) {
+    return /^\d+(\.\d{1,2})?$/.test(value.toString());
+  }
+  defaultMessage(_args: ValidationArguments) {
+    return 'O preço unitário deve ter no máximo 2 casas decimais.';
+  }
+}
+
+export class CreateOrderItemDto {
+  @ApiProperty({ type: 'string', format: 'uuid' })
+  @IsUUID('4', { message: 'O id do produto deve ser um UUID válido.' })
+  productId: string;
+
+  @ApiProperty({ type: 'number' })
+  @IsInt({ message: 'A quantidade deve ser um número inteiro.' })
+  @Min(1, { message: 'A quantidade deve ser maior ou igual 1.' })
+  quantity: number;
+
+  @ApiProperty({ type: 'number', example: 10.66 })
+  @IsNumber({}, { message: 'O preço unitário deve ser um número.' })
+  @Min(0.01, { message: 'O preço unitário deve ser maior que zero.' })
+  @Validate(MaxTwoDecimalPlaces)
+  unitPrice: number;
+}
 
 export class CreateOrderDto {
   @ApiProperty({
@@ -59,40 +94,13 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Itens do pedido',
-    type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        productId: {
-          type: 'string',
-          format: 'uuid',
-        },
-        quantity: {
-          type: 'number',
-        },
-        unitPrice: {
-          type: 'number',
-        },
-      },
-    },
+    type: [CreateOrderItemDto],
+    required: true,
+    nullable: false,
+    isArray: true,
   })
   @IsNotEmpty({ message: 'Os itens do pedido são obrigatórios.' })
-  @IsUUID('4', {
-    each: true,
-    message: 'O id do produto deve ser um UUID válido.',
-  })
-  @IsNumber()
-  @IsNotEmpty({ message: 'A quantidade do produto é obrigatória.' })
-  @IsNumber(
-    { maxDecimalPlaces: 2 },
-    {
-      message: 'O valor unitário deve ser um número com até 2 casas decimais.',
-    },
-  )
-  @IsNotEmpty({ message: 'O valor unitário do produto é obrigatório.' })
-  items: {
-    productId: string;
-    quantity: number;
-    unitPrice: number;
-  }[];
+  @ValidateNested({ each: true })
+  @Type(() => CreateOrderItemDto)
+  items: CreateOrderItemDto[];
 }
