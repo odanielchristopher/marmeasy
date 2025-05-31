@@ -17,15 +17,17 @@ export class OrderRepository implements IOrdersRepository {
 
     const newOrder = await this.prismaService.order.create({
       data: {
-        ...data,
+        customerId: data.customerId,
+        type: data.type,
+        date: data.date,
+        amount: data.amount,
         orderItems: {
           createMany: {
-            data:
-              data.items.map((orderItem) => ({
-                productId: orderItem.productId,
-                quantity: orderItem.quantity,
-                unitPrice: orderItem.unitPrice,
-              })) || [],
+            data: data.items.map((orderItem) => ({
+              productId: orderItem.productId,
+              quantity: orderItem.quantity,
+              unitPrice: orderItem.unitPrice,
+            })),
           },
         },
       },

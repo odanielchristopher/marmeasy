@@ -6,5 +6,6 @@ import { ValidateCustomerOwnershipService } from './validate-customer-ownership.
 @Module({
   controllers: [CustomersController],
   providers: [CustomersService, ValidateCustomerOwnershipService],
+  exports: [ValidateCustomerOwnershipService],
 })
 export class CustomersModule {}

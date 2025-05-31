@@ -16,6 +16,6 @@ export class OrdersController {
     @ActiveUserId() userId: string,
     @Body() createOrderDto: CreateOrderDto,
   ) {
-    return this.ordersService.create(createOrderDto);
+    return this.ordersService.create(userId, createOrderDto);
   }
 }
