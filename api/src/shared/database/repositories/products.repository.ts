@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Product } from 'src/modules/products/entities/product.entity';
 import {
@@ -47,6 +47,10 @@ export class ProductsRepository implements IProductsRepository {
       where: { userId, id },
       select: this.prismaResponse(),
     });
+
+    if (!product) {
+      return null;
+    }
 
     return {
       ...product,

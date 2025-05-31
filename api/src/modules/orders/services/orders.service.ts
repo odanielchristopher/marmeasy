@@ -20,15 +20,14 @@ export class OrdersService implements IOrdersService {
   ) {}
 
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
-    const { customerId } = createOrderDto;
+    const { customerId, items } = createOrderDto;
 
-    const log = await this.validateEntitiesOwnership({
-      userId,
-      customerId,
-      itemsIds: createOrderDto.items.map((item) => item.productId),
-    });
+    await Promise.all(
+      items.map((item) =>
+        this.validateProductOwnershipService.validate(userId, item.productId),
+      ),
+    );
 
-    console.log(log);
     return this.ordersRepository.create({ data: createOrderDto });
   }
 
