@@ -22,11 +22,13 @@ export class OrdersService implements IOrdersService {
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, items } = createOrderDto;
 
-    await Promise.all(
-      items.map((item) =>
-        this.validateProductOwnershipService.validate(userId, item.productId),
-      ),
-    );
+    const itemsIds = items.map((item) => item.productId);
+
+    await this.validateEntitiesOwnership({
+      userId,
+      customerId,
+      itemsIds,
+    });
 
     return this.ordersRepository.create({ data: createOrderDto });
   }

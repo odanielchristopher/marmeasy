@@ -3,7 +3,7 @@ import {
   CreateOrderOnDbDto,
 } from '../interfaces/orders-repository.interface';
 
-import { Order } from 'src/modules/orders/entities/order.entity';
+import { Order, OrderType } from 'src/modules/orders/entities/order.entity';
 
 import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
@@ -23,11 +23,7 @@ export class OrderRepository implements IOrdersRepository {
         amount: data.amount,
         orderItems: {
           createMany: {
-            data: data.items.map((orderItem) => ({
-              productId: orderItem.productId,
-              quantity: orderItem.quantity,
-              unitPrice: orderItem.unitPrice,
-            })),
+            data: createOrderDto.data.items,
           },
         },
       },
@@ -36,25 +32,15 @@ export class OrderRepository implements IOrdersRepository {
       },
     });
 
-    // Map Prisma result to Order entity
+    const { orderItems, ...rest } = newOrder;
+
     const order: Order = {
-      id: newOrder.id,
-      customerId: newOrder.customerId,
-      userId: (data as any).userId, // Adjust this if userId is stored elsewhere
-      date:
-        newOrder.date instanceof Date
-          ? newOrder.date.toISOString()
-          : String(newOrder.date), // Ensure 'date' is a string
-      type: newOrder.type as Order['type'],
+      ...rest,
+      type: newOrder.type as OrderType,
       amount: newOrder.amount.toNumber(),
-      items: newOrder.orderItems.map((item) => ({
-        productId: item.productId,
-        quantity: item.quantity,
-        unitPrice:
-          typeof item.unitPrice === 'object' &&
-          typeof item.unitPrice.toNumber === 'function'
-            ? item.unitPrice.toNumber()
-            : Number(item.unitPrice),
+      items: orderItems.map((item) => ({
+        ...item,
+        unitPrice: item.unitPrice.toNumber(),
       })),
     };
 

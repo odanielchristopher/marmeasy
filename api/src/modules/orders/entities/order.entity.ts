@@ -5,6 +5,8 @@ export enum OrderType {
 }
 
 export class OrderItem {
+  id?: string;
+  orderId?: string;
   productId: string;
   quantity: number;
   unitPrice: number;
@@ -12,9 +14,8 @@ export class OrderItem {
 
 export class Order {
   id: string;
-  userId: string;
   customerId: string;
-  date: string;
+  date: Date;
   type: OrderType;
   items: OrderItem[];
   amount: number;

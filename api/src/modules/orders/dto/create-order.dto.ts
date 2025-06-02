@@ -21,7 +21,7 @@ export class MaxTwoDecimalPlaces implements ValidatorConstraintInterface {
     return /^\d+(\.\d{1,2})?$/.test(value.toString());
   }
   defaultMessage(_args: ValidationArguments) {
-    return 'O preço unitário deve ter no máximo 2 casas decimais.';
+    return 'O preço deve ter no máximo 2 casas decimais.';
   }
 }
 
@@ -58,14 +58,14 @@ export class CreateOrderDto {
   @ApiProperty({
     description: 'Data do pedido',
     example: '2025-01-26T12:00:00.000Z',
-    type: String,
+    type: Date,
     format: 'date-time',
     required: true,
     nullable: false,
   })
   @IsNotEmpty()
   @IsDateString()
-  date: string;
+  date: Date;
 
   @ApiProperty({
     description: 'Tipo do pedido',
@@ -90,6 +90,9 @@ export class CreateOrderDto {
   })
   @IsNumber()
   @IsNotEmpty()
+  @IsNumber({}, { message: 'O preço total deve ser um número.' })
+  @Min(0.01, { message: 'O preço total deve ser maior que zero.' })
+  @Validate(MaxTwoDecimalPlaces)
   amount: number;
 
   @ApiProperty({
