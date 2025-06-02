@@ -20,7 +20,7 @@ export class OrdersService implements IOrdersService {
   ) {}
 
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
-    const { customerId, items } = createOrderDto;
+    const { customerId, items, amount } = createOrderDto;
 
     const itemsIds = items.map((item) => item.productId);
 
@@ -29,6 +29,19 @@ export class OrdersService implements IOrdersService {
       customerId,
       itemsIds,
     });
+
+    const calculatedAmount = items.reduce(
+      (acc, item) => acc + item.quantity * item.unitPrice,
+      0,
+    );
+
+    const roundedCalculatedAmount = Math.round(calculatedAmount * 100) / 100;
+
+    if (roundedCalculatedAmount !== amount) {
+      throw new Error(
+        'O valor total do pedido não confere com a soma dos itens.',
+      );
+    }
 
     return this.ordersRepository.create({ data: createOrderDto });
   }
