@@ -10,6 +10,7 @@ import {
   FindManyByTermDto,
   FindManyByUserIdDto,
   ICustomersRepository,
+  UpdateCustomerDto,
 } from '../interfaces/customers-repository.interface';
 import { PrismaService } from '../prisma.service';
 
@@ -71,7 +72,7 @@ export class CustomersRepository implements ICustomersRepository {
     const { userId, customerId } = findFirstByIdDto;
 
     const customer = await this.prismaService.customer.findFirst({
-      where: { userId, id: customerId },
+      where: { userId, id: customerId, isActive: true },
     });
 
     return this.parser(customer);
@@ -94,6 +95,34 @@ export class CustomersRepository implements ICustomersRepository {
     });
 
     return this.parser(createdCustomer);
+  }
+
+  async update(updateDto: UpdateCustomerDto): Promise<Customer> {
+    const { data, customerId } = updateDto;
+
+    const { name, type, color, phone, balance } = data;
+
+    const updatedCustomer = await this.prismaService.customer.update({
+      where: { id: customerId },
+      data: {
+        name,
+        type,
+        color,
+        phone,
+        balance,
+      },
+    });
+
+    return this.parser(updatedCustomer);
+  }
+
+  async delete(customerId: string) {
+    await this.prismaService.customer.update({
+      where: { id: customerId },
+      data: {
+        isActive: false,
+      },
+    });
   }
 
   private parser(prismaCustomer: PrismaCustomer) {

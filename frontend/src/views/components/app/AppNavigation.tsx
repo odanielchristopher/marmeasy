@@ -42,7 +42,7 @@ export function AppNavigation() {
           key={pathname}
           className={cn(
             '!border border-transparent px-3 py-1.5 rounded-full text-white text-sm tracking-[-0.5px] flex items-center gap-2 hover:bg-[#DEE2E6]/20 hover:border-[#DEE2E6]/20',
-            currentPathname === pathname &&
+            currentPathname.startsWith(pathname) &&
               'border !border-white bg-[#DEE2E6]/20',
           )}
           to={pathname}

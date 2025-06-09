@@ -1,0 +1,144 @@
+import { BoxIcon, PencilIcon, PlusCircleIcon, Trash2Icon } from 'lucide-react';
+
+import { capitalizeFirstLetter } from '@app/utils/capitalizeFirstLetter';
+import { Button } from '@views/components/ui/Button';
+import { Skeleton } from '@views/components/ui/Skeleton';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableHeaderRow,
+  TableRow,
+} from '@views/components/ui/Table';
+
+import { EditCategoryModal } from './components/EditCategoryModal';
+import { NewCategoryModal } from './components/NewCategoryModal';
+import { RemoveCategoryModal } from './components/RemoveCategoryModal';
+import { useProductCategoriesController } from './useProductCategoriesController';
+
+export function ProductCategories() {
+  const {
+    categories,
+    isLoading,
+    hasCategories,
+    selectedCategory,
+    isOpenNewCategoryModal,
+    isOpenEditCategoryModal,
+    isOpenRemoveCategoryModal,
+    handleOpenNewCategoryModal,
+    handleOpenEditCategoryModal,
+    handleCloseNewCategoryModal,
+    handleCloseEditCategoryModal,
+    handleOpenRemoveCategoryModal,
+    handleCloseRemoveCategoryModal,
+  } = useProductCategoriesController();
+
+  return (
+    <div className="pt-3 md:pl-8 w-full">
+      {isOpenNewCategoryModal && (
+        <NewCategoryModal open onClose={handleCloseNewCategoryModal} />
+      )}
+      {isOpenEditCategoryModal && (
+        <EditCategoryModal
+          category={selectedCategory}
+          open
+          onClose={handleCloseEditCategoryModal}
+        />
+      )}
+      {isOpenRemoveCategoryModal && (
+        <RemoveCategoryModal
+          category={selectedCategory}
+          open
+          onClose={handleCloseRemoveCategoryModal}
+        />
+      )}
+
+      <header className="mb-5 flex gap-3 items-center">
+        <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
+          <BoxIcon />
+        </div>
+        <h4 className="text-xl font-medium tracking-[-0.5px]">Categorias</h4>
+      </header>
+
+      <div>
+        <Button
+          type="button"
+          variant="outline"
+          className="h-[42px]"
+          onClick={handleOpenNewCategoryModal}
+        >
+          <PlusCircleIcon />
+          Nova categoria
+        </Button>
+      </div>
+
+      <Table className="w-full mt-5">
+        <TableHeader>
+          <TableRow>
+            <TableHeaderRow className="w-[5%]">Emoji</TableHeaderRow>
+            <TableHeaderRow>Nome</TableHeaderRow>
+            <TableHeaderRow className="w-[12%]">Ações</TableHeaderRow>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading && (
+            <>
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-10" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-10 w-2/3" />
+                </TableCell>
+                <TableCell className="flex gap-3">
+                  <Skeleton className="size-10" />
+                  <Skeleton className="size-10" />
+                </TableCell>
+              </TableRow>
+
+              <TableRow>
+                <TableCell>
+                  <Skeleton className="h-10" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-10 w-2/3" />
+                </TableCell>
+                <TableCell className="flex gap-3">
+                  <Skeleton className="size-10" />
+                  <Skeleton className="size-10" />
+                </TableCell>
+              </TableRow>
+            </>
+          )}
+
+          {hasCategories &&
+            categories.map((category) => (
+              <TableRow key={category.id}>
+                <TableCell className="text-center">{category.icon}</TableCell>
+                <TableCell>{capitalizeFirstLetter(category.name)}</TableCell>
+                <TableCell className="flex gap-1">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="p-3 size-12"
+                    onClick={() => handleOpenEditCategoryModal(category)}
+                  >
+                    <PencilIcon className="size-4.5 text-primary" />
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="p-3 size-12"
+                    onClick={() => handleOpenRemoveCategoryModal(category)}
+                  >
+                    <Trash2Icon className="size-4.5 text-destructive" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}

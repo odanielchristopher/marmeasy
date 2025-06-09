@@ -33,13 +33,11 @@ export class ProductsService implements IProductsService {
     createProductDto: CreateProductDto,
     image?: Express.Multer.File,
   ) {
-    const { name, description, price, categoryId, ingredientsIds } =
-      createProductDto;
+    const { name, description, price, categoryId } = createProductDto;
 
     await this.validateEntitiesOwnership({
       userId,
       productCategoryId: categoryId,
-      ingredientIds: ingredientsIds ? ingredientsIds : undefined,
     });
 
     let imagePath: string;
@@ -56,7 +54,6 @@ export class ProductsService implements IProductsService {
         name,
         description,
         categoryId,
-        ingredientsIds,
         imagePath,
         price,
       },
@@ -70,14 +67,12 @@ export class ProductsService implements IProductsService {
     updateProductDto: UpdateProductDto,
     image?: Express.Multer.File,
   ) {
-    const { name, categoryId, description, ingredientsIds, price } =
-      updateProductDto;
+    const { name, categoryId, description, price } = updateProductDto;
 
     const currentProduct = await this.validateEntitiesOwnership({
       userId,
       productId,
       productCategoryId: categoryId,
-      ingredientIds: ingredientsIds ? ingredientsIds : undefined,
     });
 
     let updatedImagePath = removeImage ? null : currentProduct.imagePath;
@@ -96,15 +91,13 @@ export class ProductsService implements IProductsService {
     }
 
     return this.productsRepository.update({
-      userId,
+      productId,
       data: {
-        id: productId,
         name,
         description,
         price,
         imagePath: updatedImagePath,
         categoryId,
-        ingredientsIds,
       },
     });
   }
@@ -119,7 +112,7 @@ export class ProductsService implements IProductsService {
       await this.productImagesService.remove(product.imagePath);
     }
 
-    await this.productsRepository.delete({ userId, id: productId });
+    await this.productsRepository.delete({ productId });
 
     return null;
   }

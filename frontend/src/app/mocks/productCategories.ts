@@ -18,17 +18,17 @@ export const productCategories: IProductCategory[] = [
   },
   {
     id: '98d57110-22fc-409d-be29-asdawdasdasa',
-    name: 'café',
+    name: 'Pão',
     icon: '☕️',
   },
   {
     id: '1211487d-2d3e-4b62-bab9-aiwdmokasdda',
-    name: 'almoço',
+    name: 'Feijão',
     icon: '🧫',
   },
   {
     id: '55a22584-872c-41b9-8486-apwidasdkann',
-    name: 'pizza',
+    name: 'Arroz',
     icon: '🍕',
   },
 ];

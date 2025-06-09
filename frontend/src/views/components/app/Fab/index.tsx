@@ -11,10 +11,10 @@ import {
 import { useFabController } from './useFabController';
 
 export function Fab() {
-  const { fabItems, isDropdownOpen, setIsDropdownOpen } = useFabController();
+  const { fabItems } = useFabController();
 
   return (
-    <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"

@@ -17,7 +17,11 @@ export function NewCustomerModal({ open, onClose }: INewCustomerModalProps) {
 
   return (
     <Modal open={open} title="Novo cliente" onClose={onClose}>
-      <CustomerForm onSubmit={handleSubmit} isLoading={isLoading} />
+      <CustomerForm
+        onSubmit={handleSubmit}
+        buttonLabel="Criar cliente"
+        isLoading={isLoading}
+      />
     </Modal>
   );
 }

@@ -29,15 +29,13 @@ export function ProductCard({ onAdd, isDisabled, ...product }: IProductProps) {
 
       <div className="flex flex-1 flex-col justify-between gap-1">
         <div>
-          <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px]">
+          <strong className="text-gray-800 dark:text-foreground max-md:line-clamp-1 text-base font-semibold tracking-[-0.5px]">
             {product.name}
           </strong>
 
-          {product.description && (
-            <p className="text-gray-600 dark:text-gray-300 m-0 text-sm max-md:line-clamp-2 line-clamp-1 xl:line-clamp-2">
-              {product.description}
-            </p>
-          )}
+          <p className="text-gray-600 dark:text-gray-300 m-0 text-sm max-md:line-clamp-2 line-clamp-1 xl:line-clamp-2">
+            {product.description}
+          </p>
         </div>
 
         <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px]">
