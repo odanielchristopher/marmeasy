@@ -125,6 +125,15 @@ export class CustomersRepository implements ICustomersRepository {
     });
   }
 
+  async updateBalance(customerId: string, balance: number): Promise<Customer> {
+    const updatedCustomer = await this.prismaService.customer.update({
+      where: { id: customerId },
+      data: { balance },
+    });
+
+    return this.parser(updatedCustomer);
+  }
+
   private parser(prismaCustomer: PrismaCustomer) {
     return this.dataMappersFactory
       .getInstance<PrismaCustomer, Customer>(DataMapperType.CUSTOMER)

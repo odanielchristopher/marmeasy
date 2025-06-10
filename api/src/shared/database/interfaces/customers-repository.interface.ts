@@ -20,6 +20,8 @@ export interface ICustomersRepository {
   update(updateDto: UpdateCustomerDto): Promise<Customer>;
 
   delete(customerId: string): Promise<void>;
+
+  updateBalance(customerId: string, balance: number): Promise<Customer>;
 }
 
 // export type FindManyBySearchTermDto = {
