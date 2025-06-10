@@ -1,3 +1,4 @@
+import { HandCoinsIcon, SoupIcon } from 'lucide-react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router';
@@ -15,6 +16,25 @@ export function useCustomerController({ customerId }: IUseCustomerController) {
   const [isOpenRemoveModal, setIsOpenRemoveModal] = useState(false);
   const { customer, isLoading } = useCustomer(customerId);
   const { removeCustomer, isLoading: isRemoving } = useRemoveCustomer();
+  const [currentSession, setCurrentSession] = useState<'ORDERS' | 'PAYMENTS'>(
+    'ORDERS',
+  );
+
+  const sessions = [
+    {
+      label: 'Pedidos',
+      icon: SoupIcon,
+      handler: () => setCurrentSession('ORDERS'),
+      isActive: currentSession === 'ORDERS',
+    },
+    {
+      label: 'Pagamentos',
+      icon: HandCoinsIcon,
+      handler: () => setCurrentSession('PAYMENTS'),
+      isActive: currentSession === 'PAYMENTS',
+    },
+  ];
+
   const navigate = useNavigate();
 
   function handleOpenUpdateModal() {
@@ -46,6 +66,8 @@ export function useCustomerController({ customerId }: IUseCustomerController) {
     customer,
     isLoading,
     isRemoving,
+    sessions,
+    currentSession,
     isOpenUpdateModal,
     isOpenRemoveModal,
     handleConfirmRemove,

@@ -2,12 +2,12 @@ import { PlusCircleIcon, SoupIcon } from 'lucide-react';
 
 import { cn } from '@app/lib/utils';
 import { NotFoundError } from '@views/components/app/NotFoundError';
+import { ProductCard } from '@views/components/app/ProductCard';
 import { Button } from '@views/components/ui/Button';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { EditProductModal } from './components/EditProductModal';
 import { NewProductModal } from './components/NewProductModal';
-import { ProductCard } from './components/ProductCard';
 import { useProductsController } from './useProductsController';
 
 export function Products() {
@@ -87,8 +87,15 @@ export function Products() {
           products.map((product) => (
             <ProductCard
               key={product.id}
-              {...product}
+              role="button"
               onClick={() => handleOpenEditProductModal(product)}
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleOpenEditProductModal(product);
+                }
+              }}
+              {...product}
             />
           ))}
       </div>
