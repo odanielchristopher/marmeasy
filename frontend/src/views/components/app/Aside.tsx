@@ -4,9 +4,9 @@ import { cn } from '@app/lib/utils';
 import { Button } from '@views/components/ui/Button';
 
 interface IAsideProps {
-  currentSession: string;
+  currentOption: string;
   title: string;
-  sessions: {
+  options: {
     id: string;
     label: string;
     icon: React.ElementType;
@@ -24,8 +24,8 @@ interface IAsideProps {
 
 export function Aside({
   title,
-  currentSession,
-  sessions,
+  currentOption,
+  options,
   classNames,
 }: IAsideProps) {
   return (
@@ -47,14 +47,14 @@ export function Aside({
       <div className="my-4 h-px w-8 bg-border max-md:hidden" />
 
       <div className="flex gap-2 overflow-visible max-md:justify-around md:flex-col">
-        {sessions.map(({ id, label, icon: Icon, iconType, handler }) => (
+        {options.map(({ id, label, icon: Icon, iconType, handler }) => (
           <Button
             key={id}
             type="button"
             className={cn(
               'md:justify-start h-12 border border-transparent max-md:flex-1',
               classNames?.button,
-              currentSession === id &&
+              currentOption === id &&
                 'bg-accent border border-gray-300 dark:border-white',
             )}
             variant="ghost"
