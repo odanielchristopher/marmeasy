@@ -6,6 +6,9 @@ import { IOrdersRepository } from 'src/shared/database/interfaces/orders-reposit
 import { ValidateCustomerOwnershipService } from 'src/modules/customers/validate-customer-ownership.service';
 
 import { IValidateProductOwnershipService } from 'src/modules/products/interfaces/validate-products-ownership-service.interface';
+import { ValidateOrderService } from './validate-order.service';
+import { IValidateOrdersService } from '../interfaces/validate-order-service.interface';
+import { ComputeCustomerOwnershipService } from './compute-balance-customer.service';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -15,33 +18,50 @@ export class OrdersService implements IOrdersService {
 
     private readonly validateCustomerOwnershipService: ValidateCustomerOwnershipService,
 
+    private readonly computeBalanceCustomerService: ComputeCustomerOwnershipService,
+
+    @Inject(IValidateOrdersService)
+    private readonly validateOrderService: ValidateOrderService,
+
     @Inject(IOrdersRepository)
     private readonly ordersRepository: IOrdersRepository,
   ) {}
+
+  async listAllOdersByCustomerId(
+    userId: string,
+    customerId: string,
+  ): Promise<Order[]> {
+    await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    return null;
+  }
 
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, items, amount } = createOrderDto;
 
     const itemsIds = items.map((item) => item.productId);
 
-    await this.validateEntitiesOwnership({
+    const response = await this.validateEntitiesOwnership({
       userId,
       customerId,
       itemsIds,
     });
 
-    const calculatedAmount = items.reduce(
-      (acc, item) => acc + item.quantity * item.unitPrice,
-      0,
+    await this.validateOrderService.validate(
+      items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+      })),
+      response.products,
+      amount,
     );
 
-    const roundedCalculatedAmount = Math.round(calculatedAmount * 100) / 100;
-
-    if (roundedCalculatedAmount !== amount) {
-      throw new Error(
-        'O valor total do pedido não confere com a soma dos itens.',
-      );
-    }
+    await this.computeBalanceCustomerService.compute(
+      customerId,
+      amount,
+      response.customer.balance,
+    );
 
     return this.ordersRepository.create({ data: createOrderDto });
   }
@@ -55,7 +75,10 @@ export class OrdersService implements IOrdersService {
     customerId: string;
     itemsIds?: string[];
   }) {
-    await this.validateCustomerOwnershipService.validate(userId, customerId);
+    const customer = await this.validateCustomerOwnershipService.validate(
+      userId,
+      customerId,
+    );
 
     const products = await Promise.all(
       itemsIds.map(
@@ -65,6 +88,6 @@ export class OrdersService implements IOrdersService {
       ),
     );
 
-    return products;
+    return { customer, products };
   }
 }
