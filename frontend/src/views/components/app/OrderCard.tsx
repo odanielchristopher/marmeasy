@@ -44,11 +44,11 @@ export function OrderCard({
             </div>
             <div className="flex flex-1 items-center gap-2">
               <div className="flex flex-col">
-                <strong className="text-base text-gray-800 dark:text-foreground font-bold tracking-[-0.5px]">
+                <strong className="text-sm font-semibold tracking-[-0.5px] text-gray-800 dark:text-foreground">
                   {customer.name}
                 </strong>
 
-                <small className="text-sm text-gray-600 dark:text-gray-400 font-normal tracking-[-0.5px]">
+                <small className="text-sm text-muted-foreground font-normal tracking-[-0.5px]">
                   {formatDate(new Date(date))}
                 </small>
               </div>
@@ -68,7 +68,7 @@ export function OrderCard({
           </div>
         </AccordionTrigger>
         <AccordionContent className="bg-white rounded-b-xl dark:bg-card">
-          <div className="px-1 mt-3 grid min-[900px]:grid-cols-2 lg:grid-cols-1">
+          <div className="px-1 grid min-[900px]:grid-cols-2 lg:grid-cols-1">
             {items.map((item) => (
               <ProductCard
                 key={item.product.id}

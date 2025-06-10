@@ -72,18 +72,18 @@ export function Payments() {
                 />
               </div>
 
-              <div className="flex flex-col">
+              <div className="flex flex-col items-start">
                 <strong className="text-sm font-semibold tracking-[-0.5px] text-gray-800 dark:text-foreground">
                   {translateMap[payment.type].title}
                 </strong>
 
-                <small className="tracking-[-0.5px] text-muted-foreground text-sx">
+                <small className="text-sm text-muted-foreground font-normal tracking-[-0.5px]">
                   {formatDate(new Date(payment.date))}
                 </small>
               </div>
             </div>
 
-            <strong className="text-base font-semibold tracking-[-0.5px] text-teal-900 dark:text-green-800">
+            <strong className="text-base font-bold tracking-[-0.5px] text-teal-900 dark:text-green-800">
               {formatCurrency(payment.value)}
             </strong>
           </button>
