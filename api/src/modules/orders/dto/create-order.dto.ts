@@ -18,13 +18,13 @@ import {
 @ValidatorConstraint({ name: 'maxTwoDecimalPlaces', async: false })
 export class MaxTwoDecimalPlaces implements ValidatorConstraintInterface {
   validate(value: number, _args: ValidationArguments) {
+    if (value === undefined || value === null) return true; // Não valida se não existe valor
     return /^\d+(\.\d{1,2})?$/.test(value.toString());
   }
   defaultMessage(_args: ValidationArguments) {
     return 'O preço deve ter no máximo 2 casas decimais.';
   }
 }
-
 export class CreateOrderItemDto {
   @ApiProperty({ type: 'string', format: 'uuid' })
   @IsUUID('4', { message: 'O id do produto deve ser um UUID válido.' })

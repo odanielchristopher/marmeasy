@@ -6,12 +6,14 @@ import {
   Inject,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { IOrdersService } from './interfaces/orders-service.interface';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -64,5 +66,20 @@ export class OrdersController {
     @Param('orderId') orderId: string,
   ) {
     return this.ordersService.delete(userId, customerId, orderId);
+  }
+
+  @Put(':customerId/:orderId')
+  update(
+    @ActiveUserId() userId: string,
+    @Param('customerId') customerId: string,
+    @Param('orderId') orderId: string,
+    @Body() updateOrderDto: UpdateOrderDto,
+  ) {
+    return this.ordersService.update(
+      userId,
+      customerId,
+      orderId,
+      updateOrderDto,
+    );
   }
 }
