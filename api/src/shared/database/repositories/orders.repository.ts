@@ -60,7 +60,19 @@ export class OrderRepository implements IOrdersRepository {
         customerId,
       },
       include: {
-        orderItems: true,
+        orderItems: {
+          select: {
+            productId: true,
+            quantity: true,
+            unitPrice: true,
+            product: {
+              select: {
+                name: true,
+                imagePath: true,
+              },
+            },
+          },
+        },
       },
     });
 

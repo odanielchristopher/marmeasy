@@ -10,6 +10,10 @@ export class OrderItem {
   productId: string;
   quantity: number;
   unitPrice: number;
+  product?: {
+    name: string;
+    imagePath: string;
+  };
 }
 
 export class Order {
