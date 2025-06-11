@@ -35,6 +35,15 @@ export class OrdersService implements IOrdersService {
 
     return null;
   }
+  async findFirstById(
+    userId: string,
+    customerId: string,
+    orderId: string,
+  ): Promise<Order | null> {
+    this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    return this.ordersRepository.findFirstById({ customerId, orderId });
+  }
 
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, items, amount } = createOrderDto;

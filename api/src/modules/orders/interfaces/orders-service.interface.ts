@@ -5,4 +5,9 @@ export const IOrdersService = Symbol('IOrdersService');
 
 export interface IOrdersService {
   create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
+  findFirstById(
+    userId: string,
+    customerId: string,
+    orderId: string,
+  ): Promise<Order | null>;
 }
