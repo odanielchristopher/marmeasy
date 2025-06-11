@@ -7,6 +7,7 @@ export interface IOrdersRepository {
   create(createOrderDto: CreateOrderOnDbDto): Promise<Order>;
 
   findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Order>;
+
   findManyByCustomerId(
     findManyByCustomerIdDto: FindManyByCustomerIdDto,
   ): Promise<Order[]>;

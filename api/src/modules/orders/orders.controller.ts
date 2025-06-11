@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { IOrdersService } from './interfaces/orders-service.interface';
@@ -26,5 +34,25 @@ export class OrdersController {
     @Param('orderId') orderId: string,
   ) {
     return this.ordersService.findFirstById(userId, customerId, orderId);
+  }
+
+  @Get(':customerId')
+  listAllOrdersByCustomerId(
+    @ActiveUserId() userId: string,
+    @Param('customerId') customerId: string,
+    @Query('order') order: 'asc' | 'desc' = 'desc',
+    @Query('page') page: number,
+    @Query('per_page') perPage: number,
+  ) {
+    const validPage = page && page > 0 ? page : 1;
+    const validPerPage = perPage && perPage > 0 ? perPage : 10;
+
+    return this.ordersService.listAllOdersByCustomerId(
+      userId,
+      customerId,
+      order,
+      validPage,
+      validPerPage,
+    );
   }
 }

@@ -10,4 +10,12 @@ export interface IOrdersService {
     customerId: string,
     orderId: string,
   ): Promise<Order | null>;
+
+  listAllOdersByCustomerId(
+    userId: string,
+    customerId: string,
+    order: 'asc' | 'desc',
+    page: number,
+    perPage: number,
+  ): Promise<Order[]>;
 }

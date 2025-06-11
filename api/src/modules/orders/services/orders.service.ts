@@ -30,10 +30,18 @@ export class OrdersService implements IOrdersService {
   async listAllOdersByCustomerId(
     userId: string,
     customerId: string,
+    order: 'asc' | 'desc',
+    page: number,
+    perPage: number,
   ): Promise<Order[]> {
     await this.validateCustomerOwnershipService.validate(userId, customerId);
 
-    return null;
+    return this.ordersRepository.findManyByCustomerId({
+      customerId,
+      order,
+      page,
+      perPage,
+    });
   }
   async findFirstById(
     userId: string,
