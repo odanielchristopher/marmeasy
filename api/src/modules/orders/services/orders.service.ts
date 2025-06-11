@@ -125,4 +125,50 @@ export class OrdersService implements IOrdersService {
 
     await this.ordersRepository.delete(orderId, customerId);
   }
+
+  async update(
+    userId: string,
+    customerId: string,
+    orderId: string,
+    updateOrderDto: CreateOrderDto,
+  ): Promise<Order> {
+    await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    await this.validateOrderCustomerOwnershipService.validate(
+      customerId,
+      orderId,
+    );
+
+    const { items, amount } = updateOrderDto;
+
+    const itemsIds = items.map((item) => item.productId);
+
+    const response = await this.validateEntitiesOwnership({
+      userId,
+      customerId,
+      itemsIds,
+    });
+
+    await this.validateOrderService.validate(
+      items.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        unitPrice: item.unitPrice,
+      })),
+      response.products,
+      amount,
+    );
+
+    await this.computeBalanceCustomerService.compute(
+      customerId,
+      amount,
+      response.customer.balance,
+    );
+
+    return this.ordersRepository.update({
+      data: updateOrderDto,
+      orderId,
+      customerId,
+    });
+  }
 }

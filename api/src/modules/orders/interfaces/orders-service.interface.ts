@@ -1,4 +1,5 @@
 import { CreateOrderDto } from '../dto/create-order.dto';
+import { UpdateOrderDto } from '../dto/update-order.dto';
 import { Order } from '../entities/order.entity';
 
 export const IOrdersService = Symbol('IOrdersService');
@@ -18,6 +19,13 @@ export interface IOrdersService {
     page: number,
     perPage: number,
   ): Promise<Order[]>;
+
+  update(
+    userId: string,
+    customerId: string,
+    orderId: string,
+    updateOrderDto: UpdateOrderDto,
+  ): Promise<Order>;
 
   delete(userId: string, customerId: string, orderId: string): Promise<void>;
 }

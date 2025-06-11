@@ -1,5 +1,6 @@
 import { Order } from 'src/modules/orders/entities/order.entity';
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
+import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
 
@@ -13,6 +14,8 @@ export interface IOrdersRepository {
   ): Promise<Order[]>;
 
   delete(orderId: string, customerId: string): Promise<void>;
+
+  update(updateOrderOnDbDto: UpdateOrderOnDbDto): Promise<Order>;
 }
 
 export type CreateOrderOnDbDto = {
@@ -29,4 +32,10 @@ export type FindManyByCustomerIdDto = {
   order: 'asc' | 'desc';
   page: number;
   perPage: number;
+};
+
+export type UpdateOrderOnDbDto = {
+  orderId: string;
+  customerId: string;
+  data: UpdateOrderDto;
 };

@@ -3,6 +3,7 @@ import {
   CreateOrderOnDbDto,
   FindFirstByIdDto,
   FindManyByCustomerIdDto,
+  UpdateOrderOnDbDto,
 } from '../interfaces/orders-repository.interface';
 
 import { Order, OrderType } from 'src/modules/orders/entities/order.entity';
@@ -135,6 +136,45 @@ export class OrderRepository implements IOrdersRepository {
           })),
         })),
       );
+  }
+
+  async update(updateOrderOnDbDto: UpdateOrderOnDbDto): Promise<Order> {
+    const { orderId, customerId, data } = updateOrderOnDbDto;
+
+    const updatedOrder = await this.prismaService.order.update({
+      where: {
+        id: orderId,
+        customerId: customerId,
+      },
+      data: {
+        type: data.type,
+        date: data.date,
+        amount: data.amount,
+        orderItems: {
+          deleteMany: {},
+          createMany: {
+            data: data.items,
+          },
+        },
+      },
+      include: {
+        orderItems: true,
+      },
+    });
+
+    const { orderItems, ...rest } = updatedOrder;
+
+    const order: Order = {
+      ...rest,
+      type: updatedOrder.type as OrderType,
+      amount: updatedOrder.amount.toNumber(),
+      items: orderItems.map((item) => ({
+        ...item,
+        unitPrice: item.unitPrice.toNumber(),
+      })),
+    };
+
+    return order;
   }
 
   async delete(orderId: string, customerId): Promise<void> {
