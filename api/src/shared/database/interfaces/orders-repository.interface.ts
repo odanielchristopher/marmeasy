@@ -11,6 +11,8 @@ export interface IOrdersRepository {
   findManyByCustomerId(
     findManyByCustomerIdDto: FindManyByCustomerIdDto,
   ): Promise<Order[]>;
+
+  delete(orderId: string, customerId: string): Promise<void>;
 }
 
 export type CreateOrderOnDbDto = {

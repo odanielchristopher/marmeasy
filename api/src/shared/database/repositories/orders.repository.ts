@@ -136,4 +136,13 @@ export class OrderRepository implements IOrdersRepository {
         })),
       );
   }
+
+  async delete(orderId: string, customerId): Promise<void> {
+    await this.prismaService.order.delete({
+      where: {
+        id: orderId,
+        customerId: customerId,
+      },
+    });
+  }
 }
