@@ -1,6 +1,8 @@
 import {
   IOrdersRepository,
   CreateOrderOnDbDto,
+  FindFirstByIdDto,
+  FindManyByCustomerIdDto,
 } from '../interfaces/orders-repository.interface';
 
 import { Order, OrderType } from 'src/modules/orders/entities/order.entity';
@@ -45,5 +47,69 @@ export class OrderRepository implements IOrdersRepository {
     };
 
     return order;
+  }
+
+  async findFirstById(
+    findFirstByIdDto: FindFirstByIdDto,
+  ): Promise<Order | null> {
+    const { customerId, orderId } = findFirstByIdDto;
+
+    const foundOrder = await this.prismaService.order.findFirst({
+      where: {
+        id: orderId,
+        customerId,
+      },
+      include: {
+        orderItems: true,
+      },
+    });
+
+    if (!foundOrder) {
+      return null;
+    }
+
+    const { orderItems, ...rest } = foundOrder;
+
+    const order: Order = {
+      ...rest,
+      type: foundOrder.type as OrderType,
+      amount: foundOrder.amount.toNumber(),
+      items: orderItems.map((item) => ({
+        ...item,
+        unitPrice: item.unitPrice.toNumber(),
+      })),
+    };
+
+    return order;
+  }
+
+  findManyByCustomerId(
+    findManyByCustomerIdDto: FindManyByCustomerIdDto,
+  ): Promise<Order[]> {
+    const { customerId, order, page, perPage } = findManyByCustomerIdDto;
+
+    const skip = (page - 1) * perPage;
+
+    return this.prismaService.order
+      .findMany({
+        where: { customerId },
+        orderBy: { date: order },
+        take: perPage,
+        skip,
+        include: {
+          orderItems: true,
+        },
+      })
+      .then((orders) =>
+        orders.map((order) => ({
+          ...order,
+          type: order.type as OrderType,
+          amount: order.amount.toNumber(),
+          items: order.orderItems.map((item) => ({
+            ...item,
+            unitPrice: item.unitPrice.toNumber(),
+          })),
+        })),
+      );
   }
 }
