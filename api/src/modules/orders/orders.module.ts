@@ -7,6 +7,7 @@ import { CustomersModule } from '../customers/customers.module';
 import { ValidateOrderService } from './services/validate-order.service';
 import { IValidateOrdersService } from './interfaces/validate-order-service.interface';
 import { ComputeCustomerOwnershipService } from './services/compute-balance-customer.service';
+import { ValidateOrderCustomerOwnershipService } from './services/validate-order-customer-onwership.service';
 
 @Module({
   imports: [ProductsModule, CustomersModule],
@@ -21,6 +22,7 @@ import { ComputeCustomerOwnershipService } from './services/compute-balance-cust
       useClass: ValidateOrderService,
     },
     ComputeCustomerOwnershipService,
+    ValidateOrderCustomerOwnershipService,
   ],
 })
 export class OrdersModule {}

@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -54,5 +55,14 @@ export class OrdersController {
       validPage,
       validPerPage,
     );
+  }
+
+  @Delete(':customerId/:orderId')
+  delete(
+    @ActiveUserId() userId: string,
+    @Param('customerId') customerId: string,
+    @Param('orderId') orderId: string,
+  ) {
+    return this.ordersService.delete(userId, customerId, orderId);
   }
 }

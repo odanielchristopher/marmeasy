@@ -18,4 +18,6 @@ export interface IOrdersService {
     page: number,
     perPage: number,
   ): Promise<Order[]>;
+
+  delete(userId: string, customerId: string, orderId: string): Promise<void>;
 }

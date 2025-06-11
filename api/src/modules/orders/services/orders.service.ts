@@ -9,6 +9,7 @@ import { IValidateProductOwnershipService } from 'src/modules/products/interface
 import { ValidateOrderService } from './validate-order.service';
 import { IValidateOrdersService } from '../interfaces/validate-order-service.interface';
 import { ComputeCustomerOwnershipService } from './compute-balance-customer.service';
+import { ValidateOrderCustomerOwnershipService } from './validate-order-customer-onwership.service';
 
 @Injectable()
 export class OrdersService implements IOrdersService {
@@ -17,6 +18,8 @@ export class OrdersService implements IOrdersService {
     private readonly validateProductOwnershipService: IValidateProductOwnershipService,
 
     private readonly validateCustomerOwnershipService: ValidateCustomerOwnershipService,
+
+    private readonly validateOrderCustomerOwnershipService: ValidateOrderCustomerOwnershipService,
 
     private readonly computeBalanceCustomerService: ComputeCustomerOwnershipService,
 
@@ -106,5 +109,20 @@ export class OrdersService implements IOrdersService {
     );
 
     return { customer, products };
+  }
+
+  async delete(
+    userId: string,
+    customerId: string,
+    orderId: string,
+  ): Promise<void> {
+    await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    await this.validateOrderCustomerOwnershipService.validate(
+      customerId,
+      orderId,
+    );
+
+    await this.ordersRepository.delete(orderId, customerId);
   }
 }
