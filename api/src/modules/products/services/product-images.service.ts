@@ -59,6 +59,10 @@ export class ProducImagesService implements IProducImagesService {
   }
 
   async remove(imagePath: string) {
+    if (!imagePath) {
+      return { message: 'Imagem não encontrada!' };
+    }
+
     const fullImagePath = path.resolve(process.cwd(), imagePath);
 
     await fs.unlink(fullImagePath);

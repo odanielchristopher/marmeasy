@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Inject,
   Param,
   Post,
@@ -11,9 +13,10 @@ import {
 } from '@nestjs/common';
 
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
-import { IOrdersService } from './interfaces/orders-service.interface';
 import { CreateOrderDto } from './dto/create-order.dto';
+import { PaginatedAndOrderedQueryDto } from './dto/paginated-and-ordered-query.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { IOrdersService } from './interfaces/orders-service.interface';
 
 @Controller('orders')
 export class OrdersController {
@@ -21,6 +24,33 @@ export class OrdersController {
     @Inject(IOrdersService)
     private readonly ordersService: IOrdersService,
   ) {}
+
+  @Get()
+  findAllByUserId(
+    @ActiveUserId() userId: string,
+    @Query() { order, page, perPage }: PaginatedAndOrderedQueryDto,
+  ) {
+    return this.ordersService.findAllByUserId(userId, {
+      order,
+      page,
+      perPage,
+    });
+  }
+
+  @Get(':customerId')
+  findAllByCustomerId(
+    @ActiveUserId() userId: string,
+    @Param('customerId') customerId: string,
+    @Query() { order, page, perPage }: PaginatedAndOrderedQueryDto,
+  ) {
+    return this.ordersService.findAllByCustomerId(
+      userId,
+      customerId,
+      order,
+      page,
+      perPage,
+    );
+  }
 
   @Post()
   create(
@@ -30,56 +60,18 @@ export class OrdersController {
     return this.ordersService.create(userId, createOrderDto);
   }
 
-  @Get(':customerId/:orderId')
-  findFirstById(
-    @ActiveUserId() userId: string,
-    @Param('customerId') customerId: string,
-    @Param('orderId') orderId: string,
-  ) {
-    return this.ordersService.findFirstById(userId, customerId, orderId);
-  }
-
-  @Get(':customerId')
-  listAllOrdersByCustomerId(
-    @ActiveUserId() userId: string,
-    @Param('customerId') customerId: string,
-    @Query('order') order: 'asc' | 'desc' = 'desc',
-    @Query('page') page: number,
-    @Query('per_page') perPage: number,
-  ) {
-    const validPage = page && page > 0 ? page : 1;
-    const validPerPage = perPage && perPage > 0 ? perPage : 10;
-
-    return this.ordersService.listAllOdersByCustomerId(
-      userId,
-      customerId,
-      order,
-      validPage,
-      validPerPage,
-    );
-  }
-
-  @Delete(':customerId/:orderId')
-  delete(
-    @ActiveUserId() userId: string,
-    @Param('customerId') customerId: string,
-    @Param('orderId') orderId: string,
-  ) {
-    return this.ordersService.delete(userId, customerId, orderId);
-  }
-
-  @Put(':customerId/:orderId')
+  @Put(':orderId')
   update(
     @ActiveUserId() userId: string,
-    @Param('customerId') customerId: string,
     @Param('orderId') orderId: string,
     @Body() updateOrderDto: UpdateOrderDto,
   ) {
-    return this.ordersService.update(
-      userId,
-      customerId,
-      orderId,
-      updateOrderDto,
-    );
+    return this.ordersService.update(userId, orderId, updateOrderDto);
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':orderId')
+  delete(@ActiveUserId() userId: string, @Param('orderId') orderId: string) {
+    return this.ordersService.delete(userId, orderId);
   }
 }

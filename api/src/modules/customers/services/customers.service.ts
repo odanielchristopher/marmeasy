@@ -1,15 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ICustomersRepository } from 'src/shared/database/interfaces/customers-repository.interface';
-import { CreateCustomerDto } from './dto/create-customer.dto';
-import { UpdateCustomerDto } from './dto/update-customer.dto';
-import { ValidateCustomerOwnershipService } from './validate-customer-ownership.service';
+import { CreateCustomerDto } from '../dto/create-customer.dto';
+import { UpdateCustomerDto } from '../dto/update-customer.dto';
+import { IValidateCustomerOwnershipService } from '../interfaces/validate-customer-ownership-service.interface';
 
 @Injectable()
 export class CustomersService {
   constructor(
     @Inject(ICustomersRepository)
     private readonly customersRepository: ICustomersRepository,
-    private readonly validateCustomerOwnershipService: ValidateCustomerOwnershipService,
+    @Inject(IValidateCustomerOwnershipService)
+    private readonly validateCustomerOwnershipService: IValidateCustomerOwnershipService,
   ) {}
 
   findAll(

@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
+import { CustomersModule } from '../customers/customers.module';
+import { ProductsModule } from '../products/products.module';
 import { IOrdersService } from './interfaces/orders-service.interface';
+import { IValidateOrderOwnershipService } from './interfaces/validate-order-ownership-service.interface';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './services/orders.service';
-import { ProductsModule } from '../products/products.module';
-import { CustomersModule } from '../customers/customers.module';
-import { ValidateOrderService } from './services/validate-order.service';
-import { IValidateOrdersService } from './interfaces/validate-order-service.interface';
-import { ComputeCustomerOwnershipService } from './services/compute-balance-customer.service';
-import { ValidateOrderCustomerOwnershipService } from './services/validate-order-customer-onwership.service';
+import { ValidateOrderOwnershipService } from './services/validate-order-ownership.service';
 
 @Module({
   imports: [ProductsModule, CustomersModule],
@@ -18,11 +16,9 @@ import { ValidateOrderCustomerOwnershipService } from './services/validate-order
       useClass: OrdersService,
     },
     {
-      provide: IValidateOrdersService,
-      useClass: ValidateOrderService,
+      provide: IValidateOrderOwnershipService,
+      useClass: ValidateOrderOwnershipService,
     },
-    ComputeCustomerOwnershipService,
-    ValidateOrderCustomerOwnershipService,
   ],
 })
 export class OrdersModule {}
