@@ -9,10 +9,8 @@ export function useGlobalModalsController() {
 
   return {
     isOpenNewCustomerModal: globalModals.newCustomerModal.isOpen,
-    isOpenNewOrderModal: globalModals.newOrderModal.isOpen,
     isOpenNewPaymentModal: globalModals.newPaymentModal.isOpen,
     handleCloseNewCustomerModal: globalModals.closeNewCustomerModal,
-    handleCloseNewOrderModal: globalModals.closeNewOrderModal,
     handleCloseNewPaymentModal: globalModals.closeNewPaymentModal,
   };
 }
