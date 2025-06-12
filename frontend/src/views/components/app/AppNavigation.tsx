@@ -22,7 +22,7 @@ export const navItems = [
   },
   {
     label: 'Cardápio',
-    pathname: routes.menu,
+    pathname: routes.menu.products,
     icon: NotebookTextIcon,
   },
   {

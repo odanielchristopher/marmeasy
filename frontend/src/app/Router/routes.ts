@@ -1,5 +1,9 @@
 export const routes = {
-  menu: '/menu/products',
+  menu: {
+    root: '/menu',
+    products: '/menu/products',
+    categories: '/menu/categories',
+  },
   dashboard: '/dashboard',
   login: '/login',
   register: '/register',

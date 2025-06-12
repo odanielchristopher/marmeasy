@@ -57,7 +57,7 @@ export function Router() {
               <Route path="edit/:orderId" element={<EditOrder />} />
             </Route>
 
-            <Route path={routes.menu} element={<MenuLayout />}>
+            <Route path={routes.menu.root} element={<MenuLayout />}>
               <Route path="products" element={<Products />} />
               <Route path="categories" element={<ProductCategories />} />
             </Route>
