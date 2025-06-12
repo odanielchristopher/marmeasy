@@ -4,14 +4,13 @@
 import { ptBR } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import * as React from 'react';
-import { DayPicker } from 'react-day-picker';
+import { DateRange, DayPicker } from 'react-day-picker';
 
 import { cn } from '@app/lib/utils';
 import { buttonVariants } from '@views/components/ui/Button';
 
 interface ICalendarProps {
-  value: Date;
-  onChange?(date: Date): void;
+  value: Date | DateRange;
 }
 
 function Calendar({
@@ -19,7 +18,6 @@ function Calendar({
   classNames,
   showOutsideDays = true,
   value,
-  onChange,
   ...props
 }: React.ComponentProps<typeof DayPicker> & ICalendarProps) {
   return (
