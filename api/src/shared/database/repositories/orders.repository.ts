@@ -1,141 +1,115 @@
 import {
-  IOrdersRepository,
   CreateOrderOnDbDto,
   FindFirstByIdDto,
   FindManyByCustomerIdDto,
+  FindManyByUserIdDto,
+  IOrdersRepository,
   UpdateOrderOnDbDto,
 } from '../interfaces/orders-repository.interface';
 
-import { Order, OrderType } from 'src/modules/orders/entities/order.entity';
+import { Order } from 'src/modules/orders/entities/order.entity';
 
-import { PrismaService } from '../prisma.service';
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { IPaginatedResponse } from 'src/shared/types';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class OrderRepository implements IOrdersRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(createOrderDto: CreateOrderOnDbDto): Promise<Order> {
-    const { data } = createOrderDto;
+  async findManyByUserId(
+    FindManyDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Order[]>> {
+    const { userId, order, page, perPage } = FindManyDto;
 
-    const newOrder = await this.prismaService.order.create({
-      data: {
-        customerId: data.customerId,
-        type: data.type,
-        date: data.date,
-        amount: data.amount,
-        orderItems: {
-          createMany: {
-            data: createOrderDto.data.items,
-          },
-        },
-      },
-      include: {
-        orderItems: true,
+    const skip = (page - 1) * perPage;
+
+    const orders = await this.prismaService.order.findMany({
+      where: { customer: { userId: userId } },
+      orderBy: { date: order },
+      take: perPage,
+      skip,
+      select: this.prismaResponse(),
+    });
+
+    const totalItems = await this.prismaService.order.count({
+      where: {
+        userId,
       },
     });
 
-    const { orderItems, ...rest } = newOrder;
-
-    const order: Order = {
-      ...rest,
-      type: newOrder.type as OrderType,
-      amount: newOrder.amount.toNumber(),
-      items: orderItems.map((item) => ({
-        ...item,
-        unitPrice: item.unitPrice.toNumber(),
-      })),
+    return {
+      data: orders as unknown as Order[],
+      items: totalItems,
     };
-
-    return order;
   }
 
   async findFirstById(
     findFirstByIdDto: FindFirstByIdDto,
   ): Promise<Order | null> {
-    const { customerId, orderId } = findFirstByIdDto;
+    const { orderId, userId } = findFirstByIdDto;
 
-    const foundOrder = await this.prismaService.order.findFirst({
+    const foundedOrder = await this.prismaService.order.findFirst({
       where: {
         id: orderId,
-        customerId,
+        userId,
       },
-      include: {
-        orderItems: {
-          select: {
-            productId: true,
-            quantity: true,
-            unitPrice: true,
-            product: {
-              select: {
-                name: true,
-                imagePath: true,
-              },
-            },
-          },
-        },
-      },
+      select: this.prismaResponse(),
     });
 
-    if (!foundOrder) {
-      return null;
-    }
-
-    const { orderItems, ...rest } = foundOrder;
-
-    const order: Order = {
-      ...rest,
-      type: foundOrder.type as OrderType,
-      amount: foundOrder.amount.toNumber(),
-      items: orderItems.map((item) => ({
-        ...item,
-        unitPrice: item.unitPrice.toNumber(),
-      })),
-    };
-
-    return order;
+    return foundedOrder as unknown as Order;
   }
 
   async findManyByCustomerId(
     findManyByCustomerIdDto: FindManyByCustomerIdDto,
-  ): Promise<Order[]> {
-    const { customerId, order, page, perPage } = findManyByCustomerIdDto;
+  ): Promise<IPaginatedResponse<Order[]>> {
+    const { customerId, userId, order, page, perPage } =
+      findManyByCustomerIdDto;
 
     const skip = (page - 1) * perPage;
 
-    return await this.prismaService.order
-      .findMany({
-        where: { customerId },
-        orderBy: { date: order },
-        take: perPage,
-        skip,
-        include: {
-          orderItems: {
-            select: {
-              productId: true,
-              quantity: true,
-              unitPrice: true,
-              product: {
-                select: {
-                  name: true,
-                  imagePath: true,
-                },
-              },
-            },
+    const orders = await this.prismaService.order.findMany({
+      where: { customerId },
+      orderBy: { date: order },
+      take: perPage,
+      skip,
+      select: this.prismaResponse(),
+    });
+
+    const totalItems = await this.prismaService.order.count({
+      where: {
+        userId,
+        customerId,
+      },
+    });
+
+    return {
+      data: orders as unknown as Order[],
+      items: totalItems,
+    };
+  }
+
+  async create(createOrderDto: CreateOrderOnDbDto): Promise<Order> {
+    const { data, userId } = createOrderDto;
+
+    const newOrder = await this.prismaService.order.create({
+      data: {
+        userId,
+        customerId: data.customerId,
+        type: data.type,
+        date: data.date,
+        amount: data.amount,
+        items: {
+          createMany: {
+            data: createOrderDto.data.items,
           },
         },
-      })
-      .then((orders) =>
-        orders.map((order) => ({
-          ...order,
-          type: order.type as OrderType,
-          amount: order.amount.toNumber(),
-          items: order.orderItems.map((item) => ({
-            ...item,
-            unitPrice: item.unitPrice.toNumber(),
-          })),
-        })),
-      );
+      },
+      select: this.prismaResponse(),
+    });
+
+    return newOrder as unknown as Order;
   }
 
   async update(updateOrderOnDbDto: UpdateOrderOnDbDto): Promise<Order> {
@@ -150,39 +124,58 @@ export class OrderRepository implements IOrdersRepository {
         type: data.type,
         date: data.date,
         amount: data.amount,
-        orderItems: {
+        items: {
           deleteMany: {},
           createMany: {
             data: data.items,
           },
         },
       },
-      include: {
-        orderItems: true,
-      },
+      select: this.prismaResponse(),
     });
 
-    const { orderItems, ...rest } = updatedOrder;
-
-    const order: Order = {
-      ...rest,
-      type: updatedOrder.type as OrderType,
-      amount: updatedOrder.amount.toNumber(),
-      items: orderItems.map((item) => ({
-        ...item,
-        unitPrice: item.unitPrice.toNumber(),
-      })),
-    };
-
-    return order;
+    return updatedOrder as unknown as Order;
   }
 
-  async delete(orderId: string, customerId): Promise<void> {
-    await this.prismaService.order.delete({
+  async delete(orderId: string): Promise<Order> {
+    const order = await this.prismaService.order.delete({
       where: {
         id: orderId,
-        customerId: customerId,
       },
+      select: this.prismaResponse(),
     });
+
+    return order as unknown as Order;
+  }
+
+  private prismaResponse(): Prisma.OrderSelect {
+    return {
+      id: true,
+      amount: true,
+      type: true,
+      date: true,
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          type: true,
+          color: true,
+        },
+      },
+      items: {
+        select: {
+          id: true,
+          quantity: true,
+          unitPrice: true,
+          product: {
+            select: {
+              name: true,
+              imagePath: true,
+              description: true,
+            },
+          },
+        },
+      },
+    };
   }
 }

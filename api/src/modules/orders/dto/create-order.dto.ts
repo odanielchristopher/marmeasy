@@ -10,18 +10,18 @@ import {
   Min,
   Validate,
   ValidateNested,
-  ValidationArguments,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
+import { OrderType } from '../entities/order.entity';
 
 @ValidatorConstraint({ name: 'maxTwoDecimalPlaces', async: false })
 export class MaxTwoDecimalPlaces implements ValidatorConstraintInterface {
-  validate(value: number, _args: ValidationArguments) {
+  validate(value: number) {
     if (value === undefined || value === null) return true; // Não valida se não existe valor
     return /^\d+(\.\d{1,2})?$/.test(value.toString());
   }
-  defaultMessage(_args: ValidationArguments) {
+  defaultMessage() {
     return 'O preço deve ter no máximo 2 casas decimais.';
   }
 }
@@ -32,7 +32,7 @@ export class CreateOrderItemDto {
 
   @ApiProperty({ type: 'number' })
   @IsInt({ message: 'A quantidade deve ser um número inteiro.' })
-  @Min(1, { message: 'A quantidade deve ser maior ou igual 1.' })
+  @Min(1, { message: 'A quantidade deve ser maior que zero.' })
   quantity: number;
 
   @ApiProperty({ type: 'number', example: 10.66 })
@@ -69,31 +69,17 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Tipo do pedido',
-    enum: ['BREAKFAST', 'LUNCH', 'DINNER'],
+    enum: OrderType,
     example: 'LUNCH',
     type: String,
     required: true,
     nullable: false,
   })
   @IsNotEmpty()
-  @IsEnum(['BREAKFAST', 'LUNCH', 'DINNER'], {
+  @IsEnum(OrderType, {
     message: 'O tipo do pedido deve ser BREAKFAST, LUNCH ou DINNER.',
   })
-  type: 'BREAKFAST' | 'LUNCH' | 'DINNER';
-
-  @ApiProperty({
-    description: 'Valor do pedido',
-    example: 150.75,
-    type: Number,
-    required: true,
-    nullable: false,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  @IsNumber({}, { message: 'O preço total deve ser um número.' })
-  @Min(0.01, { message: 'O preço total deve ser maior que zero.' })
-  @Validate(MaxTwoDecimalPlaces)
-  amount: number;
+  type: OrderType;
 
   @ApiProperty({
     description: 'Itens do pedido',

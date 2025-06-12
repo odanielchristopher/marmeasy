@@ -1,8 +1,11 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ICustomersRepository } from 'src/shared/database/interfaces/customers-repository.interface';
+import { IValidateCustomerOwnershipService } from '../interfaces/validate-customer-ownership-service.interface';
 
 @Injectable()
-export class ValidateCustomerOwnershipService {
+export class ValidateCustomerOwnershipService
+  implements IValidateCustomerOwnershipService
+{
   constructor(
     @Inject(ICustomersRepository)
     private readonly customersRepository: ICustomersRepository,

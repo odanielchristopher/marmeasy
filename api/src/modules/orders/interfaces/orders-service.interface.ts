@@ -1,3 +1,4 @@
+import { IPaginatedResponse } from 'src/shared/types';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import { Order } from '../entities/order.entity';
@@ -5,27 +6,30 @@ import { Order } from '../entities/order.entity';
 export const IOrdersService = Symbol('IOrdersService');
 
 export interface IOrdersService {
-  create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
-  findFirstById(
+  findAllByUserId(
     userId: string,
-    customerId: string,
-    orderId: string,
-  ): Promise<Order | null>;
+    filters: {
+      order: string;
+      page: number;
+      perPage: number;
+    },
+  ): Promise<IPaginatedResponse<Order[]>>;
 
-  listAllOdersByCustomerId(
+  findAllByCustomerId(
     userId: string,
     customerId: string,
     order: 'asc' | 'desc',
     page: number,
     perPage: number,
-  ): Promise<Order[]>;
+  ): Promise<IPaginatedResponse<Order[]>>;
+
+  create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
 
   update(
     userId: string,
-    customerId: string,
     orderId: string,
     updateOrderDto: UpdateOrderDto,
   ): Promise<Order>;
 
-  delete(userId: string, customerId: string, orderId: string): Promise<void>;
+  delete(userId: string, orderId: string): Promise<void>;
 }

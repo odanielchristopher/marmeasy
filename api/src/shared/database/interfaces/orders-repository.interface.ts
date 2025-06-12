@@ -1,33 +1,47 @@
-import { Order } from 'src/modules/orders/entities/order.entity';
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
+import { Order } from 'src/modules/orders/entities/order.entity';
+import { IPaginatedResponse } from 'src/shared/types';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
 
 export interface IOrdersRepository {
-  create(createOrderDto: CreateOrderOnDbDto): Promise<Order>;
+  findManyByUserId(
+    FindManyDto: FindManyByUserIdDto,
+  ): Promise<IPaginatedResponse<Order[]>>;
 
   findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Order>;
 
   findManyByCustomerId(
     findManyByCustomerIdDto: FindManyByCustomerIdDto,
-  ): Promise<Order[]>;
+  ): Promise<IPaginatedResponse<Order[]>>;
 
-  delete(orderId: string, customerId: string): Promise<void>;
+  create(createOrderDto: CreateOrderOnDbDto): Promise<Order>;
+
+  delete(orderId: string): Promise<Order>;
 
   update(updateOrderOnDbDto: UpdateOrderOnDbDto): Promise<Order>;
 }
 
+export type FindManyByUserIdDto = {
+  userId: string;
+  order: 'asc' | 'desc';
+  page: number;
+  perPage: number;
+};
+
 export type CreateOrderOnDbDto = {
-  data: CreateOrderDto;
+  userId: string;
+  data: CreateOrderDto & { amount: number };
 };
 
 export type FindFirstByIdDto = {
-  customerId: string;
+  userId: string;
   orderId: string;
 };
 
 export type FindManyByCustomerIdDto = {
+  userId: string;
   customerId: string;
   order: 'asc' | 'desc';
   page: number;
@@ -37,5 +51,5 @@ export type FindManyByCustomerIdDto = {
 export type UpdateOrderOnDbDto = {
   orderId: string;
   customerId: string;
-  data: UpdateOrderDto;
+  data: UpdateOrderDto & { amount: number };
 };
