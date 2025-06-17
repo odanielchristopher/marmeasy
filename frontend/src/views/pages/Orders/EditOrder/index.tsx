@@ -1,24 +1,17 @@
 import { NotebookTextIcon } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
-import { orders } from '@app/mocks/orders';
+import { NotFoundError } from '@views/components/app/NotFoundError';
 import { PageHeader } from '@views/components/app/PageHeader';
 import { Button } from '@views/components/ui/Button';
+import { Skeleton } from '@views/components/ui/Skeleton';
 import { OrderForm } from '@views/forms/OrderForm';
 
-type Params = {
-  orderId: string;
-};
+import { useEditOrderController } from './useEditOrderController';
 
 export function EditOrder() {
-  const { orderId } = useParams<Params>();
-
-  const order = orders.find((ord) => ord.id === orderId);
+  const { order, isLoading } = useEditOrderController();
   const navigate = useNavigate();
-
-  if (!order) {
-    return null;
-  }
 
   return (
     <div className="h-full pt-7 px-4 md:px-6">
@@ -35,27 +28,46 @@ export function EditOrder() {
       </PageHeader>
 
       <main className="mt-11">
-        <OrderForm
-          onSubmit={(orderFormData) => console.log({ orderFormData })}
-          submitButtonLabel="Salvar alterações"
-          defaultValues={{
-            cartStep: {
-              items: order?.items.map((item) => ({
-                name: item.product.name,
-                productId: item.product.id,
-                description: item.product.description,
-                imagePath: item.product.imageUrl,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-              })),
-            },
-            dataStep: {
-              customerId: order.customer.id,
-              orderType: order.type,
-              date: new Date(order.date),
-            },
-          }}
-        />
+        {isLoading && (
+          <div className="flex justify-between">
+            <Skeleton className="h-[52px] w-[600px]" />
+
+            <Skeleton className="h-[300px] w-[400px]" />
+          </div>
+        )}
+
+        {!order && !isLoading && (
+          <NotFoundError
+            image={{
+              type: 'order',
+            }}
+            message="Não encontramos o pedido"
+          />
+        )}
+
+        {order && !isLoading && (
+          <OrderForm
+            onSubmit={(orderFormData) => console.log({ orderFormData })}
+            submitButtonLabel="Salvar alterações"
+            defaultValues={{
+              cartStep: {
+                items: order?.items.map((item) => ({
+                  name: item.product.name,
+                  productId: item.product.id,
+                  description: item.product.description,
+                  imagePath: item.product.imageUrl,
+                  quantity: item.quantity,
+                  unitPrice: Number(item.unitPrice),
+                })),
+              },
+              dataStep: {
+                customerId: order.customer.id,
+                orderType: order.type,
+                date: new Date(order.date),
+              },
+            }}
+          />
+        )}
       </main>
     </div>
   );

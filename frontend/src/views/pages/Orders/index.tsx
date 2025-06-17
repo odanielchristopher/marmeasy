@@ -1,26 +1,30 @@
 import { NotebookTextIcon } from 'lucide-react';
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { orders } from '@app/mocks/orders';
 import { routes } from '@app/Router/routes';
 import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
 import { FilterIcon } from '@views/assets/icons/FilterIcon';
 import { Aside } from '@views/components/app/Aside';
+import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollContainer';
+import { NotFoundError } from '@views/components/app/NotFoundError';
 import { OrderCard } from '@views/components/app/OrderCard';
 import { PageHeader } from '@views/components/app/PageHeader';
 import { Button } from '@views/components/ui/Button';
 import { InputSearch } from '@views/components/ui/InputSearch';
+import { Skeleton } from '@views/components/ui/Skeleton';
+
+import { useOrdersController } from './useOrdersController';
 
 export function Orders() {
-  const [customerType, setCustomerType] = useState<{
-    value: 'ALL' | 'INDIVIDUAL' | 'BUSINESS';
-    label: 'Todos os clientes' | 'Clientes físicos' | 'Clientes jurídicos';
-  }>({
-    value: 'ALL',
-    label: 'Todos os clientes',
-  });
   const navigate = useNavigate();
+  const {
+    orders,
+    hasOrders,
+    isLoading,
+    customerType,
+    handleCustomerType,
+    infiniteScroll,
+  } = useOrdersController();
 
   return (
     <div className="h-full pt-7 px-4 md:px-6">
@@ -41,7 +45,7 @@ export function Orders() {
               iconType: 'default',
               label: 'Todos os clientes',
               handler: () =>
-                setCustomerType({
+                handleCustomerType({
                   value: 'ALL',
                   label: 'Todos os clientes',
                 }),
@@ -52,7 +56,7 @@ export function Orders() {
               iconType: 'individual',
               label: 'Clientes físicos',
               handler: () =>
-                setCustomerType({
+                handleCustomerType({
                   value: 'INDIVIDUAL',
                   label: 'Clientes físicos',
                 }),
@@ -63,7 +67,7 @@ export function Orders() {
               iconType: 'business',
               label: 'Clientes jurídicos',
               handler: () =>
-                setCustomerType({
+                handleCustomerType({
                   value: 'BUSINESS',
                   label: 'Clientes jurídicos',
                 }),
@@ -79,10 +83,10 @@ export function Orders() {
             <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
               <CustomerIcon
                 type={customerType.value.toLowerCase()}
-                className="stroke-2"
+                className="stroke-2 text-gray-800 dark:text-foreground"
               />
             </div>
-            <h4 className="text-xl font-medium tracking-[-0.5px]">
+            <h4 className="text-xl text-gray-800 dark:text-foreground font-medium tracking-[-0.5px]">
               {customerType.label}
             </h4>
           </header>
@@ -90,7 +94,8 @@ export function Orders() {
           <div className="mt-6 flex gap-4 h-[52px] items-center">
             <InputSearch
               placeholder="Quem você está procurando?"
-              className="w-full max-w-[400px]"
+              className="w-full max-w-[500px]"
+              onSearch={(data) => console.log(data)}
             />
 
             <Button variant="outline" type="button">
@@ -98,15 +103,41 @@ export function Orders() {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 mt-5.5">
-            {orders.map((order) => (
-              <OrderCard
-                key={order.id}
-                order={order}
-                onEdit={() => navigate(`${routes.orders}/edit/${order.id}`)}
-              />
-            ))}
-          </div>
+          <InfiniteScrollContainer
+            isLoading={isLoading}
+            infiniteScroll={infiniteScroll}
+          >
+            <div className="flex-1 flex flex-col justify-between gap-4 pb-4 md:pb-6">
+              {!isLoading && !hasOrders && (
+                <NotFoundError message="Não encontramos nenhum cliente!" />
+              )}
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 mt-5.5">
+                {isLoading && (
+                  <>
+                    <Skeleton className="min-h-19 rounded-xl" />
+                    <Skeleton className="min-h-19 rounded-xl" />
+                    <Skeleton className="min-h-19 rounded-xl" />
+                    <Skeleton className="min-h-19 rounded-xl" />
+                    <Skeleton className="min-h-19 rounded-xl" />
+                    <Skeleton className="min-h-19 rounded-xl" />
+                  </>
+                )}
+
+                {!isLoading &&
+                  hasOrders &&
+                  orders.map((order) => (
+                    <OrderCard
+                      key={order.id}
+                      order={order}
+                      onEdit={() =>
+                        navigate(`${routes.orders}/edit/${order.id}`)
+                      }
+                    />
+                  ))}
+              </div>
+            </div>
+          </InfiniteScrollContainer>
         </div>
       </main>
     </div>
