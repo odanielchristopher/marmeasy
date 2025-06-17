@@ -45,7 +45,7 @@ export function OrderForm({
     <FormProvider {...form}>
       <form
         onSubmit={handleSubmit}
-        className="md:flex md:gap-6 md:items-start relative"
+        className="flex flex-col md:flex-row md:gap-6 md:items-start relative h-full"
       >
         <div className="space-y-5 flex-1">
           <InputSearch
@@ -54,7 +54,14 @@ export function OrderForm({
             onSearch={(formdata) => handleSearchTerm(formdata)}
           />
 
-          <div className="flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4">
+          <div
+            className={cn(
+              'flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4',
+              !isLoadingProducts &&
+                !hasProducts &&
+                'flex items-center justify-center',
+            )}
+          >
             {isLoadingProducts && !hasProducts && (
               <>
                 <Skeleton className="h-30 w-full" />

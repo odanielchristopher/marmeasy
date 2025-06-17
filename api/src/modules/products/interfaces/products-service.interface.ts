@@ -5,12 +5,18 @@ import { Product } from '../entities/product.entity';
 export const IProductsService = Symbol('IProductsService');
 
 export interface IProductsService {
-  findAllByUserId(userId: string, categoryName: string): Promise<Product[]>;
+  findAllByUserId(
+    userId: string,
+    categoryName: string,
+    searchTerm: string,
+  ): Promise<Product[]>;
+
   create(
     userId: string,
     createProductDto: CreateProductDto,
     image?: Express.Multer.File,
   ): Promise<Product>;
+
   update(
     userId: string,
     productId: string,

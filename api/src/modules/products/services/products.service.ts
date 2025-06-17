@@ -21,9 +21,9 @@ export class ProductsService implements IProductsService {
     private readonly validateProductCategorieOwnershipService: IValidateProductCategoryOwnershipService,
   ) {}
 
-  findAllByUserId(userId: string, categoryName: string) {
+  findAllByUserId(userId: string, categoryName: string, searchTerm: string) {
     return this.productsRepository.findManyByFilters({
-      filters: { userId, categoryName },
+      filters: { userId, categoryName, searchTerm },
       order: 'asc',
     });
   }

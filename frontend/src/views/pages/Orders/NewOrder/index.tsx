@@ -9,7 +9,7 @@ export function NewOrder() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full pt-7 px-4 md:px-6">
+    <div className="h-full pt-7 px-4 md:px-6 flex flex-col">
       <PageHeader
         title="Novo pedido"
         icon={NotebookTextIcon}
@@ -22,7 +22,7 @@ export function NewOrder() {
         </Button>
       </PageHeader>
 
-      <main className="mt-11">
+      <main className="mt-11 flex-1">
         <OrderForm
           onSubmit={(orderFormData) => console.log({ orderFormData })}
           submitButtonLabel="Fechar pedido"

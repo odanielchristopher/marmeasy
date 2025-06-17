@@ -14,7 +14,7 @@ export function EditOrder() {
   const navigate = useNavigate();
 
   return (
-    <div className="h-full pt-7 px-4 md:px-6">
+    <div className="h-full flex flex-col pt-7 px-4 md:px-6">
       <PageHeader
         title="Editar pedido"
         icon={NotebookTextIcon}
@@ -27,12 +27,21 @@ export function EditOrder() {
         </Button>
       </PageHeader>
 
-      <main className="mt-11">
-        {isLoading && (
-          <div className="flex justify-between">
-            <Skeleton className="h-[52px] w-[600px]" />
+      <main className="mt-11 flex-1">
+        {isLoading && !order && (
+          <div className="flex justify-between gap-6">
+            <div className="space-y-5 flex-1">
+              <Skeleton className="h-[52px] w-full max-w-[600px]" />
 
-            <Skeleton className="h-[300px] w-[400px]" />
+              <div className="flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4">
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+              </div>
+            </div>
+
+            <Skeleton className="max-md:absolute bottom-0 right-0 left-0 w-full h-[100px] max-md:rounded-xl max-md:rounded-b-none md:h-[300px] md:w-[400px]" />
           </div>
         )}
 
@@ -45,7 +54,7 @@ export function EditOrder() {
           />
         )}
 
-        {order && !isLoading && (
+        {order && (
           <OrderForm
             onSubmit={(orderFormData) => console.log({ orderFormData })}
             submitButtonLabel="Salvar alterações"

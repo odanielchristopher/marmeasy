@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { Product } from 'src/modules/products/entities/product.entity';
 import {
@@ -19,7 +19,7 @@ export class ProductsRepository implements IProductsRepository {
   ): Promise<Product[]> {
     const {
       order,
-      filters: { userId, categoryName },
+      filters: { userId, categoryName, searchTerm },
     } = findManyByUserIdDto;
 
     const products = await this.prismaService.product.findMany({
@@ -27,6 +27,7 @@ export class ProductsRepository implements IProductsRepository {
         userId,
         category: { name: categoryName },
         isActive: true,
+        name: { contains: searchTerm, mode: 'insensitive' },
       },
       select: this.prismaResponse(),
       orderBy: { name: order },

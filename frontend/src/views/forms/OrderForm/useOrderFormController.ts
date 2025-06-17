@@ -44,7 +44,6 @@ export function useOrderFormController({
 
   const { products, isLoading } = useProducts({
     search: searchProductsTerm,
-    category: '',
   });
 
   const hasProducts = products.length > 0;
