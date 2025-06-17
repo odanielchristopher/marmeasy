@@ -11,7 +11,7 @@ export class OrderItem {
   orderId: string;
   quantity: number;
   unitPrice: string;
-  product?: {
+  product: {
     id: string;
     name: string;
     imagePath: string;

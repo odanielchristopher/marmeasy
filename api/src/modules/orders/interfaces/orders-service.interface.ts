@@ -15,6 +15,8 @@ export interface IOrdersService {
     },
   ): Promise<IPaginatedResponse<Order[]>>;
 
+  findOneById(userId: string, orderId: string): Promise<Order>;
+
   findAllByCustomerId(
     userId: string,
     customerId: string,

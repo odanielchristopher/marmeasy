@@ -37,7 +37,15 @@ export class OrdersController {
     });
   }
 
-  @Get(':customerId')
+  @Get(':orderId')
+  findOneById(
+    @ActiveUserId() userId: string,
+    @Param('orderId') orderId: string,
+  ) {
+    return this.ordersService.findOneById(userId, orderId);
+  }
+
+  @Get('/customer/:customerId')
   findAllByCustomerId(
     @ActiveUserId() userId: string,
     @Param('customerId') customerId: string,

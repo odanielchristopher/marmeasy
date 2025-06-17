@@ -165,10 +165,12 @@ export class OrderRepository implements IOrdersRepository {
       items: {
         select: {
           id: true,
+          orderId: true,
           quantity: true,
           unitPrice: true,
           product: {
             select: {
+              id: true,
               name: true,
               imagePath: true,
               description: true,

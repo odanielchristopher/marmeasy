@@ -60,6 +60,15 @@ export class OrdersService implements IOrdersService {
     });
   }
 
+  async findOneById(userId: string, orderId: string): Promise<Order> {
+    const order = await this.ordersRepository.findFirstById({
+      userId,
+      orderId,
+    });
+
+    return order;
+  }
+
   async create(userId: string, createOrderDto: CreateOrderDto): Promise<Order> {
     const { customerId, items, date, type } = createOrderDto;
 

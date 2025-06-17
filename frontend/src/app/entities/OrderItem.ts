@@ -6,5 +6,5 @@ export interface IOrderItem {
     description?: string;
   };
   quantity: number;
-  unitPrice: number;
+  unitPrice: string;
 }

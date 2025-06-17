@@ -14,5 +14,5 @@ export interface IOrder {
   date: string;
   type: OrderType;
   items: IOrderItem[];
-  amount: number;
+  amount: string;
 }
