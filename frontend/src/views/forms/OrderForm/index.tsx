@@ -2,8 +2,10 @@ import { FormProvider } from 'react-hook-form';
 
 import { useIsMobile } from '@app/hooks/useIsMobile';
 import { cn } from '@app/lib/utils';
+import { NotFoundError } from '@views/components/app/NotFoundError';
 import { Stepper } from '@views/components/app/Stepper';
 import { InputSearch } from '@views/components/ui/InputSearch';
+import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { ProductCard } from './components/ProductCard';
 import { CartStep } from './steps/CartStep';
@@ -27,9 +29,11 @@ export function OrderForm({
   const {
     form,
     products,
+    hasProducts,
     cartControl,
-    addedProductIds,
+    isLoadingProducts,
     handleAddToCart,
+    handleSearchTerm,
     handleSubmit,
   } = useOrderFormController({
     defaultValues,
@@ -43,21 +47,42 @@ export function OrderForm({
         onSubmit={handleSubmit}
         className="md:flex md:gap-6 md:items-start relative"
       >
-        <div className="space-y-5">
+        <div className="space-y-5 flex-1">
           <InputSearch
             placeholder="Procure pelo cardápio"
             className="max-w-[600px]"
+            onSearch={(formdata) => handleSearchTerm(formdata)}
           />
 
           <div className="flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4">
-            {products.map((product) => (
-              <ProductCard
-                {...product}
-                key={product.id}
-                onAdd={() => handleAddToCart(product)}
-                isDisabled={addedProductIds.has(product.id)}
+            {isLoadingProducts && !hasProducts && (
+              <>
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+              </>
+            )}
+
+            {!isLoadingProducts && !hasProducts && (
+              <NotFoundError
+                image={{
+                  type: 'product',
+                  alt: 'Sem produtos',
+                }}
+                message="Não encontramos nenhum produto!"
               />
-            ))}
+            )}
+
+            {!isLoadingProducts &&
+              hasProducts &&
+              products.map((product) => (
+                <ProductCard
+                  {...product}
+                  key={product.id}
+                  onAdd={() => handleAddToCart(product)}
+                />
+              ))}
           </div>
         </div>
 

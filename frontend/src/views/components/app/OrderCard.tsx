@@ -1,4 +1,4 @@
-import { IOrderItem } from '@app/entities/OrderItem';
+import { IOrder } from '@app/entities/Order';
 import { formatCurrency } from '@app/utils/formatCurrency';
 import { formatDate } from '@app/utils/formatDate';
 import { CustomerIcon } from '@views/assets/icons/customers/CustomerIcon';
@@ -13,16 +13,7 @@ import {
 import { ProductCard } from './ProductCard';
 
 interface IOrderCardProps {
-  order: {
-    date: string;
-    amount: number;
-    customer: {
-      id: string;
-      type: 'BUSINESS' | 'INDIVIDUAL';
-      name: string;
-    };
-    items: IOrderItem[];
-  };
+  order: Omit<IOrder, 'id'>;
   onEdit(): void;
 }
 
@@ -61,7 +52,7 @@ export function OrderCard({
                 </span>
 
                 <strong className="text-base text-teal-800 dark:text-teal-900 tracking-[-0.5px]">
-                  {formatCurrency(amount)}
+                  {formatCurrency(Number(amount))}
                 </strong>
               </div>
             </div>
@@ -73,7 +64,7 @@ export function OrderCard({
               <ProductCard
                 key={item.product.id}
                 {...item.product}
-                price={item.unitPrice}
+                price={Number(item.unitPrice)}
                 className="border-none"
               />
             ))}
