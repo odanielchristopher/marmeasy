@@ -4,19 +4,19 @@ import { DateRange } from 'react-day-picker';
 import { useOrders } from '@app/hooks/orders/useOrders';
 
 export function useOrdersSessionController(customerId: string) {
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [renderOrder, setRenderOrder] = useState<'asc' | 'desc'>('desc');
   const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>(
     {},
   );
 
   const { infiniteScroll, isLoading, orders } = useOrders({
     customerId,
-    order,
+    order: renderOrder,
     dateRange,
   });
 
   function handleRenderOrder(value: 'asc' | 'desc') {
-    setOrder(value);
+    setRenderOrder(value);
   }
 
   function handleDateRange(value: DateRange) {
@@ -32,6 +32,7 @@ export function useOrdersSessionController(customerId: string) {
     infiniteScroll,
     isLoading,
     orders,
+    renderOrder,
     hasOrders,
     handleRenderOrder,
     handleDateRange,

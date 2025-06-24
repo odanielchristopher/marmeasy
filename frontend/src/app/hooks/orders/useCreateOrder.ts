@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { customersService } from '@app/services/customersService';
+import { ordersService } from '@app/services/ordersService';
 
-export function useCreateCustomer() {
+export function useCreateOrder() {
   const queryClient = useQueryClient();
 
   const { mutateAsync, isPending } = useMutation({
-    mutationFn: customersService.create,
+    mutationFn: ordersService.create,
     onSuccess: () => {
       queryClient.resetQueries({
-        queryKey: ['customers'],
+        queryKey: ['orders'],
       });
     },
   });
 
   return {
-    createCustomer: mutateAsync,
+    createOrder: mutateAsync,
     isLoading: isPending,
   };
 }

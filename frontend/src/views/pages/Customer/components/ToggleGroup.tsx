@@ -27,10 +27,10 @@ export function ToggleGroup({
         type="button"
         className={cn(
           'flex gap-3 bg-transparent border border-transparent px-4 py-2 rounded-md h-[52px] items-center transition-colors cursor-pointer',
-          selected === 'asc' &&
+          selected === 'desc' &&
             'bg-white border-gray-400 dark:bg-card dark:border-accent',
         )}
-        onClick={() => handleSelect('asc')}
+        onClick={() => handleSelect('desc')}
       >
         <ArrowUpNarrowWide className="size-5" />
 
@@ -41,10 +41,10 @@ export function ToggleGroup({
         type="button"
         className={cn(
           'flex gap-3 bg-transparent border border-transparent px-4 py-2 rounded-md h-[52px] items-center transition-colors cursor-pointer',
-          selected === 'desc' &&
+          selected === 'asc' &&
             'bg-white border-gray-400 dark:bg-card dark:border-accent',
         )}
-        onClick={() => handleSelect('desc')}
+        onClick={() => handleSelect('asc')}
       >
         <ArrowDownWideNarrow className="size-5" />
 

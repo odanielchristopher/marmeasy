@@ -19,11 +19,13 @@ interface IOrderFormProps {
   defaultValues?: OrderFormData;
   onSubmit(formData: OrderFormData): Promise<void> | void;
   submitButtonLabel: string;
+  isLoading?: boolean;
 }
 
 export function OrderForm({
   defaultValues,
   submitButtonLabel,
+  isLoading,
   onSubmit,
 }: IOrderFormProps) {
   const {
@@ -107,7 +109,12 @@ export function OrderForm({
             },
             {
               label: 'Mais informações',
-              content: <DataStep buttonLabel={submitButtonLabel} />,
+              content: (
+                <DataStep
+                  buttonLabel={submitButtonLabel}
+                  isSubmiting={isLoading}
+                />
+              ),
             },
           ]}
         />

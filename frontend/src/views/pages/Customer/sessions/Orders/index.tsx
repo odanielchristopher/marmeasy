@@ -22,6 +22,7 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
     infiniteScroll,
     isLoading,
     orders,
+    renderOrder,
     hasOrders,
     handleRenderOrder,
     handleDateRange,
@@ -39,7 +40,7 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
       <div className="flex justify-between gap-4 items-center mt-6 flex-wrap">
         <DateRangePickerInput className="w-60" onChange={handleDateRange} />
 
-        <ToggleGroup value="asc" onChange={handleRenderOrder} />
+        <ToggleGroup value={renderOrder} onChange={handleRenderOrder} />
       </div>
 
       <InfiniteScrollContainer
