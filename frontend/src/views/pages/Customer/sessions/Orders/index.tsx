@@ -6,6 +6,7 @@ import { DateRangePickerInput } from '@views/components/app/DateRangePickerInput
 import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollContainer';
 import { NotFoundError } from '@views/components/app/NotFoundError';
 import { OrderCard } from '@views/components/app/OrderCard';
+import { RemoveModal } from '@views/components/app/RemoveModal';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { ToggleGroup } from '../../components/ToggleGroup';
@@ -24,12 +25,26 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
     orders,
     renderOrder,
     hasOrders,
+    isRemoving,
+    isRemoveOrderModalOpen,
+    handleCloseRemoveOrderModal,
+    handleOpenRemoveOrderModal,
     handleRenderOrder,
     handleDateRange,
+    handleConfirmRemoveOrder,
   } = useOrdersSessionController(customerId);
 
   return (
     <>
+      {isRemoveOrderModalOpen && (
+        <RemoveModal
+          open
+          onClose={handleCloseRemoveOrderModal}
+          onConfirm={handleConfirmRemoveOrder}
+          isLoading={isRemoving}
+          warn="Tem certeza que deseja apagar esse pedido?"
+        />
+      )}
       <header className="flex gap-3 items-center">
         <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
           <SoupIcon />
@@ -81,6 +96,7 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
                   key={order.id}
                   order={order}
                   onEdit={() => navigate(`${routes.orders}/edit/${order.id}`)}
+                  onRemove={() => handleOpenRemoveOrderModal(order)}
                 />
               ))}
           </div>

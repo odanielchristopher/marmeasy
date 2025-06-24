@@ -9,6 +9,7 @@ import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollCon
 import { NotFoundError } from '@views/components/app/NotFoundError';
 import { OrderCard } from '@views/components/app/OrderCard';
 import { PageHeader } from '@views/components/app/PageHeader';
+import { RemoveModal } from '@views/components/app/RemoveModal';
 import { Button } from '@views/components/ui/Button';
 import { InputSearch } from '@views/components/ui/InputSearch';
 import { Skeleton } from '@views/components/ui/Skeleton';
@@ -23,12 +24,27 @@ export function Orders() {
     isLoading,
     customerType,
     infiniteScroll,
+    isRemoveOrderModalOpen,
     handleSearchTerm,
     handleCustomerType,
+    handleOpenRemoveOrderModal,
+    handleCloseRemoveOrderModal,
+    isRemoving,
+    handleConfirmRemoveOrder,
   } = useOrdersController();
 
   return (
     <div className="h-full pt-7 px-4 md:px-6">
+      {isRemoveOrderModalOpen && (
+        <RemoveModal
+          open
+          onClose={handleCloseRemoveOrderModal}
+          onConfirm={handleConfirmRemoveOrder}
+          isLoading={isRemoving}
+          warn="Tem certeza que deseja apagar esse pedido?"
+        />
+      )}
+
       <PageHeader
         title="Pedidos"
         description="Organize os produtos do seu estabelecimento"
@@ -143,6 +159,7 @@ export function Orders() {
                       onEdit={() =>
                         navigate(`${routes.orders}/edit/${order.id}`)
                       }
+                      onRemove={() => handleOpenRemoveOrderModal(order)}
                     />
                   ))}
               </div>

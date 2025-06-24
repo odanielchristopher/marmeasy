@@ -1,3 +1,5 @@
+import { PencilIcon, Trash2Icon } from 'lucide-react';
+
 import { IOrder } from '@app/entities/Order';
 import { formatCurrency } from '@app/utils/formatCurrency';
 import { formatDate } from '@app/utils/formatDate';
@@ -10,16 +12,20 @@ import {
   AccordionTrigger,
 } from '@views/components/ui/Accordion';
 
+import { Button } from '../ui/Button';
+
 import { ProductCard } from './ProductCard';
 
 interface IOrderCardProps {
   order: Omit<IOrder, 'id'>;
   onEdit(): void;
+  onRemove(): void;
 }
 
 export function OrderCard({
   order: { customer, date, items, amount },
   onEdit,
+  onRemove,
 }: IOrderCardProps) {
   return (
     <Accordion type="single" collapsible>
@@ -70,14 +76,23 @@ export function OrderCard({
             ))}
           </div>
 
-          <footer className="w-full px-4 flex items-center justify-end">
-            <button
+          <footer className="w-full px-4 flex items-center justify-end gap-2">
+            <Button
               type="button"
-              className="px-5 py-2 text-sm font-medium text-primary flex items-center border border-primary rounded-sm justify-center hover:bg-primary hover:text-white transition-colors"
+              className="p-2 size-10 rounded-sm"
               onClick={onEdit}
             >
-              <span>Editar pedido</span>
-            </button>
+              <PencilIcon className="stroke-[1.5] size-5" />
+            </Button>
+
+            <Button
+              type="button"
+              variant="destructive"
+              className="size-10 p-2 rounded-sm"
+              onClick={onRemove}
+            >
+              <Trash2Icon className="stroke-[1.5] size-5" />
+            </Button>
           </footer>
         </AccordionContent>
       </AccordionItem>

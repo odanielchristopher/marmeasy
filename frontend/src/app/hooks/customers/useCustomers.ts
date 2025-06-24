@@ -29,6 +29,7 @@ export function useCustomers({
     queryKey: ['customers', { search }],
     queryFn: () => customersService.getAllBySearch(search),
     enabled: !!search,
+    staleTime: 30000,
   });
 
   const customers = search
