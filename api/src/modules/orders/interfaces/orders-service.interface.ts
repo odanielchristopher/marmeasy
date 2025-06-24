@@ -1,3 +1,4 @@
+import { CustomerType, OrderType } from '@prisma/client';
 import { IPaginatedResponse } from 'src/shared/types';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
@@ -12,6 +13,9 @@ export interface IOrdersService {
       order: string;
       page: number;
       perPage: number;
+      customerType?: CustomerType;
+      orderType?: OrderType;
+      searchTerm?: string;
     },
   ): Promise<IPaginatedResponse<Order[]>>;
 

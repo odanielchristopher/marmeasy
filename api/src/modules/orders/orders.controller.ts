@@ -14,7 +14,10 @@ import {
 
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
 import { CreateOrderDto } from './dto/create-order.dto';
-import { PaginatedAndOrderedQueryDto } from './dto/paginated-and-ordered-query.dto';
+import {
+  FilterPaginatedDto,
+  PaginatedAndOrderedQueryDto,
+} from './dto/filters.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { IOrdersService } from './interfaces/orders-service.interface';
 
@@ -28,13 +31,9 @@ export class OrdersController {
   @Get()
   findAllByUserId(
     @ActiveUserId() userId: string,
-    @Query() { order, page, perPage }: PaginatedAndOrderedQueryDto,
+    @Query() filters: FilterPaginatedDto,
   ) {
-    return this.ordersService.findAllByUserId(userId, {
-      order,
-      page,
-      perPage,
-    });
+    return this.ordersService.findAllByUserId(userId, filters);
   }
 
   @Get(':orderId')

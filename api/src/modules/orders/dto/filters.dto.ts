@@ -1,5 +1,6 @@
+import { CustomerType, OrderType } from '@prisma/client';
 import { Type } from 'class-transformer';
-import { IsEnum, IsInt, IsOptional, Min } from 'class-validator';
+import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 import { OrderEnum } from 'src/shared/types/order.enum';
 
 export class PaginatedAndOrderedQueryDto {
@@ -19,4 +20,18 @@ export class PaginatedAndOrderedQueryDto {
   @IsInt()
   @Min(1, { message: 'O número por página precisa ser maior que zero.' })
   perPage = 20;
+}
+
+export class FilterPaginatedDto extends PaginatedAndOrderedQueryDto {
+  @IsEnum(CustomerType)
+  @IsOptional()
+  customerType?: CustomerType;
+
+  @IsEnum(OrderType)
+  @IsOptional()
+  orderType?: OrderType;
+
+  @IsString()
+  @IsOptional()
+  searchTerm?: string;
 }

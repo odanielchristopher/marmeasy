@@ -1,6 +1,7 @@
+import { CustomerType } from 'src/modules/customers/entities/customer.entity';
 import { CreateOrderDto } from 'src/modules/orders/dto/create-order.dto';
 import { UpdateOrderDto } from 'src/modules/orders/dto/update-order.dto';
-import { Order } from 'src/modules/orders/entities/order.entity';
+import { Order, OrderType } from 'src/modules/orders/entities/order.entity';
 import { IPaginatedResponse } from 'src/shared/types';
 
 export const IOrdersRepository = Symbol('IOrdersRepository');
@@ -28,6 +29,9 @@ export type FindManyByUserIdDto = {
   order: 'asc' | 'desc';
   page: number;
   perPage: number;
+  customerType?: CustomerType;
+  orderType?: OrderType;
+  searchTerm?: string;
 };
 
 export type CreateOrderOnDbDto = {

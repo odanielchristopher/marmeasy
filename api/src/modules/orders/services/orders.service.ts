@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IOrdersRepository } from 'src/shared/database/interfaces/orders-repository.interface';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { Order } from '../entities/order.entity';
+import { Order, OrderType } from '../entities/order.entity';
 import { IOrdersService } from '../interfaces/orders-service.interface';
 
 import { Decimal } from '@prisma/client/runtime/library';
+import { CustomerType } from 'src/modules/customers/entities/customer.entity';
 import { IUpdateCustomerBalanceService } from 'src/modules/customers/interfaces/update-customer-balance-service.interface';
 import { IValidateCustomerOwnershipService } from 'src/modules/customers/interfaces/validate-customer-ownership-service.interface';
 import { IValidateProductOwnershipService } from 'src/modules/products/interfaces/validate-products-ownership-service.interface';
@@ -32,6 +33,9 @@ export class OrdersService implements IOrdersService {
       order: string;
       page: number;
       perPage: number;
+      customerType?: CustomerType;
+      orderType?: OrderType;
+      searchTerm?: string;
     },
   ): Promise<IPaginatedResponse<Order[]>> {
     return this.ordersRepository.findManyByUserId({
@@ -39,6 +43,9 @@ export class OrdersService implements IOrdersService {
       order: filters.order === 'asc' ? 'asc' : 'desc',
       page: filters.page,
       perPage: filters.perPage,
+      customerType: filters.customerType,
+      orderType: filters.orderType,
+      searchTerm: filters.searchTerm,
     });
   }
 
