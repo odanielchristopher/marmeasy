@@ -65,6 +65,7 @@ export function useOrderFormController({
     if (itemIndex < 0) {
       cartControl.append({
         ...product,
+        imagePath: product.imagePath ?? undefined,
         quantity: 1,
         productId: id,
         unitPrice: product.price,

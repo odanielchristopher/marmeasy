@@ -94,7 +94,13 @@ export function Combobox({
               {value && options.find((option) => option.value === value)?.label}
             </span>
 
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              {!isLoading && (
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              )}
+
+              {isLoading && <Spinner />}
+            </div>
           </Button>
         </PopoverTrigger>
         <PopoverContent
