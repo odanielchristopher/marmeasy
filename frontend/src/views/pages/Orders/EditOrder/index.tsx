@@ -1,5 +1,4 @@
 import { NotebookTextIcon } from 'lucide-react';
-import { useNavigate } from 'react-router';
 
 import { NotFoundError } from '@views/components/app/NotFoundError';
 import { PageHeader } from '@views/components/app/PageHeader';
@@ -10,8 +9,8 @@ import { OrderForm } from '@views/forms/OrderForm';
 import { useEditOrderController } from './useEditOrderController';
 
 export function EditOrder() {
-  const { order, isLoading } = useEditOrderController();
-  const navigate = useNavigate();
+  const { order, isLoading, isUpdating, navigate, handleSubmit } =
+    useEditOrderController();
 
   return (
     <div className="h-full flex flex-col pt-7 px-4 md:px-6">
@@ -56,7 +55,7 @@ export function EditOrder() {
 
         {order && (
           <OrderForm
-            onSubmit={(orderFormData) => console.log({ orderFormData })}
+            onSubmit={handleSubmit}
             submitButtonLabel="Salvar alterações"
             defaultValues={{
               cartStep: {
@@ -75,6 +74,7 @@ export function EditOrder() {
                 date: new Date(order.date),
               },
             }}
+            isLoading={isUpdating}
           />
         )}
       </main>
