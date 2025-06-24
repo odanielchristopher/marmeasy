@@ -3,26 +3,22 @@ import { GetAllOrdersParams } from '@app/services/ordersService/@types/GetAllOrd
 
 import { useInfiniteScroll } from '../useInfiniteScroll';
 
-export function useOrders({
-  perPage = 24,
-  search,
-  ...params
-}: GetAllOrdersParams) {
+export function useOrders({ perPage = 24, ...params }: GetAllOrdersParams) {
   const {
     data: infiniteData,
-    isLoading: isLoadingInfiniteData,
+    isLoading,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteScroll({
     perPage,
-    queryKey: ['orders', { perPage, search }],
-    infiniteLoader: () => ordersService.getAll({ perPage, search, ...params }),
+    queryKey: ['orders', { perPage, ...params }],
+    infiniteLoader: () => ordersService.getAll({ perPage, ...params }),
   });
 
   return {
     orders: infiniteData?.pages.flatMap((page) => page.data) ?? [],
-    isLoading: isLoadingInfiniteData,
+    isLoading,
     infiniteScroll: {
       nextPage: fetchNextPage,
       hasNextPage,

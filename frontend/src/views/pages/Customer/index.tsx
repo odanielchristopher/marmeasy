@@ -6,12 +6,12 @@ import { Business } from '@views/assets/icons/customers/options/Business';
 import { Individual } from '@views/assets/icons/customers/options/Individual';
 import { PageHeader } from '@views/components/app/PageHeader';
 import { RemoveModal } from '@views/components/app/RemoveModal';
-import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { CustomerDropdown } from './components/CustomerDropdown';
+import { CustomerSkeleton } from './components/CustomerSkeleton';
 import { NotFoundCustomer } from './components/NotFoundCustomer';
 import { UpdateCustomerModal } from './components/UpdateCustomerModal';
-import { Orders } from './sessions/Orders';
+import { OrdersSession } from './sessions/Orders';
 import { Payments } from './sessions/Payments';
 import { useCustomerController } from './useCustomerController';
 
@@ -46,19 +46,7 @@ export function Customer() {
   }
 
   if (isLoading && !customer) {
-    return (
-      <div className="h-full pt-7 px-4 md:px-6">
-        <div className="max-w-[280px] md:max-w-full">
-          <div className="flex items-center gap-2">
-            <Skeleton className="size-8" />
-
-            <Skeleton className="h-8 w-40" />
-          </div>
-
-          <Skeleton className="mt-2 h-6 w-100 rounded-[4px]" />
-        </div>
-      </div>
-    );
+    return <CustomerSkeleton />;
   }
 
   if (!customer) {
@@ -126,7 +114,7 @@ export function Customer() {
           </aside>
 
           <div className="max-md:mt-3 md:pl-10 flex-1">
-            {currentSession === 'ORDERS' && <Orders />}
+            {currentSession === 'ORDERS' && <OrdersSession customerId={id!} />}
             {currentSession === 'PAYMENTS' && <Payments />}
           </div>
         </main>

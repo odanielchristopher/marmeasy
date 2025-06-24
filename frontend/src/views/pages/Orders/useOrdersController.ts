@@ -2,7 +2,6 @@
 import { useState } from 'react';
 
 import { useOrders } from '@app/hooks/orders/useOrders';
-import { useDebounce } from '@app/hooks/useDebounce';
 
 type CustomerType = {
   value: 'ALL' | 'INDIVIDUAL' | 'BUSINESS';
@@ -18,10 +17,10 @@ export function useOrdersController() {
   });
 
   const [searchOrderTerm, setSearchOrderTerm] = useState('');
-  const deboundedTerm = useDebounce(searchOrderTerm);
 
   const { orders, isLoading, infiniteScroll } = useOrders({
-    search: deboundedTerm,
+    search: searchOrderTerm,
+    customerType: customerType.value !== 'ALL' ? customerType.value : undefined,
   });
 
   function handleOpenFiltersModal() {

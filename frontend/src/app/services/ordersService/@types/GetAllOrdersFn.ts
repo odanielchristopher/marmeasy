@@ -9,6 +9,8 @@ export type GetAllOrdersParams = {
   customerType?: CustomerType;
   orderType?: OrderType;
   search?: string;
+  customerId?: string;
+  dateRange?: { from?: string; to?: string };
 };
 
 export type GetAllOrdersFn = (

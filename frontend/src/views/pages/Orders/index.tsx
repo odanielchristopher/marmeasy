@@ -22,8 +22,9 @@ export function Orders() {
     hasOrders,
     isLoading,
     customerType,
-    handleCustomerType,
     infiniteScroll,
+    handleSearchTerm,
+    handleCustomerType,
   } = useOrdersController();
 
   return (
@@ -95,7 +96,7 @@ export function Orders() {
             <InputSearch
               placeholder="Quem você está procurando?"
               className="w-full max-w-[500px]"
-              onSearch={(data) => console.log(data)}
+              onSearch={(data) => handleSearchTerm(data.searchTerm)}
             />
 
             <Button variant="outline" type="button">
@@ -109,7 +110,16 @@ export function Orders() {
           >
             <div className="flex-1 flex flex-col justify-between gap-4 pb-4 md:pb-6">
               {!isLoading && !hasOrders && (
-                <NotFoundError message="Não encontramos nenhum cliente!" />
+                <NotFoundError
+                  image={{
+                    type: 'order',
+                    alt: 'Sem pedidos encontrados!',
+                  }}
+                  message="Não encontramos nenhum pedido!"
+                  classNames={{
+                    root: 'mt-10',
+                  }}
+                />
               )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 mt-5.5">

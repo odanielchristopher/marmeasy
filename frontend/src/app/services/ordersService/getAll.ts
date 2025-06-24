@@ -10,8 +10,12 @@ export const getAll: GetAllOrdersFn = async ({
   perPage = 20,
   order = 'asc',
   search,
+  customerType,
+  orderType,
+  customerId,
+  dateRange,
 }) => {
-  const path = search ? `/orders/search` : '/orders';
+  const path = customerId ? `/orders/customer/${customerId}` : '/orders';
 
   const { data } = await httpClient.get<IPaginatedResponse<IOrder[]>>(path, {
     params: {
@@ -19,6 +23,10 @@ export const getAll: GetAllOrdersFn = async ({
       perPage,
       order,
       searchTerm: search,
+      customerType,
+      orderType,
+      from: dateRange?.from,
+      to: dateRange?.to,
     },
   });
 

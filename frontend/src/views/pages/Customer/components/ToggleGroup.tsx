@@ -4,11 +4,17 @@ import { useState } from 'react';
 import { cn } from '@app/lib/utils';
 
 interface IToggleGroupProps {
+  value?: 'asc' | 'desc';
   onChange?(value: 'asc' | 'desc'): void;
 }
 
-export function ToggleGroup({ onChange }: IToggleGroupProps) {
-  const [selected, setSelected] = useState<'asc' | 'desc'>('desc');
+export function ToggleGroup({
+  value: defaultValue,
+  onChange,
+}: IToggleGroupProps) {
+  const [selected, setSelected] = useState<'asc' | 'desc'>(
+    defaultValue ?? 'desc',
+  );
 
   function handleSelect(value: 'asc' | 'desc') {
     setSelected(value);
