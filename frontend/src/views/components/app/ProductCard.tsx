@@ -15,6 +15,7 @@ interface IProductCardProps {
   price: number;
   description?: string;
   imagePath?: string;
+  quantity?: number;
 }
 
 export function ProductCard({
@@ -24,6 +25,7 @@ export function ProductCard({
   description,
   role,
   className,
+  quantity,
   ...props
 }: IProductCardProps & React.ComponentProps<'div'>) {
   return (
@@ -47,7 +49,7 @@ export function ProductCard({
         </AvatarFallback>
       </Avatar>
 
-      <div className="flex flex-1 flex-col justify-between gap-1">
+      <div className="flex flex-1 flex-col justify-between gap-1 relative">
         <div>
           <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px] line-clamp-1">
             {name}
@@ -63,6 +65,12 @@ export function ProductCard({
         <strong className="text-gray-800 dark:text-foreground text-base font-semibold tracking-[-0.5px]">
           {formatCurrency(price)}
         </strong>
+
+        {quantity && (
+          <span className="absolute right-0 bottom-0 font-medium">
+            x{quantity}
+          </span>
+        )}
       </div>
     </div>
   );

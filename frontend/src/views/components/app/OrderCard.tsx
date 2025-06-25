@@ -27,6 +27,8 @@ export function OrderCard({
   onEdit,
   onRemove,
 }: IOrderCardProps) {
+  const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1" className="!border rounded-xl">
@@ -52,9 +54,9 @@ export function OrderCard({
 
               <div className="flex flex-1 flex-col items-end">
                 <span className="text-sm text-gray-800 dark:text-foreground font-normal tracking-[-0.5px]">
-                  {items.length !== 1
-                    ? `${items.length} items`
-                    : `${items.length} item`}
+                  {totalItems !== 1
+                    ? `${totalItems} items`
+                    : `${totalItems} item`}
                 </span>
 
                 <strong className="text-base text-teal-800 dark:text-teal-900 tracking-[-0.5px]">
@@ -72,6 +74,7 @@ export function OrderCard({
                 {...item.product}
                 price={Number(item.unitPrice)}
                 className="border-none"
+                quantity={item.quantity}
               />
             ))}
           </div>
