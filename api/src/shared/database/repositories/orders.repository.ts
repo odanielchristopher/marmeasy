@@ -11,6 +11,7 @@ import { Order } from 'src/modules/orders/entities/order.entity';
 
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { IPaginatedResponse } from 'src/shared/types';
 import { PrismaService } from '../prisma.service';
 
@@ -29,7 +30,10 @@ export class OrderRepository implements IOrdersRepository {
       customerType,
       orderType,
       searchTerm,
+      dateRange,
     } = FindManyDto;
+
+    const { from, to } = this.parseDateRange(dateRange);
 
     const skip = (page - 1) * perPage;
 
@@ -41,6 +45,10 @@ export class OrderRepository implements IOrdersRepository {
           type: customerType,
         },
         type: orderType,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
       orderBy: { date: order },
       take: perPage,
@@ -161,6 +169,21 @@ export class OrderRepository implements IOrdersRepository {
     });
 
     return order as unknown as Order;
+  }
+
+  private parseDateRange(dateRange?: DateRangeDto) {
+    const from = dateRange?.from
+      ? new Date(new Date(dateRange.from).setUTCHours(0, 0, 0, 0))
+      : undefined;
+
+    const to = dateRange?.to
+      ? new Date(new Date(dateRange.to).setUTCHours(23, 59, 59, 999))
+      : undefined;
+
+    return {
+      from,
+      to,
+    };
   }
 
   private prismaResponse(): Prisma.OrderSelect {

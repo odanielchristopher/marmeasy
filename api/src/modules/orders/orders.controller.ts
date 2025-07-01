@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import {
   FilterPaginatedDto,
@@ -32,8 +33,15 @@ export class OrdersController {
   findAllByUserId(
     @ActiveUserId() userId: string,
     @Query() filters: FilterPaginatedDto,
+    @Query('from') from: string,
+    @Query('to') to: string,
   ) {
-    return this.ordersService.findAllByUserId(userId, filters);
+    const dateRange = from && to ? new DateRangeDto({ from, to }) : undefined;
+
+    return this.ordersService.findAllByUserId(userId, {
+      ...filters,
+      dateRange,
+    });
   }
 
   @Get(':orderId')

@@ -1,7 +1,8 @@
-import { CustomerType, OrderType } from '@prisma/client';
 import { Type } from 'class-transformer';
 import { IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { CustomerType } from 'src/modules/customers/entities/customer.entity';
 import { OrderEnum } from 'src/shared/types/order.enum';
+import { OrderType } from '../entities/order.entity';
 
 export class PaginatedAndOrderedQueryDto {
   // eslint-disable-next-line quotes
