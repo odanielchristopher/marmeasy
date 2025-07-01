@@ -1,9 +1,13 @@
 import { Payment } from 'src/modules/payments/entities/payment.entity';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
+import { IPaginatedResponse } from 'src/shared/types';
 
 export const IPaymentsRepository = Symbol('IPaymentsRepository');
 
 export interface IPaymentsRepository {
-  findManyByClientId(findManyDto: FindManyPaymentsByIdDto): Promise<Payment[]>;
+  findManyByClientId(
+    findManyDto: FindManyPaymentsByIdDto,
+  ): Promise<IPaginatedResponse<Payment[]>>;
 
   findFirstByUserId(findFirstByIdDto: FindFirstPaymentDto): Promise<Payment>;
 
@@ -21,8 +25,9 @@ export type FindFirstPaymentDto = {
 
 export type FindManyPaymentsByIdDto = {
   userId: string;
-  clientId: string;
+  customerId: string;
   order: 'asc' | 'desc';
+  dateRange?: DateRangeDto;
 };
 
 export type CreatePaymentDto = {

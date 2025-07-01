@@ -59,6 +59,10 @@ export class OrderRepository implements IOrdersRepository {
     const totalItems = await this.prismaService.order.count({
       where: {
         userId,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
     });
 
@@ -111,6 +115,10 @@ export class OrderRepository implements IOrdersRepository {
       where: {
         userId,
         customerId,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
     });
 

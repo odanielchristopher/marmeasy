@@ -11,13 +11,13 @@ export class PaymentMapper implements IDataMapper<PrismaPayment, Payment> {
       return null;
     }
 
-    const { id, date, type, value, clientId, userId, ...rest } =
+    const { id, date, type, value, customerId, userId, ...rest } =
       persistenceObject;
 
     return {
       id,
       value: value.toNumber(),
-      clientId,
+      customerId,
       userId,
       date: date.toISOString(),
       type: PaymentType[type],

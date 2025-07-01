@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { CustomersModule } from '../customers/customers.module';
 import { IPaymentsService } from './interfaces/payments-service.interface';
 import { IValidatePaymentOwnershipService } from './interfaces/validate-payment-onwership-service.interface';
 import { PaymentsController } from './payments.controller';
@@ -6,7 +7,7 @@ import { PaymentsService } from './services/payments.service';
 import { ValidatePaymentOwnershipService } from './services/validate-payment-onwership.service';
 
 @Module({
-  imports: [],
+  imports: [CustomersModule],
   controllers: [PaymentsController],
   providers: [
     {
