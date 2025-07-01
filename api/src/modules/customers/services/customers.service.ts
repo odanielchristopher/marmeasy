@@ -2,10 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ICustomersRepository } from 'src/shared/database/interfaces/customers-repository.interface';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
+import { CustomerType } from '../entities/customer.entity';
+import { ICustomersService } from '../interfaces/customers-service.interface';
 import { IValidateCustomerOwnershipService } from '../interfaces/validate-customer-ownership-service.interface';
 
 @Injectable()
-export class CustomersService {
+export class CustomersService implements ICustomersService {
   constructor(
     @Inject(ICustomersRepository)
     private readonly customersRepository: ICustomersRepository,
@@ -19,13 +21,15 @@ export class CustomersService {
       order: string;
       page: number;
       perPage: number;
+      customerType?: CustomerType;
     },
   ) {
-    const { order, page, perPage } = filters;
+    const { order, page, perPage, customerType } = filters;
 
     return this.customersRepository.findManyByUserId({
       userId,
       order: order === 'asc' ? 'asc' : 'desc',
+      customerType: customerType ? customerType : undefined,
       page,
       perPage,
     });

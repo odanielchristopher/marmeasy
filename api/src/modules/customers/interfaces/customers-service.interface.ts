@@ -1,7 +1,7 @@
 import { IPaginatedResponse } from 'src/shared/types';
 import { CreateCustomerDto } from '../dto/create-customer.dto';
 import { UpdateCustomerDto } from '../dto/update-customer.dto';
-import { Customer } from '../entities/customer.entity';
+import { Customer, CustomerType } from '../entities/customer.entity';
 
 export const ICustomersService = Symbol('ICustomersService');
 
@@ -10,6 +10,7 @@ export interface ICustomersService {
     userId: string,
     filters: {
       order: string;
+      customerType?: CustomerType;
       page: number;
       perPage: number;
     },

@@ -44,13 +44,13 @@ export class CustomersRepository implements ICustomersRepository {
   async findManyByUserId(
     findManyByUserIdDto: FindManyByUserIdDto,
   ): Promise<IPaginatedResponse<Customer[]>> {
-    const { userId, order, page, perPage } = findManyByUserIdDto;
+    const { userId, order, page, perPage, customerType } = findManyByUserIdDto;
 
     // Calcula a posição inicial
     const skip = (page - 1) * perPage;
 
     const customers = await this.prismaService.customer.findMany({
-      where: { userId, isActive: true },
+      where: { userId, isActive: true, type: customerType },
       orderBy: {
         name: order,
       },
@@ -59,7 +59,7 @@ export class CustomersRepository implements ICustomersRepository {
     });
 
     const items = await this.prismaService.customer.count({
-      where: { userId, isActive: true },
+      where: { userId, isActive: true, type: customerType },
     });
 
     return {
