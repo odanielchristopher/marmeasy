@@ -1,5 +1,5 @@
 import { ArrowDownWideNarrowIcon, ArrowUpNarrowWideIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { CustomerType } from '@app/entities/Customer';
 import { cn } from '@app/lib/utils';
@@ -30,23 +30,26 @@ export function FiltersModal({
 
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  const customerTypes = [
-    {
-      value: 'ALL',
-      label: 'Todos os clientes',
-      handler: () => setSelectedCustomerType('ALL'),
-    },
-    {
-      value: 'INDIVIDUAL',
-      label: 'Clientes físicos',
-      handler: () => setSelectedCustomerType('INDIVIDUAL'),
-    },
-    {
-      value: 'BUSINESS',
-      label: 'Clientes jurídicos',
-      handler: () => setSelectedCustomerType('BUSINESS'),
-    },
-  ];
+  const customerTypes = useMemo(
+    () => [
+      {
+        value: 'ALL',
+        label: 'Todos os clientes',
+        handler: () => setSelectedCustomerType('ALL'),
+      },
+      {
+        value: 'INDIVIDUAL',
+        label: 'Clientes físicos',
+        handler: () => setSelectedCustomerType('INDIVIDUAL'),
+      },
+      {
+        value: 'BUSINESS',
+        label: 'Clientes jurídicos',
+        handler: () => setSelectedCustomerType('BUSINESS'),
+      },
+    ],
+    [],
+  );
 
   function handleApplyFilters() {
     onApplyFilters({

@@ -6,6 +6,8 @@ import { IOrder } from '@app/entities/Order';
 import { useOrders } from '@app/hooks/orders/useOrders';
 import { useRemoveOrder } from '@app/hooks/orders/useRemoveOrder';
 
+import { OrderFilters } from './components/FiltersModal';
+
 type CustomerType = {
   value: 'ALL' | 'INDIVIDUAL' | 'BUSINESS';
   label: 'Todos os clientes' | 'Clientes físicos' | 'Clientes jurídicos';
@@ -14,6 +16,10 @@ type CustomerType = {
 export function useOrdersController() {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const [isRemoveOrderModalOpen, setIsRemoveOrderModalOpen] = useState(false);
+  const [filters, serFilters] = useState<{
+    order: 'asc' | 'desc';
+    dateRange?: { from?: string; to?: string };
+  }>();
 
   const [customerType, setCustomerType] = useState<CustomerType>({
     value: 'ALL',
@@ -25,7 +31,8 @@ export function useOrdersController() {
   const { orders, isLoading, infiniteScroll } = useOrders({
     search: searchOrderTerm,
     customerType: customerType.value !== 'ALL' ? customerType.value : undefined,
-    order: 'desc',
+    order: filters?.order,
+    dateRange: filters?.dateRange,
   });
   const [orderBeingRemoved, setOrderBeingRemoved] = useState<IOrder | null>(
     null,
@@ -69,6 +76,18 @@ export function useOrdersController() {
     }
   }
 
+  function handleApplyFilters(value: OrderFilters) {
+    const { order, dateRange } = value;
+
+    serFilters({
+      order,
+      dateRange: {
+        from: dateRange?.from?.toISOString(),
+        to: dateRange?.to?.toISOString(),
+      },
+    });
+  }
+
   const hasOrders = orders.length > 0;
 
   return {
@@ -81,6 +100,7 @@ export function useOrdersController() {
     infiniteScroll,
     isRemoving,
     isRemoveOrderModalOpen,
+    handleApplyFilters,
     handleCustomerType,
     handleOpenFiltersModal,
     handleCloseFiltersModal,

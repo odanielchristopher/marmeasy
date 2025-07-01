@@ -14,6 +14,7 @@ import { Button } from '@views/components/ui/Button';
 import { InputSearch } from '@views/components/ui/InputSearch';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
+import { FiltersModal } from './components/FiltersModal';
 import { useOrdersController } from './useOrdersController';
 
 export function Orders() {
@@ -25,6 +26,10 @@ export function Orders() {
     customerType,
     infiniteScroll,
     isRemoveOrderModalOpen,
+    isFiltersModalOpen,
+    handleApplyFilters,
+    handleCloseFiltersModal,
+    handleOpenFiltersModal,
     handleSearchTerm,
     handleCustomerType,
     handleOpenRemoveOrderModal,
@@ -44,6 +49,11 @@ export function Orders() {
           warn="Tem certeza que deseja apagar esse pedido?"
         />
       )}
+      <FiltersModal
+        open={isFiltersModalOpen}
+        onClose={handleCloseFiltersModal}
+        onApplyFilters={handleApplyFilters}
+      />
 
       <PageHeader
         title="Pedidos"
@@ -115,7 +125,11 @@ export function Orders() {
               onSearch={(data) => handleSearchTerm(data.searchTerm)}
             />
 
-            <Button variant="outline" type="button">
+            <Button
+              variant="outline"
+              type="button"
+              onClick={handleOpenFiltersModal}
+            >
               <FilterIcon className="text-gray-800 dark:text-foreground" />
             </Button>
           </div>
