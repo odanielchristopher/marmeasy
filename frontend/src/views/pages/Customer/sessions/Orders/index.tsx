@@ -1,4 +1,8 @@
-import { SoupIcon } from 'lucide-react';
+import {
+  ArrowDownWideNarrowIcon,
+  ArrowUpNarrowWideIcon,
+  SoupIcon,
+} from 'lucide-react';
 import { useNavigate } from 'react-router';
 
 import { routes } from '@app/Router/routes';
@@ -7,6 +11,7 @@ import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollCon
 import { NotFoundError } from '@views/components/app/NotFoundError';
 import { OrderCard } from '@views/components/app/OrderCard';
 import { RemoveModal } from '@views/components/app/RemoveModal';
+import { SortOrderToggle } from '@views/components/app/SortOrderToggle';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { useOrdersSessionController } from './useOrdersSessionController';
@@ -53,7 +58,22 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
       <div className="flex justify-between gap-4 items-center mt-6 flex-wrap">
         <DateRangePickerInput className="w-60" onChange={handleDateRange} />
 
-        {/* <ToggleGroup value={renderOrder} onChange={handleRenderOrder} /> */}
+        <SortOrderToggle
+          value={renderOrder}
+          options={[
+            {
+              icon: ArrowUpNarrowWideIcon,
+              value: 'desc',
+              label: 'Mais recente',
+            },
+            {
+              icon: ArrowDownWideNarrowIcon,
+              value: 'asc',
+              label: 'Mais antiga',
+            },
+          ]}
+          onChange={handleRenderOrder}
+        />
       </div>
 
       <InfiniteScrollContainer

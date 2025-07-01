@@ -8,9 +8,9 @@ import { useRemoveOrder } from '@app/hooks/orders/useRemoveOrder';
 
 export function useOrdersSessionController(customerId: string) {
   const [renderOrder, setRenderOrder] = useState<'asc' | 'desc'>('desc');
-  const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>(
-    {},
-  );
+  const [dateRange, setDateRange] = useState<
+    { from?: string; to?: string } | undefined
+  >();
   const [isRemoveOrderModalOpen, setIsRemoveOrderModalOpen] = useState(false);
 
   const { infiniteScroll, isLoading, orders } = useOrders({
@@ -27,10 +27,19 @@ export function useOrdersSessionController(customerId: string) {
     setRenderOrder(value);
   }
 
-  function handleDateRange(value: DateRange) {
+  function handleDateRange(value: DateRange | undefined) {
+    if (!value?.from && !value?.to) {
+      setDateRange(undefined);
+      return;
+    }
+
+    if (value?.from && !value?.to) {
+      return;
+    }
+
     setDateRange({
-      from: value.from?.toISOString(),
-      to: value.to?.toISOString(),
+      from: value?.from?.toISOString(),
+      to: value?.to?.toISOString(),
     });
   }
 
