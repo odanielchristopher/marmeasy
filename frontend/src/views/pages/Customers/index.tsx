@@ -1,7 +1,6 @@
 import { UsersIcon } from 'lucide-react';
 import { Link } from 'react-router';
 
-import { useCustomers } from '@app/hooks/customers/useCustomers';
 import { routes } from '@app/Router/routes';
 import { FilterIcon } from '@views/assets/icons/FilterIcon';
 import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollContainer';
@@ -23,21 +22,19 @@ export function Customers() {
     infiniteScroll,
     isFiltersModalOpen,
     searchCustomerTerm,
+    handleApplyFilters,
     handleSearchCustomerTerm,
     handleCloseFiltersModal,
     handleOpenFiltersModal,
-  } = useCustomersController({
-    loadCustomers: useCustomers,
-  });
+  } = useCustomersController();
 
   return (
     <div className="h-full pt-7 px-4 md:px-6 flex-1 flex flex-col">
-      {isFiltersModalOpen && (
-        <FiltersModal
-          open={isFiltersModalOpen}
-          onClose={handleCloseFiltersModal}
-        />
-      )}
+      <FiltersModal
+        open={isFiltersModalOpen}
+        onClose={handleCloseFiltersModal}
+        onApplyFilters={handleApplyFilters}
+      />
 
       <PageHeader
         title="Clientes"

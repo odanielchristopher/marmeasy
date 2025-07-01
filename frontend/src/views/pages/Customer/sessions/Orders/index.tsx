@@ -9,8 +9,6 @@ import { OrderCard } from '@views/components/app/OrderCard';
 import { RemoveModal } from '@views/components/app/RemoveModal';
 import { Skeleton } from '@views/components/ui/Skeleton';
 
-import { ToggleGroup } from '../../components/ToggleGroup';
-
 import { useOrdersSessionController } from './useOrdersSessionController';
 
 interface IOrdersSessionProps {
@@ -55,7 +53,7 @@ export function OrdersSession({ customerId }: IOrdersSessionProps) {
       <div className="flex justify-between gap-4 items-center mt-6 flex-wrap">
         <DateRangePickerInput className="w-60" onChange={handleDateRange} />
 
-        <ToggleGroup value={renderOrder} onChange={handleRenderOrder} />
+        {/* <ToggleGroup value={renderOrder} onChange={handleRenderOrder} /> */}
       </div>
 
       <InfiniteScrollContainer

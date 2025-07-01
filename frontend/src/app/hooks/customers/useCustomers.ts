@@ -11,6 +11,7 @@ import { useInfiniteScroll } from '../useInfiniteScroll';
 export function useCustomers({
   perPage = 24,
   search,
+  filters,
 }: CustomersLoaderParams): CustomersLoaderResponse {
   const {
     data: infiniteData,
@@ -20,8 +21,15 @@ export function useCustomers({
     isFetchingNextPage,
   } = useInfiniteScroll({
     perPage,
-    queryKey: ['customers', { perPage }],
-    infiniteLoader: customersService.getAll,
+    queryKey: [
+      'customers',
+      { perPage, order: filters?.order, type: filters?.customerType },
+    ],
+    infiniteLoader: (params) =>
+      customersService.getAll({
+        ...params,
+        filters,
+      }),
     enabled: !search,
   });
 

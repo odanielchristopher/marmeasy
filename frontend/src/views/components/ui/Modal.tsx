@@ -39,7 +39,7 @@ export function Modal({
               <X className="w-6 h-6" />
             </button>
 
-            <span className="text-lg font-semibold tracking-[-1px]">
+            <span className="text-lg text-gray-800 dark:text-foreground font-semibold tracking-[-1px]">
               {title}
             </span>
 

@@ -7,8 +7,6 @@ import { formatDate } from '@app/utils/formatDate';
 import { PaymentIcon } from '@views/assets/icons/payments/PaymentIcon';
 import { DateRangePickerInput } from '@views/components/app/DateRangePickerInput';
 
-import { ToggleGroup } from '../components/ToggleGroup';
-
 const translateMap = {
   CREDIT: {
     title: 'Crédito',
@@ -46,7 +44,7 @@ export function Payments() {
       <div className="flex justify-between gap-4 items-center mt-6 flex-wrap">
         <DateRangePickerInput className="w-60" />
 
-        <ToggleGroup />
+        {/* <ToggleGroup /> */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-3 mt-5.5">
