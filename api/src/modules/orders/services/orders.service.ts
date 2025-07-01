@@ -3,8 +3,9 @@ import { IOrdersRepository } from 'src/shared/database/interfaces/orders-reposit
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { Order } from '../entities/order.entity';
 import {
+  FindAllOrderFilters,
+  FindByCustomerFilters,
   IOrdersService,
-  OrderFilters,
 } from '../interfaces/orders-service.interface';
 
 import { Decimal } from '@prisma/client/runtime/library';
@@ -31,7 +32,7 @@ export class OrdersService implements IOrdersService {
 
   findAllByUserId(
     userId: string,
-    filters: OrderFilters,
+    filters: FindAllOrderFilters,
   ): Promise<IPaginatedResponse<Order[]>> {
     return this.ordersRepository.findManyByUserId({
       userId,
@@ -48,11 +49,11 @@ export class OrdersService implements IOrdersService {
   async findAllByCustomerId(
     userId: string,
     customerId: string,
-    order: 'asc' | 'desc',
-    page: number,
-    perPage: number,
+    filters: FindByCustomerFilters,
   ): Promise<IPaginatedResponse<Order[]>> {
     await this.validateCustomerOwnershipService.validate(userId, customerId);
+
+    const { order, page, perPage, dateRange } = filters;
 
     return this.ordersRepository.findManyByCustomerId({
       customerId,
@@ -60,6 +61,7 @@ export class OrdersService implements IOrdersService {
       order,
       page,
       perPage,
+      dateRange,
     });
   }
 

@@ -87,13 +87,20 @@ export class OrderRepository implements IOrdersRepository {
   async findManyByCustomerId(
     findManyByCustomerIdDto: FindManyByCustomerIdDto,
   ): Promise<IPaginatedResponse<Order[]>> {
-    const { customerId, userId, order, page, perPage } =
+    const { customerId, userId, order, page, perPage, dateRange } =
       findManyByCustomerIdDto;
 
+    const { from, to } = this.parseDateRange(dateRange);
     const skip = (page - 1) * perPage;
 
     const orders = await this.prismaService.order.findMany({
-      where: { customerId },
+      where: {
+        customerId,
+        date: {
+          gte: from,
+          lte: to,
+        },
+      },
       orderBy: { date: order },
       take: perPage,
       skip,

@@ -57,14 +57,17 @@ export class OrdersController {
     @ActiveUserId() userId: string,
     @Param('customerId') customerId: string,
     @Query() { order, page, perPage }: PaginatedAndOrderedQueryDto,
+    @Query('from') from: string,
+    @Query('to') to: string,
   ) {
-    return this.ordersService.findAllByCustomerId(
-      userId,
-      customerId,
+    const dateRange = from && to ? new DateRangeDto({ from, to }) : undefined;
+
+    return this.ordersService.findAllByCustomerId(userId, customerId, {
       order,
       page,
       perPage,
-    );
+      dateRange,
+    });
   }
 
   @Post()

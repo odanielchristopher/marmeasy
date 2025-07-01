@@ -52,6 +52,7 @@ export type FindManyByCustomerIdDto = {
   order: 'asc' | 'desc';
   page: number;
   perPage: number;
+  dateRange: DateRangeDto;
 };
 
 export type UpdateOrderOnDbDto = {

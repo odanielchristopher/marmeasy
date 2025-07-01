@@ -7,7 +7,7 @@ import { Order, OrderType } from '../entities/order.entity';
 
 export const IOrdersService = Symbol('IOrdersService');
 
-export type OrderFilters = {
+export type FindAllOrderFilters = {
   order: string;
   page: number;
   perPage: number;
@@ -17,10 +17,17 @@ export type OrderFilters = {
   dateRange?: DateRangeDto;
 };
 
+export type FindByCustomerFilters = {
+  order: 'asc' | 'desc';
+  page: number;
+  perPage: number;
+  dateRange?: DateRangeDto;
+};
+
 export interface IOrdersService {
   findAllByUserId(
     userId: string,
-    filters: OrderFilters,
+    filters: FindAllOrderFilters,
   ): Promise<IPaginatedResponse<Order[]>>;
 
   findOneById(userId: string, orderId: string): Promise<Order>;
@@ -28,9 +35,7 @@ export interface IOrdersService {
   findAllByCustomerId(
     userId: string,
     customerId: string,
-    order: 'asc' | 'desc',
-    page: number,
-    perPage: number,
+    filters: FindByCustomerFilters,
   ): Promise<IPaginatedResponse<Order[]>>;
 
   create(userId: string, createOrderDto: CreateOrderDto): Promise<Order>;
