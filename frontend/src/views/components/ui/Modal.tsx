@@ -25,7 +25,7 @@ export function Modal({
       <DialogContent
         aria-describedby={undefined}
         className={cn(
-          'p-6 space-y-10 bg-white rounded-2xl z-[51] shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] w-full max-w-[400px] outline-none',
+          'p-6 space-y-10 bg-white rounded-2xl z-[51] shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] w-full max-w-[400px] outline-none gap-0',
           'dark:bg-card',
         )}
       >

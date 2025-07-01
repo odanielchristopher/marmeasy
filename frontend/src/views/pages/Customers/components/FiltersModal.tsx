@@ -124,7 +124,7 @@ export function FiltersModal({
 
       <Button
         type="button"
-        className="w-full mt-5"
+        className="w-full mt-10"
         onClick={handleApplyFilters}
       >
         Aplicar filtros
