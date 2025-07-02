@@ -12,7 +12,7 @@ import { CustomerSkeleton } from './components/CustomerSkeleton';
 import { NotFoundCustomer } from './components/NotFoundCustomer';
 import { UpdateCustomerModal } from './components/UpdateCustomerModal';
 import { OrdersSession } from './sessions/Orders';
-import { Payments } from './sessions/Payments';
+import { PaymentsSession } from './sessions/Payments';
 import { useCustomerController } from './useCustomerController';
 
 type Params = {
@@ -115,7 +115,9 @@ export function Customer() {
 
           <div className="max-md:mt-3 md:pl-10 flex-1">
             {currentSession === 'ORDERS' && <OrdersSession customerId={id!} />}
-            {currentSession === 'PAYMENTS' && <Payments />}
+            {currentSession === 'PAYMENTS' && (
+              <PaymentsSession customerId={id!} />
+            )}
           </div>
         </main>
       </div>

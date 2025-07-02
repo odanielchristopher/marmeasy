@@ -38,7 +38,7 @@ export function PaymentForm({
     <form onSubmit={handleSubmit}>
       <div className="w-ful flex flex-col items-center">
         <span className="text-gray-600 text-sm tracking-[-0.5px]">
-          Saldo inicial
+          Valor do pagamento
         </span>
         <div className="flex items-center gap-2  max-w-[182px] border-b-2 border-gray-600">
           <span className="text-primary text-xl font-semibold tracking-[-0.5px]">
