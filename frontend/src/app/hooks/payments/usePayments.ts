@@ -20,7 +20,7 @@ export function usePayments({
     isFetchingNextPage,
   } = useInfiniteScroll({
     perPage,
-    queryKey: ['payments', { perPage, ...params }],
+    queryKey: ['payments', customerId, { perPage, ...params }],
     infiniteLoader: () =>
       paymentsService.getAll(customerId, { perPage, ...params }),
   });

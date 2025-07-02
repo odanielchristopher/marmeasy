@@ -31,10 +31,6 @@ export function usePaymentsSessionController(customerId: string) {
       order,
     },
   });
-  // const [orderBeingRemoved, setOrderBeingRemoved] = useState<IPayment | null>(
-  //   null,
-  // );
-  // const { removeOrder, isLoading: isRemoving } = useRemoveOrder();
 
   function handleOrder(value: 'asc' | 'desc') {
     setOrder(value);
@@ -55,27 +51,6 @@ export function usePaymentsSessionController(customerId: string) {
       to: value?.to?.toISOString(),
     });
   }
-
-  // function handleOpenRemoveOrderModal(payment: IPayment) {
-  //   setOrderBeingRemoved(payment);
-  //   setIsRemovePaymentModalOpen(true);
-  // }
-
-  // function handleCloseRemoveOrderModal() {
-  //   setIsRemovePaymentModalOpen(false);
-  //   setOrderBeingRemoved(null);
-  // }
-
-  // async function handleConfirmRemovePayment() {
-  //   try {
-  //     // await removeOrder(orderBeingRemoved?.id!);
-
-  //     toast.success('Pedido excluído com sucesso!');
-  //     handleCloseRemoveOrderModal();
-  //   } catch {
-  //     toast.error('Ocorreu um erro ao excluir o pedido!');
-  //   }
-  // }
 
   const hasPayments = payments.length > 0;
 

@@ -22,6 +22,7 @@ export function usePaymentFormController({
       description: defaultValues?.description ?? '',
       type: defaultValues?.type,
       date: defaultValues?.date ?? new Date(),
+      value: defaultValues?.value ?? 0,
     },
     resolver: zodResolver(paymentSchema),
   });
