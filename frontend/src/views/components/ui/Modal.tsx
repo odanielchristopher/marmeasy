@@ -21,7 +21,13 @@ export function Modal({
   onClose,
 }: IModalProps) {
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose} modal={false}>
+      {open && (
+        <div
+          data-slot="dialog-overlay"
+          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-xs"
+        />
+      )}
       <DialogContent
         aria-describedby={undefined}
         className={cn(

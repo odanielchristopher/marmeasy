@@ -40,7 +40,7 @@ export function DataStep({
                 label: customer.name,
               }))}
               onSelect={onChange}
-              onSearch={handleSearchCustomerTerm}
+              onNotFound={handleSearchCustomerTerm}
               isLoading={isLoadingCustomers}
               buttonLabel="Selecione um cliente"
               defaultValue={value}
