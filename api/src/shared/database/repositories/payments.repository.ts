@@ -81,7 +81,7 @@ export class PaymentsRepository implements IPaymentsRepository {
   async create(createPaymentDto: CreatePaymentDto): Promise<Payment> {
     const { data, userId } = createPaymentDto;
 
-    const { customerId, date, type, value } = data;
+    const { customerId, date, type, value, description } = data;
 
     const createdPayment = await this.prismaService.payment.create({
       data: {
@@ -90,6 +90,7 @@ export class PaymentsRepository implements IPaymentsRepository {
         date,
         type,
         value,
+        description,
       },
     });
 
@@ -99,7 +100,7 @@ export class PaymentsRepository implements IPaymentsRepository {
   async update(updatePaymentDto: UpdatePaymentDto): Promise<Payment> {
     const { data, userId } = updatePaymentDto;
 
-    const { customerId, date, type, value } = data;
+    const { customerId, date, type, value, description } = data;
 
     const updatedPayment = await this.prismaService.payment.update({
       where: { userId, id: data.id },
@@ -109,6 +110,7 @@ export class PaymentsRepository implements IPaymentsRepository {
         date,
         type,
         value,
+        description,
       },
     });
 

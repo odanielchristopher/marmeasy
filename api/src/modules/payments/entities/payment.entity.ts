@@ -11,4 +11,5 @@ export class Payment {
   type: PaymentType;
   date: string;
   value: number;
+  description?: string;
 }

@@ -117,12 +117,13 @@ model OrderItem {
 }
 
 model Payment {
-  id         String      @id @default(uuid()) @db.Uuid
-  userId     String      @map("user_id") @db.Uuid
-  customerId String      @map("customer_id") @db.Uuid
-  type       PaymentType
-  date       DateTime    @default(now())
-  value      Decimal
+  id          String      @id @default(uuid()) @db.Uuid
+  userId      String      @map("user_id") @db.Uuid
+  customerId  String      @map("customer_id") @db.Uuid
+  type        PaymentType
+  date        DateTime    @default(now())
+  value       Decimal
+  description String?
 
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)

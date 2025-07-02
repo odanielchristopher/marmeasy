@@ -37,7 +37,7 @@ export class PaymentsService implements IPaymentsService {
   }
 
   async create(userId: string, createPaymentDto: CreatePaymentDto) {
-    const { date, type, value, customerId } = createPaymentDto;
+    const { date, type, value, customerId, description } = createPaymentDto;
 
     await this.validateEntitiesOwnership({
       userId,
@@ -58,6 +58,7 @@ export class PaymentsService implements IPaymentsService {
         date,
         type,
         value,
+        description,
       },
     });
   }
@@ -67,7 +68,7 @@ export class PaymentsService implements IPaymentsService {
     paymentId: string,
     updatePaymentDto: UpdatePaymentDto,
   ) {
-    const { date, type, value, customerId } = updatePaymentDto;
+    const { date, type, value, customerId, description } = updatePaymentDto;
 
     const { payment } = await this.validateEntitiesOwnership({
       userId,
@@ -90,6 +91,7 @@ export class PaymentsService implements IPaymentsService {
         date,
         type,
         value,
+        description,
       },
     });
   }

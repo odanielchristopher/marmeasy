@@ -4,6 +4,8 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
+  IsString,
   IsUUID,
   Min,
 } from 'class-validator';
@@ -43,4 +45,12 @@ export class CreatePaymentDto {
   @IsNotEmpty({ message: 'O valor é obrigatório.' })
   @Min(0.01, { message: 'O valor deve ser maior que 1 centavo.' })
   value: number;
+
+  @ApiProperty({
+    description: 'Descrição do pagamento',
+    example: 'Esse pagamento é referente a compra de 3 marmitas do dia 20',
+  })
+  @IsString()
+  @IsOptional()
+  description?: string;
 }

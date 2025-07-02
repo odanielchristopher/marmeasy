@@ -24,17 +24,17 @@ export class PaymentsController {
     private readonly paymentsService: IPaymentsService,
   ) {}
 
-  @Get(':clientId')
+  @Get(':customerId')
   findAll(
     @ActiveUserId() userId: string,
-    @Param('clientId', ParseUUIDPipe) clientId: string,
+    @Param('customerId', ParseUUIDPipe) customerId: string,
     @Query() filters: PaginatedAndOrderedQueryDto,
     @Query('from') from: string,
     @Query('to') to: string,
   ) {
     const dateRange = from && to ? new DateRangeDto({ from, to }) : undefined;
 
-    return this.paymentsService.findAllByCustomerId(userId, clientId, {
+    return this.paymentsService.findAllByCustomerId(userId, customerId, {
       dateRange,
       ...filters,
     });
