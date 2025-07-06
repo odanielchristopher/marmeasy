@@ -1,10 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo } from 'react';
+import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { IProduct } from '@app/entities/Product';
-import { products } from '@app/mocks/products';
+import { useProducts } from '@app/hooks/products/useProducts';
+import { SearchTermFormData } from '@views/components/ui/InputSearch';
 
 import { cartStepSchema } from './steps/CartStep/schema';
 import { dataStepSchema } from './steps/DataStep/schema';
@@ -39,6 +40,14 @@ export function useOrderFormController({
     resolver: zodResolver(orderSchema),
   });
 
+  const [searchProductsTerm, setSearchProductsTerm] = useState('');
+
+  const { products, isLoading } = useProducts({
+    search: searchProductsTerm,
+  });
+
+  const hasProducts = products.length > 0;
+
   const handleSubmit = form.handleSubmit(async (formData) => {
     await onSubmit(formData);
   });
@@ -49,24 +58,40 @@ export function useOrderFormController({
   });
 
   function handleAddToCart({ id, ...product }: IProduct) {
-    cartControl.append({
-      ...product,
-      quantity: 1,
-      productId: id,
-      unitPrice: product.price,
+    const itemIndex = cartControl.fields.findIndex(
+      (item) => item.productId === id,
+    );
+
+    if (itemIndex < 0) {
+      cartControl.append({
+        ...product,
+        imagePath: product.imagePath ?? undefined,
+        quantity: 1,
+        productId: id,
+        unitPrice: product.price,
+      });
+
+      return;
+    }
+
+    const prevItem = cartControl.fields[itemIndex];
+    cartControl.update(itemIndex, {
+      ...prevItem,
+      quantity: prevItem.quantity + 1,
     });
   }
 
-  const addedProductIds = useMemo(
-    () => new Set(cartControl.fields.map((p) => p.productId)),
-    [cartControl.fields],
-  );
+  function handleSearchTerm({ searchTerm }: SearchTermFormData) {
+    setSearchProductsTerm(searchTerm);
+  }
 
   return {
     form,
     products,
+    isLoadingProducts: isLoading,
+    hasProducts,
     cartControl,
-    addedProductIds,
+    handleSearchTerm,
     handleAddToCart,
     handleSubmit,
   };

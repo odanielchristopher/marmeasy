@@ -30,8 +30,13 @@ export class ProductsController {
   findAll(
     @ActiveUserId() userId: string,
     @Query('category') categoryName: string,
+    @Query('search') searchTerm: string,
   ) {
-    return this.productsService.findAllByUserId(userId, categoryName);
+    return this.productsService.findAllByUserId(
+      userId,
+      categoryName,
+      searchTerm,
+    );
   }
 
   @Post()

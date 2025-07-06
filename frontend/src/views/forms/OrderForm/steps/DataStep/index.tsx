@@ -9,7 +9,13 @@ import { Select } from '@views/components/ui/Select';
 
 import { useDataStepController } from './useDataStepController';
 
-export function DataStep({ buttonLabel }: { buttonLabel: string }) {
+export function DataStep({
+  buttonLabel,
+  isSubmiting,
+}: {
+  buttonLabel: string;
+  isSubmiting?: boolean;
+}) {
   const { customers, form, isLoadingCustomers, handleSearchCustomerTerm } =
     useDataStepController({
       loadCustomers: useCustomers,
@@ -34,7 +40,7 @@ export function DataStep({ buttonLabel }: { buttonLabel: string }) {
                 label: customer.name,
               }))}
               onSelect={onChange}
-              onSearch={handleSearchCustomerTerm}
+              onNotFound={handleSearchCustomerTerm}
               isLoading={isLoadingCustomers}
               buttonLabel="Selecione um cliente"
               defaultValue={value}
@@ -95,7 +101,12 @@ export function DataStep({ buttonLabel }: { buttonLabel: string }) {
           className="flex-1/2 bg-transparent border border-foreground"
         />
 
-        <Button className="flex-1/2" type="submit">
+        <Button
+          className="flex-1/2"
+          type="submit"
+          isLoading={isSubmiting}
+          disabled={isSubmiting}
+        >
           {buttonLabel}
         </Button>
       </footer>

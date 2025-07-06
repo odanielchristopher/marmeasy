@@ -1,22 +1,11 @@
-import { CustomerType, ICustomer } from '@app/entities/Customer';
+import { ICustomer } from '@app/entities/Customer';
 
 import { httpClient } from '../httpClient';
 
-export interface ICreateCustomerParams {
-  name: string;
-  type: CustomerType;
-  phone?: string;
-  color: string;
-  initialBalance: number;
-}
+import { CreateCustomerFn } from './@types/CreateCustomerFn';
 
-type CreateCustomerResponse = ICustomer;
-
-export async function create(params: ICreateCustomerParams) {
-  const { data } = await httpClient.post<CreateCustomerResponse>(
-    '/customers',
-    params,
-  );
+export const create: CreateCustomerFn = async (params) => {
+  const { data } = await httpClient.post<ICustomer>('/customers', params);
 
   return data;
-}
+};

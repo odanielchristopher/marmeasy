@@ -1,9 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { queryClient } from '@app/lib/queryClient';
 import { customersService } from '@app/services/customersService';
 
 export function useCreateCustomer() {
+  const queryClient = useQueryClient();
+
   const { mutateAsync, isPending } = useMutation({
     mutationFn: customersService.create,
     onSuccess: () => {

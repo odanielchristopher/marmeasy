@@ -51,7 +51,12 @@ export function InputCurrency({
         </label>
       )}
 
-      {error && <FieldError message={error} />}
+      {error && (
+        <FieldError
+          className="absolute w-[400px] -translate-x-[120px] left-0"
+          message={error}
+        />
+      )}
     </div>
   );
 }

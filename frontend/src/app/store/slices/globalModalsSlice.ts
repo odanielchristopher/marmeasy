@@ -3,16 +3,13 @@ import { CreateSlice } from '../Store';
 
 type GlobalModalsStore = {
   newCustomerModal: { isOpen: boolean };
-  newOrderModal: { isOpen: boolean };
   newPaymentModal: { isOpen: boolean };
 };
 
 type GlobalModalsActions = {
   openNewCustomerModal(): void;
-  openNewOrderModal(): void;
   openNewPaymentModal(): void;
   closeNewCustomerModal(): void;
-  closeNewOrderModal(): void;
   closeNewPaymentModal(): void;
 };
 
@@ -22,16 +19,12 @@ export const createGlobalModalsSlice: CreateSlice<GlobalModalsSlice> = (
   set,
 ) => ({
   newCustomerModal: { isOpen: false },
-  newOrderModal: { isOpen: false },
   newPaymentModal: { isOpen: false },
   openNewCustomerModal: () =>
     set((prevStore) => {
       prevStore.globalModals.newCustomerModal.isOpen = true;
     }),
-  openNewOrderModal: () =>
-    set((prevStore) => {
-      prevStore.globalModals.newOrderModal.isOpen = true;
-    }),
+
   openNewPaymentModal: () =>
     set((prevStore) => {
       prevStore.globalModals.newPaymentModal.isOpen = true;
@@ -40,10 +33,6 @@ export const createGlobalModalsSlice: CreateSlice<GlobalModalsSlice> = (
   closeNewCustomerModal: () =>
     set((prevStore) => {
       prevStore.globalModals.newCustomerModal.isOpen = false;
-    }),
-  closeNewOrderModal: () =>
-    set((prevStore) => {
-      prevStore.globalModals.newOrderModal.isOpen = false;
     }),
   closeNewPaymentModal: () =>
     set((prevStore) => {

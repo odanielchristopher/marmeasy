@@ -2,8 +2,10 @@ import { FormProvider } from 'react-hook-form';
 
 import { useIsMobile } from '@app/hooks/useIsMobile';
 import { cn } from '@app/lib/utils';
+import { NotFoundError } from '@views/components/app/NotFoundError';
 import { Stepper } from '@views/components/app/Stepper';
 import { InputSearch } from '@views/components/ui/InputSearch';
+import { Skeleton } from '@views/components/ui/Skeleton';
 
 import { ProductCard } from './components/ProductCard';
 import { CartStep } from './steps/CartStep';
@@ -17,19 +19,23 @@ interface IOrderFormProps {
   defaultValues?: OrderFormData;
   onSubmit(formData: OrderFormData): Promise<void> | void;
   submitButtonLabel: string;
+  isLoading?: boolean;
 }
 
 export function OrderForm({
   defaultValues,
   submitButtonLabel,
+  isLoading,
   onSubmit,
 }: IOrderFormProps) {
   const {
     form,
     products,
+    hasProducts,
     cartControl,
-    addedProductIds,
+    isLoadingProducts,
     handleAddToCart,
+    handleSearchTerm,
     handleSubmit,
   } = useOrderFormController({
     defaultValues,
@@ -41,23 +47,51 @@ export function OrderForm({
     <FormProvider {...form}>
       <form
         onSubmit={handleSubmit}
-        className="md:flex md:gap-6 md:items-start relative"
+        className="flex flex-col md:flex-row md:gap-6 md:items-start relative h-full"
       >
-        <div className="space-y-5">
+        <div className="space-y-5 flex-1">
           <InputSearch
             placeholder="Procure pelo cardápio"
             className="max-w-[600px]"
+            onSearch={(formdata) => handleSearchTerm(formdata)}
           />
 
-          <div className="flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4">
-            {products.map((product) => (
-              <ProductCard
-                {...product}
-                key={product.id}
-                onAdd={() => handleAddToCart(product)}
-                isDisabled={addedProductIds.has(product.id)}
+          <div
+            className={cn(
+              'flex-1 overflow-y-auto scrollbar-thin grid grid-cols-1 md:pb-6 lg:grid-cols-2 gap-4',
+              !isLoadingProducts &&
+                !hasProducts &&
+                'flex items-center justify-center',
+            )}
+          >
+            {isLoadingProducts && !hasProducts && (
+              <>
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+                <Skeleton className="h-30 w-full" />
+              </>
+            )}
+
+            {!isLoadingProducts && !hasProducts && (
+              <NotFoundError
+                image={{
+                  type: 'product',
+                  alt: 'Sem produtos',
+                }}
+                message="Não encontramos nenhum produto!"
               />
-            ))}
+            )}
+
+            {!isLoadingProducts &&
+              hasProducts &&
+              products.map((product) => (
+                <ProductCard
+                  {...product}
+                  key={product.id}
+                  onAdd={() => handleAddToCart(product)}
+                />
+              ))}
           </div>
         </div>
 
@@ -75,7 +109,12 @@ export function OrderForm({
             },
             {
               label: 'Mais informações',
-              content: <DataStep buttonLabel={submitButtonLabel} />,
+              content: (
+                <DataStep
+                  buttonLabel={submitButtonLabel}
+                  isSubmiting={isLoading}
+                />
+              ),
             },
           ]}
         />

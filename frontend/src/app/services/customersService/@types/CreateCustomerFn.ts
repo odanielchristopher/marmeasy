@@ -1,6 +1,12 @@
-import { ICustomer } from '@app/entities/Customer';
+import { CustomerType, ICustomer } from '@app/entities/Customer';
 
-import { ICreateCustomerParams } from '../create';
+export interface ICreateCustomerParams {
+  name: string;
+  type: CustomerType;
+  phone?: string;
+  color: string;
+  initialBalance: number;
+}
 
 export type CreateCustomerFn = (
   params: ICreateCustomerParams,

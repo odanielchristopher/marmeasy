@@ -21,11 +21,17 @@ export function Modal({
   onClose,
 }: IModalProps) {
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onClose} modal={false}>
+      {open && (
+        <div
+          data-slot="dialog-overlay"
+          className="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 backdrop-blur-xs"
+        />
+      )}
       <DialogContent
         aria-describedby={undefined}
         className={cn(
-          'p-6 space-y-10 bg-white rounded-2xl z-[51] shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] w-full max-w-[400px] outline-none',
+          'p-6 space-y-10 bg-white rounded-2xl z-[51] shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)] w-full max-w-[400px] outline-none gap-0',
           'dark:bg-card',
         )}
       >
@@ -39,7 +45,7 @@ export function Modal({
               <X className="w-6 h-6" />
             </button>
 
-            <span className="text-lg font-semibold tracking-[-1px]">
+            <span className="text-lg text-gray-800 dark:text-foreground font-semibold tracking-[-1px]">
               {title}
             </span>
 

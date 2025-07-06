@@ -1,7 +1,10 @@
 // import { SearchTermDto } from 'src/shared/dto/search-term.dto';
 // import { IPaginatedResponse } from 'src/shared/types';
 
-import { Customer } from 'src/modules/customers/entities/customer.entity';
+import {
+  Customer,
+  CustomerType,
+} from 'src/modules/customers/entities/customer.entity';
 import { IPaginatedResponse } from 'src/shared/types';
 
 export const ICustomersRepository = Symbol('ICustomersRepository');
@@ -20,6 +23,8 @@ export interface ICustomersRepository {
   update(updateDto: UpdateCustomerDto): Promise<Customer>;
 
   delete(customerId: string): Promise<void>;
+
+  updateBalance(customerId: string, balance: number): Promise<Customer>;
 }
 
 // export type FindManyBySearchTermDto = {
@@ -33,6 +38,7 @@ export interface ICustomersRepository {
 export type FindManyByUserIdDto = {
   userId: string;
   order: 'asc' | 'desc';
+  customerType?: CustomerType;
   page: number;
   perPage: number;
 };

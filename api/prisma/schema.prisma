@@ -18,6 +18,7 @@ model User {
   productCategories ProductCategory[]
   payments          Payment[]
   expenses          Expense[]
+  orders            Order[]
 
   @@map("users")
 }
@@ -32,7 +33,9 @@ model Customer {
   balance  Decimal
   isActive Boolean      @default(true) @map("is_active")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders  Order[]
+  Payment Payment[]
 
   @@map("customers")
 }
@@ -86,12 +89,15 @@ enum OrderType {
 
 model Order {
   id         String    @id @default(uuid()) @db.Uuid
-  customerId String    @map("customer_id")
+  userId     String    @map("user_id") @db.Uuid
+  customerId String    @map("customer_id") @db.Uuid
   date       DateTime  @default(now())
   type       OrderType
   amount     Decimal
 
-  orderItems OrderItem[]
+  customer Customer    @relation(fields: [customerId], references: [id])
+  user     User        @relation(fields: [userId], references: [id])
+  items    OrderItem[]
 
   @@map("orders")
 }
@@ -111,14 +117,16 @@ model OrderItem {
 }
 
 model Payment {
-  id       String      @id @default(uuid()) @db.Uuid
-  userId   String      @map("user_id") @db.Uuid
-  clientId String      @map("client_id") @db.Uuid
-  type     PaymentType
-  date     DateTime    @default(now())
-  value    Decimal
+  id          String      @id @default(uuid()) @db.Uuid
+  userId      String      @map("user_id") @db.Uuid
+  customerId  String      @map("customer_id") @db.Uuid
+  type        PaymentType
+  date        DateTime    @default(now())
+  value       Decimal
+  description String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
   @@map("payments")
 }

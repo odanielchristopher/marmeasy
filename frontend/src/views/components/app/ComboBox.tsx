@@ -1,5 +1,5 @@
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { cn } from '@app/lib/utils';
 import { Button } from '@views/components/ui/Button';
@@ -31,7 +31,7 @@ interface IComboBoxProps {
   isLoading?: boolean;
   notFoundMessage?: string;
   onSelect?(value: string): void;
-  onSearch?(search: string): void;
+  onNotFound?(search: string): void;
   classNames?: {
     trigger?: string;
     popoverContent?: string;
@@ -51,10 +51,11 @@ export function Combobox({
   classNames,
   error,
   onSelect,
-  onSearch,
+  onNotFound,
 }: IComboBoxProps) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(defaultValue ?? '');
+  const [searchTerm, setSearchTerm] = useState('');
 
   function handleValue(newValue: string) {
     setValue(newValue === value ? '' : newValue);
@@ -62,9 +63,19 @@ export function Combobox({
     setOpen(false);
   }
 
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  useEffect(() => {
+    if (!isLoading && searchTerm && filteredOptions.length === 0) {
+      onNotFound?.(searchTerm);
+    }
+  }, [searchTerm, filteredOptions, isLoading, onNotFound]);
+
   return (
     <div className="relative">
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={setOpen} modal={false}>
         <PopoverTrigger asChild>
           <Button
             type="button"
@@ -94,7 +105,13 @@ export function Combobox({
               {value && options.find((option) => option.value === value)?.label}
             </span>
 
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              {!isLoading && (
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              )}
+
+              {isLoading && <Spinner />}
+            </div>
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -106,7 +123,7 @@ export function Combobox({
           <Command className="bg-white dark:bg-card w-full">
             <CommandInput
               className="h-[48px]"
-              onValueChange={onSearch}
+              onValueChange={(term) => setSearchTerm(term)}
               placeholder={placeholder ?? 'Pequise pela opção...'}
             />
             <CommandList className="scrollbar-thin">

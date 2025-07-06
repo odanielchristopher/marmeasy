@@ -7,8 +7,9 @@ export enum PaymentType {
 export class Payment {
   id: string;
   userId: string;
-  clientId: string;
+  customerId: string;
   type: PaymentType;
   date: string;
   value: number;
+  description?: string;
 }

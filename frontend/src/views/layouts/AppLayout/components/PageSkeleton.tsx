@@ -10,7 +10,7 @@ export function PageSkeleton() {
           <Skeleton className="h-8 w-40" />
         </div>
 
-        <Skeleton className="mt-2 h-6 w-100 rounded-[4px]" />
+        <Skeleton className="mt-2 h-6 w-full max-w-100 rounded-[4px]" />
       </div>
     </div>
   );

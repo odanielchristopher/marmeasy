@@ -13,11 +13,10 @@ interface IProductProps {
   price: number;
   description?: string;
   imagePath?: string;
-  isDisabled?: boolean;
   onAdd(): void;
 }
 
-export function ProductCard({ onAdd, isDisabled, ...product }: IProductProps) {
+export function ProductCard({ onAdd, ...product }: IProductProps) {
   return (
     <div className="relative flex gap-4 h-30 bg-white dark:bg-card border border-gray-300 dark:border-accent p-3 rounded-2xl">
       <Avatar className="!rounded-md w-[120px] h-full">
@@ -47,7 +46,6 @@ export function ProductCard({ onAdd, isDisabled, ...product }: IProductProps) {
         type="button"
         className="absolute right-3 bottom-3 text-primary disabled:opacity-50"
         onClick={onAdd}
-        disabled={isDisabled}
       >
         <CirclePlusIcon />
       </button>

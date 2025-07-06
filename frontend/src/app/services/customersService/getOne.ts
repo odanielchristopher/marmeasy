@@ -2,12 +2,10 @@ import { ICustomer } from '@app/entities/Customer';
 
 import { httpClient } from '../httpClient';
 
-type GetOneCustomerResponse = ICustomer;
+import { GetOneCustomerFn } from './@types/GetOneCustomerFn';
 
-export async function getOne(customerId: string) {
-  const { data } = await httpClient.get<GetOneCustomerResponse>(
-    `/customers/${customerId}`,
-  );
+export const getOne: GetOneCustomerFn = async (customerId) => {
+  const { data } = await httpClient.get<ICustomer>(`/customers/${customerId}`);
 
   return data;
-}
+};

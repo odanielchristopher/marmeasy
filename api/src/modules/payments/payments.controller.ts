@@ -8,8 +8,11 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ActiveUserId } from 'src/shared/decorators/ActiveUserId';
+import { DateRangeDto } from 'src/shared/dto/date-range.dto';
+import { PaginatedAndOrderedQueryDto } from '../orders/dto/filters.dto';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { UpdatePaymentDto } from './dto/update-payment.dto';
 import { IPaymentsService } from './interfaces/payments-service.interface';
@@ -21,12 +24,20 @@ export class PaymentsController {
     private readonly paymentsService: IPaymentsService,
   ) {}
 
-  @Get(':clientId')
+  @Get(':customerId')
   findAll(
     @ActiveUserId() userId: string,
-    @Param('clientId', ParseUUIDPipe) clientId: string,
+    @Param('customerId', ParseUUIDPipe) customerId: string,
+    @Query() filters: PaginatedAndOrderedQueryDto,
+    @Query('from') from: string,
+    @Query('to') to: string,
   ) {
-    return this.paymentsService.findAllByClientId(userId, clientId);
+    const dateRange = from && to ? new DateRangeDto({ from, to }) : undefined;
+
+    return this.paymentsService.findAllByCustomerId(userId, customerId, {
+      dateRange,
+      ...filters,
+    });
   }
 
   @Post('')

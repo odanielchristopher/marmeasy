@@ -35,5 +35,6 @@ import { ValidateProductOwnershipService } from './services/validate-product-own
       useClass: ValidateProductOwnershipService,
     },
   ],
+  exports: [IValidateProductOwnershipService],
 })
 export class ProductsModule {}

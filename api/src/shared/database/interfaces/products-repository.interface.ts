@@ -30,7 +30,7 @@ export type CreateProductOnDBDto = {
 };
 
 export type FindManyProductsByFiltersDto = {
-  filters: { userId: string; categoryName?: string };
+  filters: { userId: string; categoryName?: string; searchTerm?: string };
   order: 'asc' | 'desc';
 };
 

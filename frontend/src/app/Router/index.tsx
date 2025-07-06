@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router';
 
 import { lazyLoad } from '@app/utils/lazyLoad';
 import { LaunchScreen } from '@views/components/app/LaunchScreen';
+import { EditOrder } from '@views/pages/Orders/EditOrder';
 
 import { AuthGuard } from './AuthGuard';
 import { routes } from './routes';
@@ -53,9 +54,10 @@ export function Router() {
             <Route path={routes.orders}>
               <Route index element={<Orders />} />
               <Route path="new" element={<NewOrder />} />
+              <Route path="edit/:orderId" element={<EditOrder />} />
             </Route>
 
-            <Route path={routes.menu} element={<MenuLayout />}>
+            <Route path={routes.menu.root} element={<MenuLayout />}>
               <Route path="products" element={<Products />} />
               <Route path="categories" element={<ProductCategories />} />
             </Route>

@@ -1,9 +1,4 @@
-import {
-  ChartBarIncreasingIcon,
-  NotebookTextIcon,
-  ReceiptTextIcon,
-  UsersIcon,
-} from 'lucide-react';
+import { NotebookTextIcon, ReceiptTextIcon, UsersIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 
 import { cn } from '@app/lib/utils';
@@ -22,14 +17,14 @@ export const navItems = [
   },
   {
     label: 'Cardápio',
-    pathname: routes.menu,
+    pathname: routes.menu.products,
     icon: NotebookTextIcon,
   },
-  {
-    label: 'Relatórios',
-    pathname: routes.dashboard,
-    icon: ChartBarIncreasingIcon,
-  },
+  // {
+  //   label: 'Relatórios',
+  //   pathname: routes.dashboard,
+  //   icon: ChartBarIncreasingIcon,
+  // },
 ];
 
 export function AppNavigation() {

@@ -1,20 +1,15 @@
 import toast from 'react-hot-toast';
 
-import { ICreateCustomerParams } from '@app/services/customersService/create';
+import { useCreateCustomer } from '@app/hooks/customers/useCreateCustomer';
 import { CustomerFormData } from '@views/forms/CustomerForm/schema';
 
-interface IUseNewCustomerModalController<TResponse> {
-  createCustomerHook: () => {
-    createCustomer: (params: ICreateCustomerParams) => Promise<TResponse>;
-    isLoading: boolean;
-  };
+interface IUseNewCustomerModalController {
   onSuccess(): void;
 }
 
-export function useNewCustomerModalController<T>({
-  createCustomerHook: useCreateCustomer,
+export function useNewCustomerModalController({
   onSuccess,
-}: IUseNewCustomerModalController<T>) {
+}: IUseNewCustomerModalController) {
   const { createCustomer, isLoading } = useCreateCustomer();
 
   async function handleSubmit(formData: CustomerFormData) {

@@ -1,8 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { IUpdateCustomerBalanceService } from 'src/modules/customers/interfaces/update-customer-balance-service.interface';
+import { IValidateCustomerOwnershipService } from 'src/modules/customers/interfaces/validate-customer-ownership-service.interface';
 import { IPaymentsRepository } from 'src/shared/database/interfaces/payments-repository.interface';
 import { CreatePaymentDto } from '../dto/create-payment.dto';
 import { UpdatePaymentDto } from '../dto/update-payment.dto';
-import { IPaymentsService } from '../interfaces/payments-service.interface';
+import {
+  IPaymentsService,
+  PaymentFilters,
+} from '../interfaces/payments-service.interface';
 import { IValidatePaymentOwnershipService } from '../interfaces/validate-payment-onwership-service.interface';
 
 @Injectable()
@@ -12,37 +17,48 @@ export class PaymentsService implements IPaymentsService {
     private readonly paymentsRepository: IPaymentsRepository,
     @Inject(IValidatePaymentOwnershipService)
     private readonly validatePaymentOwnershipService: IValidatePaymentOwnershipService,
+    @Inject(IValidateCustomerOwnershipService)
+    private readonly validateCustomerOwnershipService: IValidateCustomerOwnershipService,
+    @Inject(IUpdateCustomerBalanceService)
+    private readonly updateCustomerBalanceService: IUpdateCustomerBalanceService,
   ) {}
 
-  async findAllByClientId(userId: string, clientId: string) {
+  async findAllByCustomerId(
+    userId: string,
+    clientId: string,
+    filters: PaymentFilters,
+  ) {
     return this.paymentsRepository.findManyByClientId({
       userId,
-      clientId,
-      order: 'asc',
+      customerId: clientId,
+      order: filters.order === 'asc' ? 'asc' : 'desc',
+      dateRange: filters.dateRange,
     });
   }
 
   async create(userId: string, createPaymentDto: CreatePaymentDto) {
-    const { date, type, value, clientId } = createPaymentDto;
+    const { date, type, value, customerId, description } = createPaymentDto;
 
     await this.validateEntitiesOwnership({
       userId,
-      clientId,
+      customerId,
     });
 
-    // await this.updateClientBalance({
-    //   userId,
-    //   clientId,
-    //   newValue: value,
-    // });
+    await this.updateCustomerBalanceService.update({
+      userId,
+      customerId,
+      operationType: 'CREDIT',
+      newValue: value,
+    });
 
     return this.paymentsRepository.create({
       userId,
       data: {
-        clientId,
+        customerId,
         date,
         type,
         value,
+        description,
       },
     });
   }
@@ -52,46 +68,49 @@ export class PaymentsService implements IPaymentsService {
     paymentId: string,
     updatePaymentDto: UpdatePaymentDto,
   ) {
-    const { date, type, value, clientId } = updatePaymentDto;
+    const { date, type, value, customerId, description } = updatePaymentDto;
 
-    await this.validateEntitiesOwnership({
+    const { payment } = await this.validateEntitiesOwnership({
       userId,
       paymentId,
     });
 
-    // await this.updateClientBalance({
-    //   userId,
-    //   clientId,
-    //   previousValue: payment.value,
-    //   newValue: value,
-    // });
+    await this.updateCustomerBalanceService.update({
+      userId,
+      customerId,
+      operationType: 'CREDIT',
+      previousValue: payment.value,
+      newValue: value,
+    });
 
     return this.paymentsRepository.update({
       userId,
       data: {
         id: paymentId,
-        clientId,
+        customerId,
         date,
         type,
         value,
+        description,
       },
     });
   }
 
   async remove(userId: string, paymentId: string) {
-    await this.validateEntitiesOwnership({
+    const { payment } = await this.validateEntitiesOwnership({
       userId,
       paymentId,
     });
 
-    // const { clientId, value } = payment;
+    const { customerId, value } = payment;
 
-    // await this.updateClientBalance({
-    //   clientId,
-    //   userId,
-    //   previousValue: value,
-    //   newValue: 0,
-    // });
+    await this.updateCustomerBalanceService.update({
+      customerId,
+      operationType: 'CREDIT',
+      userId,
+      previousValue: value,
+      newValue: 0,
+    });
 
     return this.paymentsRepository.delete({
       userId,
@@ -102,35 +121,19 @@ export class PaymentsService implements IPaymentsService {
   private async validateEntitiesOwnership({
     userId,
     paymentId,
+    customerId,
   }: {
     userId: string;
-    clientId?: string;
+    customerId?: string;
     paymentId?: string;
   }) {
-    const [payment] = await Promise.all([
+    const [payment, customer] = await Promise.all([
       paymentId &&
         this.validatePaymentOwnershipService.validate(userId, paymentId),
+      customerId &&
+        this.validateCustomerOwnershipService.validate(userId, customerId),
     ]);
 
-    return { payment };
+    return { payment, customer };
   }
-
-  // private async updateClientBalance({
-  //   userId,
-  //   clientId,
-  //   previousValue,
-  //   newValue,
-  // }: {
-  //   userId: string;
-  //   clientId: string;
-  //   previousValue?: number;
-  //   newValue: number;
-  // }): Promise<Client> {
-  //   return this.updateClientBalanceService.update({
-  //     userId,
-  //     clientId,
-  //     previousValue,
-  //     newValue,
-  //   });
-  // }
 }
