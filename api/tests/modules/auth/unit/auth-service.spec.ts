@@ -2,8 +2,10 @@ import { JwtService } from '@nestjs/jwt';
 import { compare, hash } from 'bcryptjs';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { SigninDto } from 'src/modules/auth/dto/signin.dto';
-import { SignupDto } from 'src/modules/auth/dto/signup.dto';
 import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+import { makeSigninDto } from 'tests/mocks/factories/makeSigninDto';
+import { makeSignupDto } from 'tests/mocks/factories/makeSignupDto';
+import { makeUser } from 'tests/mocks/factories/makeUser';
 
 import { UsersRepositoryMock } from 'tests/mocks/repositories/users-repository.mock';
 import { JwtServiceMock } from 'tests/mocks/services/jwt-service.mock';
@@ -33,10 +35,7 @@ describe('AuthService', () => {
 
   it('should return accessToken', async () => {
     (compare as jest.Mock).mockResolvedValue(true);
-    const signInDto: SigninDto = {
-      email: 'dani@mail.com',
-      password: '123daniel',
-    };
+    const signInDto = makeSigninDto();
     const expectedResult = { accessToken: '1234-signed' };
 
     // Simula o que o usuário existe
@@ -53,18 +52,16 @@ describe('AuthService', () => {
   });
 
   it('should throw UnauthorizedException if password is invalid', async () => {
-    const signInDto: SigninDto = {
-      email: 'dani@mail.com',
+    const signInDto = makeSigninDto({
       password: 'senhaerrada',
-    };
+    });
 
     // Simula o que o usuário existe
-    UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue({
-      id: '1234',
-      nome: 'daniel',
-      email: 'dani@mail.com',
-      password: 'outrasenha',
-    });
+    UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue(
+      makeUser({
+        password: 'outrasenha',
+      }),
+    );
 
     // Senha inválida
     (compare as jest.Mock).mockResolvedValue(false);
@@ -88,19 +85,21 @@ describe('AuthService', () => {
   });
 
   it('should sign up user and return accessToken', async () => {
-    const signupDto: SignupDto = {
+    const signupDto = makeSignupDto({
       name: 'Novo Usuário',
       email: 'novo@mail.com',
       password: 'senha123',
-    };
+    });
 
     // Simula que o e-mail está livre para uso
     UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue(null);
-    UsersRepositoryMock.create = jest.fn().mockResolvedValue({
-      id: 'new-user-id',
-      ...signupDto,
-      password: 'hashed-password',
-    });
+    UsersRepositoryMock.create = jest.fn().mockResolvedValue(
+      makeUser({
+        id: 'new-user-id',
+        ...signupDto,
+        password: 'hashed-password',
+      }),
+    );
     JwtServiceMock.signAsync = jest
       .fn()
       .mockResolvedValue('new-user-id-signed');
@@ -128,17 +127,19 @@ describe('AuthService', () => {
   });
 
   it('should throw ConflictException if email already exists', async () => {
-    const signupDto: SignupDto = {
+    const signupDto = makeSignupDto({
       name: 'Daniel',
       email: 'dani@mail.com',
       password: 'qualquer',
-    };
+    });
 
     // Simula que o e-mail já está em uso
-    UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue({
-      id: '1234',
-      ...signupDto,
-    });
+    UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue(
+      makeUser({
+        id: '1234',
+        ...signupDto,
+      }),
+    );
 
     await expect(service.signup(signupDto)).rejects.toThrow(
       'Esse e-mail já está em uso.',
