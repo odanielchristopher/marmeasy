@@ -19,6 +19,6 @@
     "noFallthroughCasesInSwitch": false
   },
   "scripts": {
-  "build": "tsc && cp -R src/shared/uploads dist/shared/uploads"
-}
+    "build": "tsc && cp -R src/shared/uploads dist/shared/uploads"
+  }
 }
