@@ -63,7 +63,7 @@ export function ProductForm({
           render={({ field: { onChange, value } }) => (
             <InputCurrency
               placeholder="Preço*"
-              variant="normalInput"
+              variant="pattern"
               value={value}
               onChange={onChange}
               error={formState.errors.price?.message}

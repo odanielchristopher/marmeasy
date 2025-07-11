@@ -9,10 +9,14 @@ export function useUpdateProduct() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: productsService.update,
     onSuccess: (updatedProduct) => {
-      queryClient.setQueryData(['products'], (oldProducts: IProduct[]) =>
-        oldProducts.map((product) =>
-          product.id === updatedProduct.id ? updatedProduct : product,
-        ),
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (oldProducts: IProduct[]) =>
+          oldProducts.map((product) =>
+            product.id === updatedProduct.id ? updatedProduct : product,
+          ),
       );
     },
   });

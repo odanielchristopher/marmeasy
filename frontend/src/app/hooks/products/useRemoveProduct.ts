@@ -9,8 +9,12 @@ export function useRemoveProduct(id: string) {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: productsService.remove,
     onSuccess: () => {
-      queryClient.setQueryData(['products'], (oldProducts: IProduct[]) =>
-        oldProducts.filter((product) => product.id !== id),
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (oldProducts: IProduct[]) =>
+          oldProducts.filter((product) => product.id !== id),
       );
     },
   });

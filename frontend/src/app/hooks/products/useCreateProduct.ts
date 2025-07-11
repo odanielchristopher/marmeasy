@@ -8,10 +8,12 @@ export function useCreateProduct() {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: productsService.create,
     onSuccess: (newProduct) => {
-      queryClient.setQueryData(['products'], (oldProducts: IProduct[]) => [
-        ...oldProducts,
-        newProduct,
-      ]);
+      queryClient.setQueriesData(
+        {
+          queryKey: ['products'],
+        },
+        (oldProducts: IProduct[]) => [...oldProducts, newProduct],
+      );
 
       queryClient.invalidateQueries({
         queryKey: ['products'],

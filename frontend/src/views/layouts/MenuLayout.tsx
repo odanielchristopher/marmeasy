@@ -15,13 +15,13 @@ export function MenuLayout() {
   const options = useMemo(
     () => [
       {
-        id: `${routes.menu}/products`,
+        id: `${routes.menu.root}/products`,
         label: 'Produtos',
         icon: SoupIcon,
         handler: () => navigate('/menu/products'),
       },
       {
-        id: `${routes.menu}/categories`,
+        id: `${routes.menu.root}/categories`,
         label: 'Categorias',
         icon: BoxIcon,
         handler: () => navigate('/menu/categories'),
