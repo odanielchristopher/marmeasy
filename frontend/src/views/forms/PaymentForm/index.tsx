@@ -36,7 +36,7 @@ export function PaymentForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="w-ful flex flex-col items-center">
+      <div className="w-ful flex flex-col items-center max-sm:mb-12">
         <span className="text-gray-600 text-sm tracking-[-0.5px]">
           Valor do pagamento
         </span>
@@ -53,6 +53,10 @@ export function PaymentForm({
                 value={value}
                 onChange={onChange}
                 error={form.formState.errors.value?.message}
+                classNames={{
+                  error:
+                    'max-sm:-translate-x-[36px] max-sm:w-[200px] sm:-translate-x-[120px]',
+                }}
               />
             )}
           />
