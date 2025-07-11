@@ -1,10 +1,12 @@
 import { JwtService } from '@nestjs/jwt';
-import { Test, TestingModule } from '@nestjs/testing';
 import { compare, hash } from 'bcryptjs';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { SigninDto } from 'src/modules/auth/dto/signin.dto';
 import { SignupDto } from 'src/modules/auth/dto/signup.dto';
 import { IUsersRepository } from 'src/shared/database/interfaces/users-repository.interface';
+
+import { UsersRepositoryMock } from 'tests/mocks/repositories/users-repository.mock';
+import { JwtServiceMock } from 'tests/mocks/services/jwt-service.mock';
 
 jest.mock('bcryptjs', () => ({
   compare: jest.fn(),
@@ -13,19 +15,16 @@ jest.mock('bcryptjs', () => ({
 
 describe('AuthService', () => {
   let service: AuthService;
-  const UsersRepositoryMock: Partial<IUsersRepository> = {};
-  const JwtServiceMock: Partial<JwtService> = {};
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        AuthService,
-        { provide: JwtService, useValue: JwtServiceMock },
-        { provide: IUsersRepository, useValue: UsersRepositoryMock },
-      ],
-    }).compile();
+    service = new AuthService(
+      UsersRepositoryMock as IUsersRepository,
+      JwtServiceMock as JwtService,
+    );
+  });
 
-    service = module.get(AuthService);
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -46,6 +45,7 @@ describe('AuthService', () => {
       ...signInDto,
     });
     JwtServiceMock.signAsync = jest.fn().mockResolvedValue('1234-signed');
+    (compare as jest.Mock).mockResolvedValue(true);
 
     const result = await service.signin(signInDto);
 
@@ -61,13 +61,16 @@ describe('AuthService', () => {
     // Simula o que o usuário existe
     UsersRepositoryMock.findUniqueByEmail = jest.fn().mockResolvedValue({
       id: '1234',
-      ...signInDto,
+      nome: 'daniel',
+      email: 'dani@mail.com',
+      password: 'outrasenha',
     });
 
     // Senha inválida
     (compare as jest.Mock).mockResolvedValue(false);
 
     await expect(service.signin(signInDto)).rejects.toThrow('Senha inválida.');
+    expect(compare).toHaveBeenCalledWith('senhaerrada', 'outrasenha');
   });
 
   it('should throw UnauthorizedException if user does not exist', async () => {

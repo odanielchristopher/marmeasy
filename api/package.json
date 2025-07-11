@@ -81,6 +81,7 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
+      "^tests/(.*)$": "<rootDir>/tests/$1",
       "^src/(.*)$": "<rootDir>/src/$1"
     }
   }
