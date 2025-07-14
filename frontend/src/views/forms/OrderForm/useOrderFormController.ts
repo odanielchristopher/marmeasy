@@ -64,11 +64,12 @@ export function useOrderFormController({
 
     if (itemIndex < 0) {
       cartControl.append({
-        ...product,
         imagePath: product.imagePath ?? undefined,
         quantity: 1,
         productId: id,
+        description: product.description ?? undefined,
         unitPrice: product.price,
+        name: product.name,
       });
 
       return;
