@@ -115,7 +115,7 @@ export function generateOrdersPdf({
   doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
   doc.text(
-    `Relatório de Pedidos do ${capitalizeFirstLetter(customerName)}`,
+    `Relatório de Pedidos do(a) ${capitalizeFirstLetter(customerName)}`,
     marginLeft,
     marginTop,
   );
