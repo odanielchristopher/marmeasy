@@ -22,7 +22,7 @@ export class UpdateCustomerBalanceService
     previousValue = 0,
     operationType,
   }: UpdateBalanceParams): Promise<Customer> {
-    const findedCustomer = await this.customersRepository.findFirstById({
+    const findedCustomer = await this.customersRepository.findOne({
       userId,
       customerId,
     });

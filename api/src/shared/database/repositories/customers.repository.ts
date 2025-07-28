@@ -9,6 +9,7 @@ import {
   FindFirstByIdDto,
   FindManyByTermDto,
   FindManyByUserIdDto,
+  FindOneDto,
   ICustomersRepository,
   UpdateCustomerDto,
 } from '../interfaces/customers-repository.interface';
@@ -66,6 +67,16 @@ export class CustomersRepository implements ICustomersRepository {
       data: customers.map((customer) => this.parser(customer)),
       items,
     };
+  }
+
+  async findOne(findOneDto: FindOneDto): Promise<Customer> {
+    const { userId, customerId } = findOneDto;
+
+    const customer = await this.prismaService.customer.findFirst({
+      where: { userId, id: customerId },
+    });
+
+    return this.parser(customer);
   }
 
   async findFirstById(findFirstByIdDto: FindFirstByIdDto): Promise<Customer> {

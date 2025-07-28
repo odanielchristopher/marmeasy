@@ -13,6 +13,13 @@ export function useUpdateOrder() {
       });
 
       queryClient.setQueryData(['order', order.id], () => order);
+
+      queryClient.resetQueries({
+        queryKey: ['customer', order.customer.id],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customers'],
+      });
     },
   });
 

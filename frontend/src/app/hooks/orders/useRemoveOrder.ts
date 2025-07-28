@@ -11,6 +11,12 @@ export function useRemoveOrder() {
       queryClient.resetQueries({
         queryKey: ['orders'],
       });
+      queryClient.resetQueries({
+        queryKey: ['customer'],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customers'],
+      });
     },
   });
 

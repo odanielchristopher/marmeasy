@@ -7,9 +7,16 @@ export function useCreateOrder() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: ordersService.create,
-    onSuccess: () => {
+    onSuccess: (order) => {
       queryClient.resetQueries({
         queryKey: ['orders'],
+      });
+
+      queryClient.resetQueries({
+        queryKey: ['customer', order.customer.id],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customers'],
       });
     },
   });
