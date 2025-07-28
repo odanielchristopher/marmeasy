@@ -7,9 +7,15 @@ export function useCreatePayment() {
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: paymentsService.create,
-    onSuccess: () => {
+    onSuccess: (payment) => {
       queryClient.resetQueries({
         queryKey: ['payments'],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customers'],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customer', payment.customerId],
       });
     },
   });

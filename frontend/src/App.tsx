@@ -1,5 +1,4 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import { BrowserRouter } from 'react-router';
 
@@ -18,7 +17,7 @@ export function App() {
             <Router />
             <Toaster position="top-right" />
 
-            <ReactQueryDevtools position="bottom" buttonPosition="top-left" />
+            {/* <ReactQueryDevtools position="bottom" buttonPosition="top-left" /> */}
           </BrowserRouter>
         </ThemeProvider>
       </AuthProvider>

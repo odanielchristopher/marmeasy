@@ -4,6 +4,7 @@ import {
   HandCoinsIcon,
 } from 'lucide-react';
 
+import { formatCurrency } from '@app/utils/formatCurrency';
 import { DateRangePickerInput } from '@views/components/app/DateRangePickerInput';
 import { InfiniteScrollContainer } from '@views/components/app/InfiniteScrollContainer';
 import { NotFoundError } from '@views/components/app/NotFoundError';
@@ -21,17 +22,18 @@ interface IPaymentsSessionProps {
 
 export function PaymentsSession({ customerId }: IPaymentsSessionProps) {
   const {
-    payments,
-    hasPayments,
-    isLoading,
-    infiniteScroll,
-    handleDateRange,
     order,
-    handleOrder,
+    amount,
+    payments,
+    isLoading,
+    hasPayments,
+    infiniteScroll,
+    paymentBeenEdited,
     isOpenEditPaymentModal,
+    handleOrder,
+    handleDateRange,
     handleCloseEditProductModal,
     handleOpenEditProductModal,
-    paymentBeenEdited,
   } = usePaymentsSessionController(customerId);
 
   return (
@@ -44,11 +46,24 @@ export function PaymentsSession({ customerId }: IPaymentsSessionProps) {
         />
       )}
 
-      <header className="flex gap-3 items-center">
-        <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
-          <HandCoinsIcon />
+      <header className="flex gap-3 items-center justify-between">
+        <div className="flex gap-3 items-center">
+          <div className="flex items-center justify-center p-3 border border-gray-300 dark:border-accent bg-white dark:bg-card rounded-sm">
+            <HandCoinsIcon />
+          </div>
+          <h4 className="text-xl font-medium tracking-[-0.5px]">Pagamentos</h4>
         </div>
-        <h4 className="text-xl font-medium tracking-[-0.5px]">Pagamentos</h4>
+
+        <div className="flex gap-3 items-center pr-4">
+          <span className="text-xs">Total:</span>
+          {isLoading && !hasPayments && <Skeleton className="h-10 w-20" />}
+
+          {!isLoading && (
+            <strong className="text-base text-teal-800 dark:text-teal-900 tracking-[-0.5px]">
+              {formatCurrency(amount)}
+            </strong>
+          )}
+        </div>
       </header>
 
       <div className="flex justify-between gap-4 items-center mt-6 flex-wrap">

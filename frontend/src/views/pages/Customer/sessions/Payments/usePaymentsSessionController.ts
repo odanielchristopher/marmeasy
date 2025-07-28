@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import Decimal from 'decimal.js';
+import { useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 
 import { IPayment } from '@app/entities/Payment';
@@ -54,11 +55,21 @@ export function usePaymentsSessionController(customerId: string) {
 
   const hasPayments = payments.length > 0;
 
+  const amount = useMemo(() => {
+    const result = payments.reduce((acc, payment) => {
+      const subtotal = new Decimal(payment.value);
+      return acc.plus(subtotal);
+    }, new Decimal(0));
+
+    return Number(result.toFixed(2));
+  }, [payments]);
+
   return {
     infiniteScroll,
     isLoading,
     payments,
     order,
+    amount,
     hasPayments,
     paymentBeenEdited,
     isOpenEditPaymentModal,

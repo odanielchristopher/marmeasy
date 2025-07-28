@@ -1,12 +1,17 @@
-import { useState } from 'react';
+import Decimal from 'decimal.js';
+import { useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import toast from 'react-hot-toast';
 
 import { IOrder } from '@app/entities/Order';
 import { useOrders } from '@app/hooks/orders/useOrders';
 import { useRemoveOrder } from '@app/hooks/orders/useRemoveOrder';
+import { generateOrdersPdf } from '@app/utils/generateOrderPdf';
 
-export function useOrdersSessionController(customerId: string) {
+export function useOrdersSessionController(
+  customerId: string,
+  customerName: string,
+) {
   const [renderOrder, setRenderOrder] = useState<'asc' | 'desc'>('desc');
   const [dateRange, setDateRange] = useState<
     { from?: string; to?: string } | undefined
@@ -64,16 +69,37 @@ export function useOrdersSessionController(customerId: string) {
     }
   }
 
+  function handleGeneratePdf() {
+    generateOrdersPdf({
+      orders: orders ?? [],
+      customerName,
+      from: dateRange?.from,
+      to: dateRange?.to,
+    });
+  }
+
   const hasOrders = orders.length > 0;
+
+  const amount = useMemo(() => {
+    const result = orders.reduce((acc, order) => {
+      const subtotal = new Decimal(order.amount);
+      return acc.plus(subtotal);
+    }, new Decimal(0));
+
+    return Number(result.toFixed(2));
+  }, [orders]);
 
   return {
     infiniteScroll,
     isLoading,
     orders,
+    amount,
+    dateRange,
     renderOrder,
     hasOrders,
     isRemoving,
     isRemoveOrderModalOpen,
+    handleGeneratePdf,
     handleRenderOrder,
     handleDateRange,
     handleOpenRemoveOrderModal,

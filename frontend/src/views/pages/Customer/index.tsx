@@ -114,7 +114,9 @@ export function Customer() {
           </aside>
 
           <div className="max-md:mt-3 md:pl-10 flex-1">
-            {currentSession === 'ORDERS' && <OrdersSession customerId={id!} />}
+            {currentSession === 'ORDERS' && (
+              <OrdersSession customer={customer} />
+            )}
             {currentSession === 'PAYMENTS' && (
               <PaymentsSession customerId={id!} />
             )}

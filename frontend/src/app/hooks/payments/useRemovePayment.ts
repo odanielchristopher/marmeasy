@@ -11,6 +11,12 @@ export function useRemovePayment() {
       queryClient.resetQueries({
         queryKey: ['payments'],
       });
+      queryClient.resetQueries({
+        queryKey: ['customers'],
+      });
+      queryClient.resetQueries({
+        queryKey: ['customer'],
+      });
     },
   });
 
