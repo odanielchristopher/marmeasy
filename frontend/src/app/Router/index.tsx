@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router';
 
 import { lazyLoad } from '@app/utils/lazyLoad';
 import { LaunchScreen } from '@views/components/app/LaunchScreen';
+import { ErrorFallbackLayout } from '@views/layouts/ErrorFallbackLayout';
 import { EditOrder } from '@views/pages/Orders/EditOrder';
 
 import { AuthGuard } from './AuthGuard';
@@ -42,38 +43,40 @@ export function Router() {
   return (
     <Suspense fallback={<LaunchScreen isLoading />}>
       <Routes>
-        <Route element={<AuthGuard isPrivate />}>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Navigate to={routes.customers} />} />
+        <Route element={<ErrorFallbackLayout />}>
+          <Route element={<AuthGuard isPrivate />}>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Navigate to={routes.customers} />} />
 
-            <Route path={routes.customers}>
-              <Route index element={<Customers />} />
-              <Route path=":id" element={<Customer />} />
+              <Route path={routes.customers}>
+                <Route index element={<Customers />} />
+                <Route path=":id" element={<Customer />} />
+              </Route>
+
+              <Route path={routes.orders}>
+                <Route index element={<Orders />} />
+                <Route path="new" element={<NewOrder />} />
+                <Route path="edit/:orderId" element={<EditOrder />} />
+              </Route>
+
+              <Route path={routes.menu.root} element={<MenuLayout />}>
+                <Route path="products" element={<Products />} />
+                <Route path="categories" element={<ProductCategories />} />
+              </Route>
+
+              <Route path={routes.dashboard} element={<Dashboard />} />
             </Route>
-
-            <Route path={routes.orders}>
-              <Route index element={<Orders />} />
-              <Route path="new" element={<NewOrder />} />
-              <Route path="edit/:orderId" element={<EditOrder />} />
-            </Route>
-
-            <Route path={routes.menu.root} element={<MenuLayout />}>
-              <Route path="products" element={<Products />} />
-              <Route path="categories" element={<ProductCategories />} />
-            </Route>
-
-            <Route path={routes.dashboard} element={<Dashboard />} />
           </Route>
-        </Route>
 
-        <Route element={<AuthGuard isPrivate={false} />}>
-          <Route element={<AuthLayout />}>
-            <Route path={routes.login} element={<Login />} />
-            <Route path={routes.register} element={<Register />} />
+          <Route element={<AuthGuard isPrivate={false} />}>
+            <Route element={<AuthLayout />}>
+              <Route path={routes.login} element={<Login />} />
+              <Route path={routes.register} element={<Register />} />
+            </Route>
           </Route>
-        </Route>
 
-        <Route path="*?" element={<NotFoundPage />} />
+          <Route path="*?" element={<NotFoundPage />} />
+        </Route>
       </Routes>
     </Suspense>
   );

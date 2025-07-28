@@ -96,7 +96,7 @@ export function ColorsDropdownInput({
               <RdxDropdownMenu.Item
                 key={color.color}
                 onSelect={() => handleSelect(color)}
-                className="min-h-11 outline-none flex items-center py-2 px-4 text-gray-800 data-[highlighted]:bg-gray-100 rounded-xl transition-colors cursor-pointer hover:bg-accent focus:bg-accent focus:text-accent-foreground"
+                className="min-h-11 outline-none flex items-center py-2 px-4 text-gray-800 data-[highlighted]:bg-gray-100 rounded-xl transition-colors cursor-pointer dark:data-[highlighted]:bg-gray-900 hover:bg-accent focus:bg-accent focus:text-accent-foreground"
               >
                 <ColorIcon bg={color.bg} color={color.color} />
               </RdxDropdownMenu.Item>

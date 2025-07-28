@@ -71,7 +71,7 @@ export function useOrdersSessionController(
 
   function handleGeneratePdf() {
     generateOrdersPdf({
-      orders: orders ?? [],
+      orders,
       customerName,
       from: dateRange?.from,
       to: dateRange?.to,

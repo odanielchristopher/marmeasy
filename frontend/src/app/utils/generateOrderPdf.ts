@@ -12,7 +12,6 @@ import { formatDate } from './formatDate';
 
 // Tipagem para agrupar pedidos
 export interface IGroupedOrder {
-  id: string;
   date: string;
   BREAKFAST: number;
   LUNCH: number;
@@ -39,6 +38,11 @@ function getDatesInRange(from: Date, to: Date): Date[] {
   return dates;
 }
 
+const normalizeDate = (dateString: string) => {
+  const d = new Date(dateString);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+};
+
 export function generateOrdersPdf({
   orders,
   customerName,
@@ -57,15 +61,17 @@ export function generateOrdersPdf({
 
   // Agrupar pedidos por data e tipo
   const allDates = getDatesInRange(fromDate, toDate);
-  const map = new Map<string, IGroupedOrder>();
+  // Agrupar pedidos por data normalizada
+  const map = new Map<number, IGroupedOrder>();
 
   orders.forEach((order) => {
+    const orderDate = normalizeDate(order.date);
+    const dateKey = orderDate.getTime();
     const amount = new Decimal(order.amount);
 
-    if (!map.has(order.date)) {
-      map.set(order.date, {
-        id: order.id,
-        date: order.date,
+    if (!map.has(dateKey)) {
+      map.set(dateKey, {
+        date: orderDate.toISOString(),
         BREAKFAST: 0,
         LUNCH: 0,
         DINNER: 0,
@@ -73,23 +79,25 @@ export function generateOrdersPdf({
       });
     }
 
-    const entry = map.get(order.date)!;
+    const entry = map.get(dateKey)!;
     entry[order.type]++;
     entry.total = entry.total.plus(amount);
   });
 
+  // Preencher todas as datas do período
   const groupedOrders = allDates.map((date) => {
-    const dateStr = date.toISOString();
-    const entry = map.get(dateStr);
+    const dateKey = date.getTime();
+    const entry = map.get(dateKey);
 
-    return {
-      id: entry?.id || '',
-      date: dateStr,
-      BREAKFAST: entry?.BREAKFAST || 0,
-      LUNCH: entry?.LUNCH || 0,
-      DINNER: entry?.DINNER || 0,
-      total: entry?.total ? entry.total.toNumber() : 0,
-    };
+    return (
+      entry || {
+        date: date.toISOString(),
+        BREAKFAST: 0,
+        LUNCH: 0,
+        DINNER: 0,
+        total: new Decimal(0),
+      }
+    );
   });
 
   // Total geral
@@ -130,7 +138,7 @@ export function generateOrdersPdf({
     entry.BREAKFAST.toString(),
     entry.LUNCH.toString(),
     entry.DINNER.toString(),
-    formatCurrency(entry.total),
+    formatCurrency(entry.total.toNumber()),
   ]);
 
   // Chamar autoTable diretamente
